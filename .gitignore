@@ -1,0 +1,66 @@
+# --- CAPIO Unified .gitignore ---
+
+# Python / Django
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.venv/
+venv/
+ENV/
+
+# Django specific
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# Node / React / Vite
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/coverage/
+.eslintcache
+.stylelintcache
+*.local
+.npm
+.yarn-integrity
+
+# Environment files (CRITICAL)
+.env
+.env.*
+!.env.example
+
+# IDEs / System
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Misc
+.cache/
+.pytest_cache/
+.coverage
+htmlcov/

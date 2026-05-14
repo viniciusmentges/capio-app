@@ -1,0 +1,101 @@
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { useAuth } from '../../hooks/useAuth';
+import Card from '../../components/ui/Card';
+import Button from '../../components/ui/Button';
+import { getGreetingContext, formatFirstName } from '../../utils/greeting';
+import { getTodayReflection } from '../../lib/reflection';
+
+export default function HomePage() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const { data: reflection, isLoading: isReflectionLoading } = useQuery({
+    queryKey: ['reflection', 'today'],
+    queryFn: getTodayReflection,
+    staleTime: 1000 * 60 * 60,
+  });
+
+  const greeting = getGreetingContext();
+  const firstName = formatFirstName(user);
+  const title = firstName ? `${greeting}, ${firstName}.` : `${greeting}.`;
+
+  const getReflectionPreview = () => {
+    if (isReflectionLoading) return "Preparando sua reflexão...";
+    if (!reflection || !reflection.reflection) return "A reflexão de hoje será preparada em instantes.";
+    
+    return reflection.reflection.reflection_body || reflection.reflection.title || "";
+  };
+
+  return (
+    <div className="space-y-[var(--space-section)] animate-fade-in">
+      
+      {/* Bloco 1: Saudação Contextual */}
+      <section className="space-y-6">
+        <h1 className="text-3xl font-serif text-foreground tracking-tight">
+          {title}
+        </h1>
+        <p className="text-foreground/40 font-sans font-light tracking-wide text-xs">
+          Que este momento seja vivido com calma.
+        </p>
+      </section>
+
+      {/* Bloco 2: Reflexão de Hoje */}
+      <section className="space-y-8">
+        <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-foreground/30">
+          Reflexão
+        </p>
+        <div className="space-y-10">
+          <p className="text-2xl text-foreground/90 font-serif leading-relaxed">
+            {getReflectionPreview()}
+          </p>
+          <div>
+            <Button 
+              variant="outline" 
+              onClick={() => navigate('/reflection/today')}
+              className="text-xs px-8 py-3 uppercase tracking-widest opacity-60 hover:opacity-100"
+              disabled={isReflectionLoading}
+            >
+              Ler reflexão
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Bloco 3: Devocional por Emoção */}
+      <section className="space-y-8">
+        <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-foreground/30">
+          Presença
+        </p>
+        <div className="space-y-10">
+          <div className="space-y-4">
+            <h2 className="font-serif text-2xl text-foreground">Do que seu coração precisa hoje?</h2>
+            <p className="text-foreground/50 font-sans text-sm font-light">
+              Escolha uma emoção e receba um acolhimento para este momento.
+            </p>
+          </div>
+          <div>
+            <Button 
+              variant="outline" 
+              onClick={() => navigate('/devotional/emotions')}
+              className="text-xs px-8 py-3 uppercase tracking-widest opacity-60 hover:opacity-100"
+            >
+              Iniciar
+            </Button>
+          </div>
+        </div>
+      </section>
+      {/* Bloco de Logout - Discreto e no fim da página para QA */}
+      <div className="flex justify-center pt-8">
+        <button 
+          onClick={logout}
+          className="text-[10px] uppercase tracking-[0.2em] text-foreground/20 hover:text-foreground/40 transition-colors"
+        >
+          Sair da conta
+        </button>
+      </div>
+
+    </div>
+  );
+}

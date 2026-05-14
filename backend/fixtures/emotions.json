@@ -1,0 +1,74 @@
+[
+  {
+    "model": "devotional.emotion",
+    "pk": 1,
+    "fields": {
+      "name": "Ansioso",
+      "slug": "ansioso",
+      "icon": "anxiety_icon"
+    }
+  },
+  {
+    "model": "devotional.emotion",
+    "pk": 2,
+    "fields": {
+      "name": "Triste",
+      "slug": "triste",
+      "icon": "sad_icon"
+    }
+  },
+  {
+    "model": "devotional.emotion",
+    "pk": 3,
+    "fields": {
+      "name": "Medo",
+      "slug": "medo",
+      "icon": "fear_icon"
+    }
+  },
+  {
+    "model": "devotional.emotion",
+    "pk": 4,
+    "fields": {
+      "name": "Desmotivado",
+      "slug": "desmotivado",
+      "icon": "unmotivated_icon"
+    }
+  },
+  {
+    "model": "devotional.emotion",
+    "pk": 5,
+    "fields": {
+      "name": "Sozinho",
+      "slug": "sozinho",
+      "icon": "lonely_icon"
+    }
+  },
+  {
+    "model": "devotional.emotion",
+    "pk": 6,
+    "fields": {
+      "name": "Sem Esperança",
+      "slug": "sem-esperanca",
+      "icon": "hopeless_icon"
+    }
+  },
+  {
+    "model": "devotional.emotion",
+    "pk": 7,
+    "fields": {
+      "name": "Direção",
+      "slug": "direcao",
+      "icon": "direction_icon"
+    }
+  },
+  {
+    "model": "devotional.emotion",
+    "pk": 8,
+    "fields": {
+      "name": "Gratidão",
+      "slug": "gratidao",
+      "icon": "gratitude_icon"
+    }
+  }
+]

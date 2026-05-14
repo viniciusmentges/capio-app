@@ -1,0 +1,22 @@
+:root {
+  /* Cores Oficiais */
+  --color-background: #F8F7F4;
+  --color-surface: #F3F1ED;
+  --color-text-primary: #2A2926;
+  --color-text-secondary: rgba(42, 41, 38, 0.45);
+  --color-border: rgba(42, 41, 38, 0.04);
+  --color-brand: #3A372F;
+  --color-accent: #7C8366;
+
+  /* Tipografia */
+  --font-ui: "Inter", sans-serif;
+  --font-content: "Lora", serif;
+
+  /* Espaçamento */
+  --space-section: 120px;
+  --space-heading-text: 24px;
+  --space-content-cta: 48px;
+
+  /* Motion */
+  --transition-fade: 1200ms ease-out;
+}

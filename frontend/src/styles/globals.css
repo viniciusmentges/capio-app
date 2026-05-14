@@ -1,0 +1,79 @@
+@import "design-tokens.css";
+@import "tailwindcss";
+
+@theme {
+  --color-background: var(--color-background);
+  --color-surface: var(--color-surface);
+  --color-foreground: var(--color-text-primary);
+  --font-sans: var(--font-ui);
+  --font-serif: var(--font-content);
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    font-family: var(--font-ui);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+  
+  ::selection {
+    background-color: rgba(42, 41, 38, 0.05);
+    color: var(--color-text-primary);
+  }
+
+  h1, h2, h3, .font-serif {
+    font-family: var(--font-content);
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    font-variant-numeric: oldstyle-nums;
+  }
+}
+
+@theme {
+  --animate-fade-in: fade-in var(--transition-fade) forwards;
+  --animate-fade-in-fast: fade-in 600ms ease-out forwards;
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@layer utilities {
+  .text-contemplative {
+    line-height: 1.9;
+    letter-spacing: -0.015em;
+    font-family: var(--font-content);
+  }
+
+  .editorial-surface {
+    @apply bg-transparent p-0 md:p-0 rounded-none;
+  }
+
+  .mt-editorial-lg {
+    @apply mt-24 md:mt-32;
+  }
+
+  .mt-editorial-sm {
+    @apply mt-8 md:mt-12;
+  }
+
+  .text-prayer {
+    @apply font-serif italic text-foreground/40 text-center leading-relaxed;
+  }
+}
