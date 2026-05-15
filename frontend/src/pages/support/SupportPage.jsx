@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProgressiveReveal from '../../components/devotional/ProgressiveReveal';
-
 import Button from '../../components/ui/Button';
+import ScrollToTop from '../../components/layout/ScrollToTop';
 
 export default function SupportPage() {
   const pixKey = import.meta.env.VITE_PIX_KEY;
@@ -18,6 +18,8 @@ export default function SupportPage() {
 
   return (
     <div className="min-h-screen pb-32">
+      <ScrollToTop />
+
       <div className="max-w-2xl mx-auto pt-24 px-6">
         
         {/* Header Discreto */}

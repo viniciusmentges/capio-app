@@ -42,6 +42,22 @@ export default function HomePage() {
         </p>
       </section>
 
+      {/* Bloco de Apoio - Discreto e Contextual */}
+      <section className="animate-fade-in" style={{ animationDelay: '1000ms' }}>
+        <div className="space-y-4">
+          <p className="text-[10px] font-sans font-light text-foreground/40 leading-relaxed max-w-xs">
+            A CAPIO é gratuita. Se este espaço tem feito bem a você, considere ajudar a mantê-lo vivo.
+          </p>
+          <Link 
+            to="/apoie" 
+            className="inline-block text-[10px] uppercase tracking-[0.2em] text-foreground/50 hover:text-foreground/80 underline underline-offset-4 decoration-foreground/10 transition-colors"
+          >
+            Ajudar a causa
+          </Link>
+        </div>
+      </section>
+
+
       {/* Bloco 2: Reflexão de Hoje */}
       <section className="space-y-8">
         <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-foreground/30">
