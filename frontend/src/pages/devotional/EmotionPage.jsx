@@ -30,20 +30,50 @@ export default function EmotionPage() {
     mutation.mutate({ emotion: selectedSlug });
   };
 
-  if (isEmotionsLoading || mutation.isPending) {
+  if (isEmotionsLoading) {
     return (
       <div className="flex flex-col justify-center min-h-[100dvh]">
-        <LoadingState 
-          message={mutation.isPending ? "Preparando seu devocional..." : "Buscando sentimentos..."} 
+        <LoadingState message="Buscando sentimentos..." />
+      </div>
+    );
+  }
+
+  if (mutation.isPending) {
+    return (
+      <div className="flex flex-col justify-center min-h-[100dvh]">
+        <LoadingState message="Preparando seu devocional..." />
+      </div>
+    );
+  }
+
+  if (isEmotionsError) {
+    return (
+      <div className="flex flex-col justify-center min-h-[100dvh]">
+        <ErrorState message="Não foi possível carregar as emoções. Tente novamente mais tarde." />
+      </div>
+    );
+  }
+
+  if (!emotions || emotions.length === 0) {
+    return (
+      <div className="flex flex-col justify-center min-h-[100dvh]">
+        <ErrorState 
+          message="Nenhuma emoção disponível no momento." 
+          details="Isso pode acontecer se o banco de dados não estiver populado."
         />
       </div>
     );
   }
 
-  if (isEmotionsError || mutation.isError) {
+  if (mutation.isError) {
     return (
       <div className="flex flex-col justify-center min-h-[100dvh]">
-        <ErrorState message="Não foi possível preparar seu devocional agora." />
+        <ErrorState message="Erro ao gerar devocional. Verifique sua conexão ou tente outra emoção." />
+        <div className="flex justify-center mt-8">
+          <Button variant="outline" onClick={() => mutation.reset()}>
+            Tentar novamente
+          </Button>
+        </div>
       </div>
     );
   }

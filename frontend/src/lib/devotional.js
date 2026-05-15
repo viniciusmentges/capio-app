@@ -1,4 +1,4 @@
-import { api } from '../lib/api';
+import { api } from './api';
 
 export async function getEmotions() {
   const { data } = await api.get('/api/devotional/emotions/');
