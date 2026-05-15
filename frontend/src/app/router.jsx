@@ -48,6 +48,7 @@ function PublicRoute({ children }) {
 }
 
 import SharedContentViewer from '../pages/public/SharedContentViewer';
+import SupportPage from '../pages/support/SupportPage';
 
 export const router = createBrowserRouter([
   {
@@ -81,6 +82,10 @@ export const router = createBrowserRouter([
     element: <SharedContentViewer />
   },
   {
+    path: "/apoie",
+    element: <SupportPage />
+  },
+  {
     path: "/login",
     element: (
       <PublicRoute>
@@ -88,6 +93,7 @@ export const router = createBrowserRouter([
       </PublicRoute>
     )
   },
+
   {
     path: "/register",
     element: (

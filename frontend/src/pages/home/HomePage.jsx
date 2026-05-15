@@ -1,5 +1,6 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '../../hooks/useAuth';
 import Card from '../../components/ui/Card';
@@ -86,15 +87,27 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      {/* Bloco de Logout - Discreto e no fim da página para QA */}
-      <div className="flex justify-center pt-8">
-        <button 
-          onClick={logout}
-          className="text-[10px] uppercase tracking-[0.2em] text-foreground/20 hover:text-foreground/40 transition-colors"
-        >
-          Sair da conta
-        </button>
-      </div>
+      {/* Bloco de Rodapé - Discreto e Contemplativo */}
+      <footer className="pt-24 space-y-16 pb-12">
+        <div className="w-1 h-1 bg-foreground/10 rounded-full mx-auto" />
+        
+        <div className="flex flex-col items-center space-y-12">
+          <Link 
+            to="/apoie"
+            className="text-[10px] uppercase tracking-[0.2em] text-foreground/30 hover:text-foreground/50 transition-colors"
+          >
+            Apoie a CAPIO
+          </Link>
+
+          <button 
+            onClick={logout}
+            className="text-[10px] uppercase tracking-[0.2em] text-foreground/10 hover:text-foreground/30 transition-colors"
+          >
+            Sair da conta
+          </button>
+        </div>
+      </footer>
+
 
     </div>
   );
