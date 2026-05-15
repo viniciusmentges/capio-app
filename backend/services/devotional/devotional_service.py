@@ -36,7 +36,7 @@ class DevotionalService:
                 user=user,
                 content_ref_id=content.id,
                 filter_status='clean',
-                metadata={"cached": True, "source": "foundation_library"}
+                metadata={"cached": True, "source": "foundation_library", "is_new_for_user": True}
             )
             return {
                 "title": content.title,
@@ -50,7 +50,32 @@ class DevotionalService:
                 "cached": True
             }
 
-        # 2. Se não houver inéditos, gerar novo (Expansão Orgânica)
+        # 1.1 Rotação da Biblioteca (Se o usuário já viu tudo, mas a biblioteca não está vazia)
+        any_available = DevotionalContent.objects.filter(emotion=emotion, is_active=True)
+        if any_available.exists():
+            content = random.choice(list(any_available))
+            # Não criamos UserDevotional duplicado para não poluir o histórico com o mesmo ID,
+            # mas o usuário verá o conteúdo rotacionado.
+            GeneratedResponse.objects.create(
+                response_type='DEVOTIONAL',
+                user=user,
+                content_ref_id=content.id,
+                filter_status='clean',
+                metadata={"cached": True, "source": "library_rotation", "is_new_for_user": False}
+            )
+            return {
+                "title": content.title,
+                "scripture_reference": content.scripture_reference,
+                "scripture_text": content.scripture_text,
+                "reflection": content.reflection,
+                "practical_application": content.practical_application,
+                "guiding_question": content.guiding_question,
+                "prayer": content.prayer,
+                "ai_generated": content.ai_generated,
+                "cached": True
+            }
+
+        # 2. Se a biblioteca estiver REALMENTE vazia para esta emoção, gerar novo (Expansão Orgânica)
         ai_service = get_ai_service()
         input_hash = hashlib.sha256(emotion.name.encode()).hexdigest()
 
