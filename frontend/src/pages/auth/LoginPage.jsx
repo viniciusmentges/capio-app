@@ -77,14 +77,22 @@ export default function LoginPage() {
         </Button>
       </form>
 
-      <div className="text-center">
+      <div className="flex flex-col items-center space-y-6">
         <Link 
           to="/register" 
           className="text-[10px] uppercase tracking-[0.2em] text-foreground/30 hover:text-foreground/50 transition-colors"
         >
           Criar conta
         </Link>
+        
+        <Link 
+          to="/recuperar-senha" 
+          className="text-[10px] uppercase tracking-[0.2em] text-foreground/15 hover:text-foreground/30 transition-colors"
+        >
+          Esqueci minha senha
+        </Link>
       </div>
+
     </div>
   );
 }

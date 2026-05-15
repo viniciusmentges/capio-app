@@ -49,6 +49,7 @@ function PublicRoute({ children }) {
 
 import SharedContentViewer from '../pages/public/SharedContentViewer';
 import SupportPage from '../pages/support/SupportPage';
+import ForgotPasswordPage from '../pages/auth/ForgotPasswordPage';
 
 export const router = createBrowserRouter([
   {
@@ -86,7 +87,12 @@ export const router = createBrowserRouter([
     element: <SupportPage />
   },
   {
+    path: "/recuperar-senha",
+    element: <ForgotPasswordPage />
+  },
+  {
     path: "/login",
+
     element: (
       <PublicRoute>
         <LoginPage />
