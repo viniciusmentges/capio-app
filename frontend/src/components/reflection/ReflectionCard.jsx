@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Card from '../ui/Card';
 import ShareButton from '../ui/ShareButton';
+import ShareableCard from '../ui/ShareableCard';
+import ShareCardActions from '../ui/ShareCardActions';
 
 export default function ReflectionCard({ data }) {
   const [showVerse, setShowVerse] = useState(false);
+  const cardRef = useRef(null);
   
   const title = data.title || "Reflexão de hoje";
   const mainContent = data.reflection_body;
@@ -11,6 +14,8 @@ export default function ReflectionCard({ data }) {
   const scriptureReference = data.scripture_reference;
   const scriptureText = data.scripture_text;
   const prayer = data.closing_prayer;
+
+  const shareQuote = data.share_quote || data.final_fragment || data.highlight || "Às vezes, Deus acalma primeiro o coração antes de mudar o caminho.";
 
   // Formatação para compartilhamento
   const publicUrl = `${window.location.origin}/share/reflection/${data.id}`;
@@ -98,7 +103,23 @@ export default function ReflectionCard({ data }) {
           </div>
         )}
 
-        <div className="flex justify-center pt-16">
+        {/* 5. Fragmento Final Compartilhável */}
+        <section className="space-y-8 pt-16 border-t border-foreground/[0.03]">
+          <ShareableCard 
+            ref={cardRef}
+            type="reflection"
+            quote={shareQuote}
+            reference="Reflexão do Dia"
+            variant="light"
+          />
+          <ShareCardActions 
+            cardRef={cardRef}
+            shareText={`"${shareQuote}"\n\nReflexão do Dia na CAPIO:\n${publicUrl}`}
+            fileName="capio-reflexao.png"
+          />
+        </section>
+
+        <div className="flex justify-center pt-16 pb-8">
           <ShareButton 
             title={`Uma Palavra para você`} 
             text={shareText} 

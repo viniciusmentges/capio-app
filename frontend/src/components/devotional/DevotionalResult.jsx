@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Card from '../ui/Card';
 import ProgressiveReveal from './ProgressiveReveal';
 import ShareButton from '../ui/ShareButton';
+import ShareableCard from '../ui/ShareableCard';
+import ShareCardActions from '../ui/ShareCardActions';
 
 export default function DevotionalResult({ devotional }) {
+  const cardRef = useRef(null);
   const [isVerseExpanded, setIsVerseExpanded] = React.useState(false);
 
   // Parsing resiliente
@@ -125,7 +128,25 @@ export default function DevotionalResult({ devotional }) {
       </div>
 
       <ProgressiveReveal delay={9000}>
-        <div className="flex justify-center pt-8">
+        {/* 7. Fragmento Final Compartilhável */}
+        <section className="space-y-8 pt-16 border-t border-foreground/[0.03]">
+          <ShareableCard 
+            ref={cardRef}
+            type="devotional"
+            quote={verseText || verse}
+            reference={verse}
+            variant="dark"
+          />
+          <ShareCardActions 
+            cardRef={cardRef}
+            shareText={`"${verseText || verse}"\n\n${verse}\n\nLer na CAPIO:\n${publicUrl}`}
+            fileName="capio-devocional.png"
+          />
+        </section>
+      </ProgressiveReveal>
+
+      <ProgressiveReveal delay={10000}>
+        <div className="flex justify-center pt-16 pb-8">
           <ShareButton 
             title={`Uma Palavra para você`} 
             text={shareText} 
@@ -136,7 +157,7 @@ export default function DevotionalResult({ devotional }) {
 
 
       {/* Finalização suave */}
-      <ProgressiveReveal delay={10000}>
+      <ProgressiveReveal delay={11000}>
         <div className="text-center pt-12">
           <div className="w-1 h-1 bg-foreground/10 rounded-full mx-auto mb-8" />
           <p className="text-[9px] text-foreground/15 font-serif italic tracking-[0.3em] uppercase">
