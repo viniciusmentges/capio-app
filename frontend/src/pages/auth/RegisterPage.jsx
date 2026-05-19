@@ -42,7 +42,13 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex flex-col justify-center min-h-screen px-6 py-12 max-w-sm mx-auto space-y-20 animate-fade-in">
+    <div 
+      className="flex flex-col justify-center min-h-[100dvh] px-6 max-w-sm mx-auto space-y-20 animate-fade-in overflow-y-auto"
+      style={{
+        paddingTop: 'calc(3rem + env(safe-area-inset-top, 24px))',
+        paddingBottom: 'calc(3rem + env(safe-area-inset-bottom, 24px))',
+      }}
+    >
       <div className="space-y-4 text-center">
         <h1 className="font-serif text-3xl text-foreground tracking-tight">CAPIO</h1>
         <p className="text-[10px] uppercase tracking-[0.3em] text-foreground/40 font-sans">

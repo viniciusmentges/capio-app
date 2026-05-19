@@ -8,6 +8,8 @@ export default function ShareButton({ title, text, url }) {
     e.preventDefault();
     e.stopPropagation();
 
+    localStorage.setItem('capio_engaged_share', 'true');
+
     const shareUrl = url || window.location.href;
     const fullText = text ? `${text}\n\nLido na CAPIO: ${shareUrl}` : `Lido na CAPIO: ${shareUrl}`;
 

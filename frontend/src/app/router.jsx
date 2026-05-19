@@ -4,12 +4,12 @@ import AppShell from '../components/layout/AppShell';
 import { useAuth } from '../hooks/useAuth';
 import LoadingState from '../components/ui/LoadingState';
 
-import HomePage from '../pages/home/HomePage';
-import EmotionPage from '../pages/devotional/EmotionPage';
-import BibleExplainPage from '../pages/bible/BibleExplainPage';
-import TodayReflectionPage from '../pages/reflection/TodayReflectionPage';
-import LoginPage from '../pages/auth/LoginPage';
-import RegisterPage from '../pages/auth/RegisterPage';
+const HomePage = React.lazy(() => import('../pages/home/HomePage'));
+const EmotionPage = React.lazy(() => import('../pages/devotional/EmotionPage'));
+const BibleExplainPage = React.lazy(() => import('../pages/bible/BibleExplainPage'));
+const TodayReflectionPage = React.lazy(() => import('../pages/reflection/TodayReflectionPage'));
+const LoginPage = React.lazy(() => import('../pages/auth/LoginPage'));
+const RegisterPage = React.lazy(() => import('../pages/auth/RegisterPage'));
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated, loadingAuth } = useAuth();
@@ -47,9 +47,9 @@ function PublicRoute({ children }) {
   return children;
 }
 
-import SharedContentViewer from '../pages/public/SharedContentViewer';
-import SupportPage from '../pages/support/SupportPage';
-import ForgotPasswordPage from '../pages/auth/ForgotPasswordPage';
+const SharedContentViewer = React.lazy(() => import('../pages/public/SharedContentViewer'));
+const SupportPage = React.lazy(() => import('../pages/support/SupportPage'));
+const ForgotPasswordPage = React.lazy(() => import('../pages/auth/ForgotPasswordPage'));
 
 export const router = createBrowserRouter([
   {

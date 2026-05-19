@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from apps.users.models import UserFeedback
+from apps.users.models import UserFeedback, PushSubscription
 
 User = get_user_model()
 
@@ -30,3 +30,14 @@ class FeedbackSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserFeedback
         fields = ('response_type', 'content_ref_id', 'helpful', 'comment')
+
+
+class PushSubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PushSubscription
+        fields = (
+            'id', 'endpoint', 'p256dh', 'auth', 
+            'user_agent', 'platform', 'timezone', 
+            'preferred_time', 'enabled'
+        )
+        read_only_fields = ('id',)

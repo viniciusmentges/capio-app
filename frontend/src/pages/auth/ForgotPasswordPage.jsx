@@ -7,7 +7,13 @@ export default function ForgotPasswordPage() {
   const supportUrl = import.meta.env.VITE_SUPPORT_CONTACT_URL;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col justify-center px-6 pb-24">
+    <div 
+      className="min-h-[100dvh] bg-background flex flex-col justify-center px-6 overflow-y-auto"
+      style={{
+        paddingTop: 'calc(2rem + env(safe-area-inset-top, 24px))',
+        paddingBottom: 'calc(2rem + env(safe-area-inset-bottom, 24px))',
+      }}
+    >
       <div className="max-w-md mx-auto w-full space-y-16">
         
         <ProgressiveReveal delay={300}>

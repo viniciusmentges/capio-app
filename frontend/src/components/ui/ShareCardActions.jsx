@@ -19,6 +19,7 @@ export default function ShareCardActions({ cardRef, shareText, fileName = "capio
 
   const handleDownload = async () => {
     if (!cardRef.current || isExporting) return;
+    localStorage.setItem('capio_engaged_share', 'true');
     try {
       setIsExporting(true);
       const dataUrl = await htmlToImage.toPng(cardRef.current, getExportOptions());
@@ -35,6 +36,7 @@ export default function ShareCardActions({ cardRef, shareText, fileName = "capio
 
   const handleShare = async () => {
     if (!cardRef.current || isExporting) return;
+    localStorage.setItem('capio_engaged_share', 'true');
     try {
       setIsExporting(true);
       const dataUrl = await htmlToImage.toPng(cardRef.current, getExportOptions());
@@ -61,6 +63,7 @@ export default function ShareCardActions({ cardRef, shareText, fileName = "capio
   };
 
   const handleCopyText = async () => {
+    localStorage.setItem('capio_engaged_share', 'true');
     try {
       await navigator.clipboard.writeText(shareText);
       setIsCopied(true);

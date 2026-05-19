@@ -17,7 +17,7 @@ export default function SupportPage() {
   };
 
   return (
-    <div className="min-h-screen pb-32">
+    <div className="min-h-[100dvh] pb-32">
       <ScrollToTop />
 
       <div className="max-w-2xl mx-auto pt-24 px-6">

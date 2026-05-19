@@ -21,6 +21,23 @@
     letter-spacing: -0.01em;
     min-height: 100dvh;
     overflow-x: hidden;
+    overscroll-behavior-y: contain;
+  }
+  
+  /* Barras de rolagem discretas de alta costura */
+  ::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(42, 41, 38, 0.06);
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(42, 41, 38, 0.12);
   }
   
   ::selection {
@@ -75,5 +92,31 @@
 
   .text-prayer {
     @apply font-serif italic text-foreground/40 text-center leading-relaxed;
+  }
+
+  /* Utilitários Premium de Safe Area & PWA Standalone */
+  .safe-top {
+    padding-top: env(safe-area-inset-top, 24px);
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 24px);
+  }
+
+  .safe-x {
+    padding-left: env(safe-area-inset-left, 16px);
+    padding-right: env(safe-area-inset-right, 16px);
+  }
+
+  .mobile-shell {
+    width: 100%;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .standalone-shell {
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
   }
 }

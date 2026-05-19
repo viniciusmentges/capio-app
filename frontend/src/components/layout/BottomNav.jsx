@@ -2,9 +2,11 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useScrollDirection } from '../../hooks/useScrollDirection';
 import { Home, BookOpen, Feather } from 'lucide-react';
+import { useStandaloneMode } from '../../hooks/useStandaloneMode';
 
 export default function BottomNav() {
   const scrollDir = useScrollDirection();
+  const isStandalone = useStandaloneMode();
   
   // O BottomNav se esconde no scroll para baixo, dando mais espaço para a leitura (imersão)
   const isHidden = scrollDir === 'down';
@@ -15,7 +17,12 @@ export default function BottomNav() {
         isHidden ? 'translate-y-full' : 'translate-y-0'
       }`}
     >
-      <div className="mx-auto max-w-xl bg-background border-t border-foreground/[0.03] pb-[env(safe-area-inset-bottom)]">
+      <div 
+        className="mx-auto max-w-xl bg-background border-t border-foreground/[0.03]"
+        style={{
+          paddingBottom: 'calc(0.5rem + env(safe-area-inset-bottom, 12px))',
+        }}
+      >
         <nav className="flex justify-around items-center px-4 py-3">
           
           <NavLink 

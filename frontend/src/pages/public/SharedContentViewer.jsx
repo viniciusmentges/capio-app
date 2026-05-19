@@ -74,7 +74,7 @@ export default function SharedContentViewer() {
   };
 
   return (
-    <div className="min-h-screen pb-32">
+    <div className="min-h-[100dvh] pb-32">
       <div className="max-w-2xl mx-auto pt-12">
         {renderContent()}
         

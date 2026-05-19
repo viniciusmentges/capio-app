@@ -28,3 +28,41 @@ class UserFeedback(models.Model):
 
     def __str__(self):
         return f"Feedback {self.response_type} - {self.content_ref_id} by {self.user.username}"
+
+
+class PushSubscription(models.Model):
+    PREFERRED_TIME_CHOICES = [
+        ('morning', 'Manhã'),
+        ('evening', 'Noite'),
+        ('any', 'Qualquer momento'),
+    ]
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.CASCADE, 
+        related_name='push_subscriptions', 
+        null=True, 
+        blank=True
+    )
+    endpoint = models.URLField(max_length=500, unique=True)
+    p256dh = models.CharField(max_length=255)
+    auth = models.CharField(max_length=255)
+    
+    # Metadados e Preferências Contemplativas
+    user_agent = models.TextField(blank=True, null=True)
+    platform = models.CharField(max_length=100, blank=True, null=True)
+    timezone = models.CharField(max_length=100, default='America/Sao_Paulo')
+    preferred_time = models.CharField(
+        max_length=20, 
+        choices=PREFERRED_TIME_CHOICES, 
+        default='morning'
+    )
+    enabled = models.BooleanField(default=True)
+    last_sent_at = models.DateTimeField(null=True, blank=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        owner = self.user.username if self.user else "Anonymous"
+        return f"Push Subscription ({owner}) - {self.endpoint[:30]}..."

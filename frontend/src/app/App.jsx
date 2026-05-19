@@ -3,7 +3,7 @@ import { RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { router } from './router';
 import { AuthProvider } from '../context/AuthContext';
-import SplashScreen from '../components/layout/SplashScreen';
+import EditorialSplash from '../components/pwa/EditorialSplash';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,10 +17,20 @@ const queryClient = new QueryClient({
 function App() {
   const [showSplash, setShowSplash] = useState(true);
 
+  React.useEffect(() => {
+    // Incrementar contador de sessões reais na montagem (PWA)
+    if (!sessionStorage.getItem('capio_session_active')) {
+      sessionStorage.setItem('capio_session_active', 'true');
+      const count = parseInt(localStorage.getItem('capio_session_count') || '0', 10);
+      localStorage.setItem('capio_session_count', (count + 1).toString());
+      console.log(`Nova sessão CAPIO iniciada. Total de sessões acumuladas: ${count + 1}`);
+    }
+  }, []);
+
   if (showSplash) {
     return (
       <QueryClientProvider client={queryClient}>
-        <SplashScreen onFinish={() => setShowSplash(false)} />
+        <EditorialSplash onFinish={() => setShowSplash(false)} />
       </QueryClientProvider>
     );
   }
