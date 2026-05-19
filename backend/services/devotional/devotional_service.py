@@ -68,151 +68,217 @@ class DevotionalService:
         if not emotion:
             raise NotFoundException(f"Emotion with slug '{emotion_slug}' not found.")
 
-        # 1. Tentar buscar da Biblioteca (Excluindo lidos pelo usuário)
-        user_history = UserDevotional.objects.filter(user=user).values_list('content_id', flat=True)
+        # --- CAMADA 1: SISTEMA DE ROTAÇÃO E SLIDING WINDOW ---
         
-        # Seleção por IDs leve: Executa uma query leve que traz apenas IDs cobertos por index.
-        # Evita transações de alto OFFSET que exigem varredura sequencial profunda.
-        available_ids = list(DevotionalContent.objects.filter(
-            emotion=emotion, 
-            is_active=True
-        ).exclude(id__in=user_history).values_list('id', flat=True))
-
-        if available_ids:
-            chosen_id = random.choice(available_ids)
-            content = DevotionalContent.objects.get(id=chosen_id)
-            
-            with transaction.atomic():
-                UserDevotional.objects.create(user=user, content=content)
-                GeneratedResponse.objects.create(
-                    response_type='DEVOTIONAL',
-                    user=user,
-                    content_ref_id=content.id,
-                    filter_status='clean',
-                    metadata={"cached": True, "source": "foundation_library", "is_new_for_user": True}
-                )
-            return {
-                "title": content.title,
-                "scripture_reference": content.scripture_reference,
-                "scripture_text": content.scripture_text,
-                "reflection": content.reflection,
-                "practical_application": content.practical_application,
-                "guiding_question": content.guiding_question,
-                "prayer": content.prayer,
-                "ai_generated": content.ai_generated,
-                "cached": True
-            }
-
-        # 1.1 Rotação da Biblioteca (Se o usuário já viu tudo, mas a biblioteca não está vazia)
-        any_available_ids = list(DevotionalContent.objects.filter(
-            emotion=emotion, 
+        # Obter todos os IDs ativos do pool para esta emoção
+        total_pool_ids = list(DevotionalContent.objects.filter(
+            emotion=emotion,
             is_active=True
         ).values_list('id', flat=True))
-        
-        if any_available_ids:
-            chosen_id = random.choice(any_available_ids)
-            content = DevotionalContent.objects.get(id=chosen_id)
+        total_pool_count = len(total_pool_ids)
+
+        chosen_content = None
+        source_metadata = {}
+
+        if total_pool_count > 0:
+            # 1. Calcular a janela de exclusão dinâmica K
+            # Regra: K = max(1, min(5, total_pool_count - 3))
+            k_window = max(1, min(5, total_pool_count - 3))
             
-            with transaction.atomic():
-                GeneratedResponse.objects.create(
-                    response_type='DEVOTIONAL',
+            # Buscar os IDs dos últimos K devocionais lidos pelo usuário para esta emoção
+            recently_seen_ids = list(UserDevotional.objects.filter(
+                user=user,
+                content__emotion=emotion
+            ).order_by('-accessed_at')[:k_window].values_list('content_id', flat=True))
+            
+            # Pool ativo disponível (excluindo os recentemente vistos)
+            active_pool_ids = [cid for cid in total_pool_ids if cid not in recently_seen_ids]
+            
+            # Se por algum motivo o pool ativo ficou vazio (ex: K muito agressivo ou alterações no banco),
+            # relaxamos a janela progressivamente excluindo apenas o mais recente.
+            if not active_pool_ids:
+                recently_seen_ids = list(UserDevotional.objects.filter(
                     user=user,
-                    content_ref_id=content.id,
-                    filter_status='clean',
-                    metadata={"cached": True, "source": "library_rotation", "is_new_for_user": False}
+                    content__emotion=emotion
+                ).order_by('-accessed_at')[:1].values_list('content_id', flat=True))
+                active_pool_ids = [cid for cid in total_pool_ids if cid not in recently_seen_ids]
+                
+            # Se ainda assim estiver vazio, usamos todos do total_pool
+            if not active_pool_ids:
+                active_pool_ids = total_pool_ids
+
+            # Buscar histórico completo do usuário para identificar conteúdos inéditos (nunca vistos)
+            all_seen_ids = set(UserDevotional.objects.filter(
+                user=user,
+                content__emotion=emotion
+            ).values_list('content_id', flat=True))
+            
+            # 2. Priorização: primeiro inéditos dentro do pool ativo
+            never_seen_pool = [cid for cid in active_pool_ids if cid not in all_seen_ids]
+            
+            if never_seen_pool:
+                chosen_id = random.choice(never_seen_pool)
+                chosen_content = DevotionalContent.objects.get(id=chosen_id)
+                source_metadata = {"cached": True, "source": "foundation_library_unseen", "is_new_for_user": True}
+            else:
+                # Se não há inéditos disponíveis fora da janela recente, usamos os vistos antigos
+                # que estejam fora da janela de recentes (active_pool_ids)
+                if active_pool_ids:
+                    chosen_id = random.choice(active_pool_ids)
+                    chosen_content = DevotionalContent.objects.get(id=chosen_id)
+                    source_metadata = {"cached": True, "source": "library_rotation_seen", "is_new_for_user": False}
+
+        # --- CAMADA 2: GERAÇÃO DINÂMICA CONSERVADORA POR CLAUDE ---
+        
+        # Condições para acionar geração dinâmica:
+        # a) Não encontramos conteúdo no pool OU
+        # b) O usuário esgotou todo o pool (never_seen_pool vazio) E o pool total é pequeno (< 12) E respeitou limite diário
+        # Para evitar chamadas de IA descontroladas, a geração dinâmica está configurada com limites estritos.
+        should_generate_dynamically = False
+        
+        if not chosen_content:
+            should_generate_dynamically = True
+        elif total_pool_count < 12:
+            # Verificar se já viu tudo pelo menos uma vez
+            all_seen_ids = set(UserDevotional.objects.filter(
+                user=user,
+                content__emotion=emotion
+            ).values_list('content_id', flat=True))
+            has_seen_all = all(cid in all_seen_ids for cid in total_pool_ids)
+            
+            if has_seen_all:
+                # Verificar limite diário de geração dinâmica para este usuário e esta emoção (máx 1 por dia)
+                from django.utils import timezone
+                from datetime import timedelta
+                today_start = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
+                daily_generation_count = DevotionalContent.objects.filter(
+                    emotion=emotion,
+                    ai_generated=True,
+                    created_at__gte=today_start
+                ).count()
+                
+                # Só gera se houver menos de 2 gerações globais hoje para esta emoção (limite conservador)
+                if daily_generation_count < 2:
+                    should_generate_dynamically = True
+
+        if should_generate_dynamically:
+            # Se as condições forem atendidas, executamos a Expansão Orgânica.
+            slug_key = emotion.slug.replace("-", "_")
+            scripture_pool = EMOTION_SCRIPTURES.get(slug_key) or EMOTION_SCRIPTURES["ansioso"]
+            
+            # Buscar passagens associadas aos últimos 3 devocionais lidos pelo usuário para evitar repetir a passagem bíblica
+            recent_scriptures = list(UserDevotional.objects.filter(
+                user=user,
+                content__emotion=emotion
+            ).order_by('-accessed_at')[:3].values_list('content__scripture_reference', flat=True))
+            
+            # Priorizar passagens não lidas recentemente no pool
+            fresh_scriptures = [s for s in scripture_pool if s["reference_display"] not in recent_scriptures]
+            scripture_seed = random.choice(fresh_scriptures) if fresh_scriptures else random.choice(scripture_pool)
+
+            with transaction.atomic():
+                bible_passage, _ = BiblePassage.objects.get_or_create(
+                    canonical_id=scripture_seed["canonical_id"],
+                    defaults={
+                        "book_name": scripture_seed["book_name"],
+                        "chapter": scripture_seed["chapter"],
+                        "verses": scripture_seed["verses"],
+                        "text_original": scripture_seed["text_original"],
+                        "translation": "NVI",
+                        "language": "pt"
+                    }
                 )
-            return {
-                "title": content.title,
-                "scripture_reference": content.scripture_reference,
-                "scripture_text": content.scripture_text,
-                "reflection": content.reflection,
-                "practical_application": content.practical_application,
-                "guiding_question": content.guiding_question,
-                "prayer": content.prayer,
-                "ai_generated": content.ai_generated,
-                "cached": True
-            }
 
-        # 2. Se a biblioteca estiver REALMENTE vazia, executamos a Expansão Orgânica.
-        slug_key = emotion.slug.replace("-", "_")
-        scripture_pool = EMOTION_SCRIPTURES.get(slug_key) or EMOTION_SCRIPTURES["ansioso"]
-        scripture_seed = random.choice(scripture_pool)
+            ai_service = get_ai_service()
+            input_hash = hashlib.sha256(f"{emotion.slug}:{bible_passage.canonical_id}".encode()).hexdigest()
+
+            # Evitar concorrência agressiva: verificar se já existe uma requisição de IA idêntica recente com sucesso
+            existing_response = GeneratedResponse.objects.filter(
+                response_type='DEVOTIONAL',
+                ai_request__input_hash=input_hash,
+                filter_status='clean'
+            ).order_by('-created_at').first()
+
+            if existing_response and existing_response.content_ref_id:
+                content = DevotionalContent.objects.get(id=existing_response.content_ref_id)
+                chosen_content = content
+                source_metadata = {"cached": True, "source": "organic_expansion_cached", "is_new_for_user": False}
+                logger.info(f"Reaproveitando devocional gerado por IA para {emotion.slug} de requisição concorrente recente.")
+            else:
+                ai_request = AIRequest.objects.create(
+                    request_type='devotional',
+                    input_hash=input_hash,
+                    input_data={"emotion_name": emotion.name, "canonical_id": bible_passage.canonical_id},
+                    status='pending'
+                )
+
+                try:
+                    logger.info(f"Iniciando geração de devocional dinâmico por IA (Claude) para a emoção {emotion.slug}")
+                    ai_response = ai_service.devotional_for_emotion(
+                        emotion_name=emotion.name,
+                        reference_display=scripture_seed["reference_display"],
+                        scripture_text=bible_passage.text_original
+                    )
+                    
+                    ai_request.status = 'success'
+                    ai_request.output_data = ai_response
+                    ai_request.save()
+
+                    with transaction.atomic():
+                        content = DevotionalContent.objects.create(
+                            emotion=emotion,
+                            passage=bible_passage,
+                            title=ai_response.get("title", f"O repouso em {emotion.name}"),
+                            scripture_reference=scripture_seed["reference_display"],
+                            scripture_text=bible_passage.text_original,
+                            reflection=ai_response.get("reflection", ""),
+                            practical_application=ai_response.get("practical_application", ""),
+                            guiding_question=ai_response.get("guiding_question", ""),
+                            prayer=ai_response.get("prayer", ""),
+                            is_active=True,
+                            ai_generated=ai_response.get("ai_generated", True)
+                        )
+                        chosen_content = content
+                        source_metadata = {"cached": False, "source": "editorial_motor", "organic_growth": True}
+                except Exception as e:
+                    logger.error("Falha ao chamar a API de IA no fluxo de devocional: %s", e)
+                    ai_request.status = 'failed'
+                    ai_request.output_data = {"error": str(e)}
+                    ai_request.save()
+                    
+                    # Se falhar a IA, fazemos o fallback de emergência escolhendo um do total_pool
+                    if total_pool_ids:
+                        chosen_id = random.choice(total_pool_ids)
+                        chosen_content = DevotionalContent.objects.get(id=chosen_id)
+                        source_metadata = {"cached": True, "source": "fallback_emergency", "is_new_for_user": False}
+                    else:
+                        raise e
+
+        # --- REGISTRO E RETORNO OBRIGATÓRIO EM TODOS OS FLUXOS ---
+        if not chosen_content:
+            raise NotFoundException("Nenhum devocional disponível para esta emoção.")
 
         with transaction.atomic():
-            bible_passage, _ = BiblePassage.objects.get_or_create(
-                canonical_id=scripture_seed["canonical_id"],
-                defaults={
-                    "book_name": scripture_seed["book_name"],
-                    "chapter": scripture_seed["chapter"],
-                    "verses": scripture_seed["verses"],
-                    "text_original": scripture_seed["text_original"],
-                    "translation": "NVI",
-                    "language": "pt"
-                }
-            )
-
-        ai_service = get_ai_service()
-        input_hash = hashlib.sha256(f"{emotion.slug}:{bible_passage.canonical_id}".encode()).hexdigest()
-
-        ai_request = AIRequest.objects.create(
-            request_type='devotional',
-            input_hash=input_hash,
-            input_data={"emotion_name": emotion.name, "canonical_id": bible_passage.canonical_id},
-            status='pending'
-        )
-
-        try:
-            ai_response = ai_service.devotional_for_emotion(
-                emotion_name=emotion.name,
-                reference_display=scripture_seed["reference_display"],
-                scripture_text=bible_passage.text_original
-            )
-        except Exception as e:
-            logger.error("Falha ao chamar a API de IA no fluxo de devocional: %s", e)
-            ai_request.status = 'failed'
-            ai_request.output_data = {"error": str(e)}
-            ai_request.save()
-            raise e
-
-        ai_request.status = 'success'
-        ai_request.output_data = ai_response
-        ai_request.save()
-
-        # Agrupamento de escritas críticas
-        with transaction.atomic():
-            content = DevotionalContent.objects.create(
-                emotion=emotion,
-                passage=bible_passage,
-                title=ai_response.get("title", f"O repouso em {emotion.name}"),
-                scripture_reference=scripture_seed["reference_display"],
-                scripture_text=bible_passage.text_original,
-                reflection=ai_response.get("reflection", ""),
-                practical_application=ai_response.get("practical_application", ""),
-                guiding_question=ai_response.get("guiding_question", ""),
-                prayer=ai_response.get("prayer", ""),
-                is_active=True,
-                ai_generated=ai_response.get("ai_generated", True)
-            )
-
-            UserDevotional.objects.create(user=user, content=content)
-
+            # Registrar leitura no histórico do usuário
+            UserDevotional.objects.create(user=user, content=chosen_content)
+            
+            # Registrar a resposta gerada para fins de telemetria e auditoria
             GeneratedResponse.objects.create(
                 response_type='DEVOTIONAL',
                 user=user,
-                ai_request=ai_request,
-                content_ref_id=content.id,
+                content_ref_id=chosen_content.id,
                 filter_status='clean',
-                metadata={"cached": False, "source": "editorial_motor", "organic_growth": True}
+                metadata=source_metadata
             )
 
         return {
-            "title": content.title,
-            "scripture_reference": content.scripture_reference,
-            "scripture_text": content.scripture_text,
-            "reflection": content.reflection,
-            "practical_application": content.practical_application,
-            "guiding_question": content.guiding_question,
-            "prayer": content.prayer,
-            "ai_generated": content.ai_generated,
-            "cached": False
+            "title": chosen_content.title,
+            "scripture_reference": chosen_content.scripture_reference,
+            "scripture_text": chosen_content.scripture_text,
+            "reflection": chosen_content.reflection,
+            "practical_application": chosen_content.practical_application,
+            "guiding_question": chosen_content.guiding_question,
+            "prayer": chosen_content.prayer,
+            "ai_generated": chosen_content.ai_generated,
+            "cached": source_metadata.get("cached", True)
         }
