@@ -15,7 +15,31 @@ export default function ReflectionCard({ data }) {
   const scriptureText = data.scripture_text;
   const prayer = data.closing_prayer;
 
-  const shareQuote = data.share_quote || data.final_fragment || data.highlight || "Às vezes, Deus acalma primeiro o coração antes de mudar o caminho.";
+  // Logs temporários para auditoria de campos recebidos da API
+  console.log("[CAPIO AUDIT] Dados de Compartilhamento recebidos:", {
+    id: data.id,
+    share_quote: data.share_quote,
+    final_fragment: data.final_fragment,
+    highlight: data.highlight
+  });
+
+  // Extração de quote dinâmica baseada no próprio corpo da reflexão se ausente do backend
+  const getDynamicFallback = (body) => {
+    if (!body) return "O silêncio que nos conduz à Palavra.";
+    const paragraphs = body.split('\n').map(p => p.trim()).filter(p => p.length > 0);
+    if (paragraphs.length === 0) return "O silêncio que nos conduz à Palavra.";
+    const firstParagraph = paragraphs[0];
+    const sentences = firstParagraph.split(/[.!?]+/g).map(s => s.trim()).filter(s => s.length > 25 && s.length < 120);
+    if (sentences.length > 0) {
+      return sentences[0] + ".";
+    }
+    if (firstParagraph.length <= 130) {
+      return firstParagraph;
+    }
+    return firstParagraph.substring(0, 127) + "...";
+  };
+
+  const shareQuote = data.share_quote || data.final_fragment || data.highlight || getDynamicFallback(data.reflection_body);
 
   // Formatação para compartilhamento
   const publicUrl = `${window.location.origin}/share/reflection/${data.id}`;

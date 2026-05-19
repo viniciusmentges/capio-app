@@ -63,6 +63,7 @@ class ReflectionService:
                 "reflection_body": reflection.reflection_body,
                 "guiding_question": reflection.guiding_question,
                 "closing_prayer": reflection.closing_prayer,
+                "share_quote": reflection.share_quote,
                 "ai_generated": reflection.ai_generated,
             },
             "user_response": user_response_text
@@ -135,6 +136,7 @@ class ReflectionService:
                 reflection_body=ai_response.get("reflection_body", ""),
                 guiding_question=ai_response.get("guiding_question", ""),
                 closing_prayer=ai_response.get("closing_prayer", ""),
+                share_quote=ai_response.get("share_quote", ""),
                 ai_generated=ai_response.get("ai_generated", True)
             )
 

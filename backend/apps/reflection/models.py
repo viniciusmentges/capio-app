@@ -10,6 +10,7 @@ class DailyReflection(models.Model):
     reflection_body = models.TextField()
     guiding_question = models.TextField()
     closing_prayer = models.TextField()
+    share_quote = models.TextField(blank=True, default="")
     ai_generated = models.BooleanField(default=False)
 
     def __str__(self):

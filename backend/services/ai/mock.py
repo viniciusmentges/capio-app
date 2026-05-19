@@ -84,5 +84,6 @@ class MockAIService(AIService):
             "reflection_body": "O dia começa com a Palavra que cria e sustenta a vida.",
             "guiding_question": "Como o Verbo quer habitar em seu silêncio hoje?",
             "closing_prayer": "Fica conosco, Senhor.",
+            "share_quote": "A Palavra no princípio cria o silêncio que sustenta a nossa alma.",
             "ai_generated": False
         }

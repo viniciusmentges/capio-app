@@ -141,11 +141,12 @@ class AnthropicAIService(AIService):
             "- 'scripture_text': O texto da Palavra.\n"
             "- 'reflection_body': Meditação calma (máx 1000 caracteres).\n"
             "- 'guiding_question': Pergunta para carregar no coração.\n"
-            "- 'closing_prayer': Oração de encerramento."
+            "- 'closing_prayer': Oração de encerramento.\n"
+            "- 'share_quote': Uma frase marcante, poética e curtíssima (máx 15 palavras) extraída ou inspirada na própria reflexão para ser compartilhada em imagem (não use pontos de exclamação)."
         )
         return self._call_claude(
             prompt, system_prompt, 0.6,
             self.mock_fallback.generate_reflection,
             {"date": date},
-            expected_keys=['title', 'scripture_reference', 'scripture_text', 'reflection_body', 'guiding_question', 'closing_prayer']
+            expected_keys=['title', 'scripture_reference', 'scripture_text', 'reflection_body', 'guiding_question', 'closing_prayer', 'share_quote']
         )
