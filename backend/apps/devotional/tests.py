@@ -28,7 +28,9 @@ class DevotionalTests(APITestCase):
             scripture_text="O Senhor é o meu pastor",
             reflection="Reflexão",
             prayer="Oração",
-            is_active=True
+            share_quote="O Senhor é pastor.",
+            is_active=True,
+            reviewed_by_human=True
         )
         url = '/api/devotional/by-emotion/'
         data = {'emotion_slug': 'ansioso'}
@@ -53,7 +55,9 @@ class DevotionalTests(APITestCase):
                 scripture_text=f"Texto {i+1}",
                 reflection=f"Reflexão {i+1}",
                 prayer=f"Oração {i+1}",
-                is_active=True
+                share_quote=f"Frase {i+1}",
+                is_active=True,
+                reviewed_by_human=True
             )
             devotionals.append(d)
 
@@ -94,4 +98,46 @@ class DevotionalTests(APITestCase):
             current_title = response.data['title']
             self.assertNotEqual(current_title, last_title, f"Houve repetição idêntica consecutiva no passo {step}!")
             last_title = current_title
+
+    def test_reviewed_by_human_filter(self):
+        # 1. Criar um devocional com reviewed_by_human=False
+        unreviewed = DevotionalContent.objects.create(
+            emotion=self.emotion,
+            title="Devocional Não Revisado",
+            scripture_reference="Ref",
+            scripture_text="Texto",
+            reflection="Reflexão",
+            prayer="Oração",
+            share_quote="Frase",
+            is_active=True,
+            reviewed_by_human=False
+        )
+
+        url = '/api/devotional/by-emotion/'
+        data = {'emotion_slug': 'ansioso'}
+        
+        # Como o único devocional não está revisado, o endpoint de rotação deve disparar IA de background (Mock)
+        # e NÃO retornar este devocional não revisado.
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertNotEqual(response.data['title'], "Devocional Não Revisado")
+
+    def test_editorial_generate_permissions(self):
+        url = '/api/devotional/editorial/generate/'
+        data = {'emotion_slug': 'ansioso', 'tone_or_direction': 'contemplativo'}
+
+        # 1. Usuário comum logado (deve retornar 403 Forbidden)
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        # 2. Usuário staff logado (deve retornar 200 OK)
+        self.user.is_staff = True
+        self.user.save()
+        
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('title', response.data)
+        self.assertIn('share_quote', response.data)
+        self.assertIn('emotional_theme', response.data)
+
 

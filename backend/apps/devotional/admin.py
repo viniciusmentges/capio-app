@@ -8,9 +8,44 @@ class EmotionAdmin(admin.ModelAdmin):
 
 @admin.register(DevotionalContent)
 class DevotionalContentAdmin(admin.ModelAdmin):
-    list_display = ('title', 'emotion', 'is_active', 'ai_generated', 'created_at')
-    list_filter = ('emotion', 'is_active', 'ai_generated')
-    search_fields = ('title', 'scripture_reference')
+    list_display = ('title', 'emotion', 'emotional_theme', 'reviewed_by_human', 'is_active', 'ai_generated', 'created_at')
+    list_filter = ('emotion', 'reviewed_by_human', 'is_active', 'ai_generated')
+    search_fields = ('title', 'scripture_reference', 'reflection', 'share_quote')
+    ordering = ('-created_at',)
+    
+    # Campos apenas de leitura
+    readonly_fields = ('created_at',)
+
+    # Organização visual em grupos (Fieldsets)
+    fieldsets = (
+        ('Identificação e Metadados', {
+            'fields': ('emotion', 'emotional_theme', 'title', 'created_at'),
+            'description': 'Configure a classificação emocional e metadados fundamentais.'
+        }),
+        ('Fundação Bíblica (Scripture-First)', {
+            'fields': ('passage', 'scripture_reference', 'scripture_text'),
+            'description': 'O alicerce bíblico contendo a referência normalizada, passagem e texto sagrado.'
+        }),
+        ('Roteiro Contemplativo', {
+            'fields': ('reflection', 'share_quote'),
+            'description': 'A reflexão meditativa profunda e a sentença contemplativa compartilhável da CAPIO.'
+        }),
+        ('Aplicação Prática e Recolhimento', {
+            'fields': ('practical_application', 'guiding_question', 'prayer'),
+            'description': 'Eco na vida diária, a pergunta orientadora íntima e a oração de repouso final.'
+        }),
+        ('Status de Curadoria e Publicação', {
+            'fields': ('ai_generated', 'reviewed_by_human', 'is_active'),
+            'description': 'Marque "Revisado por Humano" e "Ativo" para validar e liberar a leitura na biblioteca pública.'
+        }),
+    )
+
+    # Injeção de Media para o botão de geração inteligente
+    class Media:
+        js = ('admin/js/editorial_ia.js',)
+        css = {
+            'all': ('admin/css/editorial_ia.css',)
+        }
 
 @admin.register(UserDevotional)
 class UserDevotionalAdmin(admin.ModelAdmin):

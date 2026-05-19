@@ -155,3 +155,38 @@ class AnthropicAIService(AIService):
             {"date": date},
             expected_keys=['title', 'scripture_reference', 'scripture_text', 'reflection_body', 'guiding_question', 'closing_prayer', 'share_quote']
         )
+
+    def editorial_generate_devotional(self, emotion_name: str, tone_or_direction: str = None) -> Dict[str, Any]:
+        system_prompt = self._get_base_constitution() + (
+            "\n\nCOMPOSER.EDITORIAL: Você é o MOTOR EDITORIAL DE ASSISTÊNCIA DA CAPIO.\n"
+            "Sua tarefa é compor um devocional contemplativo de altíssimo valor literário e pastoral baseado em uma emoção específica e uma direção espiritual."
+        )
+        
+        prompt = (
+            f"Escolha e componha um devocional contemplativo para a Emoção: '{emotion_name}'.\n"
+        )
+        if tone_or_direction:
+            prompt += f"Direção Espiritual / Tom Desejado pelo Editor: '{tone_or_direction}'.\n"
+            
+        prompt += (
+            "\nRetorne UM objeto JSON com os seguintes campos (todos em português):\n"
+            "- 'title': Um título breve, sóbrio e contemplativo.\n"
+            "- 'scripture_reference': A referência bíblica de uma passagem profunda e consoladora que você mesmo selecionou especificamente para este contexto (ex: 'Salmos 23:1-3').\n"
+            "- 'scripture_text': O texto exato da passagem bíblica selecionada.\n"
+            "- 'reflection': Uma reflexão pastoral densa, consoladora e silenciosa (máx 1000 caracteres). Deve parecer um trecho de um clássico espiritual tradicional ou o diário íntimo de um monge. Evite clichês modernos, tons triumfalistas ou performáticos.\n"
+            "- 'prayer': Uma oração curta de entrega e recolhimento silencioso (sem exclamações).\n"
+            "- 'share_quote': Um fragmento contemplativo curado de altíssimo valor editorial (máx 15 palavras) extraído ou inspirado na reflexão. Deve evocar interioridade, espera e silêncio. Proibido imperativos, jargões ou exclamações.\n"
+            "- 'emotional_theme': Um subtema emocional curto que sintetiza a abordagem (ex: 'A quietude na espera').\n\n"
+            "DIRETRIZES ESTRITAS DE CONSTITUIÇÃO CROMÁTICA E EDITORIAL:\n"
+            "1. PROIBIÇÃO DE AUTOAJUDA / COACHING / TRIUNFALISMO: Banido imperativos (não use 'lembre-se', 'busque', 'confie', 'mude', 'não desista'). Banido jargões de prosperidade ou vitória ('vitória', 'bênção', 'prosperidade', 'Deus vai te dar').\n"
+            "2. GRAMÁTICA DO SILÊNCIO: Proibido absolutamente o uso de pontos de exclamação (!). Use apenas pontos e vírgulas.\n"
+            "3. SOBRIEDADE E PRESENÇA: O tom deve ser sóbrio, íntimo, acolhedor e com economia de palavras. Deixe espaço para o mistério e a espera silenciosa.\n"
+            "4. FORMATO: Responda APENAS em JSON válido, sem texto markdown ou explicações externas."
+        )
+        
+        return self._call_claude(
+            prompt, system_prompt, 0.4,
+            self.mock_fallback.editorial_generate_devotional,
+            {"emotion_name": emotion_name, "tone_or_direction": tone_or_direction},
+            expected_keys=['title', 'scripture_reference', 'scripture_text', 'reflection', 'prayer', 'share_quote', 'emotional_theme']
+        )

@@ -73,7 +73,8 @@ class DevotionalService:
         # Obter todos os IDs ativos do pool para esta emoção
         total_pool_ids = list(DevotionalContent.objects.filter(
             emotion=emotion,
-            is_active=True
+            is_active=True,
+            reviewed_by_human=True
         ).values_list('id', flat=True))
         total_pool_count = len(total_pool_ids)
 
@@ -235,6 +236,7 @@ class DevotionalService:
                             practical_application=ai_response.get("practical_application", ""),
                             guiding_question=ai_response.get("guiding_question", ""),
                             prayer=ai_response.get("prayer", ""),
+                            reviewed_by_human=True,
                             is_active=True,
                             ai_generated=ai_response.get("ai_generated", True)
                         )

@@ -16,3 +16,8 @@ class AIService(ABC):
     def generate_reflection(self, date: str) -> Dict[str, Any]:
         """Returns: {'title': str, 'scripture_reference': str, 'scripture_text': str, 'reflection_body': str, 'guiding_question': str, 'closing_prayer': str, 'ai_generated': bool}"""
         pass
+
+    @abstractmethod
+    def editorial_generate_devotional(self, emotion_name: str, tone_or_direction: str = None) -> Dict[str, Any]:
+        """Returns: {'title': str, 'scripture_reference': str, 'scripture_text': str, 'reflection': str, 'prayer': str, 'share_quote': str, 'emotional_theme': str, 'ai_generated': bool}"""
+        pass

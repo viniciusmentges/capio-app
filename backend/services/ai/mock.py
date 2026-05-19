@@ -87,3 +87,16 @@ class MockAIService(AIService):
             "share_quote": "A Palavra no princípio cria o silêncio que sustenta a nossa alma.",
             "ai_generated": False
         }
+
+    def editorial_generate_devotional(self, emotion_name: str, tone_or_direction: str = None) -> Dict[str, Any]:
+        logger.warning(f"[CAPIO AI] Mock acionado no fluxo editorial de devocional para a emoção {emotion_name} e tom/direção {tone_or_direction}.")
+        return {
+            "title": f"O repouso silencioso em {emotion_name}",
+            "scripture_reference": "Salmos 23:1-3",
+            "scripture_text": "O Senhor é o meu pastor; de nada terei falta. Em verdes pastagens me faz repousar e me conduz a águas tranquilas; restaura-me o vigor. Guia-me nas veredas da justiça por amor do seu nome.",
+            "reflection": "No silêncio da alma cansada, a presença do Pastor se faz sentir sem ruído. Não há demandas urgentes a cumprir, nem expectativas triunfalistas a satisfazer. O convite é simplesmente deitar-se sobre as pastagens da graça e permitir que o vigor cansado seja restaurado com lentidão e mansidão.",
+            "prayer": "Senhor, aqui deponho as minhas pressas e as minhas dores. Ensina-me a descansar sob a Vossa sombra protetora.",
+            "share_quote": "O convite é deitar-se sobre as pastagens da graça e permitir o descanso.",
+            "emotional_theme": f"Paz na {emotion_name}" if not tone_or_direction else tone_or_direction,
+            "ai_generated": False
+        }
