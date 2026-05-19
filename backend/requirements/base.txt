@@ -8,4 +8,5 @@ anthropic
 gunicorn
 whitenoise
 dj-database-url
-
+celery
+redis

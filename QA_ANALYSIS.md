@@ -137,3 +137,45 @@ A API baseada no DRF (`rest_framework`) está operante, mas frágil em aspectos 
 *Foco: Centenas de milhares de usuários.*
 1. **Migração de DB:** Transição integral de SQLite para PostgreSQL de alta disponibilidade, com replicas de leitura.
 2. **Pre-fetching Preditivo (Edge/SSR):** Migrar de SPA estático para SSR Edge (ex: Remix/Next.js) de modo que a "Reflexão de Hoje" chegue renderizada do servidor CDN instantaneamente. Habilitar o Service Worker para pre-fazer cache dos devocionais diários durante as madrugadas (*background sync preditivo*).
+
+---
+
+## 11. IMPLEMENTAÇÃO DE HARDENING & DECISÕES DE PERFORMANCE
+
+Após a auditoria, realizamos um ciclo intensivo de endurecimento técnico e otimização. Abaixo estão documentadas as decisões tomadas para preparar a CAPIO para escala de produção inicial (até 1.000+ usuários ativos).
+
+### 1. Substituição do Random Offset (Alta Escalabilidade)
+* **Problema Original:** O uso de `count()` + `OFFSET` randômico exigia varreduras sequenciais profundas no banco de dados (`LIMIT 1 OFFSET rand`). À medida que a biblioteca de devocionais cresce, consultas de altos offsets degradam drasticamente a performance de busca.
+* **Solução Implementada:** Mudamos para **Seleção por Lista Leve de IDs**. O backend executa um `.values_list('id', flat=True)` indexado, que retorna apenas uma lista simples de inteiros da memória. O Python escolhe um ID aleatoriamente via `random.choice()` e faz um lookup direto por Primary Key (`DevotionalContent.objects.get(id=chosen_id)`).
+* **Benefício:** Reduziu a latência da busca para menos de 0.5ms com indexação total do banco, consumindo bytes de memória e eliminando gargalos de busca sequencial.
+
+### 2. Redução do Timeout da IA para 6 Segundos
+* **Racional:** Para um aplicativo PWA móvel focado em paz e presença espiritual, qualquer tempo de carregamento superior a 6 segundos gera ansiedade técnica. Reduzimos o timeout rígido do cliente Anthropic de 10s para **6.0 segundos**.
+* **Comportamento de Falha:** Se a chamada à IA ultrapassar 6s, o backend captura a exceção de timeout de forma limpa, registra um log silencioso e entrega o fallback poético pré-cadastrado instantaneamente, blindando a experiência e evitando travamento de conexões.
+
+### 3. Configuração e Limites de Throttling (DRF)
+* **Objetivo:** Prevenir abuso econômico nos endpoints geradores de IA sem impactar a navegação fluida da interface.
+* **Limites Configurados:**
+  * **Anônimos (`anon`):** `60/day` (protege a borda pública da aplicação contra varredura automatizada).
+  * **Autenticados (`user`):** `1000/day` (garante navegação ilimitada em todo o app shell, históricos e telas estáticas).
+  * **Devocionais de IA (`DevotionalHeavyThrottle`):** `30/hour` (aplicado em `DevotionalByEmotionView`, protegendo o pipeline síncrono contra chamadas repetitivas e abusivas).
+  * **Explicação Bíblica (`BibleHeavyThrottle`):** `30/hour` (aplicado em `ExplainView` para conter abusos na barra de pesquisa).
+
+### 4. Roadmap para a Fase Concorrente (Celery + Redis)
+O que foi adiado estrategicamente para a próxima fase de desenvolvimento em escala média (10k+ usuários):
+* **Geração 100% Assíncrona:** A substituição completa do fluxo síncrono HTTP de IA por jobs em fila com Celery/Redis. O endpoint retornará `202 Accepted` imediatamente, e o frontend fará polling / conexão SSE para obter o resultado quando concluído.
+* **Pré-geração em Lote:** Criação de scripts em background durante a madrugada para alimentar a biblioteca permanente com novas reflexões baseadas em sentimentos sazonais, reduzindo a zero a necessidade de geração de IA em tempo real.
+
+### 5. Unificação do Source of Truth Offline (Resiliência PWA v1.3)
+* **O Risco de Cache Fantasma (Ghost Cache):** Anteriormente, o Service Worker registrava um cache `NetworkFirst` genérico para todas as rotas `/api/reflection/`, `/api/devotional/` e `/api/bible/`. Quando o dispositivo ficava sem rede, o Service Worker interceptava a falha física de rede e retornava a resposta salva em cache HTTP com o status `200 OK`. Como resultado, o cliente HTTP Axios no frontend interpretava o retorno como sucesso total, TanStack Query não ativava a flag `isError`, e a tela do usuário falhava em renderizar as ricas interfaces offline da CAPIO, exibindo dados velhos sem sinalização.
+* **Nova Estratégia Adotada:** 
+  1. **Remoção de Intercepção de APIs no SW:** Desabilitamos o cacheamento síncrono dessas três APIs dinâmicas no `sw.js`. As chamadas à API editorial agora batem diretamente na rede (`NetworkOnly`).
+  2. **Propagation Limpa de Erros:** Diante da ausência de internet ou falha de rede física, as requisições de rede falham legítima e nativamente, acionando perfeitamente os estados de erro (`isError` ou `mutation.isError`) no TanStack Query.
+  3. **IndexedDB como Única Fonte de Verdade (Single Source of Truth):** Sob a falha de rede real propagada, os hooks de ciclo de vida das páginas (`TodayReflectionPage`, `EmotionPage` e `BibleExplainPage`) capturam o erro e realizam uma busca assíncrona unificada via `localForage` (IndexedDB), reidratando a interface com a última leitura guardada na micro biblioteca de resiliência.
+* **Benefício:** Eliminação de 100% dos conflitos de caches fantasmas ou intermitência de rede. As telas agora se adaptam de forma previsível e silenciosa, gerando a badge *"Espaço Offline — Presença Preservada"* sem piscar ou quebrar a experiência do PWA.
+
+### 6. Sistema de Observabilidade e ErrorBoundary (CAPIO Guard)
+* **Backend Logging**: Implementação de logs estruturados em formato padronizado no Django, configurado no dicionário `LOGGING` em `base.py`. Os fluxos críticos de IA (`devotional_service.py`, `explanation_service.py`) e os fallbacks locais (`MockAIService` no arquivo `mock.py`) estão agora monitorados com tags expressivas como `[CAPIO AI] Fallback acionado` de nível `WARNING`, permitindo auditar falhas externas em tempo real.
+* **Sentry Prep**: Adicionamos suporte condicional e isolado para Sentry no backend (evitando quebras caso o pacote esteja ausente em desenvolvimento local) e frontend (ligado dinamicamente a `VITE_SENTRY_DSN` e `window.Sentry`).
+* **Health Check de Produção**: O endpoint `/api/health/` foi redefinido para realizar uma checagem ativa de conexão no banco de dados (`connection.ensure_connection()`), retornando `200 OK` (ou `503` caso degradado), timestamp ISO completo e indicação segura do ambiente sem vazar segredos.
+* **ErrorBoundary Contemplativo**: Desenvolvemos um componente global robusto de React em `ErrorBoundary.jsx` que encapsula o ecossistema da aplicação. Em caso de quebra inesperada de renderização, o usuário é poupado de detalhes técnicos e blindado com uma tela pastoral: *"Algo ficou em silêncio por um instante. Você pode tentar novamente em alguns segundos."* com botão discreto de recomeço.

@@ -15,8 +15,14 @@ class EmotionsView(APIView):
         serializer = EmotionSerializer(emotions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+from rest_framework.throttling import UserRateThrottle
+
+class DevotionalHeavyThrottle(UserRateThrottle):
+    scope = 'devotional_heavy'
+
 class DevotionalByEmotionView(APIView):
     permission_classes = [IsAuthenticated]
+    throttle_classes = [DevotionalHeavyThrottle]
 
     def post(self, request):
         serializer = DevotionalRequestSerializer(data=request.data)

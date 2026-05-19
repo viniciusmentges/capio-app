@@ -108,6 +108,16 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '60/day',
+        'user': '1000/day',
+        'devotional_heavy': '30/hour',
+        'bible_heavy': '30/hour',
+    }
 }
 
 # Configuração JWT
@@ -179,5 +189,78 @@ CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[
     "http://127.0.0.1:5173",
 ])
 
+# ==========================================
+# OBSERVABILIDADE: LOGGING & SENTRY
+# ==========================================
 
+# Configuração condicional e segura do Sentry
+SENTRY_DSN = env('SENTRY_DSN', default='')
+if SENTRY_DSN:
+    try:
+        import sentry_sdk
+        from sentry_sdk.integrations.django import DjangoIntegration
+        sentry_sdk.init(
+            dsn=SENTRY_DSN,
+            integrations=[DjangoIntegration()],
+            traces_sample_rate=0.1,
+            send_default_pii=False  # Não envia dados pessoais sensíveis
+        )
+    except ImportError:
+        import logging
+        logging.getLogger(__name__).warning("Sentry DSN fornecido, mas o pacote 'sentry-sdk' não está instalado.")
 
+# Configuração estruturada de Logs do Django
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '[{asctime}] {levelname} in {module}: {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'apps': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'services': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
+
+# ==========================================
+# CONFIGURAÇÃO DE INFRAESTRUTURA: CELERY & REDIS
+# ==========================================
+
+# Se em produção as variáveis não forem fornecidas, lançamos ValueError explícito
+CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND', default='redis://localhost:6379/0')
+
+if (not CELERY_BROKER_URL or not CELERY_RESULT_BACKEND) and not DEBUG:
+    raise ValueError("Variáveis de ambiente CELERY_BROKER_URL e CELERY_RESULT_BACKEND são obrigatórias em produção!")
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_TRACK_STARTED = True

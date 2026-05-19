@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { router } from './router';
 import { AuthProvider } from '../context/AuthContext';
 import EditorialSplash from '../components/pwa/EditorialSplash';
+import ErrorBoundary from '../components/ui/ErrorBoundary';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,18 +30,22 @@ function App() {
 
   if (showSplash) {
     return (
-      <QueryClientProvider client={queryClient}>
-        <EditorialSplash onFinish={() => setShowSplash(false)} />
-      </QueryClientProvider>
+      <ErrorBoundary>
+        <QueryClientProvider client={queryClient}>
+          <EditorialSplash onFinish={() => setShowSplash(false)} />
+        </QueryClientProvider>
+      </ErrorBoundary>
     );
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
 

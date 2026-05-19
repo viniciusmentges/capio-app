@@ -32,6 +32,7 @@ export default function TodayReflectionPage() {
   useEffect(() => {
     if (isError || (!isLoading && !data?.reflection)) {
       setLoadingOffline(true);
+      console.warn('[CAPIO PWA] Conexão física indisponível ou lenta. Acionando fallback offline de Reflexão Diária a partir do IndexedDB (localForage).');
       getLatestOfflineItem(OFFLINE_KEYS.DAILY_REFLECTIONS)
         .then(saved => {
           setOfflineData(saved);

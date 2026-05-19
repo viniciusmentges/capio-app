@@ -61,6 +61,7 @@ export default function BibleExplainPage() {
   // Monitorar erros para sugerir recuperação offline
   useEffect(() => {
     if ((mutation.isError || isError) && lastSavedExplanation) {
+      console.warn('[CAPIO PWA] Falha de conexão física na API de exegese bíblica. Oferecendo reidratação contemplativa da última explicação do IndexedDB.');
       setShowOfflineOption(true);
     }
   }, [mutation.isError, isError, lastSavedExplanation]);

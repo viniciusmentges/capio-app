@@ -8,8 +8,14 @@ from .serializers import ExplainRequestSerializer, PassageExplanationSerializer
 from services.bible.explanation_service import BibleService
 from services.exceptions import ContentBlockedException
 
+from rest_framework.throttling import UserRateThrottle
+
+class BibleHeavyThrottle(UserRateThrottle):
+    scope = 'bible_heavy'
+
 class ExplainView(APIView):
     permission_classes = [IsAuthenticated]
+    throttle_classes = [BibleHeavyThrottle]
 
     def post(self, request):
         serializer = ExplainRequestSerializer(data=request.data)

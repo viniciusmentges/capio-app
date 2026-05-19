@@ -20,7 +20,7 @@ class AnthropicAIService(AIService):
         self.model = getattr(settings, 'ANTHROPIC_MODEL', 'claude-haiku-4-5-20251001')
         
         if anthropic and self.api_key:
-            self.client = anthropic.Anthropic(api_key=self.api_key)
+            self.client = anthropic.Anthropic(api_key=self.api_key, timeout=6.0)
         else:
             self.client = None
             logger.warning("Anthropic client not initialized. Missing API key or package.")
@@ -79,51 +79,55 @@ class AnthropicAIService(AIService):
             logger.error(f"Error calling Anthropic API: {str(e)}")
             return fallback_func(**fallback_args)
 
-
-
-    def explain_passage(self, reference_normalized: str, reference_display: str) -> Dict[str, Any]:
+    def explain_passage(self, reference_normalized: str, reference_display: str, scripture_text: str) -> Dict[str, Any]:
         system_prompt = self._get_base_constitution() + (
             "\n\nCOMPOSER.EXEGESIS: Iluminação da Palavra. Foco em profundidade contemplativa e contexto."
+            "\nBaseie a reflexão EXCLUSIVAMENTE na passagem fornecida."
         )
         prompt = (
-            f"Ilumine a passagem: '{reference_display}'.\n"
-            "Retorne UM objeto JSON com:\n"
-            "- 'scripture_text': O texto bíblico exato da passagem.\n"
-            "- 'biblical_context': O contexto histórico e o encontro original da passagem.\n"
-            "- 'simple_explanation': O coração teológico em linguagem simples.\n"
-            "- 'spiritual_reflection': Meditação sobre o mistério revelado.\n"
-            "- 'practical_application': O 'Eco na Vida' - como esta Palavra vibra hoje.\n"
-            "- 'optional_prayer': Oração curta de recolhimento."
+            f"Passagem Bíblica Guia: {reference_display}\n"
+            f"Texto Bíblico: \"{scripture_text}\"\n\n"
+            "Retorne UM objeto JSON com os seguintes campos (todos em português):\n"
+            "- 'biblical_context': O contexto histórico e o encontro original da passagem (máx 300 caracteres).\n"
+            "- 'simple_explanation': O coração teológico em linguagem simples, sóbria e contemplativa.\n"
+            "- 'spiritual_reflection': Meditação sobre o mistério revelado e silêncio da alma.\n"
+            "- 'practical_application': O 'Eco na Vida' - como esta Palavra vibra hoje em silêncio e presença.\n"
+            "- 'optional_prayer': Oração curta de recolhimento (sem pontos de exclamação)."
         )
-        return self._call_claude(
+        res = self._call_claude(
             prompt, system_prompt, 0.3,
             self.mock_fallback.explain_passage, 
-            {"reference_normalized": reference_normalized, "reference_display": reference_display},
-            expected_keys=['scripture_text', 'biblical_context', 'simple_explanation', 'spiritual_reflection', 'practical_application', 'optional_prayer']
+            {"reference_normalized": reference_normalized, "reference_display": reference_display, "scripture_text": scripture_text},
+            expected_keys=['biblical_context', 'simple_explanation', 'spiritual_reflection', 'practical_application', 'optional_prayer']
         )
+        res['scripture_text'] = scripture_text
+        return res
 
-
-    def devotional_for_emotion(self, emotion_name: str) -> Dict[str, Any]:
+    def devotional_for_emotion(self, emotion_name: str, reference_display: str, scripture_text: str) -> Dict[str, Any]:
         system_prompt = self._get_base_constitution() + (
             "\n\nCOMPOSER.DEVOTIONAL: Acolhimento pastoral da alma. Foco em empatia e condução à Palavra."
+            "\nBaseie o devocional EXCLUSIVAMENTE na passagem e no estado de alma fornecidos."
         )
         prompt = (
-            f"Componha um devocional para o estado de alma: '{emotion_name}'.\n"
-            "Retorne UM objeto JSON com:\n"
+            f"Estado de Alma (Emoção): {emotion_name}\n"
+            f"Passagem Bíblica Guia: {reference_display}\n"
+            f"Texto Bíblico: \"{scripture_text}\"\n\n"
+            "Retorne UM objeto JSON com os seguintes campos (todos em português):\n"
             "- 'title': Título poético e breve.\n"
-            "- 'scripture_reference': Passagem que serve de abrigo.\n"
-            "- 'scripture_text': O texto da Palavra.\n"
-            "- 'reflection': Reflexão densa e silenciosa.\n"
-            "- 'practical_application': Um gesto humano pequeno e concreto.\n"
-            "- 'guiding_question': Pergunta para o silêncio da alma.\n"
-            "- 'prayer': Oração de entrega."
+            "- 'reflection': Reflexão pastoral densa, consoladora e silenciosa baseada no texto bíblico fornecido.\n"
+            "- 'practical_application': Um gesto humano pequeno e concreto para acalmar a alma.\n"
+            "- 'guiding_question': Pergunta íntima para o silêncio do coração.\n"
+            "- 'prayer': Oração de entrega silenciosa (sem pontos de exclamação)."
         )
-        return self._call_claude(
+        res = self._call_claude(
             prompt, system_prompt, 0.4,
             self.mock_fallback.devotional_for_emotion,
-            {"emotion_name": emotion_name},
-            expected_keys=['title', 'scripture_reference', 'scripture_text', 'reflection', 'practical_application', 'guiding_question', 'prayer']
+            {"emotion_name": emotion_name, "reference_display": reference_display, "scripture_text": scripture_text},
+            expected_keys=['title', 'reflection', 'practical_application', 'guiding_question', 'prayer']
         )
+        res['scripture_reference'] = reference_display
+        res['scripture_text'] = scripture_text
+        return res
 
     def generate_reflection(self, date: str) -> Dict[str, Any]:
         system_prompt = self._get_base_constitution() + (
@@ -145,5 +149,3 @@ class AnthropicAIService(AIService):
             {"date": date},
             expected_keys=['title', 'scripture_reference', 'scripture_text', 'reflection_body', 'guiding_question', 'closing_prayer']
         )
-
-

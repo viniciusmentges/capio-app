@@ -66,6 +66,7 @@ export default function EmotionPage() {
   // Monitorar se a mutação deu erro por estar offline e habilitar opção do último devocional
   useEffect(() => {
     if (mutation.isError && lastSavedDevotional) {
+      console.warn('[CAPIO PWA] Falha de conexão física na API de geração de devocionais. Oferecendo reidratação contemplativa do último item do IndexedDB.');
       setShowOfflineOption(true);
     }
   }, [mutation.isError, lastSavedDevotional]);

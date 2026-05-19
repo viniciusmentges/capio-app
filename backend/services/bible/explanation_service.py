@@ -1,5 +1,7 @@
 import hashlib
+import logging
 from typing import Dict, Any
+import httpx
 from django.db import transaction
 from services.bible.normalization import NormalizationService
 from apps.bible.models import PassageExplanation, BiblePassage
@@ -7,6 +9,18 @@ from apps.ai_core.models import AIRequest, GeneratedResponse
 from services.ai import get_ai_service
 from services.filters.content_filter import ContentFilter, FilterAction
 from services.exceptions import ContentBlockedException
+
+logger = logging.getLogger(__name__)
+
+# Cache local de passagens bíblicas extremamente populares para velocidade e robustez offline
+POPULAR_SCRIPTURES = {
+    "JHN.3:16": "Porque Deus tanto amou o mundo que deu o seu Filho Unigênito, para que todo o que nele crer não pereça, mas tenha a vida eterna.",
+    "PSA.23:1": "O Senhor é o meu pastor; de nada terei falta.",
+    "PHP.4:13": "Tudo posso naquele que me fortalece.",
+    "ROM.8:28": "Sabemos que Deus age em todas as coisas para o bem daqueles que o amam, dos que foram chamados de acordo com o seu propósito.",
+    "GEN.1:1": "No princípio Deus criou os céus e a terra.",
+    "MAT.6:33": "Busquem, pois, em primeiro lugar o Reino de Deus e a sua justiça, e todas essas coisas lhes serão acrescentadas.",
+}
 
 class BibleService:
     @staticmethod
@@ -19,7 +33,6 @@ class BibleService:
             return fallback_text
             
         length = len(text)
-        # Só usamos o fallback se o conteúdo estiver absurdamente fora do padrão (proteção contra loops da IA)
         if length > max_length * 2.0:
             return fallback_text
             
@@ -39,10 +52,23 @@ class BibleService:
             "scripture_text": "A Palavra está sendo acolhida. Por favor, tente novamente em um instante."
         }
 
-
+    @classmethod
+    def _fetch_from_api(cls, reference_display: str) -> str:
+        """
+        Consulta a API pública e aberta bible-api.com de forma ultra-resiliente
+        """
+        ref_encoded = reference_display.strip().replace(" ", "+")
+        url = f"https://bible-api.com/{ref_encoded}?translation=almeida"
+        try:
+            response = httpx.get(url, timeout=3.5)
+            if response.status_code == 200:
+                data = response.json()
+                return data.get("text", "").strip()
+        except Exception as e:
+            logger.warning("Falha ao consultar api externa bible-api.com: %s", e)
+        return ""
 
     @classmethod
-    @transaction.atomic
     def explain(cls, reference: str, user) -> Dict[str, Any]:
         # 1. Normalização Canônica
         can_id, book, chap, verses = NormalizationService.normalize(reference)
@@ -55,13 +81,14 @@ class BibleService:
         if bible_passage:
             explanation = PassageExplanation.objects.filter(passage=bible_passage).first()
             if explanation:
-                GeneratedResponse.objects.create(
-                    response_type='BIBLE',
-                    user=user,
-                    content_ref_id=explanation.id,
-                    filter_status='clean',
-                    metadata={"cached": True, "source": "foundation"}
-                )
+                with transaction.atomic():
+                    GeneratedResponse.objects.create(
+                        response_type='BIBLE',
+                        user=user,
+                        content_ref_id=explanation.id,
+                        filter_status='clean',
+                        metadata={"cached": True, "source": "foundation"}
+                    )
                 return {
                     "reference_display": explanation.reference_display,
                     "scripture_text": bible_passage.text_original,
@@ -79,7 +106,14 @@ class BibleService:
         if filter_res.action == FilterAction.HARD_BLOCK:
             raise ContentBlockedException(category=filter_res.category)
 
-        # 5. Chamada de IA
+        # 5. Scripture First: Garantir scripture_text puramente canônico de fonte confiável
+        scripture_text = POPULAR_SCRIPTURES.get(can_id.upper())
+        if not scripture_text:
+            scripture_text = cls._fetch_from_api(ref_display)
+            if not scripture_text:
+                scripture_text = "A Palavra de Deus está sendo acolhida em silêncio e oração neste instante..."
+
+        # 6. Chamada de IA (I/O pesado fora de transações ativas do banco)
         ai_service = get_ai_service()
         input_hash = hashlib.sha256(can_id.encode()).hexdigest()
         
@@ -91,18 +125,26 @@ class BibleService:
             status='pending'
         )
 
-        ai_response = ai_service.explain_passage(can_id, ref_display)
+        try:
+            # IA recebe o texto bíblico canônico predefinido!
+            ai_response = ai_service.explain_passage(can_id, ref_display, scripture_text)
+        except Exception as e:
+            logger.error("Falha ao chamar a API de IA no fluxo de explicação bíblica: %s", e)
+            ai_request.status = 'failed'
+            ai_request.output_data = {"error": str(e)}
+            ai_request.save()
+            raise e
+
         fallback = cls._get_fallback_response(ref_display)
         
-        # 6. Validação e Truncamento
+        # 7. Validação e Truncamento
         simple_explanation = cls._validate_and_truncate_field(ai_response.get("simple_explanation", ""), 900, fallback["simple_explanation"])
         biblical_context = cls._validate_and_truncate_field(ai_response.get("biblical_context", ""), 600, fallback["biblical_context"])
         practical_application = cls._validate_and_truncate_field(ai_response.get("practical_application", ""), 600, fallback["practical_application"])
         spiritual_reflection = cls._validate_and_truncate_field(ai_response.get("spiritual_reflection", ""), 500, fallback["spiritual_reflection"])
         optional_prayer = cls._validate_and_truncate_field(ai_response.get("optional_prayer", ""), 400, fallback["optional_prayer"])
-        scripture_text = ai_response.get("scripture_text") or fallback["scripture_text"]
 
-        # 7. Filtro de Saída
+        # 8. Filtro de Saída
         ai_text_combined = f"{simple_explanation} {biblical_context} {practical_application} {spiritual_reflection} {optional_prayer}"
         out_filter_res = ContentFilter.check_output(ai_text_combined)
         
@@ -115,39 +157,38 @@ class BibleService:
         ai_request.output_data = ai_response
         ai_request.save()
 
-        # 8. Salvar ou Atualizar BiblePassage (A Palavra Pura)
-        if not bible_passage:
-            bible_passage = BiblePassage.objects.create(
-                canonical_id=can_id,
-                book_name=book,
-                chapter=chap,
-                verses=verses,
-                text_original=scripture_text,
-                translation="NVI",
-                language="pt"
+        # Operações de escrita em banco agrupadas em bloco atômico curto
+        with transaction.atomic():
+            if not bible_passage:
+                bible_passage = BiblePassage.objects.create(
+                    canonical_id=can_id,
+                    book_name=book,
+                    chapter=chap,
+                    verses=verses,
+                    text_original=scripture_text,
+                    translation="NVI",
+                    language="pt"
+                )
+
+            explanation = PassageExplanation.objects.create(
+                passage=bible_passage,
+                reference_normalized=can_id,
+                reference_display=ref_display,
+                simple_explanation=simple_explanation,
+                biblical_context=biblical_context,
+                practical_application=practical_application,
+                spiritual_reflection=spiritual_reflection,
+                optional_prayer=optional_prayer,
+                ai_generated=ai_response.get("ai_generated", True)
             )
 
-        # 9. Salvar PassageExplanation
-        explanation = PassageExplanation.objects.create(
-            passage=bible_passage,
-            reference_normalized=can_id,
-            reference_display=ref_display,
-            simple_explanation=simple_explanation,
-            biblical_context=biblical_context,
-            practical_application=practical_application,
-            spiritual_reflection=spiritual_reflection,
-            optional_prayer=optional_prayer,
-            ai_generated=ai_response.get("ai_generated", True)
-        )
-
-        # 10. Salvar GeneratedResponse
-        GeneratedResponse.objects.create(
-            response_type='BIBLE',
-            user=user,
-            ai_request=ai_request,
-            content_ref_id=explanation.id,
-            filter_status='clean'
-        )
+            GeneratedResponse.objects.create(
+                response_type='BIBLE',
+                user=user,
+                ai_request=ai_request,
+                content_ref_id=explanation.id,
+                filter_status='clean'
+            )
 
         return {
             "reference_display": explanation.reference_display,
@@ -160,4 +201,3 @@ class BibleService:
             "ai_generated": explanation.ai_generated,
             "cached": False
         }
-

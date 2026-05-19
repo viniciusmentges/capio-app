@@ -1,6 +1,6 @@
 import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
-import { CacheFirst, StaleWhileRevalidate, NetworkFirst } from 'workbox-strategies';
+import { CacheFirst, StaleWhileRevalidate } from 'workbox-strategies';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 
@@ -55,30 +55,13 @@ registerRoute(
   })
 );
 
-// 3. Cache de APIs Dinâmicas (Network First)
-// Cacheia chamadas para reflexões, devocionais e passagens bíblicas com tolerância de até 7 dias offline
-// Garante também exclusão absoluta de qualquer endpoint de autenticação
-registerRoute(
-  ({ url }) => 
-    (url.pathname.startsWith('/api/reflection/') || 
-     url.pathname.startsWith('/api/devotional/') || 
-     url.pathname.startsWith('/api/bible/')) && 
-    !url.pathname.includes('/api/auth/'),
-  new NetworkFirst({
-    cacheName: 'capio-api-content-v1',
-    plugins: [
-      new CacheableResponsePlugin({
-        statuses: [0, 200],
-      }),
-      new ExpirationPlugin({
-        maxEntries: 20,
-        maxAgeSeconds: 7 * 24 * 60 * 60, // 7 dias
-      }),
-    ],
-  })
-);
+// NOTA DE ARQUITETURA OFFLINE:
+// As APIs dinâmicas (/api/reflection/, /api/devotional/ e /api/bible/) batem diretamente na rede (NetworkOnly)
+// para evitar o efeito "ghost cache" (onde o Service Worker retorna um HTTP 200 cacheado ocultando a falha de rede do React/TanStack).
+// Em caso de falha de conexão, a chamada falha nativamente, propagando o erro para o frontend, que
+// aciona de forma consistente e silenciosa o IndexedDB/localForage como ÚNICA FONTE DE VERDADE offline.
 
-// 4. Ativação Imediata do Service Worker
+// 3. Ativação Imediata do Service Worker
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
@@ -143,7 +126,6 @@ self.addEventListener('notificationclick', (event) => {
       if (windowClients.length > 0) {
         const firstClient = windowClients[0];
         if ('focus' in firstClient) {
-          // Podemos forçar o foco e enviar uma mensagem ou apenas mudar o link
           firstClient.navigate(targetUrl);
           return firstClient.focus();
         }
