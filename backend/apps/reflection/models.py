@@ -10,7 +10,17 @@ class DailyReflection(models.Model):
     reflection_body = models.TextField()
     guiding_question = models.TextField()
     closing_prayer = models.TextField()
+    
+    # --- ATIVO EDITORIAL: share_quote ---
+    # Este campo representa a assinatura editorial compartilhável do dia.
+    # TODO: Na FASE 3, migrar este campo simples para uma tabela separada: `EditorialFragment`.
+    # Isso permitirá:
+    # 1. Múltiplos fragmentos por dia (para rotação ou testes A/B).
+    # 2. Contadores de compartilhamento e salvamento associados para analíticos contemplativos.
+    # 3. Associação direta a coleções temáticas ou favoritos do usuário.
+    # 4. Geração sob demanda de imagens estáticas OpenGraph (OG Images) personalizadas.
     share_quote = models.TextField(blank=True, default="")
+    
     ai_generated = models.BooleanField(default=False)
 
     def __str__(self):

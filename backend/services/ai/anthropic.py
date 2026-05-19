@@ -142,7 +142,12 @@ class AnthropicAIService(AIService):
             "- 'reflection_body': Meditação calma (máx 1000 caracteres).\n"
             "- 'guiding_question': Pergunta para carregar no coração.\n"
             "- 'closing_prayer': Oração de encerramento.\n"
-            "- 'share_quote': Uma frase marcante, poética e curtíssima (máx 15 palavras) extraída ou inspirada na própria reflexão para ser compartilhada em imagem (não use pontos de exclamação)."
+            "- 'share_quote': Um fragmento contemplativo de altíssimo valor editorial (máx 15 palavras) inspirado ou extraído da própria reflexão. Deve parecer um trecho grifado de um clássico espiritual ou anotação íntima de um monge, nunca uma frase de feed ou postagem motivacional de Instagram.\n\n"
+            "REGRAS ESTRITAS DE ARQUITETURA PARA 'share_quote':\n"
+            "1. LINGUAGEM DE LIVRO: Use palavras densas, sóbrias e humanas. Deve evocar silêncio, presença, espera, interioridade e descanso espiritual.\n"
+            "2. PROIBIÇÃO DE AUTOAJUDA/COACHING: Banido imperativos (não use 'lembre-se', 'busque', 'confie', 'mude'). Banido jargões gospel ('Deus vai fazer', 'vitória', 'jornada', 'bênção').\n"
+            "3. ZERO PONTUAÇÃO EXCESSIVA: Proibido absolutamente o uso de exclamações (!). Use apenas pontos e vírgulas.\n"
+            "4. RITMO E COMPRIMENTO: Curto e memorável sem ser clichê. Máximo de 15 palavras. Frase limpa, sem aspas adicionais dentro da string."
         )
         return self._call_claude(
             prompt, system_prompt, 0.6,

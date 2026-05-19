@@ -10,49 +10,65 @@ const ShareableCard = forwardRef(({ type, quote, reference, brandLabel = "CAPIO"
           tenha cantos retos. Os cantos arredondados do wrapper são apenas para a visualização no site. */}
       <div 
         ref={ref}
-        className={`w-full h-full flex flex-col justify-between p-8 ${
+        className={`w-full h-full flex flex-col justify-between p-10 pb-8 pt-10 ${
           isLight 
-            ? "bg-[#FDFCF8] text-foreground/80" 
-            : "bg-[#1C241D] text-[#FDFCF8]" 
+            ? "bg-gradient-to-b from-[#F7F5EE] to-[#EFECE1] text-[#2C2924]" 
+            : "bg-gradient-to-b from-[#0F1310] to-[#161D18] text-[#FAF8F5]" 
         }`}
         style={{
-          // Forçar estilos inline críticos para a renderização do html-to-image
+          // Forçar estilos inline críticos para a renderização perfeita do html-to-image
           fontFamily: "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif"
         }}
       >
-        <div className="flex justify-center mt-6">
+        {/* Marcador superior minimalista */}
+        <div className="flex justify-center mt-2">
            {isLight ? (
-             <div className="w-4 h-px bg-foreground/20" />
+             <div className="w-6 h-[0.5px] bg-[#2C2924]/15" />
            ) : (
-             <div className="w-4 h-px bg-[#D4AF37]/50" />
+             <div className="w-6 h-[0.5px] bg-[#C5A880]/30" />
            )}
         </div>
 
-        <div className="space-y-8 flex-1 flex flex-col justify-center items-center text-center px-2">
+        {/* Bloco Central de Meditação */}
+        <div className="flex-1 flex flex-col justify-center items-center text-center px-3 space-y-6">
           {type === 'reflection' && (
-            <p className={`text-[10px] italic tracking-widest uppercase ${isLight ? 'text-foreground/40' : 'text-[#FDFCF8]/50'}`}>
+            <p className={`text-[8px] tracking-[0.25em] uppercase font-sans font-light opacity-50 ${
+              isLight ? 'text-[#2C2924]/50' : 'text-[#FAF8F5]/50'
+            }`}>
               Para guardar no coração
             </p>
           )}
           {type === 'devotional' && (
-             <p className={`text-[10px] italic tracking-widest uppercase ${isLight ? 'text-foreground/40' : 'text-[#FDFCF8]/50'}`}>
+             <p className={`text-[8px] tracking-[0.25em] uppercase font-sans font-light opacity-50 ${
+               isLight ? 'text-[#2C2924]/50' : 'text-[#FAF8F5]/50'
+             }`}>
               Palavra para o momento
             </p>
           )}
           
-          <p className={`italic text-xl leading-[1.6] ${isLight ? 'text-foreground/90' : 'text-[#FDFCF8]'}`}>
-            "{quote}"
-          </p>
+          {/* Citação em itálico de altíssimo respiro e elegância */}
+          <blockquote className="my-2 max-w-[250px]">
+            <p className={`font-serif italic text-lg leading-[1.65] tracking-wide font-normal ${
+              isLight ? 'text-[#2C2924]/90' : 'text-[#FAF8F5]'
+            }`}>
+              “{quote}”
+            </p>
+          </blockquote>
           
           {reference && (
-            <p className={`text-[11px] uppercase tracking-[0.2em] pt-6 ${isLight ? 'text-foreground/50' : 'text-[#FDFCF8]/70'}`}>
+            <p className={`text-[9px] uppercase tracking-[0.2em] font-serif italic opacity-60 pt-3 ${
+              isLight ? 'text-[#2C2924]/70' : 'text-[#FAF8F5]/80'
+            }`}>
               {reference}
             </p>
           )}
         </div>
 
-        <div className="text-center mb-6 mt-4">
-          <p className={`text-[9px] tracking-[0.3em] uppercase ${isLight ? 'text-foreground/30' : 'text-[#FDFCF8]/40'}`}>
+        {/* Assinatura de Branding Silenciosa da CAPIO */}
+        <div className="text-center mb-2 mt-4">
+          <p className={`text-[8px] tracking-[0.35em] font-sans font-light uppercase opacity-35 ${
+            isLight ? 'text-[#2C2924]/50' : 'text-[#FAF8F5]/55'
+          }`}>
             {brandLabel}
           </p>
         </div>
