@@ -99,6 +99,6 @@ class NormalizationService:
         
         canonical_id = f"{book_id}.{chapter}"
         if verses:
-            canonical_id += f":{verses}"
+            canonical_id += f".{verses}"
             
         return canonical_id, book_raw.title(), chapter, verses

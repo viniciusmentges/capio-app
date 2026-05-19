@@ -105,10 +105,23 @@ class ReflectionService:
         try:
             # Passamos a blacklist para o serviço de AI
             # (Assumindo que o serviço agora aceita contexto de exclusão)
-            ai_response = ai_service.generate_reflection(date_str)
+            ai_response = ai_service.generate_reflection(date_str, ai_request_id=ai_request.id)
             
             ai_request.status = 'success'
             ai_request.output_data = ai_response
+            
+            # Copiar telemetria para o objeto local do Django para evitar sobrescrever campos do BD com NULL
+            metrics = ai_response.get('_ai_metrics', {})
+            if metrics:
+                from decimal import Decimal
+                ai_request.input_tokens = metrics.get('input_tokens')
+                ai_request.output_tokens = metrics.get('output_tokens')
+                ai_request.estimated_cost_usd = Decimal(str(round(metrics.get('estimated_cost_usd', 0.0), 10)))
+                ai_request.duration_ms = metrics.get('duration_ms')
+                ai_request.model_name = metrics.get('model_name')
+                ai_request.endpoint_origin = metrics.get('endpoint_origin')
+                ai_request.cache_hit = metrics.get('cache_hit', False)
+                
             ai_request.save()
 
             # Normalização e Garantia da Passagem

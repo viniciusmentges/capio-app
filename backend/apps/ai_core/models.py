@@ -21,6 +21,12 @@ class AIRequest(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
     flagged_for_review = models.BooleanField(default=False)
     duration_ms = models.PositiveIntegerField(null=True, blank=True)
+    input_tokens = models.PositiveIntegerField(null=True, blank=True)
+    output_tokens = models.PositiveIntegerField(null=True, blank=True)
+    estimated_cost_usd = models.DecimalField(max_digits=12, decimal_places=10, null=True, blank=True)
+    endpoint_origin = models.CharField(max_length=100, null=True, blank=True)
+    model_name = models.CharField(max_length=100, null=True, blank=True)
+    cache_hit = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

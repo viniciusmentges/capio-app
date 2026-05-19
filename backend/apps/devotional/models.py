@@ -26,6 +26,31 @@ class DevotionalContent(models.Model):
     ai_generated = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def resolve_passage(self):
+        if self.scripture_reference and self.scripture_reference.strip():
+            from services.bible.normalization import NormalizationService
+            from apps.bible.models import BiblePassage
+            
+            can_id, book, chap, verses = NormalizationService.normalize(self.scripture_reference)
+            
+            # Garantir canonical_id consistente
+            passage = BiblePassage.objects.filter(canonical_id=can_id).first()
+            if not passage:
+                passage = BiblePassage.objects.create(
+                    canonical_id=can_id,
+                    book_name=book,
+                    chapter=chap,
+                    verses=verses or "",
+                    text_original=self.scripture_text or "A Palavra de Deus...",
+                    translation="NVI",
+                    language="pt"
+                )
+            elif self.scripture_text and (not passage.text_original or passage.text_original.startswith("A Palavra de Deus")):
+                passage.text_original = self.scripture_text
+                passage.save(update_fields=['text_original'])
+                
+            self.passage = passage
+
     def clean(self):
         from django.core.exceptions import ValidationError
         errors = {}
@@ -42,8 +67,20 @@ class DevotionalContent(models.Model):
         if not self.share_quote or not self.share_quote.strip():
             errors['share_quote'] = "O fragmento compartilhável (share_quote) é obrigatório."
             
+        try:
+            self.resolve_passage()
+        except Exception as e:
+            errors['scripture_reference'] = f"Erro ao processar referência bíblica: {str(e)}"
+            
+        if (self.is_active or self.reviewed_by_human) and not self.passage:
+            errors['passage'] = "O relacionamento 'passage' (BiblePassage) é obrigatório para devocionais ativos ou revisados por humanos."
+            
         if errors:
             raise ValidationError(errors)
+
+    def save(self, *args, **kwargs):
+        self.resolve_passage()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.title} ({self.emotion.name})"

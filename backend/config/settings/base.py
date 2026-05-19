@@ -264,3 +264,9 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_TRACK_STARTED = True
+
+# ==========================================
+# CONFIGURAÇÃO DE INTELIGÊNCIA ARTIFICIAL
+# ==========================================
+# Geração dinâmica automática desativada por padrão em produção (Biblioteca-First/Cache-First)
+ENABLE_DYNAMIC_GENERATION = env.bool('ENABLE_DYNAMIC_GENERATION', default=False)

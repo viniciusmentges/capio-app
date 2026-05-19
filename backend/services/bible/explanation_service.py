@@ -14,12 +14,12 @@ logger = logging.getLogger(__name__)
 
 # Cache local de passagens bíblicas extremamente populares para velocidade e robustez offline
 POPULAR_SCRIPTURES = {
-    "JHN.3:16": "Porque Deus tanto amou o mundo que deu o seu Filho Unigênito, para que todo o que nele crer não pereça, mas tenha a vida eterna.",
-    "PSA.23:1": "O Senhor é o meu pastor; de nada terei falta.",
-    "PHP.4:13": "Tudo posso naquele que me fortalece.",
-    "ROM.8:28": "Sabemos que Deus age em todas as coisas para o bem daqueles que o amam, dos que foram chamados de acordo com o seu propósito.",
-    "GEN.1:1": "No princípio Deus criou os céus e a terra.",
-    "MAT.6:33": "Busquem, pois, em primeiro lugar o Reino de Deus e a sua justiça, e todas essas coisas lhes serão acrescentadas.",
+    "JHN.3.16": "Porque Deus tanto amou o mundo que deu o seu Filho Unigênito, para que todo o que nele crer não pereça, mas tenha a vida eterna.",
+    "PSA.23.1": "O Senhor é o meu pastor; de nada terei falta.",
+    "PHP.4.13": "Tudo posso naquele que me fortalece.",
+    "ROM.8.28": "Sabemos que Deus age em todas as coisas para o bem daqueles que o amam, dos que foram chamados de acordo com o seu propósito.",
+    "GEN.1.1": "No princípio Deus criou os céus e a terra.",
+    "MAT.6.33": "Busquem, pois, em primeiro lugar o Reino de Deus e a sua justiça, e todas essas coisas lhes serão acrescentadas.",
 }
 
 class BibleService:
@@ -127,7 +127,7 @@ class BibleService:
 
         try:
             # IA recebe o texto bíblico canônico predefinido!
-            ai_response = ai_service.explain_passage(can_id, ref_display, scripture_text)
+            ai_response = ai_service.explain_passage(can_id, ref_display, scripture_text, ai_request_id=ai_request.id)
         except Exception as e:
             logger.error("Falha ao chamar a API de IA no fluxo de explicação bíblica: %s", e)
             ai_request.status = 'failed'
@@ -155,6 +155,19 @@ class BibleService:
             
         ai_request.status = 'success'
         ai_request.output_data = ai_response
+        
+        # Copiar telemetria para o objeto local do Django para evitar sobrescrever campos do BD com NULL
+        metrics = ai_response.get('_ai_metrics', {})
+        if metrics:
+            from decimal import Decimal
+            ai_request.input_tokens = metrics.get('input_tokens')
+            ai_request.output_tokens = metrics.get('output_tokens')
+            ai_request.estimated_cost_usd = Decimal(str(round(metrics.get('estimated_cost_usd', 0.0), 10)))
+            ai_request.duration_ms = metrics.get('duration_ms')
+            ai_request.model_name = metrics.get('model_name')
+            ai_request.endpoint_origin = metrics.get('endpoint_origin')
+            ai_request.cache_hit = metrics.get('cache_hit', False)
+            
         ai_request.save()
 
         # Operações de escrita em banco agrupadas em bloco atômico curto

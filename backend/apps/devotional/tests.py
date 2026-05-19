@@ -140,4 +140,101 @@ class DevotionalTests(APITestCase):
         self.assertIn('share_quote', response.data)
         self.assertIn('emotional_theme', response.data)
 
+    def test_devotional_resolves_passage_automatically(self):
+        # 1. Criar novo devocional com scripture_reference válida
+        dev = DevotionalContent.objects.create(
+            emotion=self.emotion,
+            title="Meditação sobre o amparo",
+            scripture_reference="Filipenses 4:6",
+            scripture_text="Não andeis ansiosos...",
+            reflection="Espera e silêncio.",
+            prayer="Pai, repouso em ti.",
+            share_quote="Não andeis ansiosos.",
+            is_active=True,
+            reviewed_by_human=True
+        )
+        self.assertIsNotNone(dev.passage)
+        self.assertEqual(dev.passage.canonical_id, "PHP.4.6")
+
+    def test_active_without_passage_fails(self):
+        from django.core.exceptions import ValidationError
+        # 1. Tentar criar devocional ativo com scripture_reference vazia (que não resolve passage)
+        dev = DevotionalContent(
+            emotion=self.emotion,
+            title="Sem passagem",
+            scripture_reference="",
+            scripture_text="",
+            reflection="Texto",
+            prayer="Oração",
+            share_quote="Frase",
+            is_active=True,
+            reviewed_by_human=False
+        )
+        with self.assertRaises(ValidationError):
+            dev.full_clean()
+
+    def test_reviewed_by_human_without_passage_fails(self):
+        from django.core.exceptions import ValidationError
+        # 2. Tentar criar devocional revisado com scripture_reference vazia (que não resolve passage)
+        dev = DevotionalContent(
+            emotion=self.emotion,
+            title="Revisado sem passagem",
+            scripture_reference="",
+            scripture_text="",
+            reflection="Texto",
+            prayer="Oração",
+            share_quote="Frase",
+            is_active=False,
+            reviewed_by_human=True
+        )
+        with self.assertRaises(ValidationError):
+            dev.full_clean()
+
+    def test_backfill_management_command(self):
+        from django.core.management import call_command
+        # 1. Criar devocional rascunho (inativo e não revisado) para contornar a obrigatoriedade
+        dev = DevotionalContent.objects.create(
+            emotion=self.emotion,
+            title="Devocional Antigo Órfão",
+            scripture_reference="Salmos 34:18",
+            scripture_text="O Senhor está perto...",
+            reflection="O silêncio do Senhor...",
+            prayer="Oração antiga.",
+            share_quote="O Senhor está perto.",
+            is_active=False,
+            reviewed_by_human=False
+        )
+        
+        # Simular que a passage foi nula no BD (limpar se resolveu no save)
+        dev.passage = None
+        DevotionalContent.objects.filter(id=dev.id).update(passage=None)
+        
+        # Verificar que de fato ficou orfão
+        dev.refresh_from_db()
+        self.assertIsNone(dev.passage)
+        
+        # 2. Chamar o comando de backfill
+        call_command('backfill_devotional_passages')
+        
+        # 3. Validar que foi resolvido e vinculado retroativamente
+        dev.refresh_from_db()
+        self.assertIsNotNone(dev.passage)
+        self.assertEqual(dev.passage.canonical_id, "PSA.34.18")
+
+    def test_canonical_id_standard_dots(self):
+        dev = DevotionalContent.objects.create(
+            emotion=self.emotion,
+            title="Padronização de Pontos",
+            scripture_reference="Salmos 34:18",
+            scripture_text="O Senhor está perto...",
+            reflection="O Senhor está perto.",
+            prayer="Amém.",
+            share_quote="O Senhor está perto.",
+            is_active=True,
+            reviewed_by_human=True
+        )
+        self.assertEqual(dev.passage.canonical_id, "PSA.34.18")
+        self.assertNotIn(":", dev.passage.canonical_id)
+
+
 

@@ -12,15 +12,15 @@ def run_tests():
     ai_service = get_ai_service()
     
     print("\n1. Explain Passage (João 3:16):")
-    res1 = ai_service.explain_passage("jo 3:16", "João 3:16")
+    res1 = ai_service.explain_passage("jo 3:16", "João 3:16", "Porque Deus amou o mundo de tal maneira...")
     print(res1)
     
     print("\n2. Devotional for Emotion (Ansioso):")
-    res2 = ai_service.devotional_for_emotion("Ansioso")
+    res2 = ai_service.devotional_for_emotion("Ansioso", "Filipenses 4:6", "Não andeis ansiosos por coisa alguma...")
     print(res2['title'], "-", res2['scripture_reference'])
     
     print("\n3. Devotional for Emotion (Desconhecida - fallback para Ansioso ou genérico):")
-    res3 = ai_service.devotional_for_emotion("Inexistente")
+    res3 = ai_service.devotional_for_emotion("Inexistente", "Salmo 23", "O Senhor é o meu pastor")
     print(res3['title'], "-", res3['scripture_reference'])
     
     print("\n4. Generate Reflection (2023-10-10):")
