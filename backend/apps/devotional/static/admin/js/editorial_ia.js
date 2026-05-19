@@ -53,9 +53,10 @@ document.addEventListener('DOMContentLoaded', function() {
         loader.style.display = 'inline-block';
         btnGenerate.style.opacity = '0.6';
 
-        // Fazer chamada ao backend
+        // Fazer chamada ao backend com credenciais da sessão ativa
         fetch('/api/devotional/editorial/generate/', {
             method: 'POST',
+            credentials: 'same-origin',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': csrfToken

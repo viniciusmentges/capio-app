@@ -69,12 +69,14 @@ class PublicDevotionalDetailView(APIView):
 
 
 from rest_framework.permissions import IsAdminUser
+from rest_framework.authentication import SessionAuthentication
 from services.ai import get_ai_service
 import logging
 
 logger = logging.getLogger(__name__)
 
 class EditorialDevotionalGenerateView(APIView):
+    authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated, IsAdminUser]
 
     def post(self, request):
