@@ -21,3 +21,8 @@ class AIService(ABC):
     def editorial_generate_devotional(self, emotion_name: str, tone_or_direction: str = None) -> Dict[str, Any]:
         """Returns: {'title': str, 'scripture_reference': str, 'scripture_text': str, 'reflection': str, 'prayer': str, 'share_quote': str, 'emotional_theme': str, 'ai_generated': bool}"""
         pass
+
+    @abstractmethod
+    def generate_share_quote(self, reflection: str) -> str:
+        """Gera um share_quote (fragmento contemplativo) com base em uma meditação/reflexão textual."""
+        pass

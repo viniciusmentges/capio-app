@@ -190,3 +190,29 @@ class AnthropicAIService(AIService):
             {"emotion_name": emotion_name, "tone_or_direction": tone_or_direction},
             expected_keys=['title', 'scripture_reference', 'scripture_text', 'reflection', 'prayer', 'share_quote', 'emotional_theme']
         )
+
+    def generate_share_quote(self, reflection: str) -> str:
+        system_prompt = (
+            "Você é o Diretor Editorial da CAPIO. Sua missão é extrair ou formular um fragmento contemplativo "
+            "de altíssimo valor editorial, baseado na meditação que lhe for fornecida. Esse fragmento servirá "
+            "de frase principal no card compartilhável de imagem da plataforma."
+        )
+        prompt = (
+            f"Com base na meditação contemplativa abaixo, gere uma única frase (share_quote) de no máximo 15 palavras.\n"
+            f"Meditação:\n\"{reflection}\"\n\n"
+            f"REGRAS DE CONSTITUIÇÃO CRÍTICA (Seja implacável):\n"
+            f"1. CONCISÃO ABSOLUTA: No máximo 15 palavras. Sentenças curtas e com densidade literária.\n"
+            f"2. INDEPENDÊNCIA: A frase deve ser autoportante e profunda mesmo quando lida isoladamente por alguém fora do aplicativo.\n"
+            f"3. PROIBIÇÃO DE EXCLAMAÇÕES (!): Use apenas ponto final. NUNCA use pontos de exclamação.\n"
+            f"4. ANTI-COACH E ANTI-CLICHÊ: Banido imperativos (não use 'confie', 'lute', 'busque', 'creia', 'não desista'). Nada de jargões religiosos de massa ('vitória', 'Deus vai mudar sua vida', 'promessa').\n"
+            f"5. ESTILO: Deve soar como excerto de livro clássico tradicional. Evoque espaço, espera, recolhimento e a beleza silenciosa da graça.\n"
+            f"6. RETORNO: Retorne um objeto JSON contendo exclusivamente a chave 'share_quote' (ex: {{\x22share_quote\x22: \x22frase aqui\x22}}), sem nenhum markdown ou texto explicativo extra."
+        )
+
+        res = self._call_claude(
+            prompt, system_prompt, 0.4,
+            self.mock_fallback.generate_share_quote,
+            {"reflection": reflection},
+            expected_keys=['share_quote']
+        )
+        return res.get('share_quote', "O silêncio é o solo fértil onde a graça de Deus repousa.")

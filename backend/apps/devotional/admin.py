@@ -15,6 +15,46 @@ class DevotionalContentAdmin(admin.ModelAdmin):
     
     # Campos apenas de leitura
     readonly_fields = ('created_at',)
+    
+    # Ações em lote no admin
+    actions = ['generate_share_quotes_action']
+
+    @admin.action(description="✨ Gerar Share Quotes ausentes em lote com IA")
+    def generate_share_quotes_action(self, request, queryset):
+        from services.ai import get_ai_service
+        import time
+        from django.contrib import messages
+
+        ai_service = get_ai_service()
+        updated_count = 0
+        skipped_count = 0
+
+        for dev in queryset:
+            # Pular se já tem uma frase compartilhável válida
+            if dev.share_quote and dev.share_quote.strip() not in ["", "None", "nan", "NoneType"]:
+                skipped_count += 1
+                continue
+
+            if not dev.reflection:
+                skipped_count += 1
+                continue
+
+            try:
+                quote = ai_service.generate_share_quote(dev.reflection)
+                quote = quote.strip().strip('"').strip("'").strip('“').strip('”')
+                if quote:
+                    dev.share_quote = quote
+                    dev.save(update_fields=['share_quote'])
+                    updated_count += 1
+                    time.sleep(0.5)
+            except Exception as e:
+                self.message_user(request, f"Erro ao gerar para ID {dev.id}: {str(e)}", messages.ERROR)
+
+        self.message_user(
+            request, 
+            f"✨ Geração em lote finalizada! {updated_count} devocionais atualizados. {skipped_count} ignorados por já possuírem frase ou estarem sem meditação.",
+            messages.SUCCESS
+        )
 
     # Organização visual em grupos (Fieldsets)
     fieldsets = (

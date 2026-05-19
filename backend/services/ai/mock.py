@@ -100,3 +100,8 @@ class MockAIService(AIService):
             "emotional_theme": f"Paz na {emotion_name}" if not tone_or_direction else tone_or_direction,
             "ai_generated": False
         }
+
+    def generate_share_quote(self, reflection: str) -> str:
+        logger.warning("[CAPIO AI] Mock acionado no fluxo de geração de share_quote.")
+        # Retorna um pedaço curto da meditação ou uma frase mock
+        return "O silêncio é o solo fértil onde a oração de entrega amadurece."
