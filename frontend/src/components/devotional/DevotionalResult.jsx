@@ -34,7 +34,7 @@ export default function DevotionalResult({ devotional }) {
         {verse && (
           <ProgressiveReveal delay={400} duration={1200}>
             <div className="space-y-8">
-              <p className="font-serif text-[10px] text-foreground/20 italic tracking-widest text-center uppercase">
+              <p className="font-serif text-[10px] text-foreground/45 italic tracking-widest text-center uppercase">
                 {verse}
               </p>
               <div className="relative group px-2">
@@ -44,7 +44,7 @@ export default function DevotionalResult({ devotional }) {
                 {isLongVerse && !isVerseExpanded && (
                   <button 
                     onClick={() => setIsVerseExpanded(true)}
-                    className="mt-6 mx-auto block text-[10px] font-serif italic text-foreground/30 hover:text-foreground/50 transition-colors uppercase tracking-widest"
+                    className="mt-6 mx-auto block text-[10px] font-serif italic text-foreground/50 hover:text-foreground/70 transition-colors uppercase tracking-widest"
                   >
                     continuar leitura ↓
                   </button>
@@ -59,7 +59,7 @@ export default function DevotionalResult({ devotional }) {
         {/* 2. O Título: Tema que emerge */}
         <ProgressiveReveal delay={1500}>
           <div className="text-center">
-            <h2 className="font-serif text-xl text-foreground/30 leading-tight italic">
+            <h2 className="font-serif text-xl text-foreground/50 leading-tight italic">
               {title}
             </h2>
           </div>
@@ -69,7 +69,7 @@ export default function DevotionalResult({ devotional }) {
         {reflection && (
           <ProgressiveReveal delay={2500}>
             <div className="space-y-10">
-              <p className="text-[9px] font-serif italic text-foreground/15 text-center tracking-[0.2em] uppercase">
+              <p className="text-[9px] font-serif italic text-foreground/40 text-center tracking-[0.2em] uppercase">
                 Ecos da Palavra
               </p>
               <div className="max-w-xl mx-auto">
@@ -85,7 +85,7 @@ export default function DevotionalResult({ devotional }) {
         {practicalApp && (
           <ProgressiveReveal delay={4000}>
             <div className="max-w-md mx-auto bg-foreground/[0.02] py-12 px-8 rounded-sm space-y-6">
-              <p className="text-[9px] font-serif italic text-foreground/20 text-center tracking-widest uppercase">
+              <p className="text-[9px] font-serif italic text-foreground/45 text-center tracking-widest uppercase">
                 O convite hoje
               </p>
               <p className="text-sm font-sans font-light text-foreground/60 text-center leading-relaxed italic">
@@ -99,10 +99,10 @@ export default function DevotionalResult({ devotional }) {
         {guidingQuestion && (
           <ProgressiveReveal delay={5500}>
             <div className="space-y-8 pt-4">
-              <p className="text-[9px] font-serif italic text-foreground/15 text-center tracking-[0.2em] uppercase">
+              <p className="text-[9px] font-serif italic text-foreground/40 text-center tracking-[0.2em] uppercase">
                 Para o seu silêncio
               </p>
-              <h3 className="font-serif italic text-foreground/50 text-lg text-center max-w-sm mx-auto leading-relaxed">
+              <h3 className="font-serif italic text-foreground/60 text-lg text-center max-w-sm mx-auto leading-relaxed">
                 {guidingQuestion}
               </h3>
             </div>
@@ -115,10 +115,10 @@ export default function DevotionalResult({ devotional }) {
             <div className="pt-16 space-y-12">
               <div className="w-6 h-px bg-foreground/10 mx-auto" />
               <div className="space-y-10">
-                <p className="text-[9px] font-serif italic text-foreground/15 text-center tracking-widest uppercase">
+                <p className="text-[9px] font-serif italic text-foreground/40 text-center tracking-widest uppercase">
                   Oração
                 </p>
-                <p className="font-serif italic text-foreground/40 text-lg leading-relaxed text-center max-w-sm mx-auto">
+                <p className="font-serif italic text-foreground/55 text-lg leading-relaxed text-center max-w-sm mx-auto">
                   {prayer}
                 </p>
               </div>
@@ -160,7 +160,7 @@ export default function DevotionalResult({ devotional }) {
       <ProgressiveReveal delay={11000}>
         <div className="text-center pt-12">
           <div className="w-1 h-1 bg-foreground/10 rounded-full mx-auto mb-8" />
-          <p className="text-[9px] text-foreground/15 font-serif italic tracking-[0.3em] uppercase">
+          <p className="text-[9px] text-foreground/40 font-serif italic tracking-[0.3em] uppercase">
             Paz
           </p>
         </div>

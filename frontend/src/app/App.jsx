@@ -3,6 +3,7 @@ import { RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { router } from './router';
 import { AuthProvider } from '../context/AuthContext';
+import { TextSizeProvider } from '../context/TextSizeContext';
 import EditorialSplash from '../components/pwa/EditorialSplash';
 import ErrorBoundary from '../components/ui/ErrorBoundary';
 
@@ -42,7 +43,9 @@ function App() {
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <RouterProvider router={router} />
+          <TextSizeProvider>
+            <RouterProvider router={router} />
+          </TextSizeProvider>
         </AuthProvider>
       </QueryClientProvider>
     </ErrorBoundary>

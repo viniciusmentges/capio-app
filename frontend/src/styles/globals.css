@@ -120,3 +120,55 @@
     -webkit-overflow-scrolling: touch;
   }
 }
+
+/* --- SISTEMA EDITORIAL DE ZOOM A- / A / A+ --- */
+/* Nível A- (Confortável Menor) */
+.capio-text-sm .text-contemplative {
+  font-size: 15px !important;
+  line-height: 1.8;
+}
+.capio-text-sm .text-sm.font-sans {
+  font-size: 12.5px !important;
+}
+.capio-text-sm .text-prayer,
+.capio-text-sm .font-serif.text-base,
+.capio-text-sm .font-serif.text-lg {
+  font-size: 14px !important;
+  line-height: 1.7;
+}
+
+/* Nível A (Padrão) */
+.capio-text-base .text-contemplative {
+  font-size: 17px !important;
+  line-height: 1.9;
+}
+.capio-text-base .text-sm.font-sans {
+  font-size: 14px !important;
+}
+.capio-text-base .text-prayer {
+  font-size: 14px !important;
+}
+.capio-text-base .font-serif.text-base {
+  font-size: 16px !important;
+}
+.capio-text-base .font-serif.text-lg {
+  font-size: 18px !important;
+}
+
+/* Nível A+ (Ampliado) */
+.capio-text-lg .text-contemplative {
+  font-size: 21px !important;
+  line-height: 2.0;
+}
+.capio-text-lg .text-sm.font-sans {
+  font-size: 17px !important;
+}
+.capio-text-lg .text-prayer,
+.capio-text-lg .font-serif.text-base {
+  font-size: 19px !important;
+  line-height: 1.95;
+}
+.capio-text-lg .font-serif.text-lg {
+  font-size: 23px !important;
+  line-height: 1.95;
+}

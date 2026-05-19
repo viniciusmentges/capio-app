@@ -8,6 +8,7 @@ import OfflineState from '../../components/ui/OfflineState';
 import PWAInstallPrompt from '../../components/layout/PWAInstallPrompt';
 import PushOptInPrompt from '../../components/layout/PushOptInPrompt';
 import Button from '../../components/ui/Button';
+import TextSizeSelector from '../../components/ui/TextSizeSelector';
 import localforage from 'localforage';
 import { saveOfflineItem, getLatestOfflineItem } from '../../pwa/offlineStorage';
 import { OFFLINE_KEYS } from '../../pwa/offlineKeys';
@@ -102,7 +103,7 @@ export default function EmotionPage() {
     );
   }
 
-  // Se der erro na geração E tivermos o último devocional guardado, oferecemos a leitura direta dele
+  // Se der erro na geração E tivermos o último devocional gerado, oferecemos a leitura direta dele
   if (showOfflineOption && lastSavedDevotional) {
     return (
       <div className="flex flex-col justify-center min-h-[100dvh] px-6 text-center space-y-12 animate-fade-in">
@@ -181,6 +182,7 @@ export default function EmotionPage() {
             </span>
           </div>
         )}
+        <TextSizeSelector />
         <DevotionalResult devotional={devotional} />
         <PushOptInPrompt />
         <PWAInstallPrompt />

@@ -7,6 +7,7 @@ import LoadingState from '../../components/ui/LoadingState';
 import OfflineState from '../../components/ui/OfflineState';
 import PWAInstallPrompt from '../../components/layout/PWAInstallPrompt';
 import PushOptInPrompt from '../../components/layout/PushOptInPrompt';
+import TextSizeSelector from '../../components/ui/TextSizeSelector';
 import { saveOfflineItem, getLatestOfflineItem } from '../../pwa/offlineStorage';
 import { OFFLINE_KEYS } from '../../pwa/offlineKeys';
 
@@ -74,8 +75,9 @@ export default function TodayReflectionPage() {
             Espaço Offline — Presença Preservada
           </span>
         </div>
+        <TextSizeSelector />
         <ReflectionCard data={activeReflection} />
-        <div className="text-center font-serif italic text-xs text-foreground/20 pt-4">
+        <div className="text-center font-serif italic text-xs text-foreground/45 pt-4">
           Você está em espaço de recolhimento offline. Esta leitura foi guardada em seu dispositivo.
         </div>
       </div>
@@ -101,6 +103,7 @@ export default function TodayReflectionPage() {
 
   return (
     <div className="pb-12 space-y-12">
+      <TextSizeSelector />
       <ReflectionCard data={activeReflection} />
       <ReflectionFeedback reflectionId={activeReflection.id} />
       <PushOptInPrompt />

@@ -7,6 +7,7 @@ import BibleExplanationCard from '../../components/bible/BibleExplanationCard';
 import LoadingState from '../../components/ui/LoadingState';
 import OfflineState from '../../components/ui/OfflineState';
 import Button from '../../components/ui/Button';
+import TextSizeSelector from '../../components/ui/TextSizeSelector';
 import { saveOfflineItem, getLatestOfflineItem } from '../../pwa/offlineStorage';
 import { OFFLINE_KEYS } from '../../pwa/offlineKeys';
 
@@ -167,6 +168,7 @@ export default function BibleExplainPage() {
             </span>
           </div>
         )}
+        <TextSizeSelector />
         <BibleExplanationCard explanation={activeExplanation} />
         <div className="flex justify-center pb-12 pt-8">
           <Button 
