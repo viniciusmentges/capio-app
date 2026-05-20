@@ -2,9 +2,24 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from django.contrib.auth import get_user_model
+from unittest.mock import patch, MagicMock
 from apps.devotional.models import Emotion, DevotionalContent, UserDevotional
 
 User = get_user_model()
+
+EDITORIAL_URL = '/api/devotional/editorial/generate/'
+
+def _make_ai_response(scripture_reference, emotional_theme='Cuidado de Deus'):
+    return {
+        "title": f"Devocional sobre {emotional_theme}",
+        "scripture_reference": scripture_reference,
+        "scripture_text": "Texto bíblico de exemplo.",
+        "reflection": "Reflexão de exemplo.",
+        "prayer": "Oração de exemplo.",
+        "share_quote": "Frase de exemplo.",
+        "emotional_theme": emotional_theme,
+        "ai_generated": True,
+    }
 
 class DevotionalTests(APITestCase):
     def setUp(self):
@@ -277,5 +292,193 @@ class DevotionalTests(APITestCase):
 
         with self.assertRaises(ValidationError):
             dev.save()
+
+
+class EditorialDeduplicationTests(APITestCase):
+    """Testes de diversidade editorial e proteção contra passagens duplicadas."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(username='editoruser', password='editorpassword')
+        self.user.is_staff = True
+        self.user.save()
+        self.client.force_authenticate(user=self.user)
+        self.emotion = Emotion.objects.create(name="Ansioso", slug="ansioso")
+
+    def _create_devotional(self, title, scripture_reference, emotional_theme='Espera silenciosa'):
+        return DevotionalContent.objects.create(
+            emotion=self.emotion,
+            title=title,
+            scripture_reference=scripture_reference,
+            scripture_text="Texto bíblico.",
+            reflection="Reflexão.",
+            prayer="Oração.",
+            share_quote="Frase.",
+            emotional_theme=emotional_theme,
+            is_active=True,
+            reviewed_by_human=True,
+        )
+
+    def test_editorial_generate_sends_excluded_passages_to_ai(self):
+        """View deve consultar o banco e passar excluded_passages para a IA antes de gerar."""
+        self._create_devotional("Devocional A", "Salmos 23:1-3", "Repouso no pastor")
+        self._create_devotional("Devocional B", "Filipenses 4:6-7", "Entrega na oração")
+
+        with patch('apps.devotional.views.get_ai_service') as mock_get_ai:
+            mock_ai = MagicMock()
+            mock_ai.editorial_generate_devotional.return_value = _make_ai_response("1 Pedro 5:7", "Cuidado de Deus")
+            mock_get_ai.return_value = mock_ai
+
+            response = self.client.post(EDITORIAL_URL, {'emotion_slug': 'ansioso'}, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        call_kwargs = mock_ai.editorial_generate_devotional.call_args
+        excluded_passages = call_kwargs.kwargs.get('excluded_passages', [])
+        self.assertIn("Salmos 23:1-3", excluded_passages)
+        self.assertIn("Filipenses 4:6-7", excluded_passages)
+
+    def test_editorial_generate_sends_excluded_themes_to_ai(self):
+        """View deve passar excluded_themes para a IA com os temas emocionais já existentes."""
+        self._create_devotional("Devocional A", "Salmos 23:1-3", "A quietude na espera")
+        self._create_devotional("Devocional B", "Filipenses 4:6-7", "O repouso silencioso")
+
+        with patch('apps.devotional.views.get_ai_service') as mock_get_ai:
+            mock_ai = MagicMock()
+            mock_ai.editorial_generate_devotional.return_value = _make_ai_response("1 Pedro 5:7", "Cuidado de Deus")
+            mock_get_ai.return_value = mock_ai
+
+            self.client.post(EDITORIAL_URL, {'emotion_slug': 'ansioso'}, format='json')
+
+        call_kwargs = mock_ai.editorial_generate_devotional.call_args
+        excluded_themes = call_kwargs.kwargs.get('excluded_themes', [])
+        self.assertIn("A quietude na espera", excluded_themes)
+        self.assertIn("O repouso silencioso", excluded_themes)
+
+    def test_editorial_generate_sends_excluded_titles_to_ai(self):
+        """View deve passar excluded_titles para a IA com os títulos já existentes."""
+        self._create_devotional("O Repouso na Espera", "Salmos 23:1-3")
+        self._create_devotional("A Espera no Silêncio", "Filipenses 4:6-7")
+
+        with patch('apps.devotional.views.get_ai_service') as mock_get_ai:
+            mock_ai = MagicMock()
+            mock_ai.editorial_generate_devotional.return_value = _make_ai_response("1 Pedro 5:7")
+            mock_get_ai.return_value = mock_ai
+
+            self.client.post(EDITORIAL_URL, {'emotion_slug': 'ansioso'}, format='json')
+
+        call_kwargs = mock_ai.editorial_generate_devotional.call_args
+        excluded_titles = call_kwargs.kwargs.get('excluded_titles', [])
+        self.assertIn("O Repouso na Espera", excluded_titles)
+        self.assertIn("A Espera no Silêncio", excluded_titles)
+
+    def test_editorial_generate_no_exclusions_for_empty_library(self):
+        """Sem devocionais existentes, IA é chamada com listas de exclusão vazias."""
+        with patch('apps.devotional.views.get_ai_service') as mock_get_ai:
+            mock_ai = MagicMock()
+            mock_ai.editorial_generate_devotional.return_value = _make_ai_response("Mateus 6:34")
+            mock_get_ai.return_value = mock_ai
+
+            response = self.client.post(EDITORIAL_URL, {'emotion_slug': 'ansioso'}, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        call_kwargs = mock_ai.editorial_generate_devotional.call_args
+        self.assertEqual(call_kwargs.kwargs.get('excluded_passages', []), [])
+        self.assertEqual(call_kwargs.kwargs.get('excluded_themes', []), [])
+        self.assertEqual(call_kwargs.kwargs.get('excluded_titles', []), [])
+
+    def test_editorial_generate_rejects_duplicate_on_persistent_collision(self):
+        """IA retorna mesma passagem nas duas tentativas: deve retornar 409 com erro claro."""
+        # "Salmos 23:1-3" normaliza para PSA.23.1-3
+        self._create_devotional("Devocional com Salmos 23", "Salmos 23:1-3")
+
+        with patch('apps.devotional.views.get_ai_service') as mock_get_ai:
+            mock_ai = MagicMock()
+            # Ambas as tentativas retornam a mesma passagem duplicada
+            mock_ai.editorial_generate_devotional.return_value = _make_ai_response("Salmos 23:1-3", "Repouso duplicado")
+            mock_get_ai.return_value = mock_ai
+
+            response = self.client.post(EDITORIAL_URL, {'emotion_slug': 'ansioso'}, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
+        self.assertEqual(response.data['error'], 'duplicate_passage')
+        self.assertIn("direção espiritual mais específica", response.data['message'])
+        # IA deve ter sido chamada exatamente 2 vezes (tentativa original + retry)
+        self.assertEqual(mock_ai.editorial_generate_devotional.call_count, 2)
+
+    def test_editorial_generate_succeeds_on_retry_with_unique_passage(self):
+        """Primeira tentativa duplicada, segunda tentativa com passagem única: deve retornar 200."""
+        self._create_devotional("Devocional com Salmos 23", "Salmos 23:1-3")
+
+        with patch('apps.devotional.views.get_ai_service') as mock_get_ai:
+            mock_ai = MagicMock()
+            mock_ai.editorial_generate_devotional.side_effect = [
+                _make_ai_response("Salmos 23:1-3", "Duplicado"),      # 1ª tentativa: duplicada
+                _make_ai_response("1 Pedro 5:7", "Cuidado de Deus"),  # 2ª tentativa: única
+            ]
+            mock_get_ai.return_value = mock_ai
+
+            response = self.client.post(EDITORIAL_URL, {'emotion_slug': 'ansioso'}, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['scripture_reference'], "1 Pedro 5:7")
+        self.assertEqual(mock_ai.editorial_generate_devotional.call_count, 2)
+
+    def test_editorial_generate_retry_receives_reinforced_direction(self):
+        """No retry, a direção enviada à IA deve mencionar a passagem duplicada detectada."""
+        self._create_devotional("Devocional com Salmos 23", "Salmos 23:1-3")
+
+        with patch('apps.devotional.views.get_ai_service') as mock_get_ai:
+            mock_ai = MagicMock()
+            mock_ai.editorial_generate_devotional.side_effect = [
+                _make_ai_response("Salmos 23:1-3"),
+                _make_ai_response("1 Pedro 5:7"),
+            ]
+            mock_get_ai.return_value = mock_ai
+
+            self.client.post(EDITORIAL_URL, {'emotion_slug': 'ansioso'}, format='json')
+
+        # Verificar que a segunda chamada recebeu um tone_or_direction reforçado
+        second_call_kwargs = mock_ai.editorial_generate_devotional.call_args_list[1].kwargs
+        retry_direction = second_call_kwargs.get('tone_or_direction', '')
+        self.assertIn("Salmos 23:1-3", retry_direction)
+        self.assertIn("JÁ EXISTE", retry_direction)
+
+    def test_editorial_generate_unique_passages_are_accepted_without_retry(self):
+        """Passagem única retornada pela IA não deve disparar retry (IA chamada apenas uma vez)."""
+        self._create_devotional("Devocional existente", "Salmos 23:1-3")
+
+        with patch('apps.devotional.views.get_ai_service') as mock_get_ai:
+            mock_ai = MagicMock()
+            mock_ai.editorial_generate_devotional.return_value = _make_ai_response("Mateus 6:25-27", "Entrega do amanhã")
+            mock_get_ai.return_value = mock_ai
+
+            response = self.client.post(EDITORIAL_URL, {'emotion_slug': 'ansioso'}, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(mock_ai.editorial_generate_devotional.call_count, 1)
+
+    def test_editorial_generate_tone_direction_preserved_on_retry(self):
+        """Direção espiritual original do admin deve ser preservada no retry, além do aviso de duplicidade."""
+        self._create_devotional("Devocional com Salmos 23", "Salmos 23:1-3")
+
+        with patch('apps.devotional.views.get_ai_service') as mock_get_ai:
+            mock_ai = MagicMock()
+            mock_ai.editorial_generate_devotional.side_effect = [
+                _make_ai_response("Salmos 23:1-3"),
+                _make_ai_response("1 Pedro 5:7"),
+            ]
+            mock_get_ai.return_value = mock_ai
+
+            self.client.post(
+                EDITORIAL_URL,
+                {'emotion_slug': 'ansioso', 'tone_or_direction': 'ansiedade antes de dormir'},
+                format='json',
+            )
+
+        second_call_kwargs = mock_ai.editorial_generate_devotional.call_args_list[1].kwargs
+        retry_direction = second_call_kwargs.get('tone_or_direction', '')
+        self.assertIn("ansiedade antes de dormir", retry_direction)
+        self.assertIn("JÁ EXISTE", retry_direction)
 
 

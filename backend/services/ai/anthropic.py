@@ -303,36 +303,75 @@ class AnthropicAIService(AIService):
             endpoint_origin="DAILY_REFLECTION"
         )
 
-    def editorial_generate_devotional(self, emotion_name: str, tone_or_direction: str = None, ai_request_id: int = None) -> Dict[str, Any]:
+    def editorial_generate_devotional(
+        self,
+        emotion_name: str,
+        tone_or_direction: str = None,
+        excluded_passages: list = None,
+        excluded_themes: list = None,
+        excluded_titles: list = None,
+        ai_request_id: int = None,
+    ) -> Dict[str, Any]:
         system_prompt = self._get_base_constitution() + (
             "\n\nCOMPOSER.EDITORIAL: Você é o MOTOR EDITORIAL DE ASSISTÊNCIA DA CAPIO.\n"
-            "Sua tarefa é compor um devocional contemplativo de altíssimo valor literário e pastoral baseado em uma emoção específica e uma direção espiritual."
+            "Sua tarefa é compor um devocional contemplativo de altíssimo valor literário e pastoral baseado em uma emoção específica e uma direção espiritual.\n"
+            "REGRA CARDINAL DE DIVERSIDADE: Cada devocional gerado deve abrir uma porta diferente dentro da mesma emoção. "
+            "Passagens bíblicas, ângulos espirituais e temas emocionais jamais devem se repetir na biblioteca da CAPIO."
         )
-        
-        prompt = (
-            f"Escolha e componha um devocional contemplativo para a Emoção: '{emotion_name}'.\n"
-        )
+
+        prompt = f"Emoção selecionada: '{emotion_name}'.\n"
+
         if tone_or_direction:
             prompt += f"Direção Espiritual / Tom Desejado pelo Editor: '{tone_or_direction}'.\n"
-            
+
+        if excluded_passages:
+            prompt += "\n⛔ PASSAGENS BÍBLICAS PROIBIDAS — já utilizadas nesta emoção. NÃO use nenhuma delas:\n"
+            for p in excluded_passages:
+                prompt += f"  - {p}\n"
+
+        if excluded_themes:
+            prompt += "\n⛔ TEMAS EMOCIONAIS PROIBIDOS — já utilizados. Escolha um ângulo completamente diferente:\n"
+            for t in excluded_themes:
+                prompt += f"  - {t}\n"
+
+        if excluded_titles:
+            prompt += "\n⛔ TÍTULOS PROIBIDOS — já existentes. Não repita nem variações próximas:\n"
+            for ti in excluded_titles:
+                prompt += f"  - {ti}\n"
+
         prompt += (
-            "\nRetorne UM objeto JSON com os seguintes campos (todos em português):\n"
+            "\n📖 EIXOS DE DIVERSIDADE EDITORIAL PARA ANSIEDADE (explore um eixo ainda não utilizado):\n"
+            "  • cuidado concreto de Deus no cotidiano e nos pequenos detalhes\n"
+            "  • entrega do amanhã que ainda não existe e não pode ser controlado\n"
+            "  • presença de Deus no meio do medo e da angústia física\n"
+            "  • paz que ultrapassa a compreensão racional e as circunstâncias\n"
+            "  • descanso do corpo tenso e libertação do peso acumulado\n"
+            "  • confiança sem necessidade de controlar o resultado\n"
+            "  • oração honesta no aperto, no sufoco e na exaustão\n"
+            "  • atenção ao momento presente como prática espiritual\n"
+            "  • proximidade de Deus ao coração quebrantado e assustado\n"
+            "  • refúgio e proteção divina diante do perigo real\n"
+            "  • sustento diário e provisão suficiente para hoje\n"
+            "  • libertação do peso excessivo das preocupações acumuladas\n"
+            "NÃO se limite aos eixos de espera passiva, silêncio ou repouso se eles já tiverem sido usados.\n"
+            "\nEscolha e componha um devocional contemplativo com passagem e ângulo espiritual AINDA NÃO EXISTENTES na biblioteca da CAPIO para esta emoção.\n"
+            "Retorne UM objeto JSON com os seguintes campos (todos em português):\n"
             "- 'title': Um título breve, sóbrio e contemplativo.\n"
-            "- 'scripture_reference': A referência bíblica de uma passagem profunda e consoladora que você mesmo selecionou especificamente para este contexto (ex: 'Salmos 23:1-3').\n"
+            "- 'scripture_reference': A referência bíblica de uma passagem AINDA NÃO UTILIZADA para esta emoção (ex: 'Mateus 6:25-27'). NÃO use nenhuma das passagens proibidas listadas acima.\n"
             "- 'scripture_text': O texto exato da passagem bíblica selecionada.\n"
             "- 'reflection': Uma reflexão pastoral densa, consoladora e silenciosa (máx 1000 caracteres). Deve parecer um trecho de um clássico espiritual tradicional ou o diário íntimo de um monge. Evite clichês modernos, tons triumfalistas ou performáticos.\n"
             "- 'prayer': Uma oração curta de entrega e recolhimento silencioso (sem exclamações).\n"
-            "- 'share_quote': Um fragmento contemplativo curado de altíssimo valor editorial (máx 15 palavras) extraído ou inspirado na reflexão. Deve evocar interioridade, espera e silêncio. Proibido imperativos, jargões ou exclamações.\n"
-            "- 'emotional_theme': Um subtema emocional curto que sintetiza a abordagem (ex: 'A quietude na espera').\n\n"
-            "DIRETRIZES ESTRITAS DE CONSTITUIÇÃO CROMÁTICA E EDITORIAL:\n"
-            "1. PROIBIÇÃO DE AUTOAJUDA / COACHING / TRIUNFALISMO: Banido imperativos (não use 'lembre-se', 'busque', 'confie', 'mude', 'não desista'). Banido jargões de prosperidade ou vitória ('vitória', 'bênção', 'prosperidade', 'Deus vai te dar').\n"
+            "- 'share_quote': Um fragmento contemplativo curado de altíssimo valor editorial (máx 15 palavras) extraído ou inspirado na reflexão. Deve evocar interioridade e presença. Proibido imperativos, jargões ou exclamações.\n"
+            "- 'emotional_theme': Um subtema emocional curto que sintetiza o ângulo específico escolhido (ex: 'A entrega do amanhã', 'Presença no medo', 'Cuidado concreto de Deus').\n\n"
+            "DIRETRIZES ESTRITAS:\n"
+            "1. PROIBIÇÃO DE AUTOAJUDA / COACHING / TRIUNFALISMO: Banido imperativos (não use 'lembre-se', 'busque', 'confie', 'mude', 'não desista'). Banido jargões de prosperidade ou vitória.\n"
             "2. GRAMÁTICA DO SILÊNCIO: Proibido absolutamente o uso de pontos de exclamação (!). Use apenas pontos e vírgulas.\n"
-            "3. SOBRIEDADE E PRESENÇA: O tom deve ser sóbrio, íntimo, acolhedor e com economia de palavras. Deixe espaço para o mistério e a espera silenciosa.\n"
+            "3. SOBRIEDADE E PRESENÇA: O tom deve ser sóbrio, íntimo, acolhedor e com economia de palavras. Deixe espaço para o mistério e a presença.\n"
             "4. FORMATO: Responda APENAS em JSON válido, sem texto markdown ou explicações externas."
         )
-        
+
         return self._call_claude(
-            prompt, system_prompt, 0.4,
+            prompt, system_prompt, 0.7,
             self.mock_fallback.editorial_generate_devotional,
             {"emotion_name": emotion_name, "tone_or_direction": tone_or_direction},
             expected_keys=['title', 'scripture_reference', 'scripture_text', 'reflection', 'prayer', 'share_quote', 'emotional_theme'],

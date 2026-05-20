@@ -82,22 +82,111 @@ class EditorialDevotionalGenerateView(APIView):
     def post(self, request):
         emotion_slug = request.data.get('emotion_slug')
         tone_or_direction = request.data.get('tone_or_direction', '')
-        
+
         if not emotion_slug:
             return Response({"error": "emotion_slug_required", "message": "O slug da emoção é obrigatório."}, status=status.HTTP_400_BAD_REQUEST)
-            
+
         try:
             emotion = Emotion.objects.get(slug=emotion_slug)
         except Emotion.DoesNotExist:
             return Response({"error": "emotion_not_found", "message": f"Emoção '{emotion_slug}' não encontrada."}, status=status.HTTP_404_NOT_FOUND)
-            
+
         try:
+            # Consultar banco para construir listas de exclusão antes de chamar a IA
+            existing_data = DevotionalContent.objects.filter(
+                emotion=emotion
+            ).select_related('passage').values_list(
+                'scripture_reference', 'passage__canonical_id', 'title', 'emotional_theme'
+            )
+
+            excluded_passages = []
+            excluded_canonical_ids = set()
+            excluded_themes = []
+            excluded_titles = []
+
+            for ref, canonical_id, title, theme in existing_data:
+                if ref and ref not in excluded_passages:
+                    excluded_passages.append(ref)
+                if canonical_id and canonical_id not in excluded_canonical_ids:
+                    excluded_canonical_ids.add(canonical_id)
+                if title and title not in excluded_titles:
+                    excluded_titles.append(title)
+                if theme and theme not in excluded_themes:
+                    excluded_themes.append(theme)
+
+            logger.info(
+                "[CAPIO EDITORIAL] Gerando devocional para '%s' com %d passagens excluídas, %d temas excluídos, %d títulos excluídos.",
+                emotion.name, len(excluded_passages), len(excluded_themes), len(excluded_titles)
+            )
+
             ai_service = get_ai_service()
+
             res = ai_service.editorial_generate_devotional(
                 emotion_name=emotion.name,
-                tone_or_direction=tone_or_direction
+                tone_or_direction=tone_or_direction,
+                excluded_passages=excluded_passages[-20:],
+                excluded_themes=excluded_themes[-10:],
+                excluded_titles=excluded_titles[-15:],
             )
+
+            # Validação pós-resposta: normalizar scripture_reference e verificar canonical_id
+            returned_ref = res.get('scripture_reference', '')
+            if returned_ref and excluded_canonical_ids:
+                duplicate_canonical_id = self._check_duplicate(returned_ref, excluded_canonical_ids)
+                if duplicate_canonical_id:
+                    logger.warning(
+                        "[CAPIO EDITORIAL] Passagem duplicada '%s' (canonical: %s) detectada para emoção '%s'. Iniciando retry.",
+                        returned_ref, duplicate_canonical_id, emotion.name
+                    )
+                    retry_direction = (
+                        f"[ATENÇÃO EDITORIAL CRÍTICA: A passagem '{returned_ref}' JÁ EXISTE na biblioteca CAPIO para esta emoção. "
+                        f"É OBRIGATÓRIO escolher uma passagem bíblica completamente diferente e um ângulo espiritual novo e distinto.]"
+                    )
+                    if tone_or_direction:
+                        retry_direction = f"{tone_or_direction} — {retry_direction}"
+
+                    res = ai_service.editorial_generate_devotional(
+                        emotion_name=emotion.name,
+                        tone_or_direction=retry_direction,
+                        excluded_passages=excluded_passages[-20:],
+                        excluded_themes=excluded_themes[-10:],
+                        excluded_titles=excluded_titles[-15:],
+                    )
+
+                    # Segunda verificação: se ainda duplicar, retornar erro claro para o admin
+                    returned_ref2 = res.get('scripture_reference', '')
+                    if returned_ref2 and excluded_canonical_ids:
+                        duplicate_canonical_id2 = self._check_duplicate(returned_ref2, excluded_canonical_ids)
+                        if duplicate_canonical_id2:
+                            logger.error(
+                                "[CAPIO EDITORIAL] IA repetiu passagem duplicada '%s' após retry para emoção '%s'. Abortando.",
+                                returned_ref2, emotion.name
+                            )
+                            return Response(
+                                {
+                                    "error": "duplicate_passage",
+                                    "message": (
+                                        "A IA tentou repetir uma passagem já usada mesmo após nova tentativa. "
+                                        "Tente gerar novamente com uma direção espiritual mais específica."
+                                    ),
+                                },
+                                status=status.HTTP_409_CONFLICT,
+                            )
+
             return Response(res, status=status.HTTP_200_OK)
+
         except Exception as e:
             logger.error("Falha ao gerar devocional com IA no fluxo editorial: %s", e)
             return Response({"error": "generation_failed", "message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @staticmethod
+    def _check_duplicate(scripture_reference: str, excluded_canonical_ids: set) -> str:
+        """Normaliza a referência retornada pela IA e verifica se já existe na emoção. Retorna o canonical_id duplicado ou ''."""
+        try:
+            from services.bible.normalization import NormalizationService
+            canonical_id, *_ = NormalizationService.normalize(scripture_reference)
+            if canonical_id in excluded_canonical_ids:
+                return canonical_id
+        except Exception as err:
+            logger.warning("[CAPIO EDITORIAL] Erro ao normalizar referência '%s' para validação: %s", scripture_reference, err)
+        return ''
