@@ -1,5 +1,3 @@
-import requests
-
 BASE_URL = 'http://127.0.0.1:8000/api'
 def p(m, res=None):
     if res is None:
@@ -13,6 +11,7 @@ def p(m, res=None):
         print()
 
 def run():
+    import requests
     # 1. Register
     reg_data = {
         "username": "testuser_audit",

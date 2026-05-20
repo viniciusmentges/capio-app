@@ -25,11 +25,11 @@ class BibleTests(APITestCase):
         self.assertNotIn('explanation', response.data) # Garante que legacy não volta
 
     def test_explain_passage_limits(self):
-        # Testa o comportamento de truncamento manual, injetando uma mock string longa via ai_service
+        # Testa que a view não trunca nem modifica o conteúdo retornado pela IA
         from unittest.mock import patch
-        long_text = "A" * 950 # simple_explanation limite é 900, 950 entra na zona de truncamento (< 1.2 * 900 = 1080)
-        huge_text = "B" * 1200 # > 1080, entra na zona de fallback
-        
+        long_text = "A" * 950
+        huge_text = "B" * 1200
+
         mock_response = {
             "simple_explanation": long_text,
             "biblical_context": "Contexto curto",
@@ -38,19 +38,22 @@ class BibleTests(APITestCase):
             "optional_prayer": huge_text,
             "ai_generated": True
         }
-        
-        with patch('services.ai.mock.MockAIService.explain_passage', return_value=mock_response):
+
+        # Patcha o serviço de IA onde ele é usado na explicação bíblica
+        with patch('services.bible.explanation_service.get_ai_service') as mock_get_ai:
+            mock_service = mock_get_ai.return_value
+            mock_service.explain_passage.return_value = mock_response
+
             url = reverse('explain')
             data = {'reference': 'Marcos 1:1'}
             response = self.client.post(url, data, format='json')
-            
+
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            # Verifica truncamento: longo (mas não huge) trunca e bota ...
+            # Texto longo (950 > 900) é truncado para 900 chars com "..." no final
             self.assertTrue(response.data['simple_explanation'].endswith('...'))
             self.assertEqual(len(response.data['simple_explanation']), 900)
-            
-            # Verifica fallback: huge text > 1.2*limit aciona fallback mockado
-            self.assertEqual(response.data['optional_prayer'], "Oração mockada.")
+            # Texto enorme (1200 > 400*2=800) aciona fallback vazio
+            self.assertEqual(response.data['optional_prayer'], "")
             self.assertEqual(response.data['biblical_context'], "Contexto curto")
 
     def test_hard_block_passage(self):

@@ -28,10 +28,10 @@ class AIServiceTests(TestCase):
         service = get_ai_service()
         
         # Call explain_passage
-        result = service.explain_passage("joao 3:16", "João 3:16")
-        
+        result = service.explain_passage("joao 3:16", "João 3:16", "Porque Deus amou o mundo.")
+
         # Should fallback to MockAIService which returns 'ai_generated': False
-        self.assertIn('explanation', result)
+        self.assertIn('biblical_context', result)
         self.assertFalse(result.get('ai_generated', True))
 
     @override_settings(USE_REAL_AI=True, ANTHROPIC_API_KEY='test_key')
@@ -46,7 +46,7 @@ class AIServiceTests(TestCase):
         
         service = get_ai_service()
         
-        result = service.devotional_for_emotion("ansioso")
+        result = service.devotional_for_emotion("ansioso", "Salmos 23:1", "O Senhor é meu pastor.")
         
         self.assertIn('title', result)
         self.assertFalse(result.get('ai_generated', True))
@@ -63,7 +63,7 @@ class AIServiceTests(TestCase):
         
         service = get_ai_service()
         
-        result = service.devotional_for_emotion("ansioso")
+        result = service.devotional_for_emotion("ansioso", "Salmos 23:1", "O Senhor é meu pastor.")
         
         # Should fallback to mock
         self.assertIn('scripture_reference', result)
