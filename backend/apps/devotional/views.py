@@ -114,9 +114,14 @@ class EditorialDevotionalGenerateView(APIView):
                 if theme and theme not in excluded_themes:
                     excluded_themes.append(theme)
 
+            # Limitar a 5 itens por lista para manter o prompt compacto e reduzir latência
+            exc_passages = excluded_passages[-5:]
+            exc_themes = excluded_themes[-5:]
+            exc_titles = excluded_titles[-5:]
+
             logger.info(
                 "[CAPIO EDITORIAL] Gerando devocional para '%s' com %d passagens excluídas, %d temas excluídos, %d títulos excluídos.",
-                emotion.name, len(excluded_passages), len(excluded_themes), len(excluded_titles)
+                emotion.name, len(exc_passages), len(exc_themes), len(exc_titles)
             )
 
             ai_service = get_ai_service()
@@ -124,9 +129,9 @@ class EditorialDevotionalGenerateView(APIView):
             res = ai_service.editorial_generate_devotional(
                 emotion_name=emotion.name,
                 tone_or_direction=tone_or_direction,
-                excluded_passages=excluded_passages[-20:],
-                excluded_themes=excluded_themes[-10:],
-                excluded_titles=excluded_titles[-15:],
+                excluded_passages=exc_passages,
+                excluded_themes=exc_themes,
+                excluded_titles=exc_titles,
             )
 
             # Validação pós-resposta: normalizar scripture_reference e verificar canonical_id
@@ -176,6 +181,15 @@ class EditorialDevotionalGenerateView(APIView):
             return Response(res, status=status.HTTP_200_OK)
 
         except Exception as e:
+            err_class = type(e).__name__
+            err_msg = str(e).lower()
+            is_timeout = 'timeout' in err_class.lower() or 'timeout' in err_msg or 'timed out' in err_msg
+            if is_timeout:
+                logger.warning("[CAPIO EDITORIAL] Timeout na chamada Anthropic para emoção '%s': %s", emotion.name, e)
+                return Response(
+                    {"error": "timeout", "message": "A IA demorou mais que o esperado. Tente novamente."},
+                    status=status.HTTP_504_GATEWAY_TIMEOUT,
+                )
             logger.error("Falha ao gerar devocional com IA no fluxo editorial: %s", e)
             return Response({"error": "generation_failed", "message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

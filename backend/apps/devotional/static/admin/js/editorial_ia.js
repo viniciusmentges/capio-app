@@ -67,9 +67,31 @@ document.addEventListener('DOMContentLoaded', function() {
             })
         })
         .then(response => {
+            const contentType = response.headers.get('content-type') || '';
+            const isJson = contentType.includes('application/json');
+
             if (!response.ok) {
-                return response.json().then(err => { throw err; });
+                if (isJson) {
+                    // Backend retornou erro estruturado — extrair e repassar
+                    return response.json().then(err => { throw err; });
+                }
+                // Gunicorn retornou HTML (timeout 504/502, crash 500) — nunca fazer .json() em HTML
+                return response.text().then(text => {
+                    console.error('[CAPIO Editorial] Servidor retornou resposta não-JSON. Status:', response.status, '| Preview:', text.substring(0, 300));
+                    const userMsg = (response.status === 504 || response.status === 502 || response.status === 0)
+                        ? 'A IA demorou mais que o esperado. Aguarde alguns segundos e tente novamente.'
+                        : `Erro interno do servidor (HTTP ${response.status}). Tente novamente ou contate o suporte.`;
+                    throw { message: userMsg };
+                });
             }
+
+            if (!isJson) {
+                return response.text().then(text => {
+                    console.error('[CAPIO Editorial] Resposta 200 OK mas sem JSON. Preview:', text.substring(0, 300));
+                    throw { message: 'Resposta inesperada do servidor. Tente novamente.' };
+                });
+            }
+
             return response.json();
         })
         .then(data => {

@@ -20,7 +20,9 @@ class AnthropicAIService(AIService):
         self.model = getattr(settings, 'ANTHROPIC_MODEL', 'claude-haiku-4-5-20251001')
         
         if anthropic and self.api_key:
-            self.client = anthropic.Anthropic(api_key=self.api_key, timeout=6.0)
+            # Timeout elevado para suportar geração editorial (tipicamente 15–60s).
+            # 6.0s anterior causava falha imediata no Prompt Caching e worker timeout no Gunicorn.
+            self.client = anthropic.Anthropic(api_key=self.api_key, timeout=120.0)
         else:
             self.client = None
             logger.warning("Anthropic client not initialized. Missing API key or package.")
@@ -39,6 +41,23 @@ class AnthropicAIService(AIService):
             "7. TERMINAÇÃO ABERTA: Não feche o pensamento com conclusões absolutas. Deixe espaço para o mistério.\n"
             "8. BLACKLIST: Proibido usar 'Jornada', 'Propósito', 'Vitória', 'Benção', 'Sucesso', 'Melhor versão', 'Como um modelo de linguagem'.\n"
             "9. FORMATO: Responda APENAS em JSON válido, sem texto markdown em volta."
+        )
+
+    def _get_editorial_constitution(self) -> str:
+        """Prompt de sistema compacto exclusivo do motor editorial.
+        Otimizado para reduzir tokens, latência e pressão no worker Gunicorn."""
+        return (
+            "Motor Editorial silencioso da CAPIO. Não é chatbot, não é assistente.\n\n"
+            "REGRAS INVIOLÁVEIS:\n"
+            "1. SCRIPTURE-FIRST: A Palavra é o centro. Iluminar o texto, nunca substituí-lo.\n"
+            "2. SEM AUTORREFERÊNCIA: Proibido 'eu', 'nós', 'espero que ajude'.\n"
+            "3. SEM EXCLAMAÇÃO: Proibido (!). Use pontos e vírgulas.\n"
+            "4. FRASES CURTAS: Máx 15 palavras. Máx 2 adjetivos por parágrafo.\n"
+            "5. TOM SÓBRIO: Pastoral, denso, silencioso. Sem triunfalismo ou coaching.\n"
+            "6. SEM IMPERATIVOS: Proibido 'Faça', 'Mude', 'Confie'. Use convite ('Há um espaço para...').\n"
+            "7. BLACKLIST: Proibido 'Jornada', 'Vitória', 'Benção', 'Sucesso', 'Melhor versão'.\n"
+            "8. DIVERSIDADE: Cada devocional abre uma porta diferente na mesma emoção. Passagens e temas nunca se repetem.\n"
+            "9. FORMATO: Responda APENAS em JSON válido, sem markdown."
         )
 
     def _call_claude(self, prompt: str, system_prompt: str, temperature: float, fallback_func, fallback_args: dict, expected_keys: list = None, max_tokens: int = 1500, ai_request_id: int = None, endpoint_origin: str = None) -> Dict[str, Any]:
@@ -312,12 +331,7 @@ class AnthropicAIService(AIService):
         excluded_titles: list = None,
         ai_request_id: int = None,
     ) -> Dict[str, Any]:
-        system_prompt = self._get_base_constitution() + (
-            "\n\nCOMPOSER.EDITORIAL: Você é o MOTOR EDITORIAL DE ASSISTÊNCIA DA CAPIO.\n"
-            "Sua tarefa é compor um devocional contemplativo de altíssimo valor literário e pastoral baseado em uma emoção específica e uma direção espiritual.\n"
-            "REGRA CARDINAL DE DIVERSIDADE: Cada devocional gerado deve abrir uma porta diferente dentro da mesma emoção. "
-            "Passagens bíblicas, ângulos espirituais e temas emocionais jamais devem se repetir na biblioteca da CAPIO."
-        )
+        system_prompt = self._get_editorial_constitution()
 
         prompt = f"Emoção selecionada: '{emotion_name}'.\n"
 
