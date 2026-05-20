@@ -14,7 +14,7 @@ class DevotionalContentAdmin(admin.ModelAdmin):
     ordering = ('-created_at',)
     
     # Campos apenas de leitura
-    readonly_fields = ('created_at',)
+    readonly_fields = ('created_at', 'passage')
     
     # Ações em lote no admin
     actions = ['generate_share_quotes_action']

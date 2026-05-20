@@ -1,5 +1,9 @@
 from django.db import models
 from django.conf import settings
+from django.core.exceptions import ValidationError
+import logging
+
+logger = logging.getLogger(__name__)
 
 class Emotion(models.Model):
     name = models.CharField(max_length=80)
@@ -27,14 +31,28 @@ class DevotionalContent(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def resolve_passage(self):
+        logger.debug(
+            "[CAPIO PASSAGE DEBUG] resolve_passage() start devotional_id=%s reference=%r has_text=%s",
+            self.pk,
+            self.scripture_reference,
+            bool(self.scripture_text and self.scripture_text.strip()),
+        )
         if self.scripture_reference and self.scripture_reference.strip():
             from services.bible.normalization import NormalizationService
             from apps.bible.models import BiblePassage
             
             can_id, book, chap, verses = NormalizationService.normalize(self.scripture_reference)
+            logger.debug(
+                "[CAPIO PASSAGE DEBUG] NormalizationService result canonical_id=%s book=%s chapter=%s verses=%s",
+                can_id,
+                book,
+                chap,
+                verses,
+            )
             
             # Garantir canonical_id consistente
             passage = BiblePassage.objects.filter(canonical_id=can_id).first()
+            created = False
             if not passage:
                 passage = BiblePassage.objects.create(
                     canonical_id=can_id,
@@ -45,14 +63,33 @@ class DevotionalContent(models.Model):
                     translation="NVI",
                     language="pt"
                 )
+                created = True
             elif self.scripture_text and (not passage.text_original or passage.text_original.startswith("A Palavra de Deus")):
                 passage.text_original = self.scripture_text
                 passage.save(update_fields=['text_original'])
+
+            logger.debug(
+                "[CAPIO PASSAGE DEBUG] BiblePassage %s id=%s canonical_id=%s",
+                "created" if created else "found",
+                passage.pk,
+                passage.canonical_id,
+            )
                 
             self.passage = passage
+            logger.debug(
+                "[CAPIO PASSAGE DEBUG] devotional.passage assigned devotional_id=%s passage_id=%s",
+                self.pk,
+                self.passage_id,
+            )
 
     def clean(self):
-        from django.core.exceptions import ValidationError
+        logger.debug(
+            "[CAPIO PASSAGE DEBUG] clean() devotional_id=%s active=%s reviewed=%s passage_id=%s",
+            self.pk,
+            self.is_active,
+            self.reviewed_by_human,
+            self.passage_id,
+        )
         errors = {}
         if not self.emotion_id:
             errors['emotion'] = "A emoção é obrigatória."
@@ -79,7 +116,40 @@ class DevotionalContent(models.Model):
             raise ValidationError(errors)
 
     def save(self, *args, **kwargs):
+        logger.debug(
+            "[CAPIO PASSAGE DEBUG] save() start devotional_id=%s update_fields=%s active=%s reviewed=%s passage_id=%s",
+            self.pk,
+            kwargs.get('update_fields'),
+            self.is_active,
+            self.reviewed_by_human,
+            self.passage_id,
+        )
         self.resolve_passage()
+
+        if (self.is_active or self.reviewed_by_human) and not self.passage_id:
+            logger.debug(
+                "[CAPIO PASSAGE DEBUG] save() blocked devotional_id=%s because passage is missing",
+                self.pk,
+            )
+            raise ValidationError({
+                'passage': "O relacionamento 'passage' (BiblePassage) e obrigatorio para devocionais ativos ou revisados por humanos."
+            })
+
+        update_fields = kwargs.get('update_fields')
+        if update_fields is not None and self.passage_id and 'passage' not in update_fields and 'passage_id' not in update_fields:
+            kwargs['update_fields'] = set(update_fields)
+            kwargs['update_fields'].add('passage')
+            logger.debug(
+                "[CAPIO PASSAGE DEBUG] save() appended passage to update_fields devotional_id=%s update_fields=%s",
+                self.pk,
+                kwargs['update_fields'],
+            )
+
+        logger.debug(
+            "[CAPIO PASSAGE DEBUG] save() persist devotional_id=%s passage_id=%s",
+            self.pk,
+            self.passage_id,
+        )
         super().save(*args, **kwargs)
 
     def __str__(self):

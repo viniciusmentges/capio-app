@@ -236,5 +236,46 @@ class DevotionalTests(APITestCase):
         self.assertEqual(dev.passage.canonical_id, "PSA.34.18")
         self.assertNotIn(":", dev.passage.canonical_id)
 
+    def test_update_fields_persists_resolved_passage(self):
+        dev = DevotionalContent.objects.create(
+            emotion=self.emotion,
+            title="Devocional Orfao Corrigido",
+            scripture_reference="Romanos 8:28",
+            scripture_text="Todas as coisas cooperam para o bem.",
+            reflection="Deus trabalha tambem no que nao conseguimos ver.",
+            prayer="Senhor, firma meu coracao na tua providencia.",
+            share_quote="Deus tece o bem no invisivel.",
+            is_active=False,
+            reviewed_by_human=False
+        )
+        DevotionalContent.objects.filter(id=dev.id).update(passage=None)
+
+        dev.refresh_from_db()
+        self.assertIsNone(dev.passage_id)
+
+        dev.share_quote = "Deus tece o bem no invisivel."
+        dev.save(update_fields=['share_quote'])
+
+        dev.refresh_from_db()
+        self.assertIsNotNone(dev.passage_id)
+        self.assertEqual(dev.passage.canonical_id, "ROM.8.28")
+
+    def test_save_active_without_passage_fails(self):
+        from django.core.exceptions import ValidationError
+
+        dev = DevotionalContent(
+            emotion=self.emotion,
+            title="Ativo sem passagem",
+            scripture_reference="",
+            scripture_text="",
+            reflection="Texto",
+            prayer="Oracao",
+            share_quote="Frase",
+            is_active=True,
+            reviewed_by_human=False
+        )
+
+        with self.assertRaises(ValidationError):
+            dev.save()
 
 
