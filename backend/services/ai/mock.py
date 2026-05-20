@@ -95,6 +95,7 @@ class MockAIService(AIService):
         excluded_passages: list = None,
         excluded_themes: list = None,
         excluded_titles: list = None,
+        semantic_cooldown_words: list = None,
     ) -> Dict[str, Any]:
         logger.warning(f"[CAPIO AI] Mock acionado no fluxo editorial de devocional para a emoção {emotion_name} e tom/direção {tone_or_direction}.")
         return {

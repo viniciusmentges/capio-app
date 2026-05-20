@@ -45,19 +45,22 @@ class AnthropicAIService(AIService):
 
     def _get_editorial_constitution(self) -> str:
         """Prompt de sistema compacto exclusivo do motor editorial.
-        Otimizado para reduzir tokens, latência e pressão no worker Gunicorn."""
+        Otimizado para clareza humana, anti-abstração e token economy."""
         return (
-            "Motor Editorial silencioso da CAPIO. Não é chatbot, não é assistente.\n\n"
+            "Motor Editorial da CAPIO. Não é chatbot. Não é narrador espiritual abstrato.\n\n"
             "REGRAS INVIOLÁVEIS:\n"
-            "1. SCRIPTURE-FIRST: A Palavra é o centro. Iluminar o texto, nunca substituí-lo.\n"
-            "2. SEM AUTORREFERÊNCIA: Proibido 'eu', 'nós', 'espero que ajude'.\n"
-            "3. SEM EXCLAMAÇÃO: Proibido (!). Use pontos e vírgulas.\n"
-            "4. FRASES CURTAS: Máx 15 palavras. Máx 2 adjetivos por parágrafo.\n"
-            "5. TOM SÓBRIO: Pastoral, denso, silencioso. Sem triunfalismo ou coaching.\n"
-            "6. SEM IMPERATIVOS: Proibido 'Faça', 'Mude', 'Confie'. Use convite ('Há um espaço para...').\n"
-            "7. BLACKLIST: Proibido 'Jornada', 'Vitória', 'Benção', 'Sucesso', 'Melhor versão'.\n"
-            "8. DIVERSIDADE: Cada devocional abre uma porta diferente na mesma emoção. Passagens e temas nunca se repetem.\n"
-            "9. FORMATO: Responda APENAS em JSON válido, sem markdown."
+            "1. SCRIPTURE-FIRST: A Palavra é o centro. Iluminar, nunca substituir.\n"
+            "2. HUMANIDADE CONCRETA: O texto nasce de experiência humana real e reconhecível. Nunca de conceito espiritual abstrato.\n"
+            "3. CLAREZA PRIORITÁRIA: Compreensível por alguém emocionalmente exausto. Proibido linguagem nebulosa ou etérea.\n"
+            "4. SEM AUTORREFERÊNCIA: Proibido 'eu', 'nós', frases auto-referenciais.\n"
+            "5. SEM EXCLAMAÇÃO: Proibido (!). Pontos e vírgulas apenas.\n"
+            "6. FRASES CURTAS: Máx 15 palavras. Máx 2 adjetivos por parágrafo.\n"
+            "7. TOM SÓBRIO: Pastoral, silencioso. Sem triunfalismo, coaching ou efeito emocional calculado.\n"
+            "8. SEM IMPERATIVOS: Proibido 'Faça', 'Mude', 'Confie'. Use convite ('Há um espaço para...').\n"
+            "9. ANTI-ABSTRAÇÃO: Profundidade vem da verdade emocional, não da complexidade verbal. Proibido frases artificialmente profundas.\n"
+            "10. BLACKLIST: Proibido 'Jornada', 'Vitória', 'Benção', 'Sucesso', 'Melhor versão'.\n"
+            "11. DIVERSIDADE: Cada devocional abre uma porta diferente na mesma emoção.\n"
+            "12. FORMATO: Responda APENAS em JSON válido, sem markdown."
         )
 
     def _call_claude(self, prompt: str, system_prompt: str, temperature: float, fallback_func, fallback_args: dict, expected_keys: list = None, max_tokens: int = 1500, ai_request_id: int = None, endpoint_origin: str = None) -> Dict[str, Any]:
@@ -266,20 +269,20 @@ class AnthropicAIService(AIService):
         return res
 
     def devotional_for_emotion(self, emotion_name: str, reference_display: str, scripture_text: str, ai_request_id: int = None) -> Dict[str, Any]:
-        system_prompt = self._get_base_constitution() + (
-            "\n\nCOMPOSER.DEVOTIONAL: Acolhimento pastoral da alma. Foco em empatia e condução à Palavra."
-            "\nBaseie o devocional EXCLUSIVAMENTE na passagem e no estado de alma fornecidos."
-        )
+        system_prompt = self._get_editorial_constitution()
         prompt = (
-            f"Estado de Alma (Emoção): {emotion_name}\n"
-            f"Passagem Bíblica Guia: {reference_display}\n"
-            f"Texto Bíblico: \"{scripture_text}\"\n\n"
-            "Retorne UM objeto JSON com os seguintes campos (todos em português):\n"
-            "- 'title': Título poético e breve.\n"
-            "- 'reflection': Reflexão pastoral densa, consoladora e silenciosa baseada no texto bíblico fornecido.\n"
-            "- 'practical_application': Um gesto humano pequeno e concreto para acalmar a alma.\n"
-            "- 'guiding_question': Pergunta íntima para o silêncio do coração.\n"
-            "- 'prayer': Oração de entrega silenciosa (sem pontos de exclamação)."
+            f"Emoção: {emotion_name}\n"
+            f"Passagem Bíblica: {reference_display}\n"
+            f"Texto: \"{scripture_text}\"\n\n"
+            "PONTO DE PARTIDA: Comece pela experiência humana concreta desta emoção. "
+            "O leitor se reconhece antes de qualquer elaboração teológica. "
+            "Inclua uma imagem discreta do cotidiano (respiração, mãos, manhã, corpo, janela).\n"
+            "Retorne UM objeto JSON (todos em português):\n"
+            "- 'title': Título sóbrio e específico. Humano, não poético demais.\n"
+            "- 'reflection': Reflexão de até 800 caracteres. Começa no chão humano, encontra a Palavra, deixa espaço.\n"
+            "- 'practical_application': Gesto humano pequeno e concreto. Não conselho abstrato.\n"
+            "- 'guiding_question': Pergunta íntima nascida desta emoção específica. Sem respostas embutidas.\n"
+            "- 'prayer': Oração honesta e curta. Nascida da experiência, não de fórmula. Sem exclamações."
         )
         res = self._call_claude(
             prompt, system_prompt, 0.4,
@@ -322,6 +325,59 @@ class AnthropicAIService(AIService):
             endpoint_origin="DAILY_REFLECTION"
         )
 
+    # Ângulos humanos específicos por emoção — partem da experiência vivida, não de conceitos espirituais.
+    # Cada entrada descreve um estado interno real que o leitor pode reconhecer imediatamente.
+    _EDITORIAL_EMOTION_ANGLES = {
+        'ansioso': [
+            "noite sem dormir — mente acelerada, pensamentos que não param às 2 da manhã",
+            "aperto no peito antes de uma decisão, notícia ou conversa difícil",
+            "excesso de responsabilidade — o peso de tudo que só você carrega",
+            "pensamentos em loop — a mesma preocupação voltando sozinha",
+            "medo do futuro — imaginando o pior antes de acontecer",
+            "preocupação com alguém amado que não se pode proteger",
+            "urgência sem objeto — pressa e agitação sem saber exatamente o quê",
+            "cansaço mental de viver sempre em estado de alerta",
+            "pressão interna — cobrança que vem de dentro, não de fora",
+            "dificuldade de orar — palavras que não saem, Deus que parece distante",
+            "ansiedade no corpo — ombros tensos, respiração curta, estômago fechado",
+            "antecipação do pior — catastrofismo que precede o acontecimento",
+        ],
+        'triste': [
+            "luto ainda sem nome — a perda recente que ainda não assentou",
+            "saudade de algo que não volta mais",
+            "choro que vem sem razão aparente",
+            "solidão no meio das pessoas — estar cercado e não ser visto",
+            "cansaço de precisar parecer bem para os outros",
+            "decepção com alguém em quem se confiava",
+            "sensação de vazio que nada parece preencher",
+            "dor do fechamento de um ciclo importante",
+        ],
+        'medo': [
+            "medo concreto de algo real e nomeável",
+            "medo difuso — angústia sem objeto específico",
+            "paralisia diante de uma decisão pelo medo de errar",
+            "medo de decepcionar quem depende de você",
+            "o próximo passo que não se consegue ver",
+            "noite que amplia todos os medos",
+        ],
+        'sozinho': [
+            "solidão física — estar genuinamente só, sem ninguém",
+            "solidão emocional — estar com pessoas e não ser compreendido",
+            "vazio deixado por quem partiu",
+            "distância de quem se ama",
+            "sensação de não pertencer a nenhum lugar",
+            "madrugada sozinho — silêncio da casa que amplifica tudo",
+        ],
+        'desmotivado': [
+            "acordar sem vontade — manhã pesada, cama que prende",
+            "perda de sentido no trabalho ou na vida",
+            "exaustão de quem tentou e não viu resultado",
+            "indiferença emocional — quando nada parece importar",
+            "peso físico que reflete o estado interior",
+            "sensação de ficar para trás enquanto os outros avançam",
+        ],
+    }
+
     def editorial_generate_devotional(
         self,
         emotion_name: str,
@@ -329,63 +385,60 @@ class AnthropicAIService(AIService):
         excluded_passages: list = None,
         excluded_themes: list = None,
         excluded_titles: list = None,
+        semantic_cooldown_words: list = None,
         ai_request_id: int = None,
     ) -> Dict[str, Any]:
         system_prompt = self._get_editorial_constitution()
 
-        prompt = f"Emoção selecionada: '{emotion_name}'.\n"
+        emotion_key = emotion_name.lower().strip()
+        angles = self._EDITORIAL_EMOTION_ANGLES.get(emotion_key, [])
 
+        prompt = f"Emoção: '{emotion_name}'.\n"
         if tone_or_direction:
-            prompt += f"Direção Espiritual / Tom Desejado pelo Editor: '{tone_or_direction}'.\n"
+            prompt += f"Direção do Editor: '{tone_or_direction}'.\n"
 
         if excluded_passages:
-            prompt += "\n⛔ PASSAGENS BÍBLICAS PROIBIDAS — já utilizadas nesta emoção. NÃO use nenhuma delas:\n"
-            for p in excluded_passages:
-                prompt += f"  - {p}\n"
+            prompt += "\n⛔ PASSAGENS PROIBIDAS (já usadas nesta emoção):\n"
+            prompt += "".join(f"  - {p}\n" for p in excluded_passages)
 
         if excluded_themes:
-            prompt += "\n⛔ TEMAS EMOCIONAIS PROIBIDOS — já utilizados. Escolha um ângulo completamente diferente:\n"
-            for t in excluded_themes:
-                prompt += f"  - {t}\n"
+            prompt += "\n⛔ TEMAS PROIBIDOS (já usados):\n"
+            prompt += "".join(f"  - {t}\n" for t in excluded_themes)
 
         if excluded_titles:
-            prompt += "\n⛔ TÍTULOS PROIBIDOS — já existentes. Não repita nem variações próximas:\n"
-            for ti in excluded_titles:
-                prompt += f"  - {ti}\n"
+            prompt += "\n⛔ TÍTULOS PROIBIDOS:\n"
+            prompt += "".join(f"  - {ti}\n" for ti in excluded_titles)
+
+        if semantic_cooldown_words:
+            prompt += "\n🌡 RESFRIAMENTO SEMÂNTICO — estas palavras saturaram os últimos devocionais. Evite-as como âncoras do texto:\n"
+            prompt += "".join(f"  - {w}\n" for w in semantic_cooldown_words)
+
+        if angles:
+            prompt += f"\nÂNGULOS HUMANOS para '{emotion_name}' — escolha UM e construa o devocional inteiramente ao redor dele:\n"
+            prompt += "".join(f"  • {a}\n" for a in angles)
 
         prompt += (
-            "\n📖 EIXOS DE DIVERSIDADE EDITORIAL PARA ANSIEDADE (explore um eixo ainda não utilizado):\n"
-            "  • cuidado concreto de Deus no cotidiano e nos pequenos detalhes\n"
-            "  • entrega do amanhã que ainda não existe e não pode ser controlado\n"
-            "  • presença de Deus no meio do medo e da angústia física\n"
-            "  • paz que ultrapassa a compreensão racional e as circunstâncias\n"
-            "  • descanso do corpo tenso e libertação do peso acumulado\n"
-            "  • confiança sem necessidade de controlar o resultado\n"
-            "  • oração honesta no aperto, no sufoco e na exaustão\n"
-            "  • atenção ao momento presente como prática espiritual\n"
-            "  • proximidade de Deus ao coração quebrantado e assustado\n"
-            "  • refúgio e proteção divina diante do perigo real\n"
-            "  • sustento diário e provisão suficiente para hoje\n"
-            "  • libertação do peso excessivo das preocupações acumuladas\n"
-            "NÃO se limite aos eixos de espera passiva, silêncio ou repouso se eles já tiverem sido usados.\n"
-            "\nEscolha e componha um devocional contemplativo com passagem e ângulo espiritual AINDA NÃO EXISTENTES na biblioteca da CAPIO para esta emoção.\n"
-            "Retorne UM objeto JSON com os seguintes campos (todos em português):\n"
-            "- 'title': Um título breve, sóbrio e contemplativo.\n"
-            "- 'scripture_reference': A referência bíblica de uma passagem AINDA NÃO UTILIZADA para esta emoção (ex: 'Mateus 6:25-27'). NÃO use nenhuma das passagens proibidas listadas acima.\n"
-            "- 'scripture_text': O texto exato da passagem bíblica selecionada.\n"
-            "- 'reflection': Uma reflexão pastoral densa, consoladora e silenciosa (máx 1000 caracteres). Deve parecer um trecho de um clássico espiritual tradicional ou o diário íntimo de um monge. Evite clichês modernos, tons triumfalistas ou performáticos.\n"
-            "- 'prayer': Uma oração curta de entrega e recolhimento silencioso (sem exclamações).\n"
-            "- 'share_quote': Um fragmento contemplativo curado de altíssimo valor editorial (máx 15 palavras) extraído ou inspirado na reflexão. Deve evocar interioridade e presença. Proibido imperativos, jargões ou exclamações.\n"
-            "- 'emotional_theme': Um subtema emocional curto que sintetiza o ângulo específico escolhido (ex: 'A entrega do amanhã', 'Presença no medo', 'Cuidado concreto de Deus').\n\n"
-            "DIRETRIZES ESTRITAS:\n"
-            "1. PROIBIÇÃO DE AUTOAJUDA / COACHING / TRIUNFALISMO: Banido imperativos (não use 'lembre-se', 'busque', 'confie', 'mude', 'não desista'). Banido jargões de prosperidade ou vitória.\n"
-            "2. GRAMÁTICA DO SILÊNCIO: Proibido absolutamente o uso de pontos de exclamação (!). Use apenas pontos e vírgulas.\n"
-            "3. SOBRIEDADE E PRESENÇA: O tom deve ser sóbrio, íntimo, acolhedor e com economia de palavras. Deixe espaço para o mistério e a presença.\n"
-            "4. FORMATO: Responda APENAS em JSON válido, sem texto markdown ou explicações externas."
+            "\nINSTRUÇÕES DE COMPOSIÇÃO:\n"
+            "PONTO DE PARTIDA: A reflexão começa numa experiência humana concreta e reconhecível. "
+            "O leitor se reconhece antes de qualquer elaboração teológica. Não comece por conceitos espirituais.\n"
+            "IMAGEM COTIDIANA: Inclua uma imagem discreta do cotidiano (madrugada, janela, respiração, mãos, cama, passos, manhã, corpo).\n"
+            "VOZ: Não de narrador espiritual abstrato. De alguém que realmente atravessou esta experiência e encontrou a Palavra no chão dela.\n"
+            "PROFUNDIDADE: Vem da verdade emocional específica, não da densidade verbal.\n"
+            "\nRetorne UM objeto JSON (todos os campos em português):\n"
+            "- 'title': Título breve e sóbrio. Específico e humano, não poético demais.\n"
+            "- 'scripture_reference': Passagem bíblica AINDA NÃO UTILIZADA para esta emoção.\n"
+            "- 'scripture_text': Texto exato da passagem.\n"
+            "- 'reflection': Máx 900 caracteres. Começa no chão humano, encontra a Palavra, deixa espaço. "
+            "Deve soar como anotação íntima de quem sobreviveu, não como sermão contemplativo.\n"
+            "- 'prayer': Oração honesta nascida desta experiência específica. Curta. Sem exclamações.\n"
+            "- 'share_quote': Máx 15 palavras. Como anotação num caderno às 3 da manhã: "
+            "menos efeito dramático, mais verdade interior. Não construída para impacto ou compartilhamento.\n"
+            "- 'emotional_theme': Subtema humano e específico (ex: 'Noite sem dormir', 'O pensamento que volta').\n\n"
+            "RESTRIÇÕES FINAIS: Sem imperativos. Sem exclamações (!). JSON válido apenas."
         )
 
         return self._call_claude(
-            prompt, system_prompt, 0.7,
+            prompt, system_prompt, 0.75,
             self.mock_fallback.editorial_generate_devotional,
             {"emotion_name": emotion_name, "tone_or_direction": tone_or_direction},
             expected_keys=['title', 'scripture_reference', 'scripture_text', 'reflection', 'prayer', 'share_quote', 'emotional_theme'],
@@ -394,26 +447,27 @@ class AnthropicAIService(AIService):
         )
 
     def generate_share_quote(self, reflection: str, ai_request_id: int = None) -> str:
-        # Prompt secundário minimalista modularizado! Reduz tokens de entrada em >500 tokens por chamada!
         system_prompt = (
-            "Você é o Diretor Editorial da CAPIO. Sua missão é extrair ou formular um fragmento contemplativo "
-            "de no máximo 15 palavras com base na reflexão fornecida. Esse fragmento servirá para o card de imagem compartilhável."
+            "Motor Editorial da CAPIO. Extrai um fragmento de até 15 palavras de uma reflexão fornecida. "
+            "Sem autorreferência, sem exclamações, sem dramaticidade calculada."
         )
         prompt = (
-            f"Gere um fragmento (share_quote) de no máximo 15 palavras para a meditação:\n\"{reflection}\"\n\n"
-            "REGRAS CRÍTICAS:\n"
-            "1. CONCISÃO: Máximo de 15 palavras. Curto e com densidade de livro clássico espiritual.\n"
-            "2. ANTI-COACH: NUNCA use imperativos ('confie', 'lembre-se', 'mude'). Sem jargões gospel ('vitória', 'bênção').\n"
-            "3. SILÊNCIO: Proibido o uso de pontos de exclamação (!). Use apenas pontos finais e vírgulas.\n"
-            "4. RETORNO: Retorne um objeto JSON contendo exclusivamente a chave 'share_quote' (ex: {\"share_quote\": \"frase\"}), sem markdown."
+            f"Reflexão:\n\"{reflection}\"\n\n"
+            "Extraia ou formule um fragmento (share_quote) de até 15 palavras.\n\n"
+            "REGRAS:\n"
+            "1. TOM: Como anotação íntima num caderno às 3 da manhã. Menos efeito, mais verdade interior.\n"
+            "2. ANTI-IMPACTO: Não construída para ser compartilhável ou memorável. Construída para ser verdadeira.\n"
+            "3. SEM IMPERATIVO: Proibido 'confie', 'lembre-se', 'busque', 'mude'. Sem jargão gospel.\n"
+            "4. SEM EXCLAMAÇÃO: Apenas pontos e vírgulas.\n"
+            "5. RETORNO: JSON com exclusivamente a chave 'share_quote'. Sem markdown."
         )
 
         res = self._call_claude(
-            prompt, system_prompt, 0.4,
+            prompt, system_prompt, 0.5,
             self.mock_fallback.generate_share_quote,
             {"reflection": reflection},
             expected_keys=['share_quote'],
             ai_request_id=ai_request_id,
             endpoint_origin="SHARE_QUOTE"
         )
-        return res.get('share_quote', "O silêncio é o solo fértil onde a graça de Deus repousa.")
+        return res.get('share_quote', "Há um peso que não precisa ser carregado sozinho.")

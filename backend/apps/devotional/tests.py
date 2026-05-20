@@ -481,4 +481,71 @@ class EditorialDeduplicationTests(APITestCase):
         self.assertIn("ansiedade antes de dormir", retry_direction)
         self.assertIn("JÁ EXISTE", retry_direction)
 
+    def test_editorial_generate_sends_semantic_cooldown_when_words_saturated(self):
+        """Palavras da watchlist presentes em 2+ devocionais recentes devem ser passadas no semantic_cooldown_words."""
+        # Criar 3 devocionais com "silêncio" e "repouso" no conteúdo (saturam watchlist)
+        self._create_devotional(
+            "O silêncio na espera", "Salmos 23:1-3",
+            emotional_theme="Repouso no silêncio"
+        )
+        DevotionalContent.objects.filter(title="O silêncio na espera").update(
+            reflection="Há um silêncio que acolhe a alma em repouso."
+        )
+        self._create_devotional(
+            "Quando o repouso chega", "Filipenses 4:6-7",
+            emotional_theme="Silêncio na entrega"
+        )
+        DevotionalContent.objects.filter(title="Quando o repouso chega").update(
+            reflection="O repouso chega quando paramos de resistir ao silêncio."
+        )
+
+        with patch('apps.devotional.views.get_ai_service') as mock_get_ai:
+            mock_ai = MagicMock()
+            mock_ai.editorial_generate_devotional.return_value = _make_ai_response("Mateus 6:25", "Entrega do amanhã")
+            mock_get_ai.return_value = mock_ai
+
+            response = self.client.post(EDITORIAL_URL, {'emotion_slug': 'ansioso'}, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        call_kwargs = mock_ai.editorial_generate_devotional.call_args.kwargs
+        cooldown_words = call_kwargs.get('semantic_cooldown_words', [])
+        # "silêncio" e "repouso" aparecem em 2+ devocionais — devem estar no cooldown
+        self.assertIn('silêncio', cooldown_words)
+        self.assertIn('repouso', cooldown_words)
+
+    def test_editorial_generate_no_semantic_cooldown_for_empty_library(self):
+        """Sem devocionais existentes, semantic_cooldown_words deve ser lista vazia."""
+        with patch('apps.devotional.views.get_ai_service') as mock_get_ai:
+            mock_ai = MagicMock()
+            mock_ai.editorial_generate_devotional.return_value = _make_ai_response("Mateus 6:34")
+            mock_get_ai.return_value = mock_ai
+
+            response = self.client.post(EDITORIAL_URL, {'emotion_slug': 'ansioso'}, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        call_kwargs = mock_ai.editorial_generate_devotional.call_args.kwargs
+        self.assertEqual(call_kwargs.get('semantic_cooldown_words', []), [])
+
+    def test_editorial_generate_semantic_cooldown_excludes_rare_words(self):
+        """Palavra da watchlist que aparece em apenas 1 devocional NÃO deve entrar no cooldown."""
+        self._create_devotional(
+            "O mistério da fé", "João 14:27",
+            emotional_theme="Paz que transcende"
+        )
+        DevotionalContent.objects.filter(title="O mistério da fé").update(
+            reflection="Há um mistério na paz que a razão não alcança."
+        )
+
+        with patch('apps.devotional.views.get_ai_service') as mock_get_ai:
+            mock_ai = MagicMock()
+            mock_ai.editorial_generate_devotional.return_value = _make_ai_response("Romanos 8:28")
+            mock_get_ai.return_value = mock_ai
+
+            self.client.post(EDITORIAL_URL, {'emotion_slug': 'ansioso'}, format='json')
+
+        call_kwargs = mock_ai.editorial_generate_devotional.call_args.kwargs
+        cooldown_words = call_kwargs.get('semantic_cooldown_words', [])
+        # "mistério" aparece em apenas 1 devocional — não deve entrar no cooldown
+        self.assertNotIn('mistério', cooldown_words)
+
 

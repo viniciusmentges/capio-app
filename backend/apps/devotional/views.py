@@ -79,6 +79,13 @@ class EditorialDevotionalGenerateView(APIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated, IsAdminUser]
 
+    # Palavras que tendem a saturar vocabulário editorial — monitoradas nos últimos devocionais.
+    _SEMANTIC_WATCHLIST = [
+        'silêncio', 'espera', 'repouso', 'quietude', 'sustentação', 'fidelidade',
+        'mistério', 'contemplação', 'interioridade', 'descanso', 'serenidade',
+        'presença', 'interior', 'recolhimento',
+    ]
+
     def post(self, request):
         emotion_slug = request.data.get('emotion_slug')
         tone_or_direction = request.data.get('tone_or_direction', '')
@@ -119,10 +126,20 @@ class EditorialDevotionalGenerateView(APIView):
             exc_themes = excluded_themes[-5:]
             exc_titles = excluded_titles[-5:]
 
+            # Resfriamento semântico: palavras saturadas nos últimos devocionais desta emoção
+            semantic_cooldown = self._build_semantic_cooldown(emotion)
+
             logger.info(
                 "[CAPIO EDITORIAL] Gerando devocional para '%s' com %d passagens excluídas, %d temas excluídos, %d títulos excluídos.",
                 emotion.name, len(exc_passages), len(exc_themes), len(exc_titles)
             )
+            if semantic_cooldown:
+                logger.info(
+                    "[CAPIO SEMANTIC AUDIT] Palavras em resfriamento para '%s': %s",
+                    emotion.name, ', '.join(semantic_cooldown)
+                )
+            else:
+                logger.info("[CAPIO SEMANTIC AUDIT] Sem palavras em resfriamento para '%s'.", emotion.name)
 
             ai_service = get_ai_service()
 
@@ -132,6 +149,7 @@ class EditorialDevotionalGenerateView(APIView):
                 excluded_passages=exc_passages,
                 excluded_themes=exc_themes,
                 excluded_titles=exc_titles,
+                semantic_cooldown_words=semantic_cooldown,
             )
 
             # Validação pós-resposta: normalizar scripture_reference e verificar canonical_id
@@ -153,9 +171,10 @@ class EditorialDevotionalGenerateView(APIView):
                     res = ai_service.editorial_generate_devotional(
                         emotion_name=emotion.name,
                         tone_or_direction=retry_direction,
-                        excluded_passages=excluded_passages[-20:],
-                        excluded_themes=excluded_themes[-10:],
-                        excluded_titles=excluded_titles[-15:],
+                        excluded_passages=excluded_passages[-5:],
+                        excluded_themes=excluded_themes[-5:],
+                        excluded_titles=excluded_titles[-5:],
+                        semantic_cooldown_words=semantic_cooldown,
                     )
 
                     # Segunda verificação: se ainda duplicar, retornar erro claro para o admin
@@ -192,6 +211,24 @@ class EditorialDevotionalGenerateView(APIView):
                 )
             logger.error("Falha ao gerar devocional com IA no fluxo editorial: %s", e)
             return Response({"error": "generation_failed", "message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @staticmethod
+    def _build_semantic_cooldown(emotion, limit: int = 5) -> list:
+        """Analisa os últimos `limit` devocionais da emoção e retorna palavras da watchlist
+        que aparecem em 2 ou mais deles, sinalizando saturação semântica."""
+        recent = DevotionalContent.objects.filter(
+            emotion=emotion
+        ).order_by('-created_at')[:limit].values_list(
+            'reflection', 'share_quote', 'emotional_theme', 'title'
+        )
+        word_occurrences = {}
+        for reflection, share_quote, emotional_theme, title in recent:
+            combined = ' '.join(filter(None, [reflection, share_quote, emotional_theme, title])).lower()
+            for word in EditorialDevotionalGenerateView._SEMANTIC_WATCHLIST:
+                if word.lower() in combined:
+                    word_occurrences[word] = word_occurrences.get(word, 0) + 1
+        cooldown = [w for w, count in word_occurrences.items() if count >= 2]
+        return cooldown[:6]
 
     @staticmethod
     def _check_duplicate(scripture_reference: str, excluded_canonical_ids: set) -> str:
