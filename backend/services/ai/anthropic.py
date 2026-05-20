@@ -376,7 +376,143 @@ class AnthropicAIService(AIService):
             "peso físico que reflete o estado interior",
             "sensação de ficar para trás enquanto os outros avançam",
         ],
+        'desesperançoso': [
+            "manhã que não traz novidade — acordar e sentir que nada mudou",
+            "perda de fé no futuro — quando não há como imaginar que melhora",
+            "cansaço de esperar por algo que nunca parece chegar",
+            "o esforço que não trouxe resultado — tentou e não funcionou",
+            "orações que parecem não chegar a lugar nenhum",
+            "impossibilidade de imaginar um amanhã diferente do hoje",
+            "quando o que antes dava sentido à vida vai desaparecendo",
+            "sensação de estar parado enquanto a vida passa",
+        ],
     }
+
+    # Passagens proibidas permanentemente por emoção — independentes do banco.
+    # Usadas quando o viés do corpus força o modelo a retornar sempre a mesma passagem.
+    _EDITORIAL_PASSAGE_BLACKLIST = {
+        'ansioso':        ['Filipenses 4:6-7', 'Filipenses 4:6', 'Filipenses 4:7'],
+        'medo':           [],
+        'triste':         [],
+        'sozinho':        [],
+        'desmotivado':    [],
+        'desesperançoso': [],
+    }
+
+    # Passagens com forte afinidade emocional por emoção — o modelo deve priorizá-las.
+    # Escolhidas por ressonância temática direta, não por popularidade no corpus.
+    _EDITORIAL_PRIMARY_SCRIPTURES = {
+        'ansioso': [
+            'Mateus 6:25-34',
+            'Salmo 131',
+            'Mateus 11:28-30',
+            'João 14:1-3',
+            'Salmo 94:18-19',
+            'Lucas 12:22-26',
+            'Provérbios 3:5-6',
+            'Salmo 55:22',
+        ],
+        'medo': [
+            'Salmo 27:1-4',
+            'Isaías 41:10',
+            'Marcos 4:35-41',
+            'Salmo 56:3-4',
+            'Josué 1:9',
+            '2 Timóteo 1:7',
+            'João 16:33',
+            'Salmo 46:1-3',
+        ],
+        'triste': [
+            'Salmo 34:18',
+            'Salmo 42:5-11',
+            'João 11:33-35',
+            'Mateus 5:4',
+            'Salmo 30:5',
+            'Isaías 53:3',
+            'Salmo 147:3',
+            'Apocalipse 21:4',
+        ],
+        'sozinho': [
+            'Salmo 139:7-12',
+            'Hebreus 13:5',
+            'Isaías 43:2-3',
+            'João 16:32',
+            'Deuteronômio 31:8',
+            'Salmo 68:6',
+            'Zacarias 2:5',
+        ],
+        'desmotivado': [
+            'Isaías 40:28-31',
+            'Gálatas 6:9',
+            'Neemias 8:10',
+            'Salmo 73:26',
+            'Salmo 27:13-14',
+            '1 Reis 19:4-8',
+            'Romanos 5:3-5',
+        ],
+        'desesperançoso': [
+            'Lamentações 3:21-23',
+            'Romanos 8:24-25',
+            'Salmo 42:5-11',
+            'Salmo 130',
+            'Romanos 5:3-5',
+            'Hebreus 11:1',
+            'Isaías 40:31',
+            'Jeremias 29:11',
+        ],
+    }
+
+    # Passagens secundárias — aceitáveis mas com menor prioridade.
+    # Tendem a aparecer em múltiplas emoções; usadas só se as primárias estiverem esgotadas.
+    _EDITORIAL_SECONDARY_SCRIPTURES = {
+        'ansioso':        ['1 Pedro 5:7', 'Isaías 26:3', 'Salmo 46:10', 'Romanos 8:28'],
+        'medo':           ['Salmo 23', 'Romanos 8:38-39', '1 João 4:18', 'Isaías 26:3'],
+        'triste':         ['Salmo 23', 'Romanos 8:28', 'Isaías 40:28-31', '2 Coríntios 4:17'],
+        'sozinho':        ['Salmo 23', 'Romanos 8:38-39', 'João 15:15', 'Jeremias 31:3'],
+        'desmotivado':    ['Salmo 34:18', 'Jeremias 29:11', 'Salmo 138:3', 'Mateus 11:28-30'],
+        'desesperançoso': ['Salmo 23', 'Romanos 8:28', 'Apocalipse 21:4', 'João 14:1-3'],
+    }
+
+    # Categorias de abertura para variar a textura do início da reflexão.
+    # Cada entrada: (chave, instrução para o modelo).
+    _OPENING_STYLE_CATEGORIES = [
+        (
+            'imagem_fisica',
+            'Comece com uma imagem física e concreta — algo que se vê, toca ou sente no corpo. '
+            'Ex: "As mãos não param de se mexer. O estômago fecha antes mesmo de entender por quê."',
+        ),
+        (
+            'observacao_cotidiana',
+            'Comece com uma observação do cotidiano ordinário — algo que qualquer um reconheceria. '
+            'Ex: "Às vezes a manhã começa pesada antes mesmo de saber por quê."',
+        ),
+        (
+            'frase_curta',
+            'Comece com uma frase única e direta, máximo 8 palavras, sem ornamento. '
+            'Ex: "Tem dias em que tudo parece demais." ou "O pensamento volta sozinho à noite."',
+        ),
+        (
+            'sensacao_corporal',
+            'Comece com uma sensação corporal específica ligada à emoção. '
+            'Ex: "É um peso no peito que não se explica. Não é dor exata — é pressão que não passa."',
+        ),
+        (
+            'cena_humana',
+            'Comece com uma cena humana breve e reconhecível — um momento específico de vida. '
+            'Ex: "Você estava tentando dormir e não conseguia. Três da manhã, o pensamento voltou."',
+        ),
+        (
+            'descricao_concreta',
+            'Comece com uma descrição concreta de um estado interno, sem nomeá-lo diretamente. '
+            'Ex: "A lista de pendências cresceu mais uma vez. O prazo é amanhã. O corpo não quer saber disso."',
+        ),
+    ]
+
+    @staticmethod
+    def _pick_opening_style() -> tuple:
+        """Seleciona aleatoriamente uma categoria de abertura para variar a textura das reflexões."""
+        import random
+        return random.choice(AnthropicAIService._OPENING_STYLE_CATEGORIES)
 
     def editorial_generate_devotional(
         self,
@@ -389,52 +525,85 @@ class AnthropicAIService(AIService):
         ai_request_id: int = None,
     ) -> Dict[str, Any]:
         system_prompt = self._get_editorial_constitution()
-
         emotion_key = emotion_name.lower().strip()
+
+        # 1. Blacklist fixa — aplicada antes das exclusions dinâmicas
+        static_blacklist = self._EDITORIAL_PASSAGE_BLACKLIST.get(emotion_key, [])
+        dynamic_excluded = list(excluded_passages or [])
+        # Merge: blacklist primeiro, sem duplicações
+        all_excluded = list(static_blacklist) + [p for p in dynamic_excluded if p not in static_blacklist]
+
+        # 2. Passagens preferenciais disponíveis — filtradas das proibidas
+        excluded_set = set(all_excluded)
+        available_primary = [p for p in self._EDITORIAL_PRIMARY_SCRIPTURES.get(emotion_key, []) if p not in excluded_set]
+        available_secondary = [p for p in self._EDITORIAL_SECONDARY_SCRIPTURES.get(emotion_key, []) if p not in excluded_set]
+
+        # 3. Ângulos humanos por emoção
         angles = self._EDITORIAL_EMOTION_ANGLES.get(emotion_key, [])
 
+        # 4. Estilo de abertura — selecionado aleatoriamente para variar a textura
+        style_key, style_instruction = self._pick_opening_style()
+        logger.info(
+            "[CAPIO OPENING STYLE AUDIT] Emoção '%s' — estilo de abertura selecionado: '%s'",
+            emotion_name, style_key
+        )
+
+        # Construção do prompt
         prompt = f"Emoção: '{emotion_name}'.\n"
         if tone_or_direction:
             prompt += f"Direção do Editor: '{tone_or_direction}'.\n"
 
-        if excluded_passages:
-            prompt += "\n⛔ PASSAGENS PROIBIDAS (já usadas nesta emoção):\n"
-            prompt += "".join(f"  - {p}\n" for p in excluded_passages)
+        if all_excluded:
+            prompt += "\n[PROIBIDO] PASSAGENS ABSOLUTAMENTE PROIBIDAS — nunca use nenhuma delas:\n"
+            prompt += "".join(f"  - {p}\n" for p in all_excluded)
 
         if excluded_themes:
-            prompt += "\n⛔ TEMAS PROIBIDOS (já usados):\n"
+            prompt += "\n[PROIBIDO] TEMAS PROIBIDOS (já usados):\n"
             prompt += "".join(f"  - {t}\n" for t in excluded_themes)
 
         if excluded_titles:
-            prompt += "\n⛔ TÍTULOS PROIBIDOS:\n"
+            prompt += "\n[PROIBIDO] TITULOS PROIBIDOS:\n"
             prompt += "".join(f"  - {ti}\n" for ti in excluded_titles)
 
         if semantic_cooldown_words:
-            prompt += "\n🌡 RESFRIAMENTO SEMÂNTICO — estas palavras saturaram os últimos devocionais. Evite-as como âncoras do texto:\n"
+            prompt += "\n[RESFRIAMENTO] Estas palavras saturaram os últimos devocionais. Evite-as:\n"
             prompt += "".join(f"  - {w}\n" for w in semantic_cooldown_words)
 
+        if available_primary:
+            prompt += f"\n[PREFERENCIAL] Passagens com afinidade emocional para '{emotion_name}' — escolha UMA com prioridade:\n"
+            prompt += "".join(f"  + {p}\n" for p in available_primary)
+
+        if available_secondary:
+            secondary_label = "use apenas se todas as preferenciais estiverem esgotadas" if available_primary else "use como preferenciais"
+            prompt += f"\n[SECUNDARIO] Passagens alternativas ({secondary_label}):\n"
+            prompt += "".join(f"  + {p}\n" for p in available_secondary)
+
         if angles:
-            prompt += f"\nÂNGULOS HUMANOS para '{emotion_name}' — escolha UM e construa o devocional inteiramente ao redor dele:\n"
-            prompt += "".join(f"  • {a}\n" for a in angles)
+            prompt += f"\n[ANGULOS] Experiências humanas para '{emotion_name}' — escolha UMA e construa ao redor dela:\n"
+            prompt += "".join(f"  * {a}\n" for a in angles)
 
         prompt += (
-            "\nINSTRUÇÕES DE COMPOSIÇÃO:\n"
+            f"\n[ABERTURA] Estilo obrigatorio para iniciar a reflexao:\n{style_instruction}\n"
+            "\n[COMPOSICAO]\n"
             "PONTO DE PARTIDA: A reflexão começa numa experiência humana concreta e reconhecível. "
-            "O leitor se reconhece antes de qualquer elaboração teológica. Não comece por conceitos espirituais.\n"
-            "IMAGEM COTIDIANA: Inclua uma imagem discreta do cotidiano (madrugada, janela, respiração, mãos, cama, passos, manhã, corpo).\n"
-            "VOZ: Não de narrador espiritual abstrato. De alguém que realmente atravessou esta experiência e encontrou a Palavra no chão dela.\n"
+            "O leitor se reconhece antes de qualquer elaboração teológica.\n"
+            "IMAGEM COTIDIANA: Inclua uma imagem discreta do cotidiano (madrugada, janela, respiração, mãos, cama, passos).\n"
+            "VOZ: De alguém que atravessou esta experiência, não de narrador espiritual abstrato.\n"
             "PROFUNDIDADE: Vem da verdade emocional específica, não da densidade verbal.\n"
             "\nRetorne UM objeto JSON (todos os campos em português):\n"
-            "- 'title': Título breve e sóbrio. Específico e humano, não poético demais.\n"
-            "- 'scripture_reference': Passagem bíblica AINDA NÃO UTILIZADA para esta emoção.\n"
+            "- 'title': Título sóbrio e específico. Humano, não poético demais.\n"
+            "- 'scripture_reference': Use preferencialmente as passagens [PREFERENCIAL]. "
+            "Nunca use nenhuma da lista [PROIBIDO].\n"
             "- 'scripture_text': Texto exato da passagem.\n"
-            "- 'reflection': Máx 900 caracteres. Começa no chão humano, encontra a Palavra, deixa espaço. "
-            "Deve soar como anotação íntima de quem sobreviveu, não como sermão contemplativo.\n"
-            "- 'prayer': Oração honesta nascida desta experiência específica. Curta. Sem exclamações.\n"
-            "- 'share_quote': Máx 15 palavras. Como anotação num caderno às 3 da manhã: "
-            "menos efeito dramático, mais verdade interior. Não construída para impacto ou compartilhamento.\n"
-            "- 'emotional_theme': Subtema humano e específico (ex: 'Noite sem dormir', 'O pensamento que volta').\n\n"
-            "RESTRIÇÕES FINAIS: Sem imperativos. Sem exclamações (!). JSON válido apenas."
+            "- 'reflection': Max 900 caracteres. Use o estilo de abertura [ABERTURA]. "
+            "Proibido começar com 'Ha um' ou 'Existe um'. "
+            "Comeca no chao humano, encontra a Palavra, deixa espaco.\n"
+            "- 'prayer': Oracao honesta nascida desta experiência específica. Curta. Sem exclamaçoes.\n"
+            "- 'share_quote': Max 15 palavras. Observacao íntima guardada no coracao, nao construída para impacto. "
+            "PROIBIDO: paralelismo, estrutura espelhada (A->B / A'->B'), frases criadas para soar memoráveis. "
+            "OBRIGATORIO: gramaticalmente correto. Tom interior, nao performático.\n"
+            "- 'emotional_theme': Max 5 palavras. Subtema humano direto. Sem travessao. Sem descricao adicional.\n\n"
+            "RESTRICOES FINAIS: Sem imperativos. Sem exclamaçoes (!). JSON valido apenas."
         )
 
         return self._call_claude(

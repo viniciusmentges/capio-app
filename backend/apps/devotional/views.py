@@ -121,10 +121,10 @@ class EditorialDevotionalGenerateView(APIView):
                 if theme and theme not in excluded_themes:
                     excluded_themes.append(theme)
 
-            # Limitar a 5 itens por lista para manter o prompt compacto e reduzir latência
-            exc_passages = excluded_passages[-5:]
-            exc_themes = excluded_themes[-5:]
-            exc_titles = excluded_titles[-5:]
+            # Limitar a 8 itens por lista — cap ampliado para combater viés gravitacional de passagens
+            exc_passages = excluded_passages[-8:]
+            exc_themes = excluded_themes[-8:]
+            exc_titles = excluded_titles[-8:]
 
             # Resfriamento semântico: palavras saturadas nos últimos devocionais desta emoção
             semantic_cooldown = self._build_semantic_cooldown(emotion)
@@ -171,9 +171,9 @@ class EditorialDevotionalGenerateView(APIView):
                     res = ai_service.editorial_generate_devotional(
                         emotion_name=emotion.name,
                         tone_or_direction=retry_direction,
-                        excluded_passages=excluded_passages[-5:],
-                        excluded_themes=excluded_themes[-5:],
-                        excluded_titles=excluded_titles[-5:],
+                        excluded_passages=excluded_passages[-8:],
+                        excluded_themes=excluded_themes[-8:],
+                        excluded_titles=excluded_titles[-8:],
                         semantic_cooldown_words=semantic_cooldown,
                     )
 
@@ -196,6 +196,23 @@ class EditorialDevotionalGenerateView(APIView):
                                 },
                                 status=status.HTTP_409_CONFLICT,
                             )
+
+            # CAPIO SEMANTIC AUDIT — pós-geração
+            final_ref = res.get('scripture_reference', '')
+            final_quote = res.get('share_quote', '')
+            logger.info(
+                "[CAPIO SEMANTIC AUDIT] Passagem gerada: '%s' | Emoção: '%s'",
+                final_ref, emotion.name
+            )
+            # Detecção heurística de paralelismo no share_quote (A→B / A'→B')
+            quote_parts = [p.strip() for p in final_quote.replace('!', '.').split('.') if p.strip()]
+            if len(quote_parts) >= 2:
+                first_words = [p.split()[0].lower() if p.split() else '' for p in quote_parts[:2]]
+                if first_words[0] and first_words[0] == first_words[1]:
+                    logger.warning(
+                        "[CAPIO SEMANTIC AUDIT] share_quote possivelmente paralelístico: '%s'",
+                        final_quote
+                    )
 
             return Response(res, status=status.HTTP_200_OK)
 
