@@ -10,6 +10,8 @@ import PushOptInPrompt from '../../components/layout/PushOptInPrompt';
 import TextSizeSelector from '../../components/ui/TextSizeSelector';
 import { saveOfflineItem, getLatestOfflineItem } from '../../pwa/offlineStorage';
 import { OFFLINE_KEYS } from '../../pwa/offlineKeys';
+import { ANALYTICS_EVENTS, CONTENT_TYPES } from '../../analytics/events';
+import { captureEvent } from '../../analytics/posthogClient';
 
 export default function TodayReflectionPage() {
   const [offlineData, setOfflineData] = useState(null);
@@ -56,8 +58,19 @@ export default function TodayReflectionPage() {
   useEffect(() => {
     if (activeReflection) {
       localStorage.setItem('capio_reflection_viewed', 'true');
+      captureEvent(ANALYTICS_EVENTS.DAILY_REFLECTION_OPENED, {
+        content_id: activeReflection.id,
+        source: isOfflineMode ? 'offline_indexeddb' : 'api',
+      });
+
+      if (isOfflineMode) {
+        captureEvent(ANALYTICS_EVENTS.OFFLINE_CONTENT_VIEWED, {
+          content_type: CONTENT_TYPES.REFLECTION,
+          content_id: activeReflection.id,
+        });
+      }
     }
-  }, [activeReflection]);
+  }, [activeReflection, isOfflineMode]);
 
   if (isLoading || (loadingOffline && isError)) {
     return (

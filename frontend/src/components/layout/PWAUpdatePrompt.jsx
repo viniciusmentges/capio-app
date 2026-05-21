@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRegisterSW } from 'virtual:pwa-register/react';
+import { captureException } from '../../observability/sentry';
 
 export default function PWAUpdatePrompt() {
   const {
@@ -10,7 +11,10 @@ export default function PWAUpdatePrompt() {
       // Verificar se há atualizações no service worker em background a cada 1 hora de forma silenciosa
       if (r) {
         setInterval(() => {
-          r.update().catch(err => console.log('Erro silencioso ao verificar atualizações de SW:', err));
+          r.update().catch(err => {
+            console.log('Erro silencioso ao verificar atualizações de SW:', err);
+            captureException(err, { tags: { area: 'service_worker', action: 'update_check' } });
+          });
         }, 60 * 60 * 1000);
       }
     },

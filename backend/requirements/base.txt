@@ -10,3 +10,4 @@ whitenoise
 dj-database-url
 celery
 redis
+sentry-sdk

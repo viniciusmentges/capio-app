@@ -9,6 +9,7 @@ from apps.ai_core.models import AIRequest, GeneratedResponse
 from services.ai import get_ai_service
 from services.filters.content_filter import ContentFilter, FilterAction
 from services.exceptions import ContentBlockedException
+from services.observability import capture_exception, log_event
 
 logger = logging.getLogger(__name__)
 
@@ -81,6 +82,8 @@ class BibleService:
         if bible_passage:
             explanation = PassageExplanation.objects.filter(passage=bible_passage).first()
             if explanation:
+                log_event("cache_hit", content_type="bible_explanation", reference=can_id, content_id=explanation.id)
+                log_event("bible_explanation_served_from_cache", reference=can_id, content_id=explanation.id, cached=True)
                 with transaction.atomic():
                     GeneratedResponse.objects.create(
                         response_type='BIBLE',
@@ -100,6 +103,8 @@ class BibleService:
                     "ai_generated": explanation.ai_generated,
                     "cached": True
                 }
+
+        log_event("cache_miss", content_type="bible_explanation", reference=can_id)
 
         # 4. Filtro de Entrada
         filter_res = ContentFilter.check_input(can_id)
@@ -124,12 +129,15 @@ class BibleService:
             flagged_for_review=(filter_res.action == FilterAction.SOFT_FLAG),
             status='pending'
         )
+        log_event("ai_request_started", request_type="bible", reference=can_id, ai_request_id=ai_request.id)
 
         try:
             # IA recebe o texto bíblico canônico predefinido!
             ai_response = ai_service.explain_passage(can_id, ref_display, scripture_text, ai_request_id=ai_request.id)
         except Exception as e:
             logger.error("Falha ao chamar a API de IA no fluxo de explicação bíblica: %s", e)
+            capture_exception(e, event="ai_request_failed", request_type="bible", reference=can_id, ai_request_id=ai_request.id)
+            log_event("ai_request_failed", request_type="bible", reference=can_id, ai_request_id=ai_request.id, error_type=type(e).__name__)
             ai_request.status = 'failed'
             ai_request.output_data = {"error": str(e)}
             ai_request.save()
@@ -169,6 +177,14 @@ class BibleService:
             ai_request.cache_hit = metrics.get('cache_hit', False)
             
         ai_request.save()
+        log_event(
+            "ai_request_success",
+            request_type="bible",
+            reference=can_id,
+            ai_request_id=ai_request.id,
+            duration_ms=ai_request.duration_ms,
+            cache_hit=ai_request.cache_hit,
+        )
 
         # Operações de escrita em banco agrupadas em bloco atômico curto
         with transaction.atomic():

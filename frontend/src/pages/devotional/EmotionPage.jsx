@@ -12,6 +12,9 @@ import TextSizeSelector from '../../components/ui/TextSizeSelector';
 import localforage from 'localforage';
 import { saveOfflineItem, getLatestOfflineItem } from '../../pwa/offlineStorage';
 import { OFFLINE_KEYS } from '../../pwa/offlineKeys';
+import { ANALYTICS_EVENTS, CONTENT_TYPES } from '../../analytics/events';
+import { captureEvent } from '../../analytics/posthogClient';
+import { captureException } from '../../observability/sentry';
 
 export default function EmotionPage() {
   const [selectedSlug, setSelectedSlug] = useState(null);
@@ -32,10 +35,24 @@ export default function EmotionPage() {
     mutationFn: getDevotionalByEmotion,
     onSuccess: (data) => {
       setDevotional(data);
+      captureEvent(ANALYTICS_EVENTS.DEVOTIONAL_COMPLETED, {
+        emotion_slug: selectedSlug,
+        content_id: data?.id,
+        cached: Boolean(data?.cached),
+      });
       // Salva no banco offline (micro biblioteca offline v1)
       saveOfflineItem(OFFLINE_KEYS.DEVOTIONALS, data)
-        .catch(err => console.error('Erro ao salvar devocional offline:', err));
+        .catch(err => {
+          console.error('Erro ao salvar devocional offline:', err);
+          captureException(err, { tags: { area: 'offline_storage', content_type: CONTENT_TYPES.DEVOTIONAL } });
+        });
       window.scrollTo({ top: 0, behavior: 'instant' });
+    },
+    onError: (error) => {
+      captureException(error, {
+        tags: { area: 'ai', action: 'devotional_by_emotion' },
+        extra: { emotion_slug: selectedSlug },
+      });
     },
   });
 
@@ -80,7 +97,17 @@ export default function EmotionPage() {
 
   const handleReceiveDevotional = () => {
     if (!selectedSlug) return;
+    captureEvent(ANALYTICS_EVENTS.DEVOTIONAL_STARTED, {
+      emotion_slug: selectedSlug,
+    });
     mutation.mutate({ emotion: selectedSlug });
+  };
+
+  const handleEmotionSelect = (slug) => {
+    setSelectedSlug(slug);
+    captureEvent(ANALYTICS_EVENTS.EMOTION_SELECTED, {
+      emotion_slug: slug,
+    });
   };
 
   // Se der erro de carregamento das emoções e tivermos o cache das emoções, usamos o cache!
@@ -119,6 +146,10 @@ export default function EmotionPage() {
               setDevotional(lastSavedDevotional);
               setShowOfflineOption(false);
               mutation.reset();
+              captureEvent(ANALYTICS_EVENTS.OFFLINE_CONTENT_VIEWED, {
+                content_type: CONTENT_TYPES.DEVOTIONAL,
+                content_id: lastSavedDevotional?.id,
+              });
             }}
             className="w-full py-4 text-[10px] uppercase tracking-[0.2em]"
           >
@@ -161,7 +192,13 @@ export default function EmotionPage() {
         </div>
         <div className="flex justify-center max-w-xs mx-auto w-full">
           <Button
-            onClick={() => setDevotional(lastSavedDevotional)}
+            onClick={() => {
+              setDevotional(lastSavedDevotional);
+              captureEvent(ANALYTICS_EVENTS.OFFLINE_CONTENT_VIEWED, {
+                content_type: CONTENT_TYPES.DEVOTIONAL,
+                content_id: lastSavedDevotional?.id,
+              });
+            }}
             className="w-full py-4 text-[10px] uppercase tracking-[0.2em]"
           >
             Ler devocional salvo
@@ -219,7 +256,7 @@ export default function EmotionPage() {
         <EmotionSelector 
           emotions={activeEmotions || []} 
           selectedSlug={selectedSlug}
-          onSelect={setSelectedSlug}
+          onSelect={handleEmotionSelect}
         />
       </div>
 

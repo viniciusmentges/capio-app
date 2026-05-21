@@ -9,6 +9,7 @@ from apps.devotional.models import Emotion, DevotionalContent, UserDevotional
 from apps.ai_core.models import AIRequest, GeneratedResponse
 from services.ai import get_ai_service
 from apps.bible.models import BiblePassage
+from services.observability import log_event
 
 logger = logging.getLogger(__name__)
 
@@ -325,6 +326,23 @@ class DevotionalService:
                 filter_status='clean',
                 metadata=source_metadata
             )
+
+        if source_metadata.get("cached", True):
+            log_event(
+                "cache_hit",
+                content_type="devotional",
+                emotion_slug=emotion.slug,
+                source=source_metadata.get("source"),
+            )
+            log_event(
+                "devotional_served_from_cache",
+                emotion_slug=emotion.slug,
+                content_id=chosen_content.id,
+                source=source_metadata.get("source"),
+            )
+        else:
+            log_event("cache_miss", content_type="devotional", emotion_slug=emotion.slug)
+            log_event("devotional_generated", emotion_slug=emotion.slug, content_id=chosen_content.id)
 
         return {
             "title": chosen_content.title,

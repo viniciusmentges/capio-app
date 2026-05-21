@@ -9,6 +9,7 @@ from services.ai import get_ai_service
 from services.exceptions import NotFoundException
 from services.bible.normalization import NormalizationService
 from apps.bible.models import BiblePassage
+from services.observability import capture_exception, log_event
 
 import logging
 
@@ -27,9 +28,12 @@ class ReflectionService:
 
         cached = True
         if not reflection:
+            log_event("cache_miss", content_type="reflection", date=today)
             logger.info(f"Reflexão para {today} não encontrada. Iniciando geração sob demanda (Fallback).")
             cached = False
             reflection = cls.warmup_reflection(today)
+        else:
+            log_event("cache_hit", content_type="reflection", date=today, content_id=reflection.id)
 
         # Buscar resposta do usuário (se houver usuário autenticado)
         user_response_text = None
@@ -52,6 +56,9 @@ class ReflectionService:
                     filter_status='clean',
                     metadata={"cached": cached, "type": "user_access"}
                 )
+
+        if cached:
+            log_event("reflection_served_from_cache", content_id=reflection.id, date=today)
 
         return {
             "reflection": {
@@ -101,6 +108,7 @@ class ReflectionService:
             input_data={"date": date_str, "blacklist": blacklist},
             status='pending'
         )
+        log_event("ai_request_started", request_type="reflection", ai_request_id=ai_request.id)
 
         try:
             # Passamos a blacklist para o serviço de AI
@@ -163,6 +171,13 @@ class ReflectionService:
             )
 
             logger.info(f"Reflexão do dia {target_date} gerada com sucesso: {reflection.title} ({ref_raw})")
+            log_event(
+                "ai_request_success",
+                request_type="reflection",
+                ai_request_id=ai_request.id,
+                duration_ms=ai_request.duration_ms,
+                cache_hit=ai_request.cache_hit,
+            )
             return reflection
 
         except Exception as e:
@@ -170,6 +185,8 @@ class ReflectionService:
             ai_request.metadata = {"error": str(e)}
             ai_request.save()
             logger.error(f"Falha crítica no ritual de reflexão: {str(e)}")
+            capture_exception(e, event="ai_request_failed", request_type="reflection", ai_request_id=ai_request.id)
+            log_event("ai_request_failed", request_type="reflection", ai_request_id=ai_request.id, error_type=type(e).__name__)
             raise e
 
 

@@ -2,10 +2,21 @@ import React from 'react';
 import { usePWA } from '../../hooks/usePWA';
 import { useInstallEligibility } from '../../hooks/useInstallEligibility';
 import Button from '../ui/Button';
+import { ANALYTICS_EVENTS } from '../../analytics/events';
+import { captureEvent } from '../../analytics/posthogClient';
 
 export default function PWAInstallPrompt() {
   const { canInstall, isInstalled, triggerInstall } = usePWA();
   const { isEligible, isiOS, dismissEligibility, markAsInstalled } = useInstallEligibility();
+  const shouldShowPrompt = isEligible && !isInstalled && (isiOS || canInstall);
+
+  React.useEffect(() => {
+    if (!shouldShowPrompt) return;
+
+    captureEvent(ANALYTICS_EVENTS.PWA_INSTALL_PROMPT_SHOWN, {
+      platform: isiOS ? 'ios' : 'browser_prompt',
+    });
+  }, [isiOS, shouldShowPrompt]);
 
   // Condições de exibição estritas:
   // - O usuário precisa ser elegível (ter engajamento ou retorno e não ter recusado nos últimos 7 dias)

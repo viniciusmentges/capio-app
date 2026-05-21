@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Share2, Check } from 'lucide-react';
+import { ANALYTICS_EVENTS } from '../../analytics/events';
+import { captureEvent } from '../../analytics/posthogClient';
+import { captureException } from '../../observability/sentry';
 
 export default function ShareButton({ title, text, url }) {
   const [copied, setCopied] = useState(false);
@@ -9,6 +12,10 @@ export default function ShareButton({ title, text, url }) {
     e.stopPropagation();
 
     localStorage.setItem('capio_engaged_share', 'true');
+    captureEvent(ANALYTICS_EVENTS.SHARE_CLICKED, {
+      share_type: navigator.share ? 'native_or_copy_fallback' : 'copy',
+      surface: 'share_button',
+    });
 
     const shareUrl = url || window.location.href;
     const fullText = text ? `${text}\n\nLido na CAPIO: ${shareUrl}` : `Lido na CAPIO: ${shareUrl}`;
@@ -22,6 +29,7 @@ export default function ShareButton({ title, text, url }) {
           return true;
         } catch (err) {
           console.error('Clipboard API failed', err);
+          captureException(err, { tags: { area: 'share', action: 'clipboard_write' } });
         }
       }
       
@@ -43,6 +51,7 @@ export default function ShareButton({ title, text, url }) {
         }
       } catch (err) {
         console.error('Fallback copy failed', err);
+        captureException(err, { tags: { area: 'share', action: 'fallback_copy' } });
       }
       
       document.body.removeChild(textArea);
@@ -58,6 +67,7 @@ export default function ShareButton({ title, text, url }) {
       } catch (err) {
         if (err.name !== 'AbortError') {
           console.error('Share failed', err);
+          captureException(err, { tags: { area: 'share', action: 'native_share' } });
           await performCopy();
         }
       }

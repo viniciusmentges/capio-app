@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Download, Share2, Copy, Check } from 'lucide-react';
 import * as htmlToImage from 'html-to-image';
+import { ANALYTICS_EVENTS } from '../../analytics/events';
+import { captureEvent } from '../../analytics/posthogClient';
+import { captureException } from '../../observability/sentry';
 
 export default function ShareCardActions({ cardRef, shareText, fileName = "capio-fragmento.png" }) {
   const [isCopied, setIsCopied] = useState(false);
@@ -23,12 +26,16 @@ export default function ShareCardActions({ cardRef, shareText, fileName = "capio
     try {
       setIsExporting(true);
       const dataUrl = await htmlToImage.toPng(cardRef.current, getExportOptions());
+      captureEvent(ANALYTICS_EVENTS.SHARE_IMAGE_GENERATED, {
+        action: 'download',
+      });
       const link = document.createElement('a');
       link.download = fileName;
       link.href = dataUrl;
       link.click();
     } catch (error) {
       console.error('Erro ao gerar imagem:', error);
+      captureException(error, { tags: { area: 'share', action: 'image_download' } });
     } finally {
       setIsExporting(false);
     }
@@ -37,9 +44,16 @@ export default function ShareCardActions({ cardRef, shareText, fileName = "capio
   const handleShare = async () => {
     if (!cardRef.current || isExporting) return;
     localStorage.setItem('capio_engaged_share', 'true');
+    captureEvent(ANALYTICS_EVENTS.SHARE_CLICKED, {
+      share_type: 'image',
+      surface: 'share_card_actions',
+    });
     try {
       setIsExporting(true);
       const dataUrl = await htmlToImage.toPng(cardRef.current, getExportOptions());
+      captureEvent(ANALYTICS_EVENTS.SHARE_IMAGE_GENERATED, {
+        action: 'native_share',
+      });
       
       const res = await fetch(dataUrl);
       const blob = await res.blob();
@@ -56,6 +70,7 @@ export default function ShareCardActions({ cardRef, shareText, fileName = "capio
       }
     } catch (error) {
       console.error('Erro ao compartilhar imagem:', error);
+      captureException(error, { tags: { area: 'share', action: 'image_share' } });
       handleDownload();
     } finally {
       setIsExporting(false);
@@ -64,12 +79,17 @@ export default function ShareCardActions({ cardRef, shareText, fileName = "capio
 
   const handleCopyText = async () => {
     localStorage.setItem('capio_engaged_share', 'true');
+    captureEvent(ANALYTICS_EVENTS.SHARE_CLICKED, {
+      share_type: 'copy_text',
+      surface: 'share_card_actions',
+    });
     try {
       await navigator.clipboard.writeText(shareText);
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), 2000);
     } catch (error) {
       console.error('Erro ao copiar texto:', error);
+      captureException(error, { tags: { area: 'share', action: 'copy_text' } });
     }
   };
 

@@ -202,6 +202,7 @@ if SENTRY_DSN:
         sentry_sdk.init(
             dsn=SENTRY_DSN,
             integrations=[DjangoIntegration()],
+            environment=env('SENTRY_ENVIRONMENT', default='production' if not DEBUG else 'development'),
             traces_sample_rate=0.1,
             send_default_pii=False  # Não envia dados pessoais sensíveis
         )
@@ -244,6 +245,11 @@ LOGGING = {
             'handlers': ['console'],
             'level': 'INFO',
             'propagate': True,
+        },
+        'services.metrics': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
         },
     },
 }

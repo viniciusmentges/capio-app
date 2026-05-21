@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { router } from './router';
 import { AuthProvider } from '../context/AuthContext';
 import { TextSizeProvider } from '../context/TextSizeContext';
+import { AnalyticsProvider } from '../analytics/AnalyticsProvider';
 import EditorialSplash from '../components/pwa/EditorialSplash';
 import ErrorBoundary from '../components/ui/ErrorBoundary';
 
@@ -43,9 +44,11 @@ function App() {
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <TextSizeProvider>
-            <RouterProvider router={router} />
-          </TextSizeProvider>
+          <AnalyticsProvider>
+            <TextSizeProvider>
+              <RouterProvider router={router} />
+            </TextSizeProvider>
+          </AnalyticsProvider>
         </AuthProvider>
       </QueryClientProvider>
     </ErrorBoundary>

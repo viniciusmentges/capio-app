@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '../utils/tokenStorage';
+import { captureException } from '../observability/sentry';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
@@ -91,6 +92,9 @@ api.interceptors.response.use(
       processQueue(refreshError, null);
       clearTokens();
       window.dispatchEvent(new Event('auth-expired'));
+      captureException(refreshError, {
+        tags: { area: 'auth', action: 'refresh_token' },
+      });
       return Promise.reject(refreshError);
     } finally {
       isRefreshing = false;

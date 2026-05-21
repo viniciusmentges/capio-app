@@ -4,6 +4,7 @@ from typing import Dict, Any
 from django.conf import settings
 from .base import AIService
 from .mock import MockAIService
+from services.observability import capture_exception, log_event
 
 logger = logging.getLogger(__name__)
 
@@ -65,6 +66,7 @@ class AnthropicAIService(AIService):
 
     def _call_claude(self, prompt: str, system_prompt: str, temperature: float, fallback_func, fallback_args: dict, expected_keys: list = None, max_tokens: int = 1500, ai_request_id: int = None, endpoint_origin: str = None) -> Dict[str, Any]:
         if not self.client:
+            log_event("ai_fallback_used", request_type=endpoint_origin or "unknown", fallback="mock_ai_service")
             return fallback_func(**fallback_args)
             
         import time
@@ -75,6 +77,7 @@ class AnthropicAIService(AIService):
         response = None
         
         try:
+            log_event("ai_request_started", request_type=endpoint_origin or "unknown", model_name=self.model)
             # Tenta chamada com Prompt Caching (especificação de blocos de sistema da Anthropic)
             try:
                 response = self.client.messages.create(
@@ -170,6 +173,18 @@ class AnthropicAIService(AIService):
                     "endpoint_origin": endpoint_origin,
                     "cache_hit": cache_hit
                 }
+
+            log_event(
+                "ai_request_success",
+                request_type=endpoint_origin or "unknown",
+                model_name=self.model,
+                duration_ms=duration_ms,
+                input_tokens=input_tokens,
+                output_tokens=output_tokens,
+                estimated_cost_usd=estimated_cost,
+                cache_hit=cache_hit,
+            )
+            log_event("cache_hit" if cache_hit else "cache_miss", request_type=endpoint_origin or "unknown", cache_layer="anthropic_prompt_cache")
                 
             # Persistência estruturada no modelo AIRequest do Django
             try:
@@ -227,6 +242,8 @@ class AnthropicAIService(AIService):
             
         except Exception as e:
             logger.error(f"Error calling Anthropic API: {str(e)}")
+            capture_exception(e, event="ai_request_failed", request_type=endpoint_origin or "unknown", model_name=self.model)
+            log_event("ai_request_failed", request_type=endpoint_origin or "unknown", model_name=self.model, error_type=type(e).__name__)
             
             # Gravação segura de erro no AIRequest
             try:
