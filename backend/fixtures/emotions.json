@@ -70,5 +70,59 @@
       "slug": "gratidao",
       "icon": "gratitude_icon"
     }
+  },
+  {
+    "model": "devotional.emotion",
+    "pk": 9,
+    "fields": {
+      "name": "Corajoso, mas incerto",
+      "slug": "corajoso-mas-incerto",
+      "icon": "courageous_uncertain_icon"
+    }
+  },
+  {
+    "model": "devotional.emotion",
+    "pk": 10,
+    "fields": {
+      "name": "Chamado, mas hesitante",
+      "slug": "chamado-mas-hesitante",
+      "icon": "called_hesitant_icon"
+    }
+  },
+  {
+    "model": "devotional.emotion",
+    "pk": 11,
+    "fields": {
+      "name": "Tentado",
+      "slug": "tentado",
+      "icon": "tempted_icon"
+    }
+  },
+  {
+    "model": "devotional.emotion",
+    "pk": 12,
+    "fields": {
+      "name": "Em conflito com alguém",
+      "slug": "em-conflito-com-alguem",
+      "icon": "conflict_icon"
+    }
+  },
+  {
+    "model": "devotional.emotion",
+    "pk": 13,
+    "fields": {
+      "name": "Grato, mas disperso",
+      "slug": "grato-mas-disperso",
+      "icon": "grateful_dispersed_icon"
+    }
+  },
+  {
+    "model": "devotional.emotion",
+    "pk": 14,
+    "fields": {
+      "name": "Disciplinado, mas frio",
+      "slug": "disciplinado-mas-frio",
+      "icon": "disciplined_cold_icon"
+    }
   }
 ]

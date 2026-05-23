@@ -260,6 +260,44 @@ class Command(BaseCommand):
                             created_count_gratidao += 1
                 self.stdout.write(self.style.SUCCESS(f'Created {created_count_gratidao} new devotionals for "gratidao".'))
                 
+            # Carregamento genérico e extensível para novos eixos emocionais (Fase 3)
+            new_emotions_to_load = [
+                {"slug": "corajoso-mas-incerto", "name": "Corajoso, mas incerto", "file_name": "corajoso_mas_incerto_batch.json"},
+                {"slug": "chamado-mas-hesitante", "name": "Chamado, mas hesitante", "file_name": "chamado_mas_hesitante_batch.json"},
+                {"slug": "tentado", "name": "Tentado", "file_name": "tentado_batch.json"},
+                {"slug": "em-conflito-com-alguem", "name": "Em conflito com alguém", "file_name": "em_conflito_com_alguem_batch.json"},
+                {"slug": "grato-mas-disperso", "name": "Grato, mas disperso", "file_name": "grato_mas_disperso_batch.json"},
+                {"slug": "disciplinado-mas-frio", "name": "Disciplinado, mas frio", "file_name": "disciplinado_mas_frio_batch.json"},
+            ]
+
+            for emotion_meta in new_emotions_to_load:
+                batch_path = os.path.join(mock_dir, 'devotional', emotion_meta["file_name"])
+                if os.path.exists(batch_path):
+                    self.stdout.write(f'Loading {emotion_meta["slug"]} devotionals...')
+                    emotion_obj, _ = Emotion.objects.get_or_create(
+                        slug=emotion_meta["slug"],
+                        defaults={'name': emotion_meta["name"], 'icon': ''}
+                    )
+                    with open(batch_path, 'r', encoding='utf-8') as f:
+                        devotionals_batch = json.load(f)
+                        created_count_batch = 0
+                        for item in devotionals_batch:
+                            _, created = DevotionalContent.objects.get_or_create(
+                                emotion=emotion_obj,
+                                title=item['title'],
+                                scripture_reference=item['scripture_reference'],
+                                defaults={
+                                    'scripture_text': item['scripture_text'],
+                                    'reflection': item['reflection'],
+                                    'prayer': item['prayer'],
+                                    'is_active': True,
+                                    'ai_generated': False
+                                }
+                            )
+                            if created:
+                                created_count_batch += 1
+                    self.stdout.write(self.style.SUCCESS(f'Created {created_count_batch} new devotionals for "{emotion_meta["slug"]}".'))
+                
         else:
             self.stdout.write(self.style.WARNING('Mock fixtures directory not found.'))
 

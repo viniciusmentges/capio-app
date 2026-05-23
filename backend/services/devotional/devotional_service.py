@@ -59,6 +59,36 @@ EMOTION_SCRIPTURES = {
         {"canonical_id": "1TH.5.18", "book_name": "1 Tessalonicenses", "chapter": 5, "verses": "18", "text_original": "Deem graças in todas as circunstâncias, pois esta é a vontade de Deus para vocês em Cristo Jesus.", "reference_display": "1 Tessalonicenses 5:18"},
         {"canonical_id": "PSA.100.4", "book_name": "Salmos", "chapter": 100, "verses": "4", "text_original": "Entrem por suas portas com ações de graças e em seus átrios com louvor; deem-lhe graças e bendigam o seu nome.", "reference_display": "Salmos 100:4"},
         {"canonical_id": "COL.3.17", "book_name": "Colossenses", "chapter": 3, "verses": "17", "text_original": "Tudo o que fizerem, seja em palavra seja em ação, façam-no em nome do Senhor Jesus, dando graças por meio dele a Deus Pai.", "reference_display": "Colossenses 3:17"},
+    ],
+    "corajoso_mas_incerto": [
+        {"canonical_id": "JOS.1.9", "book_name": "Josué", "chapter": 1, "verses": "9", "text_original": "Não fui eu que ordenei a você? Seja forte e corajoso! Não se apavore nem desanime, pois o Senhor, o seu Deus, estará com você por onde você andar.", "reference_display": "Josué 1:9"},
+        {"canonical_id": "ISA.41.10", "book_name": "Isaías", "chapter": 41, "verses": "10", "text_original": "Por isso não tema, pois estou com você; não tenha medo, pois sou o seu Deus. Eu o fortalecerei e o ajudarei; eu o segurarei com a minha mão direita vitoriosa.", "reference_display": "Isaías 41:10"},
+        {"canonical_id": "2TI.1.7", "book_name": "2 Timóteo", "chapter": 1, "verses": "7", "text_original": "Pois Deus não nos deu espírito de covardia, mas de poder, de amor e de equilíbrio.", "reference_display": "2 Timóteo 1:7"}
+    ],
+    "chamado_mas_hesitante": [
+        {"canonical_id": "EXO.3.11-12", "book_name": "Êxodo", "chapter": 3, "verses": "11-12", "text_original": "Mas Moisés perguntou a Deus: 'Quem sou eu para apresentar-me ao faraó e tirar os israelitas do Egito?'. Deus respondeu: 'Eu estarei com você. Esta será a prova de que sou eu quem o envia: quando você tirar o povo do Egito, vocês prestarão culto a Deus neste monte'.", "reference_display": "Êxodo 3:11-12"},
+        {"canonical_id": "JER.1.6-8", "book_name": "Jeremias", "chapter": 1, "verses": "6-8", "text_original": "Ah, Senhor Deus!, eu disse. Eu não sei falar, pois sou apenas um jovem. Mas o Senhor me respondeu: Não diga: 'Sou apenas um jovem'. Você irá a todos a quem eu o enviar e dirá tudo o que eu ordenar. Não tenha medo deles, pois estou com você para protegê-lo, diz o Senhor.", "reference_display": "Jeremias 1:6-8"},
+        {"canonical_id": "LUK.5.10-11", "book_name": "Lucas", "chapter": 5, "verses": "10-11", "text_original": "Jesus disse a Simão: 'Não tenha medo; de agora em diante você será pescador de homens'. Eles arrastaram seus barcos para a praia, deixaram tudo e o seguiram.", "reference_display": "Lucas 5:10-11"}
+    ],
+    "tentado": [
+        {"canonical_id": "1CO.10.13", "book_name": "1 Coríntios", "chapter": 10, "verses": "13", "text_original": "Não sobreveio a vocês nenhuma tentação que não fosse comum aos homens. E Deus é fiel; ele não permitirá que vocês sejam tentados além do que podem suportar. Mas, quando forem tentados, ele lhes providenciará um escape, para que o possam suportar.", "reference_display": "1 Coríntios 10:13"},
+        {"canonical_id": "JAS.4.7", "book_name": "Tiago", "chapter": 4, "verses": "7", "text_original": "Portanto, submetam-se a Deus. Resistam ao Diabo, e ele fugirá de vocês.", "reference_display": "Tiago 4:7"},
+        {"canonical_id": "HEB.4.15-16", "book_name": "Hebreus", "chapter": 4, "verses": "15-16", "text_original": "Pois não temos um sumo sacerdote que não possa compadecer-se das nossas fraquezas, mas sim alguém que foi tentado de todas as maneiras, assim como nós, mas sem pecado. Assim sendo, aproximemo-nos do trono da graça com toda a confiança, a fim de recebermos misericórdia e encontrarmos graça que nos ajude no momento da necessidade.", "reference_display": "Hebreus 4:15-16"}
+    ],
+    "em_conflito_com_alguem": [
+        {"canonical_id": "COL.3.13", "book_name": "Colossenses", "chapter": 3, "verses": "13", "text_original": "Suportem-se uns aos outros e perdoem-se mutuamente, caso alguém tenha motivo de queixa contra outro. Perdoem como o Senhor lhes perdoou.", "reference_display": "Colossenses 3:13"},
+        {"canonical_id": "MAT.5.23-24", "book_name": "Mateus", "chapter": 5, "verses": "23-24", "text_original": "Portanto, se você estiver apresentando a sua oferta no altar e ali se lembrar de que seu irmão tem alguma coisa contra você, deixe a sua oferta ali diante do altar e vá primeiro reconciliar-se com o seu irmão; depois volte e apresente a sua oferta.", "reference_display": "Mateus 5:23-24"},
+        {"canonical_id": "ROM.12.18", "book_name": "Romanos", "chapter": 12, "verses": "18", "text_original": "Façam todo o possível para viver em paz com todos.", "reference_display": "Romanos 12:18"}
+    ],
+    "grato_mas_disperso": [
+        {"canonical_id": "1TH.5.16-18", "book_name": "1 Tessalonicenses", "chapter": 5, "verses": "16-18", "text_original": "Alegrem-se sempre. Orem continuamente. Deem graças em todas as circunstâncias, pois esta é a vontade de Deus para vocês em Cristo Jesus.", "reference_display": "1 Tessalonicenses 5:16-18"},
+        {"canonical_id": "PSA.103.2", "book_name": "Salmos", "chapter": 103, "verses": "2", "text_original": "Bendiga o Senhor a minha alma, e não se esqueça de nenhum de seus benefícios.", "reference_display": "Salmos 103:2"},
+        {"canonical_id": "LUK.17.15-16", "book_name": "Lucas", "chapter": 17, "verses": "15-16", "text_original": "Um deles, vendo que estava curado, voltou glorificando a Deus em alta voz. Prostrou-se aos pés de Jesus e lhe agradeceu. Este era samaritano.", "reference_display": "Lucas 17:15-16"}
+    ],
+    "disciplinado_mas_frio": [
+        {"canonical_id": "REV.2.4-5", "book_name": "Apocalipse", "chapter": 2, "verses": "4-5", "text_original": "Contra você, porém, tenho isto: você abandonou o seu primeiro amor. Lembre-se de onde caiu! Arrependa-se e pratique as obras que praticava no princípio.", "reference_display": "Apocalipse 2:4-5"},
+        {"canonical_id": "ISA.29.13", "book_name": "Isaías", "chapter": 29, "verses": "13", "text_original": "O Senhor diz: Esse povo se aproxima de mim com a boca e me honra com os lábios, mas o seu coração está longe de mim. A adoração que me prestam é feita só de regras ensinadas por homens.", "reference_display": "Isaías 29:13"},
+        {"canonical_id": "JHN.15.4-5", "book_name": "João", "chapter": 15, "verses": "4-5", "text_original": "Permaneçam em mim, e eu permanecerei em vocês. Nenhum ramo pode dar fruto por si mesmo, se não permanecer na videira. Vocês também não podem dar fruto, se não permanecerem em mim.", "reference_display": "João 15:4-5"}
     ]
 }
 

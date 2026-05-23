@@ -42,7 +42,8 @@ class AnthropicAIService(AIService):
             "7. TERMINAÇÃO ABERTA: Não feche o pensamento com conclusões absolutas. Deixe espaço para o mistério.\n"
             "8. BLACKLIST: Proibido usar 'Jornada', 'Propósito', 'Vitória', 'Benção', 'Sucesso', 'Melhor versão', 'Como um modelo de linguagem'.\n"
             "9. FORMATO: Responda APENAS em JSON válido, sem texto markdown em volta.\n"
-            "10. LIBERDADE TEMÁTICA: A CAPIO não é apenas sobre silêncio e repouso. Pode abordar coragem, obediência, chamado, serviço, disciplina, perdão ativo e perseverança prática. O silêncio e a quietude são a forma literária e a postura da escrita, e não o único tema permitido."
+            "10. LIBERDADE TEMÁTICA: A CAPIO não é apenas sobre silêncio e repouso. Pode abordar coragem, obediência, chamado, serviço, disciplina, perdão ativo e perseverança prática. O silêncio e a quietude são a forma literária e a postura da escrita, e não o único tema permitido.\n"
+            "11. FIDELIDADE E GRAÇA: Quando o estado emocional for ativo ou convocativo, a CAPIO pode chamar o leitor à fidelidade, mas nunca à performance. Pode confrontar, mas nunca esmagar. Pode convidar à obediência, mas sempre a partir da graça."
         )
 
     def _get_editorial_constitution(self) -> str:
@@ -57,12 +58,13 @@ class AnthropicAIService(AIService):
             "4. SEM AUTORREFERÊNCIA: Proibido 'eu', 'nós', frases auto-referenciais.\n"
             "5. SEM EXCLAMAÇÃO: Proibido (!). Pontos e vírgulas apenas.\n"
             "6. FRASES CURTAS: Máx 15 palavras. Máx 2 adjetivos por parágrafo.\n"
-            "7. TOM SÓBRIO: Pastoral, silencioso. Sem triunfalismo, coaching ou efeito emocional calculado.\n"
+            "7. TOM SÓBRIO: Pastoral, silencioso. Sem triunfalismo, coaching ou efeito emocional calculated.\n"
             "8. SEM IMPERATIVOS: Proibido 'Faça', 'Mude', 'Confie'. Use convite ('Há um espaço para...').\n"
             "9. ANTI-ABSTRAÇÃO: Profundidade vem da verdade emocional, não da complexidade verbal. Proibido frases artificialmente profundas.\n"
             "10. BLACKLIST: Proibido 'Jornada', 'Vitória', 'Benção', 'Sucesso', 'Melhor versão'.\n"
             "11. DIVERSIDADE: Cada devocional abre uma porta diferente na mesma emoção.\n"
-            "12. FORMATO: Responda APENAS em JSON válido, sem markdown."
+            "12. FIDELIDADE E GRAÇA: Quando o estado emocional for ativo ou convocativo, a CAPIO pode chamar o leitor à fidelidade, mas nunca à performance. Pode confrontar, mas nunca esmagar. Pode convidar à obediência, mas sempre a partir da graça.\n"
+            "13. FORMATO: Responda APENAS em JSON válido, sem markdown."
         )
 
     def _call_claude(self, prompt: str, system_prompt: str, temperature: float, fallback_func, fallback_args: dict, expected_keys: list = None, max_tokens: int = 1500, ai_request_id: int = None, endpoint_origin: str = None) -> Dict[str, Any]:
@@ -446,6 +448,48 @@ class AnthropicAIService(AIService):
             "quando o que antes dava sentido à vida vai desaparecendo",
             "sensação de estar parado enquanto a vida passa",
         ],
+        'corajoso-mas-incerto': [
+            "a pessoa sabe o que precisa enfrentar, mas ainda sente medo",
+            "coragem como obediência, não ausência de medo",
+            "o primeiro passo parece pequeno, mas é real",
+            "Deus não exige bravura performática",
+            "firmeza nasce de confiança, não de autossuficiência",
+        ],
+        'chamado-mas-hesitante': [
+            "a pessoa sente uma direção, mas teme o custo",
+            "vocação pode começar como desconforto santo",
+            "nem todo chamado vem com clareza total",
+            "Deus conduz enquanto a pessoa caminha",
+            "obediência parcial revela medo de perder controle",
+        ],
+        'tentado': [
+            "tentação como luta real, não vergonha abstrata",
+            "resistência começa na sujeição a Deus",
+            "desejo desordenado promete alívio, mas cobra domínio",
+            "fidelidade acontece no intervalo entre impulso e escolha",
+            "Cristo entende a fraqueza sem romantizá-la",
+        ],
+        'em-conflito-com-alguem': [
+            "perdão não apaga a dor, mas impede que ela governe",
+            "reconciliação exige verdade, não fingimento",
+            "a paz bíblica não é evitar conversa difícil",
+            "orgulho espiritual pode se esconder atrás da razão",
+            "amar o inimigo começa quando paramos de caricaturá-lo",
+        ],
+        'grato-mas-disperso': [
+            "gratidão como atenção treinada",
+            "a bondade de Deus pode ser ignorada pela pressa",
+            "alegria não nasce da abundância de estímulos",
+            "lembrar também é uma disciplina espiritual",
+            "o coração cheio de coisas pode esquecer o Doador",
+        ],
+        'disciplinado-mas-frio': [
+            "rotina espiritual sem amor vira mecanismo",
+            "disciplina é caminho, não substituto da presença",
+            "constância precisa permanecer viva diante de Deus",
+            "o hábito pode proteger a chama ou escondê-la",
+            "Deus deseja o coração, não apenas a prática correta",
+        ],
     }
 
     # Passagens proibidas permanentemente por emoção — independentes do banco.
@@ -457,6 +501,12 @@ class AnthropicAIService(AIService):
         'sozinho':        [],
         'desmotivado':    [],
         'desesperançoso': [],
+        'corajoso-mas-incerto': [],
+        'chamado-mas-hesitante': [],
+        'tentado': [],
+        'em-conflito-com-alguem': [],
+        'grato-mas-disperso': [],
+        'disciplinado-mas-frio': [],
     }
 
     # Passagens com forte afinidade emocional por emoção — o modelo deve priorizá-las.
@@ -520,6 +570,36 @@ class AnthropicAIService(AIService):
             'Isaías 40:31',
             'Jeremias 29:11',
         ],
+        'corajoso-mas-incerto': [
+            'Josué 1:9',
+            'Isaías 41:10',
+            '2 Timóteo 1:7',
+        ],
+        'chamado-mas-hesitante': [
+            'Êxodo 3:11-12',
+            'Jeremias 1:6-8',
+            'Lucas 5:10-11',
+        ],
+        'tentado': [
+            '1 Coríntios 10:13',
+            'Tiago 4:7',
+            'Hebreus 4:15-16',
+        ],
+        'em-conflito-com-alguem': [
+            'Colossenses 3:13',
+            'Mateus 5:23-24',
+            'Romanos 12:18',
+        ],
+        'grato-mas-disperso': [
+            '1 Tessalonicenses 5:16-18',
+            'Salmo 103:2',
+            'Lucas 17:15-16',
+        ],
+        'disciplinado-mas-frio': [
+            'Apocalipse 2:4-5',
+            'Isaías 29:13',
+            'João 15:4-5',
+        ],
     }
 
     # Passagens secundárias — aceitáveis mas com menor prioridade.
@@ -531,6 +611,12 @@ class AnthropicAIService(AIService):
         'sozinho':        ['Salmo 23', 'Romanos 8:38-39', 'João 15:15', 'Jeremias 31:3'],
         'desmotivado':    ['Salmo 34:18', 'Jeremias 29:11', 'Salmo 138:3', 'Mateus 11:28-30'],
         'desesperançoso': ['Salmo 23', 'Romanos 8:28', 'Apocalipse 21:4', 'João 14:1-3'],
+        'corajoso-mas-incerto': ['Salmo 27:1', '1 Coríntios 16:13', 'Hebreus 13:6'],
+        'chamado-mas-hesitante': ['Gênesis 12:1', 'Isaías 6:8', 'Mateus 4:19-20'],
+        'tentado': ['Mateus 4:1-11', 'Gálatas 5:16', '2 Pedro 2:9'],
+        'em-conflito-com-alguem': ['Efésios 4:31-32', 'Mateus 18:21-22', 'Provérbios 15:1'],
+        'grato-mas-disperso': ['Colossenses 3:15-17', 'Salmo 100:4', 'Tiago 1:17'],
+        'disciplinado-mas-frio': ['Oséias 6:6', 'Mateus 15:8', 'Salmo 51:10-12'],
     }
 
     # Categorias de abertura para variar a textura do início da reflexão.
@@ -585,7 +671,10 @@ class AnthropicAIService(AIService):
         ai_request_id: int = None,
     ) -> Dict[str, Any]:
         system_prompt = self._get_editorial_constitution()
+        # Normalização robusta do nome para o padrão de slugs com hifens e sem acentos
         emotion_key = emotion_name.lower().strip()
+        emotion_key = emotion_key.replace(",", "").replace(".", "").replace("ç", "c").replace("ã", "a").replace("é", "e").replace("í", "i").replace("ó", "o")
+        emotion_key = emotion_key.replace(" ", "-").replace("_", "-")
 
         # 1. Blacklist fixa — aplicada antes das exclusions dinâmicas
         static_blacklist = self._EDITORIAL_PASSAGE_BLACKLIST.get(emotion_key, [])

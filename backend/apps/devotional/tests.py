@@ -549,3 +549,98 @@ class EditorialDeduplicationTests(APITestCase):
         self.assertNotIn('mistério', cooldown_words)
 
 
+class NewEmotionsTests(APITestCase):
+    """Testes de integridade e cobertura para as novas 6 emoções e estados espirituais (Fase 3)."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(username='staffuser', password='staffpassword')
+        self.user.is_staff = True
+        self.user.save()
+        self.client.force_authenticate(user=self.user)
+        
+        # Cria as 6 novas emoções no banco de dados se não existirem
+        self.new_slugs = [
+            "corajoso-mas-incerto",
+            "chamado-mas-hesitante",
+            "tentado",
+            "em-conflito-com-alguem",
+            "grato-mas-disperso",
+            "disciplinado-mas-frio"
+        ]
+        self.new_emotions = []
+        for slug in self.new_slugs:
+            name = slug.replace("-", " ").capitalize()
+            emo, _ = Emotion.objects.get_or_create(slug=slug, defaults={"name": name})
+            self.new_emotions.append(emo)
+            
+        # Cria a antiga para garantir que coexistem
+        self.old_emotion, _ = Emotion.objects.get_or_create(slug="ansioso", defaults={"name": "Ansioso"})
+
+    def test_new_emotions_endpoints_accepts_and_serves(self):
+        """Valida que o endpoint /api/devotional/by-emotion/ aceita e serve as novas emoções sem quebras."""
+        url = '/api/devotional/by-emotion/'
+        
+        for slug in self.new_slugs:
+            # Criamos um devocional ativo e revisado para o teste simples (sem chamar IA)
+            emo = Emotion.objects.get(slug=slug)
+            DevotionalContent.objects.create(
+                emotion=emo,
+                title=f"Devocional para {slug}",
+                scripture_reference="Josué 1:9" if slug == "corajoso-mas-incerto" else "Salmo 23",
+                scripture_text="Texto da Palavra",
+                reflection="Reflexão monástica.",
+                prayer="Oração profunda.",
+                share_quote="Citação de fé.",
+                is_active=True,
+                reviewed_by_human=True
+            )
+            
+            data = {'emotion_slug': slug}
+            response = self.client.post(url, data, format='json')
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.data['title'], f"Devocional para {slug}")
+            self.assertFalse(response.data['ai_generated'])
+
+    def test_new_emotions_generation_integration(self):
+        """Valida que o gerador de devocionais (via mock/IA) opera adequadamente para os novos estados ativados."""
+        from services.ai.anthropic import AnthropicAIService
+        from services.devotional.devotional_service import EMOTION_SCRIPTURES
+        service = AnthropicAIService()
+        
+        # Testar para cada uma das novas emoções que o mapeamento de passagens e ângulos existe no service
+        for slug in self.new_slugs:
+            # No devotional_service, o pool EMOTION_SCRIPTURES usa chaves com underlines
+            underscore_key = slug.replace("-", "_")
+            self.assertIn(underscore_key, EMOTION_SCRIPTURES)
+            self.assertTrue(len(EMOTION_SCRIPTURES[underscore_key]) > 0)
+            
+            # No anthropic, o serviço de IA usa chaves normalizadas com hifens (slug)
+            self.assertIn(slug, service._EDITORIAL_PRIMARY_SCRIPTURES)
+            self.assertTrue(len(service._EDITORIAL_PRIMARY_SCRIPTURES[slug]) > 0)
+            
+            # Valida ângulos humanos configurados no anthropic
+            self.assertIn(slug, service._EDITORIAL_EMOTION_ANGLES)
+            self.assertTrue(len(service._EDITORIAL_EMOTION_ANGLES[slug]) > 0)
+            
+    def test_old_emotions_continue_working_harmoniously(self):
+        """Garante que as emoções antigas e o seu fluxo original continuam funcionando sem qualquer interferência."""
+        # Criamos devocional para a antiga
+        DevotionalContent.objects.create(
+            emotion=self.old_emotion,
+            title="Antiga quietude",
+            scripture_reference="Salmos 23",
+            scripture_text="O Senhor é o meu pastor",
+            reflection="Reflexão antiga.",
+            prayer="Oração antiga.",
+            share_quote="Pastor eterno.",
+            is_active=True,
+            reviewed_by_human=True
+        )
+        
+        url = '/api/devotional/by-emotion/'
+        data = {'emotion_slug': 'ansioso'}
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['title'], "Antiga quietude")
+
+
