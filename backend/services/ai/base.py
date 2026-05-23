@@ -13,7 +13,7 @@ class AIService(ABC):
         pass
 
     @abstractmethod
-    def generate_reflection(self, date: str) -> Dict[str, Any]:
+    def generate_reflection(self, date: str, theme: dict = None, excluded_passages: list = None, semantic_cooldown: list = None, ai_request_id: int = None) -> Dict[str, Any]:
         """Returns: {'title': str, 'scripture_reference': str, 'scripture_text': str, 'reflection_body': str, 'guiding_question': str, 'closing_prayer': str, 'ai_generated': bool}"""
         pass
 

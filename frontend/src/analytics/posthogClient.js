@@ -1,7 +1,7 @@
 import posthog from 'posthog-js';
 
 const POSTHOG_KEY = import.meta.env.VITE_POSTHOG_KEY;
-const POSTHOG_HOST = import.meta.env.VITE_POSTHOG_HOST || 'https://app.posthog.com';
+const POSTHOG_HOST = import.meta.env.VITE_POSTHOG_HOST || 'https://us.i.posthog.com';
 const IS_BROWSER = typeof window !== 'undefined';
 
 let initialized = false;
@@ -73,6 +73,22 @@ export function identifyUser(user) {
     });
   } catch (error) {
     console.error('[CAPIO Analytics] Falha ao identificar usuário:', error);
+  }
+}
+
+export function capturePageView(pathname) {
+  if (!IS_BROWSER) return;
+
+  try {
+    if (!initialized) {
+      initPostHog();
+    }
+
+    if (!initialized) return;
+
+    posthog.capture('$pageview', { $current_url: window.location.origin + pathname });
+  } catch (error) {
+    console.error('[CAPIO Analytics] Falha ao registrar pageview:', error);
   }
 }
 

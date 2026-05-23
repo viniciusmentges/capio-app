@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import AppShell from '../components/layout/AppShell';
+import { capturePageView } from '../analytics/posthogClient';
 import { useAuth } from '../hooks/useAuth';
 import LoadingState from '../components/ui/LoadingState';
 
@@ -109,4 +110,13 @@ export const router = createBrowserRouter([
     )
   }
 ]);
+
+let lastTrackedPath = null;
+router.subscribe((state) => {
+  const pathname = state.location.pathname;
+  if (pathname !== lastTrackedPath) {
+    lastTrackedPath = pathname;
+    capturePageView(pathname);
+  }
+});
 

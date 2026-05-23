@@ -22,6 +22,10 @@ class DailyReflection(models.Model):
     share_quote = models.TextField(blank=True, default="")
     
     ai_generated = models.BooleanField(default=False)
+    
+    # Eixos editoriais da Fase 2 para Thematic Steering
+    emotional_theme = models.CharField(max_length=100, blank=True, default="")
+    theme_key = models.CharField(max_length=50, blank=True, default="")
 
     def __str__(self):
         return f"{self.date} - {self.title}"

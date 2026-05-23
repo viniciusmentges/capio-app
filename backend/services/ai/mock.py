@@ -69,12 +69,13 @@ class MockAIService(AIService):
             "ai_generated": False
         }
 
-    def generate_reflection(self, date: str) -> Dict[str, Any]:
+    def generate_reflection(self, date: str, theme: dict = None, excluded_passages: list = None, semantic_cooldown: list = None, ai_request_id: int = None) -> Dict[str, Any]:
         logger.warning(f"[CAPIO AI] Fallback acionado no fluxo de reflexão diária para a data {date}. Servindo do MockAIService por falha de API ou ambiente.")
         
         filepath = os.path.join(self.fixtures_dir, 'reflection', 'default.json')
         data = self._load_json(filepath)
         if data:
+            data['emotional_theme'] = "tema simulado"
             return data
             
         return {
@@ -85,6 +86,7 @@ class MockAIService(AIService):
             "guiding_question": "Como o Verbo quer habitar em seu silêncio hoje?",
             "closing_prayer": "Fica conosco, Senhor.",
             "share_quote": "A Palavra no princípio cria o silêncio que sustenta a nossa alma.",
+            "emotional_theme": "tema simulado",
             "ai_generated": False
         }
 

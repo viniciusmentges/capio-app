@@ -41,7 +41,8 @@ class AnthropicAIService(AIService):
             "6. ANTI-COACH: Nunca dê ordens ('Faça isso', 'Mude sua vida'). Use o modo convite ('O convite é...', 'Há um espaço para...').\n"
             "7. TERMINAÇÃO ABERTA: Não feche o pensamento com conclusões absolutas. Deixe espaço para o mistério.\n"
             "8. BLACKLIST: Proibido usar 'Jornada', 'Propósito', 'Vitória', 'Benção', 'Sucesso', 'Melhor versão', 'Como um modelo de linguagem'.\n"
-            "9. FORMATO: Responda APENAS em JSON válido, sem texto markdown em volta."
+            "9. FORMATO: Responda APENAS em JSON válido, sem texto markdown em volta.\n"
+            "10. LIBERDADE TEMÁTICA: A CAPIO não é apenas sobre silêncio e repouso. Pode abordar coragem, obediência, chamado, serviço, disciplina, perdão ativo e perseverança prática. O silêncio e a quietude são a forma literária e a postura da escrita, e não o único tema permitido."
         )
 
     def _get_editorial_constitution(self) -> str:
@@ -313,31 +314,73 @@ class AnthropicAIService(AIService):
         res['scripture_text'] = scripture_text
         return res
 
-    def generate_reflection(self, date: str, ai_request_id: int = None) -> Dict[str, Any]:
+    def generate_reflection(
+        self,
+        date: str,
+        theme: dict = None,
+        excluded_passages: list = None,
+        semantic_cooldown: list = None,
+        ai_request_id: int = None,
+    ) -> Dict[str, Any]:
         system_prompt = self._get_base_constitution() + (
-            "\n\nCOMPOSER.REFLECTION: Abertura contemplativa do dia. Foco em desacelerar e criar presença."
+            "\n\nCOMPOSER.REFLECTION: Composição da abertura do dia. "
+            "O tom é contemplativo e pastoral. O tema deve emergir da Escritura selecionada, não de um arquétipo tonal fixo. "
+            "A reflexão pode ser serena, firme, de coragem, de entrega, pastoral ou narrativa — o que a Palavra pede hoje."
         )
-        prompt = (
-            f"Componha a Reflexão do Dia para: '{date}'.\n"
+        prompt = f"Componha a Reflexão do Dia para: '{date}'.\n\n"
+
+        if theme:
+            prompt += f"\n[EIXO TEMÁTICO DO DIA] {theme.get('label', '')}\n"
+            prompt += f"Foco editorial: {theme.get('description', '')}\n"
+
+            scripture_hints = theme.get("scripture_hints") or []
+            if scripture_hints:
+                prompt += "Passagens com afinidade:\n"
+                for passage in scripture_hints:
+                    prompt += f"- {passage}\n"
+            prompt += "\n"
+
+        if semantic_cooldown:
+            prompt += "\n[RESFRIAMENTO SEMÂNTICO]\n"
+            prompt += "Evite repetir como tema central os subtemas usados recentemente:\n"
+            for item in semantic_cooldown:
+                prompt += f"- {item}\n"
+            prompt += "\n"
+
+        if excluded_passages:
+            prompt += "[PROIBIDO] Passagens já usadas recentemente — não repita nenhuma delas sob hipótese alguma:\n"
+            prompt += "".join(f"  - {p}\n" for p in excluded_passages)
+            prompt += "\n"
+
+        prompt += (
             "Retorne UM objeto JSON com:\n"
-            "- 'title': Título contemplativo.\n"
-            "- 'scripture_reference': A passagem guia de hoje.\n"
+            "- 'title': Título contemplativo e específico.\n"
+            "- 'scripture_reference': A passagem guia de hoje (nunca repita as listadas no bloco [PROIBIDO] e priorize as recomendadas pelo EIXO TEMÁTICO se possível).\n"
             "- 'scripture_text': O texto da Palavra.\n"
-            "- 'reflection_body': Meditação calma (máx 1000 caracteres).\n"
+            "- 'reflection_body': Meditação calma (máx 1000 caracteres). Começa no chão humano, encontra a Palavra, deixa espaço — mas o espaço pode ser de coragem, esperança ou firmeza, não apenas de silêncio.\n"
             "- 'guiding_question': Pergunta para carregar no coração.\n"
             "- 'closing_prayer': Oração de encerramento.\n"
-            "- 'share_quote': Um fragmento contemplativo de altíssimo valor editorial (máx 15 palavras) inspirado ou extraído da própria reflexão. Deve parecer um trecho grifado de um clássico espiritual ou anotação íntima de um monge, nunca uma frase de feed ou postagem motivacional de Instagram.\n\n"
+            "- 'share_quote': Um fragmento de altíssimo valor editorial (máx 15 palavras) inspirado ou extraído da própria reflexão. Deve parecer um trecho grifado de um clássico espiritual, evocando verdade emocional específica (silêncio, coragem, esperança, maravilha, dor) conforme a meditação tocou, nunca um slogan ou postagem motivacional.\n"
+            "- 'emotional_theme': Subtema em até 5 palavras, usado para rastreamento semântico.\n\n"
             "REGRAS ESTRITAS DE ARQUITETURA PARA 'share_quote':\n"
-            "1. LINGUAGEM DE LIVRO: Use palavras densas, sóbrias e humanas. Deve evocar silêncio, presença, espera, interioridade e descanso espiritual.\n"
+            "1. LINGUAGEM DE LIVRO: Use palavras densas, sóbrias e humanas. Não se limite apenas a 'silêncio, presença, espera' — expresse verdade e profundidade.\n"
             "2. PROIBIÇÃO DE AUTOAJUDA/COACHING: Banido imperativos (não use 'lembre-se', 'busque', 'confie', 'mude'). Banido jargões gospel ('Deus vai fazer', 'vitória', 'jornada', 'bênção').\n"
             "3. ZERO PONTUAÇÃO EXCESSIVA: Proibido absolutamente o uso de exclamações (!). Use apenas pontos e vírgulas.\n"
             "4. RITMO E COMPRIMENTO: Curto e memorável sem ser clichê. Máximo de 15 palavras. Frase limpa, sem aspas adicionais dentro da string."
         )
         return self._call_claude(
-            prompt, system_prompt, 0.6,
+            prompt, system_prompt, 0.75,
             self.mock_fallback.generate_reflection,
-            {"date": date},
-            expected_keys=['title', 'scripture_reference', 'scripture_text', 'reflection_body', 'guiding_question', 'closing_prayer', 'share_quote'],
+            {
+                "date": date,
+                "theme": theme,
+                "excluded_passages": excluded_passages,
+                "semantic_cooldown": semantic_cooldown,
+            },
+            expected_keys=[
+                'title', 'scripture_reference', 'scripture_text', 'reflection_body', 
+                'guiding_question', 'closing_prayer', 'share_quote', 'emotional_theme'
+            ],
             ai_request_id=ai_request_id,
             endpoint_origin="DAILY_REFLECTION"
         )

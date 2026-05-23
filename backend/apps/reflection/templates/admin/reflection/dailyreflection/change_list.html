@@ -1,0 +1,10 @@
+{% extends "admin/change_list.html" %}
+
+{% block object-tools %}
+    {% if editorial_report %}
+        <div style="background: #1e1e2e; color: #cdd6f4; padding: 22px; border-radius: 8px; margin-bottom: 24px; font-family: 'Courier New', Courier, monospace; border: 1px solid #45475a; line-height: 1.6; font-size: 13px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+            {{ editorial_report|safe }}
+        </div>
+    {% endif %}
+    {{ block.super }}
+{% endblock %}

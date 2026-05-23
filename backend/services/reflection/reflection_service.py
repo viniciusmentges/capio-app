@@ -1,6 +1,7 @@
 import hashlib
+import random
 from typing import Dict, Any, Optional
-from datetime import date as date_type
+from datetime import date as date_type, timedelta
 from django.db import transaction
 from django.utils import timezone
 from apps.reflection.models import DailyReflection, UserReflectionResponse
@@ -14,6 +15,126 @@ from services.observability import capture_exception, log_event
 import logging
 
 logger = logging.getLogger(__name__)
+
+DAILY_REFLECTION_THEMES = [
+    {
+        "key": "contemplacao",
+        "label": "Contemplação e Presença",
+        "description": "Silêncio, repouso, escuta interior e Deus como centro.",
+        "scripture_hints": ["Salmo 131", "Salmo 46:10", "Mateus 11:28-30"],
+    },
+    {
+        "key": "coragem",
+        "label": "Coragem e Firmeza",
+        "description": "Enfrentar o que intimida, agir apesar do medo e confiar de forma ativa.",
+        "scripture_hints": ["Josué 1:9", "1 Coríntios 16:13", "Isaías 40:31"],
+    },
+    {
+        "key": "identidade",
+        "label": "Identidade e Pertencimento",
+        "description": "Quem somos diante de Deus, valor não baseado em desempenho e filiação espiritual.",
+        "scripture_hints": ["Gálatas 2:20", "João 1:12", "1 João 3:1"],
+    },
+    {
+        "key": "obediencia",
+        "label": "Obediência e Fidelidade",
+        "description": "Seguir a Deus quando é difícil, fé que age e fidelidade no cotidiano.",
+        "scripture_hints": ["Lucas 9:23", "Tiago 2:17", "Deuteronômio 30:19-20"],
+    },
+    {
+        "key": "perdao",
+        "label": "Perdão e Reconciliação",
+        "description": "Ser perdoado, perdoar o outro e restaurar pontes feridas.",
+        "scripture_hints": ["Mateus 6:14-15", "Colossenses 3:13", "Lucas 15:20"],
+    },
+    {
+        "key": "vocacao",
+        "label": "Vocação e Trabalho",
+        "description": "Chamado, trabalho, responsabilidade, excelência e presença de Deus na vida comum.",
+        "scripture_hints": ["Colossenses 3:23", "Jeremias 29:7", "Gênesis 2:15"],
+    },
+    {
+        "key": "esperanca",
+        "label": "Esperança e Futuro",
+        "description": "Promessas de Deus como âncora, futuro aberto e fé no que ainda não se vê.",
+        "scripture_hints": ["Romanos 8:18-25", "Hebreus 11:1", "Lamentações 3:21-23"],
+    },
+    {
+        "key": "graca",
+        "label": "Graça e Misericórdia",
+        "description": "Ser recebido sem merecer, misericórdia nova e amor que antecede o desempenho.",
+        "scripture_hints": ["Efésios 2:8-9", "Lamentações 3:22-23", "Tito 3:5"],
+    },
+    {
+        "key": "transformacao",
+        "label": "Transformação e Maturidade",
+        "description": "Mudança interior, crescimento lento, caráter formado e processo espiritual.",
+        "scripture_hints": ["Romanos 5:3-5", "2 Coríntios 3:18", "Filipenses 1:6"],
+    },
+    {
+        "key": "comunidade",
+        "label": "Comunidade e Serviço",
+        "description": "Pertencer ao corpo, servir sem reconhecimento e carregar o outro em amor.",
+        "scripture_hints": ["Hebreus 10:24-25", "1 Coríntios 12:27", "Mateus 20:26-28"],
+    },
+    {
+        "key": "tentacao",
+        "label": "Tentação e Resistência",
+        "description": "Luta interior, fidelidade custosa, resistência ao que atrai e dependência de Deus.",
+        "scripture_hints": ["1 Coríntios 10:13", "Tiago 4:7", "Hebreus 4:15"],
+    },
+    {
+        "key": "alegria",
+        "label": "Alegria e Gratidão",
+        "description": "Gratidão como postura, alegria não circunstancial e reconhecimento da bondade de Deus.",
+        "scripture_hints": ["Filipenses 4:4-7", "Salmo 100", "1 Tessalonicenses 5:16-18"],
+    },
+    {
+        "key": "sofrimento",
+        "label": "Sofrimento e Redenção",
+        "description": "Dor com sentido, cruz como caminho, consolo real e Deus presente no difícil.",
+        "scripture_hints": ["2 Coríntios 4:17", "Romanos 8:28", "João 16:33"],
+    },
+    {
+        "key": "tensao_espiritual",
+        "label": "Tensão Espiritual",
+        "description": "Vontade dividida, fé misturada com resistência, obediência relutante e conflito interior.",
+        "scripture_hints": ["Marcos 9:24", "Romanos 7:19", "Mateus 26:39"],
+    },
+]
+
+def _get_theme_for_date(target_date: date_type) -> dict:
+    """
+    Rotação temática determinística com entropia controlada.
+    
+    Objetivos:
+    - mesma data gera sempre o mesmo tema;
+    - todos os temas podem aparecer;
+    - evitar padrões lineares previsíveis;
+    - manter diversidade editorial.
+    """
+    day_of_year = target_date.timetuple().tm_yday
+    seed_value = int(f"{target_date.year}{target_date.month:02d}{target_date.day:02d}")
+    rng = random.Random(seed_value)
+    
+    # 5 é coprimo de 14, garantindo cobertura total periódica
+    base_index = (day_of_year * 5 + target_date.year) % len(DAILY_REFLECTION_THEMES)
+    offset = rng.randint(0, 2)
+    
+    theme_index = (base_index + offset) % len(DAILY_REFLECTION_THEMES)
+    return DAILY_REFLECTION_THEMES[theme_index]
+
+def _get_semantic_cooldown(target_date: date_type, days_back: int = 7) -> list:
+    start_date = target_date - timedelta(days=days_back)
+    end_date = target_date - timedelta(days=1)
+
+    recent_themes = DailyReflection.objects.filter(
+        date__range=(start_date, end_date)
+    ).exclude(
+        emotional_theme=""
+    ).values_list("emotional_theme", flat=True)
+
+    return list(dict.fromkeys(recent_themes))
 
 class ReflectionService:
     @classmethod
@@ -98,6 +219,10 @@ class ReflectionService:
         recent_passages = DailyReflection.objects.order_by('-date')[:10].values_list('scripture_reference', flat=True)
         blacklist = list(recent_passages)
 
+        # Calcular o tema determinístico e obter resfriamento semântico
+        theme = _get_theme_for_date(target_date)
+        semantic_cooldown = _get_semantic_cooldown(target_date)
+
         ai_service = get_ai_service()
         date_str = target_date.isoformat()
         input_hash = hashlib.sha256(f"reflection-{date_str}".encode()).hexdigest()
@@ -105,15 +230,25 @@ class ReflectionService:
         ai_request = AIRequest.objects.create(
             request_type='reflection',
             input_hash=input_hash,
-            input_data={"date": date_str, "blacklist": blacklist},
+            input_data={
+                "date": date_str,
+                "blacklist": blacklist,
+                "theme": theme,
+                "semantic_cooldown": semantic_cooldown
+            },
             status='pending'
         )
         log_event("ai_request_started", request_type="reflection", ai_request_id=ai_request.id)
 
         try:
-            # Passamos a blacklist para o serviço de AI
-            # (Assumindo que o serviço agora aceita contexto de exclusão)
-            ai_response = ai_service.generate_reflection(date_str, ai_request_id=ai_request.id)
+            # Passamos a blacklist, o tema e o cooldown para o serviço de AI
+            ai_response = ai_service.generate_reflection(
+                date=date_str,
+                theme=theme,
+                excluded_passages=blacklist,
+                semantic_cooldown=semantic_cooldown,
+                ai_request_id=ai_request.id
+            )
             
             ai_request.status = 'success'
             ai_request.output_data = ai_response
@@ -158,7 +293,9 @@ class ReflectionService:
                 guiding_question=ai_response.get("guiding_question", ""),
                 closing_prayer=ai_response.get("closing_prayer", ""),
                 share_quote=ai_response.get("share_quote", ""),
-                ai_generated=ai_response.get("ai_generated", True)
+                ai_generated=ai_response.get("ai_generated", True),
+                emotional_theme=ai_response.get("emotional_theme", ""),
+                theme_key=theme.get("key", "")
             )
 
             GeneratedResponse.objects.create(
