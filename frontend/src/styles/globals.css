@@ -172,3 +172,33 @@
   font-size: 23px !important;
   line-height: 1.95;
 }
+
+/* --- TEMA NOTURNO CONTEMPLATIVO CAPIO (RITUAL DE FECHAMENTO) --- */
+.capio-night-theme {
+  --color-background: #0B0D0B !important;
+  --color-surface: #121613 !important;
+  --color-text-primary: #FAF8F5 !important;
+  --color-text-secondary: rgba(250, 248, 245, 0.45) !important;
+  --color-border: rgba(250, 248, 245, 0.04) !important;
+  background-color: #0B0D0B !important;
+  color: #FAF8F5 !important;
+}
+
+.capio-night-theme h1,
+.capio-night-theme h2,
+.capio-night-theme h3,
+.capio-night-theme p,
+.capio-night-theme span,
+.capio-night-theme blockquote,
+.capio-night-theme button,
+.capio-night-theme a {
+  color: #FAF8F5 !important;
+}
+
+.capio-night-theme .text-foreground\/45,
+.capio-night-theme .text-foreground\/35,
+.capio-night-theme .text-foreground\/30,
+.capio-night-theme .text-foreground\/20 {
+  color: rgba(250, 248, 245, 0.4) !important;
+}
+

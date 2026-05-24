@@ -13,12 +13,6 @@ class DailyReflection(models.Model):
     
     # --- ATIVO EDITORIAL: share_quote ---
     # Este campo representa a assinatura editorial compartilhável do dia.
-    # TODO: Na FASE 3, migrar este campo simples para uma tabela separada: `EditorialFragment`.
-    # Isso permitirá:
-    # 1. Múltiplos fragmentos por dia (para rotação ou testes A/B).
-    # 2. Contadores de compartilhamento e salvamento associados para analíticos contemplativos.
-    # 3. Associação direta a coleções temáticas ou favoritos do usuário.
-    # 4. Geração sob demanda de imagens estáticas OpenGraph (OG Images) personalizadas.
     share_quote = models.TextField(blank=True, default="")
     
     ai_generated = models.BooleanField(default=False)
@@ -41,3 +35,63 @@ class UserReflectionResponse(models.Model):
 
     def __str__(self):
         return f"Response by {self.user.username} for {self.reflection.date}"
+
+class EditorialFragment(models.Model):
+    FRAGMENT_TYPES = [
+        ('quote', 'Assinatura Poética'),
+        ('prayer', 'Oração Breve'),
+        ('scripture', 'Fragmento Bíblico'),
+        ('question', 'Pergunta Guia')
+    ]
+    reflection = models.ForeignKey(
+        DailyReflection, 
+        on_delete=models.CASCADE, 
+        null=True, 
+        blank=True, 
+        related_name='fragments'
+    )
+    devotional = models.ForeignKey(
+        'devotional.DevotionalContent', 
+        on_delete=models.CASCADE, 
+        null=True, 
+        blank=True, 
+        related_name='fragments'
+    )
+    content_text = models.TextField()
+    fragment_type = models.CharField(max_length=20, choices=FRAGMENT_TYPES, default='quote')
+    theme_key = models.CharField(max_length=50, blank=True, default="")
+    share_count = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.get_fragment_type_display()} - {self.content_text[:30]}..."
+
+class ContemplativeExperience(models.Model):
+    EXPERIENCE_TYPES = [
+        ('audio_reflection', 'Meditação em Áudio'),
+        ('guided_prayer', 'Oração Guada'),
+        ('spiritual_path', 'Trilha de Silêncio')
+    ]
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    experience_type = models.CharField(max_length=30, choices=EXPERIENCE_TYPES)
+    audio_url = models.CharField(max_length=255, blank=True, default="")
+    duration_seconds = models.IntegerField(default=0)
+    is_premium = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"[{self.get_experience_type_display()}] {self.title}"
+
+class SpiritualCollection(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    theme_key = models.CharField(max_length=50, blank=True, default="")
+    is_premium = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+

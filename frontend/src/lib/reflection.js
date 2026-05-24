@@ -6,9 +6,21 @@ export async function getTodayReflection() {
 }
 
 export async function respondTodayReflection(payload) {
-  // O backend deve esperar um payload para responder/dar feedback
-  // No Django, pode ser /api/reflection/today/respond/ ou /api/feedback/
-  // Usando a especificação primária do prompt:
   const { data } = await api.post('/api/reflection/today/respond/', payload);
+  return data;
+}
+
+export async function getNightReflection() {
+  const { data } = await api.get('/api/reflection/night/');
+  return data;
+}
+
+export async function getLiturgicalArchive() {
+  const { data } = await api.get('/api/reflection/liturgical-archive/');
+  return data;
+}
+
+export async function getSpiritualJourney() {
+  const { data } = await api.get('/api/reflection/spiritual-journey/');
   return data;
 }

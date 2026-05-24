@@ -105,7 +105,7 @@ export default function ShareCardActions({ cardRef, shareText, fileName = "capio
           <Download className="w-4 h-4 text-foreground/60" />
         </div>
         <span className="text-[9px] font-serif uppercase tracking-[0.2em] text-foreground/40 group-hover:text-foreground/60 transition-colors">
-          Salvar
+          Salvar fragmento
         </span>
       </button>
 

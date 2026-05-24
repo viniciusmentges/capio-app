@@ -170,3 +170,41 @@ class ReflectionTests(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+    def test_night_view(self):
+        # Garante a criação da reflexão de hoje
+        self.client.get('/api/reflection/today/')
+        url = '/api/reflection/night/'
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('share_quote', response.data)
+        self.assertIn('closing_prayer', response.data)
+
+    def test_liturgical_archive_view(self):
+        # Garante a criação de hoje e cria outra no passado
+        self.client.get('/api/reflection/today/')
+        today = timezone.localtime().date()
+        DailyReflection.objects.get_or_create(
+            date=today - timedelta(days=1),
+            defaults={
+                "title": "Ontem",
+                "reflection_body": "Ontem corpo",
+                "scripture_reference": "Salmo 23:2",
+                "scripture_text": "Texto",
+                "share_quote": "Quote ontem"
+            }
+        )
+        url = '/api/reflection/liturgical-archive/'
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(len(response.data) >= 2)
+
+    def test_spiritual_journey_view(self):
+        # Garante leituras para contar temas
+        self.client.get('/api/reflection/today/')
+        url = '/api/reflection/spiritual-journey/'
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('journey_text', response.data)
+        self.assertIn('top_themes', response.data)
+
+
