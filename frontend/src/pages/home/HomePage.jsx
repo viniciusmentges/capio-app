@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '../../hooks/useAuth';
-import Button from '../../components/ui/Button';
 import { getGreetingContext, formatFirstName } from '../../utils/greeting';
 import { getTodayReflection, getNightReflection, getLiturgicalArchive, getSpiritualJourney } from '../../lib/reflection';
 
@@ -100,14 +99,13 @@ export default function HomePage() {
             <p className="text-contemplative text-foreground/80 line-clamp-4 leading-relaxed">
               {getReflectionPreview()}
             </p>
-            <div>
-              <Button 
-                variant="outline" 
+            <div className="pt-2">
+              <button 
                 onClick={() => navigate('/reflection/today')}
-                className="text-[10px] px-6 py-2.5 uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity"
+                className="text-[9px] font-sans font-medium uppercase tracking-[0.25em] text-foreground/45 hover:text-foreground/85 transition-colors underline underline-offset-8 decoration-foreground/10 hover:decoration-foreground/30 py-2 cursor-pointer"
               >
                 Mergulhar na leitura
-              </Button>
+              </button>
             </div>
           </div>
         )}
@@ -115,22 +113,22 @@ export default function HomePage() {
 
       {/* Bloco 3: Palavra da Noite (Sessão Noturna Dinâmica) */}
       {isNight && nightData && (
-        <section className="space-y-6 pt-12 border-t border-foreground/[0.015] animate-fade-in max-w-lg">
-          <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-[#FAF8F5]/35">
+        <section className="space-y-8 pt-8 border-t border-foreground/[0.015] animate-fade-in max-w-lg">
+          <p className="text-[9px] font-sans font-light uppercase tracking-[0.25em] text-foreground/35">
             Palavra da Noite
           </p>
-          <div className="space-y-6 py-4">
-            <blockquote className="font-serif italic text-lg text-[#FAF8F5]/90 leading-relaxed">
+          <div className="space-y-6">
+            <blockquote className="font-serif italic text-lg text-foreground/80 leading-relaxed">
               “{nightData.share_quote}”
             </blockquote>
-            <p className="text-[9px] uppercase tracking-[0.2em] font-sans font-light text-[#FAF8F5]/45">
+            <p className="text-[9px] uppercase tracking-[0.2em] font-sans font-light text-foreground/45">
               — {nightData.scripture_reference}
             </p>
-            <div className="space-y-3 pt-6 border-t border-[#FAF8F5]/5">
-              <p className="text-[9px] font-sans font-light uppercase text-[#FAF8F5]/30 tracking-widest">
+            <div className="space-y-2 pt-6 border-t border-foreground/[0.02]">
+              <p className="text-[9px] font-sans font-light uppercase text-foreground/30 tracking-widest">
                 Oração de encerramento
               </p>
-              <p className="font-serif text-sm text-[#FAF8F5]/70 italic leading-relaxed">
+              <p className="font-serif text-sm text-foreground/60 italic leading-relaxed">
                 {nightData.closing_prayer}
               </p>
             </div>
@@ -150,14 +148,13 @@ export default function HomePage() {
               Parem por um instante. Escolham uma nuance de seu coração para receber um acolhimento pastoral sob medida.
             </p>
           </div>
-          <div>
-            <Button 
-              variant="outline" 
+          <div className="pt-2">
+            <button 
               onClick={() => navigate('/devotional/emotions')}
-              className="text-[10px] px-6 py-2.5 uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity"
+              className="text-[9px] font-sans font-medium uppercase tracking-[0.25em] text-foreground/45 hover:text-foreground/85 transition-colors underline underline-offset-8 decoration-foreground/10 hover:decoration-foreground/30 py-2 cursor-pointer"
             >
               Silenciar e escolher
-            </Button>
+            </button>
           </div>
         </div>
       </section>

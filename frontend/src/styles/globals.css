@@ -175,13 +175,13 @@
 
 /* --- TEMA NOTURNO CONTEMPLATIVO CAPIO (RITUAL DE FECHAMENTO) --- */
 .capio-night-theme {
-  --color-background: #0B0D0B !important;
-  --color-surface: #121613 !important;
-  --color-text-primary: #FAF8F5 !important;
-  --color-text-secondary: rgba(250, 248, 245, 0.45) !important;
-  --color-border: rgba(250, 248, 245, 0.04) !important;
-  background-color: #0B0D0B !important;
-  color: #FAF8F5 !important;
+  --color-background: #ECE8E1 !important; /* Papel aquecido suave, simulando leitura sob luz de vela */
+  --color-surface: #E2DDD5 !important;    /* Diferença tonal sutil para manter profundidade editorial */
+  --color-text-primary: #3E3B35 !important; /* Marrom-café atenuado de baixo contraste para repouso visual */
+  --color-text-secondary: rgba(62, 59, 53, 0.48) !important;
+  --color-border: rgba(62, 59, 53, 0.035) !important; /* Bordas de baixíssima opacidade para guiar o fluxo */
+  background-color: #ECE8E1 !important;
+  color: #3E3B35 !important;
 }
 
 .capio-night-theme h1,
@@ -192,13 +192,13 @@
 .capio-night-theme blockquote,
 .capio-night-theme button,
 .capio-night-theme a {
-  color: #FAF8F5 !important;
+  color: #3E3B35 !important;
 }
 
 .capio-night-theme .text-foreground\/45,
 .capio-night-theme .text-foreground\/35,
 .capio-night-theme .text-foreground\/30,
 .capio-night-theme .text-foreground\/20 {
-  color: rgba(250, 248, 245, 0.4) !important;
+  color: rgba(62, 59, 53, 0.4) !important;
 }
 
