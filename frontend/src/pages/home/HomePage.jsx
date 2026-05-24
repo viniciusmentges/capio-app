@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '../../hooks/useAuth';
@@ -43,6 +43,18 @@ export default function HomePage() {
   const greeting = getGreetingContext();
   const firstName = formatFirstName(user);
   const title = firstName ? `${greeting}, ${firstName}.` : `${greeting}.`;
+
+  useEffect(() => {
+    if (isNight) {
+      document.body.classList.add('capio-night-theme');
+    } else {
+      document.body.classList.remove('capio-night-theme');
+    }
+
+    return () => {
+      document.body.classList.remove('capio-night-theme');
+    };
+  }, [isNight]);
 
   const getReflectionPreview = () => {
     if (isReflectionLoading) return "Preparando sua reflexão...";

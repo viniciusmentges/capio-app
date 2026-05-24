@@ -61,11 +61,13 @@ registerRoute(
 // Em caso de falha de conexão, a chamada falha nativamente, propagando o erro para o frontend, que
 // aciona de forma consistente e silenciosa o IndexedDB/localForage como ÚNICA FONTE DE VERDADE offline.
 
-// 3. Ativação Imediata do Service Worker
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
+// 3. Ativação Imediata do Service Worker (Prevenção de Ghost Cache)
+self.addEventListener('install', () => {
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(self.clients.claim());
 });
 
 // ==========================================
