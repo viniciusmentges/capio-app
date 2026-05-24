@@ -206,5 +206,7 @@ class ReflectionTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('journey_text', response.data)
         self.assertIn('top_themes', response.data)
+        self.assertIn('show_journey', response.data)
+
 
 

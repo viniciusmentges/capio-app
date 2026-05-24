@@ -67,7 +67,7 @@ export default function HomePage() {
       </section>
 
       {/* Bloco 2: Reflexão de Hoje (O Centro Absoluto) */}
-      <section className="space-y-6 pt-4 border-t border-foreground/[0.03]">
+      <section className="space-y-6 pt-4 border-t border-foreground/[0.015]">
         <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-foreground/35">
           Reflexão do Dia
         </p>
@@ -103,23 +103,22 @@ export default function HomePage() {
 
       {/* Bloco 3: Palavra da Noite (Sessão Noturna Dinâmica) */}
       {isNight && nightData && (
-        <section className="space-y-6 pt-12 border-t border-foreground/[0.03] animate-fade-in">
-          <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-foreground/35">
+        <section className="space-y-6 pt-12 border-t border-foreground/[0.015] animate-fade-in max-w-lg">
+          <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-[#FAF8F5]/35">
             Palavra da Noite
           </p>
-          <div className="bg-[#121613] p-8 rounded-lg border border-[#FAF8F5]/5 space-y-6 max-w-lg">
-            <blockquote className="font-serif italic text-base text-[#FAF8F5]/90 leading-relaxed">
+          <div className="space-y-6 py-4">
+            <blockquote className="font-serif italic text-lg text-[#FAF8F5]/90 leading-relaxed">
               “{nightData.share_quote}”
             </blockquote>
-            <p className="text-[9px] uppercase tracking-[0.2em] font-serif italic text-foreground/45 text-right">
+            <p className="text-[9px] uppercase tracking-[0.2em] font-sans font-light text-[#FAF8F5]/45">
               — {nightData.scripture_reference}
             </p>
-            <div className="w-8 h-[0.5px] bg-[#FAF8F5]/10 mx-auto my-4" />
-            <div className="space-y-2">
-              <p className="text-[9px] font-serif italic text-foreground/30 text-center tracking-widest">
+            <div className="space-y-3 pt-6 border-t border-[#FAF8F5]/5">
+              <p className="text-[9px] font-sans font-light uppercase text-[#FAF8F5]/30 tracking-widest">
                 Oração de encerramento
               </p>
-              <p className="font-serif text-sm text-[#FAF8F5]/65 italic leading-relaxed text-center max-w-sm mx-auto">
+              <p className="font-serif text-sm text-[#FAF8F5]/70 italic leading-relaxed">
                 {nightData.closing_prayer}
               </p>
             </div>
@@ -128,7 +127,7 @@ export default function HomePage() {
       )}
 
       {/* Bloco 4: Do que seu coração precisa hoje? (Presença Emocional) */}
-      <section className="space-y-6 pt-8 border-t border-foreground/[0.03]">
+      <section className="space-y-6 pt-8 border-t border-foreground/[0.015]">
         <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-foreground/35">
           Presença & Acolhimento
         </p>
@@ -152,8 +151,8 @@ export default function HomePage() {
       </section>
 
       {/* Bloco 5: Memória Espiritual / Observação Pastoral */}
-      {journeyData && journeyData.journey_text && (
-        <section className="space-y-4 pt-8 border-t border-foreground/[0.03] max-w-md animate-fade-in">
+      {journeyData && journeyData.show_journey && journeyData.journey_text && (
+        <section className="space-y-4 pt-8 border-t border-foreground/[0.015] max-w-md animate-fade-in">
           <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-foreground/35">
             Observação Pastoral
           </p>
@@ -165,7 +164,7 @@ export default function HomePage() {
 
       {/* Bloco 6: Diário Litúrgico (Arquivo Silencioso) */}
       {archiveData && archiveData.length > 1 && (
-        <section className="space-y-6 pt-8 border-t border-foreground/[0.03]">
+        <section className="space-y-6 pt-8 border-t border-foreground/[0.015]">
           <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-foreground/35">
             Diário Litúrgico
           </p>

@@ -74,6 +74,29 @@ class PublicReflectionDetailView(APIView):
         except Exception as e:
             return Response({"error": "Internal server error."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+def clean_and_truncate_literary(text: str, max_len: int) -> str:
+    if not text:
+        return ""
+    # 1. Higienizar quebras de linha excessivas e espaços múltiplos
+    cleaned = " ".join(text.split()).strip()
+    if len(cleaned) <= max_len:
+        return cleaned
+    
+    # 2. Tentar cortar na fronteira de uma frase próxima ao limite para manter cadência literária
+    truncated = cleaned[:max_len]
+    last_point = max(truncated.rfind('.'), truncated.rfind('!'), truncated.rfind('?'))
+    
+    # Se houver um ponto final que preserve um tamanho substancial (ex: pelo menos 70% do max_len)
+    if last_point >= int(max_len * 0.7):
+        return cleaned[:last_point + 1].strip()
+    
+    # Fallback: Cortar na última palavra inteira antes do limite para não quebrar no meio
+    last_space = truncated.rfind(' ')
+    if last_space > (max_len - 30):
+        return cleaned[:last_space].strip() + "..."
+        
+    return truncated.strip() + "..."
+
 class NightView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -82,14 +105,18 @@ class NightView(APIView):
             today_res = ReflectionService.get_today(request.user)
             reflection = DailyReflection.objects.get(id=today_res['reflection']['id'])
             
+            # Calibração e respiro da Palavra da Noite: limitar tamanho elegantemente por frase
+            share_quote_calibrated = clean_and_truncate_literary(reflection.share_quote, 150)
+            closing_prayer_calibrated = clean_and_truncate_literary(reflection.closing_prayer, 200)
+            
             # Garantir formato curto, apenas o fragmento e a oração curta para o eco do fim do dia
             return Response({
                 "id": reflection.id,
                 "date": reflection.date,
                 "title": reflection.title,
                 "scripture_reference": reflection.scripture_reference,
-                "share_quote": reflection.share_quote,
-                "closing_prayer": reflection.closing_prayer,
+                "share_quote": share_quote_calibrated,
+                "closing_prayer": closing_prayer_calibrated,
                 "theme_key": reflection.theme_key,
                 "emotional_theme": reflection.emotional_theme
             }, status=status.HTTP_200_OK)
@@ -112,6 +139,10 @@ class SpiritualJourneyView(APIView):
 
     def get(self, request):
         try:
+            today = timezone.localtime().date()
+            # 1/3 de probabilidade baseada em semente determinística (ID do usuário + dia do mês)
+            show_journey = (today.day + request.user.id) % 3 == 0
+            
             thirty_days_ago = timezone.localtime() - timedelta(days=30)
             
             # 1. Obter reflexões lidas
@@ -184,6 +215,7 @@ class SpiritualJourneyView(APIView):
             return Response({
                 "journey_text": journey_text,
                 "top_themes": top_themes,
+                "show_journey": show_journey,
                 "read_count": len(read_reflection_ids) + accessed_devotionals.count()
             }, status=status.HTTP_200_OK)
             
