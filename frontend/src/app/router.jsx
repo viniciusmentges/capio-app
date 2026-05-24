@@ -4,6 +4,7 @@ import AppShell from '../components/layout/AppShell';
 import { capturePageView } from '../analytics/posthogClient';
 import { useAuth } from '../hooks/useAuth';
 import LoadingState from '../components/ui/LoadingState';
+import ContemplativeErrorBoundary from '../components/ui/ContemplativeErrorBoundary';
 
 const HomePage = React.lazy(() => import('../pages/home/HomePage'));
 const EmotionPage = React.lazy(() => import('../pages/devotional/EmotionPage'));
@@ -60,6 +61,7 @@ export const router = createBrowserRouter([
         <AppShell />
       </ProtectedRoute>
     ),
+    errorElement: <ContemplativeErrorBoundary />,
     children: [
       {
         path: "/",
@@ -81,33 +83,36 @@ export const router = createBrowserRouter([
   },
   {
     path: "/share/:type/:id",
-    element: <SharedContentViewer />
+    element: <SharedContentViewer />,
+    errorElement: <ContemplativeErrorBoundary />
   },
   {
     path: "/apoie",
-    element: <SupportPage />
+    element: <SupportPage />,
+    errorElement: <ContemplativeErrorBoundary />
   },
   {
     path: "/recuperar-senha",
-    element: <ForgotPasswordPage />
+    element: <ForgotPasswordPage />,
+    errorElement: <ContemplativeErrorBoundary />
   },
   {
     path: "/login",
-
     element: (
       <PublicRoute>
         <LoginPage />
       </PublicRoute>
-    )
+    ),
+    errorElement: <ContemplativeErrorBoundary />
   },
-
   {
     path: "/register",
     element: (
       <PublicRoute>
         <RegisterPage />
       </PublicRoute>
-    )
+    ),
+    errorElement: <ContemplativeErrorBoundary />
   }
 ]);
 
