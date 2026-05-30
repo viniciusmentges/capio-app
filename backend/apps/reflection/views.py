@@ -105,9 +105,18 @@ class NightView(APIView):
             today_res = ReflectionService.get_today(request.user)
             reflection = DailyReflection.objects.get(id=today_res['reflection']['id'])
             
+            # Recuperar campos noturnos. Se forem registros antigos, usar fallback offline limpo.
+            night_word = reflection.night_word
+            if not night_word:
+                night_word = "Há um repouso silencioso que nos aguarda no fim de tudo."
+                
+            night_prayer = reflection.night_prayer
+            if not night_prayer:
+                night_prayer = "Senhor, entrego este dia em tuas mãos. Que a noite traga repouso e a certeza de que não estou só. Amém."
+            
             # Calibração e respiro da Palavra da Noite: limitar tamanho elegantemente por frase
-            share_quote_calibrated = clean_and_truncate_literary(reflection.share_quote, 150)
-            closing_prayer_calibrated = clean_and_truncate_literary(reflection.closing_prayer, 200)
+            night_word_calibrated = clean_and_truncate_literary(night_word, 150)
+            night_prayer_calibrated = clean_and_truncate_literary(night_prayer, 200)
             
             # Garantir formato curto, apenas o fragmento e a oração curta para o eco do fim do dia
             return Response({
@@ -115,8 +124,8 @@ class NightView(APIView):
                 "date": reflection.date,
                 "title": reflection.title,
                 "scripture_reference": reflection.scripture_reference,
-                "share_quote": share_quote_calibrated,
-                "closing_prayer": closing_prayer_calibrated,
+                "night_word": night_word_calibrated,
+                "night_prayer": night_prayer_calibrated,
                 "theme_key": reflection.theme_key,
                 "emotional_theme": reflection.emotional_theme
             }, status=status.HTTP_200_OK)
@@ -140,9 +149,6 @@ class SpiritualJourneyView(APIView):
     def get(self, request):
         try:
             today = timezone.localtime().date()
-            # 1/3 de probabilidade baseada em semente determinística (ID do usuário + dia do mês)
-            show_journey = (today.day + request.user.id) % 3 == 0
-            
             thirty_days_ago = timezone.localtime() - timedelta(days=30)
             
             # 1. Obter reflexões lidas
@@ -161,6 +167,11 @@ class SpiritualJourneyView(APIView):
                 accessed_at__gte=thirty_days_ago
             ).select_related('content')
             
+            read_count = len(read_reflection_ids) + accessed_devotionals.count()
+            
+            # TODO: Evoluir temporário para contador real de visitas ativas -> active_visit_count % 3 == 0
+            show_journey = (read_count >= 3) and ((today.day + request.user.id) % 3 == 0)
+
             # 3. Contar eixos temáticos e emoções
             theme_keys = []
             for ref in read_reflections:
@@ -170,6 +181,15 @@ class SpiritualJourneyView(APIView):
                 if acc.content.emotional_theme:
                     theme_keys.append(acc.content.emotional_theme)
                     
+            # Se a elegibilidade inicial não passar ou não houver temas, aborta cedo
+            if not show_journey or not theme_keys:
+                return Response({
+                    "journey_text": "",
+                    "top_themes": [],
+                    "show_journey": False,
+                    "read_count": read_count
+                }, status=status.HTTP_200_OK)
+                
             # 4. Mapear termos pastorais
             theme_translation = {
                 "contemplacao": "silêncio e quietude",
@@ -198,25 +218,31 @@ class SpiritualJourneyView(APIView):
                 if translated:
                     pastoral_themes.append(translated)
                     
-            # Fallback se não houver dados suficientes para manter a sonoridade pastoral
-            if len(pastoral_themes) < 2:
-                fallbacks = ["esperança viva", "silêncio e quietude"]
-                for f in fallbacks:
-                    if f not in pastoral_themes:
-                        pastoral_themes.append(f)
-                    if len(pastoral_themes) == 2:
-                        break
-                        
-            journey_text = (
-                f"Nas últimas semanas, seus momentos de pausa e leitura caminharam próximos a temas de "
-                f"{pastoral_themes[0]} e {pastoral_themes[1]}. Que o Senhor continue guiando seus passos no silêncio."
-            )
+            # Se nenhum tema real tiver tradução, aborta para não gerar dados falsos
+            if len(pastoral_themes) == 0:
+                return Response({
+                    "journey_text": "",
+                    "top_themes": top_themes,
+                    "show_journey": False,
+                    "read_count": read_count
+                }, status=status.HTTP_200_OK)
+                
+            if len(pastoral_themes) == 1:
+                journey_text = (
+                    f"Nas últimas semanas, seus momentos de pausa e leitura caminharam próximos a temas de "
+                    f"{pastoral_themes[0]}. Que o Senhor continue guiando seus passos no silêncio."
+                )
+            else:
+                journey_text = (
+                    f"Nas últimas semanas, seus momentos de pausa e leitura caminharam próximos a temas de "
+                    f"{pastoral_themes[0]} e {pastoral_themes[1]}. Que o Senhor continue guiando seus passos no silêncio."
+                )
             
             return Response({
                 "journey_text": journey_text,
                 "top_themes": top_themes,
-                "show_journey": show_journey,
-                "read_count": len(read_reflection_ids) + accessed_devotionals.count()
+                "show_journey": True,
+                "read_count": read_count
             }, status=status.HTTP_200_OK)
             
         except Exception as e:

@@ -72,14 +72,29 @@ class NormalizationService:
     }
 
     @classmethod
+    def is_valid_reference(cls, reference: str) -> bool:
+        """
+        Valida se a entrada contém apenas uma referência bíblica válida (Livro + opcionais Capítulo/Versículo).
+        Impede entradas emocionais (ex: "estou sofrendo igual Jó" ou "preciso de um salmo para ansiedade").
+        """
+        ref = reference.lower().strip()
+        
+        # Regex rigorosa: A string inteira deve ser (Livro) opcionalmente seguido de espaços e (Capitulo/Versículo)
+        # ^([a-zà-ú0-9\s]+?)(?:\s+(\d+[\d:.,\s\-]*))?$
+        # Isso garante que não haja palavras soltas no final
+        match = re.match(r'^([a-zà-ú0-9\s]+?)(?:\s+(\d+[\d:.,\s\-]*))?$', ref)
+        if not match:
+            return False
+            
+        book_raw = match.group(1).strip()
+        return book_raw in cls.BOOK_MAPPING
+
+    @classmethod
     def normalize(cls, reference: str) -> Tuple[str, str, int, Optional[str]]:
         """
         Retorna (canonical_id, book_name, chapter, verses)
         """
         ref = reference.lower().strip()
-        # Jo 3:16 -> book="jo", rest="3:16"
-        # 1 Tessalonicenses 5:18 -> book="1 tessalonicenses", rest="5:18"
-        
         # Regex para separar livro de capítulo/versículo
         # Pega o último espaço ou a transição para número
         match = re.match(r'^(.+?)\s*(\d+.*)$', ref)
@@ -99,6 +114,6 @@ class NormalizationService:
         
         canonical_id = f"{book_id}.{chapter}"
         if verses:
-            canonical_id += f".{verses}"
+            canonical_id += f"{verses}" if canonical_id.endswith('.') else f".{verses}"
             
         return canonical_id, book_raw.title(), chapter, verses

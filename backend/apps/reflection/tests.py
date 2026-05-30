@@ -176,8 +176,8 @@ class ReflectionTests(APITestCase):
         url = '/api/reflection/night/'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn('share_quote', response.data)
-        self.assertIn('closing_prayer', response.data)
+        self.assertIn('night_word', response.data)
+        self.assertIn('night_prayer', response.data)
 
     def test_liturgical_archive_view(self):
         # Garante a criação de hoje e cria outra no passado
@@ -198,15 +198,143 @@ class ReflectionTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(len(response.data) >= 2)
 
-    def test_spiritual_journey_view(self):
-        # Garante leituras para contar temas
-        self.client.get('/api/reflection/today/')
+    def test_spiritual_journey_0_readings(self):
         url = '/api/reflection/spiritual-journey/'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn('journey_text', response.data)
-        self.assertIn('top_themes', response.data)
-        self.assertIn('show_journey', response.data)
+        self.assertFalse(response.data['show_journey'])
+        self.assertEqual(response.data['journey_text'], '')
 
+    def test_spiritual_journey_1_reading(self):
+        from apps.ai_core.models import GeneratedResponse
+        GeneratedResponse.objects.create(
+            user=self.user,
+            response_type='REFLECTION',
+            content_ref_id=1,
+            filter_status='clean'
+        )
+        url = '/api/reflection/spiritual-journey/'
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(response.data['show_journey'])
+        self.assertEqual(response.data['read_count'], 1)
 
+    def test_spiritual_journey_2_readings(self):
+        from apps.ai_core.models import GeneratedResponse
+        GeneratedResponse.objects.create(user=self.user, response_type='REFLECTION', content_ref_id=1, filter_status='clean')
+        GeneratedResponse.objects.create(user=self.user, response_type='REFLECTION', content_ref_id=2, filter_status='clean')
+        url = '/api/reflection/spiritual-journey/'
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(response.data['show_journey'])
+        self.assertEqual(response.data['read_count'], 2)
 
+    def test_spiritual_journey_3_readings_eligible(self):
+        from apps.ai_core.models import GeneratedResponse
+        from apps.reflection.models import DailyReflection
+        from unittest.mock import patch
+        from datetime import datetime
+
+        # Cria 3 leituras válidas e traduzíveis
+        real_today = timezone.localtime()
+        today_date = real_today.date()
+        for i, theme in enumerate(["esperanca", "contemplacao", "esperanca"]):
+            ref = DailyReflection.objects.create(
+                date=today_date - timedelta(days=i),
+                title=f"Ref {i}",
+                theme_key=theme,
+                scripture_reference="Salmo",
+                scripture_text="Texto",
+                reflection_body="Corpo",
+                closing_prayer="Oracao",
+            )
+            GeneratedResponse.objects.create(user=self.user, response_type='REFLECTION', content_ref_id=ref.id, filter_status='clean')
+
+        url = '/api/reflection/spiritual-journey/'
+        
+        # Moca o datetime para garantir que ((day + user.id) % 3 == 0) seja True
+        target_day = 3 - (self.user.id % 3)
+        if target_day <= 0: target_day += 3
+        
+        mock_dt = real_today.replace(day=target_day)
+        
+        with patch('django.utils.timezone.localtime', return_value=mock_dt):
+            response = self.client.get(url)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertTrue(response.data['show_journey'])
+            self.assertEqual(response.data['read_count'], 3)
+            self.assertIn('esperança viva', response.data['journey_text'])
+            self.assertIn('silêncio e quietude', response.data['journey_text'])
+
+    def test_night_view_returns_new_fields(self):
+        # Garante a criação de hoje com os novos campos preenchidos
+        today = timezone.localtime().date()
+        DailyReflection.objects.get_or_create(
+            date=today,
+            defaults={
+                "title": "Hoje",
+                "reflection_body": "Hoje corpo",
+                "scripture_reference": "Salmo 23:2",
+                "scripture_text": "Texto",
+                "share_quote": "Quote dia",
+                "night_word": "Nova palavra da noite",
+                "night_prayer": "Nova oração noturna"
+            }
+        )
+        url = '/api/reflection/night/'
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('night_word', response.data)
+        self.assertIn('night_prayer', response.data)
+        self.assertEqual(response.data['night_word'], "Nova palavra da noite")
+        self.assertEqual(response.data['night_prayer'], "Nova oração noturna")
+
+    def test_night_view_legacy_fallback(self):
+        # Testa uma reflexão antiga sem campos noturnos preenchidos
+        today = timezone.localtime().date()
+        DailyReflection.objects.get_or_create(
+            date=today,
+            defaults={
+                "title": "Hoje",
+                "reflection_body": "Hoje corpo",
+                "scripture_reference": "Salmo 23:2",
+                "scripture_text": "Texto",
+                "share_quote": "Quote dia",
+                "night_word": "",
+                "night_prayer": ""
+            }
+        )
+        url = '/api/reflection/night/'
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['night_word'], "Há um repouso silencioso que nos aguarda no fim de tudo.")
+        self.assertEqual(response.data['night_prayer'], "Senhor, entrego este dia em tuas mãos. Que a noite traga repouso e a certeza de que não estou só. Amém.")
+
+    def test_reflection_service_anti_repetition_fallback(self):
+        from services.reflection.reflection_service import ReflectionService
+        from apps.ai_core.models import AIRequest
+        from unittest.mock import patch
+
+        # Simula resposta falha da IA onde night_word copia share_quote e night_prayer copia closing_prayer
+        mock_ai_response = {
+            "title": "Teste",
+            "scripture_reference": "Joao 1",
+            "scripture_text": "No inicio...",
+            "reflection_body": "Corpo da reflexão",
+            "share_quote": "A mesma frase",
+            "closing_prayer": "A mesma oração",
+            "night_word": "A mesma frase",
+            "night_prayer": "A mesma oração",
+            "ai_generated": True
+        }
+
+        with patch('services.ai.anthropic.AnthropicAIService.generate_reflection', return_value=mock_ai_response):
+            today = timezone.localtime().date()
+            reflection = ReflectionService.warmup_reflection(target_date=today)
+            
+            # Garante que o fallback protegeu o banco de dados contra repetição
+            self.assertNotEqual(reflection.night_word, "A mesma frase")
+            self.assertEqual(reflection.night_word, "Há um repouso silencioso que nos aguarda no fim de tudo.")
+            
+            self.assertNotEqual(reflection.night_prayer, "A mesma oração")
+            self.assertEqual(reflection.night_prayer, "Senhor, entrego este dia em tuas mãos. Que a noite traga repouso e a certeza de que não estou só. Amém.")

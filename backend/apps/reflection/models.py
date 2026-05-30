@@ -15,6 +15,10 @@ class DailyReflection(models.Model):
     # Este campo representa a assinatura editorial compartilhável do dia.
     share_quote = models.TextField(blank=True, default="")
     
+    # --- ATIVOS NOTURNOS ---
+    night_word = models.TextField(blank=True, default="")
+    night_prayer = models.TextField(blank=True, default="")
+    
     ai_generated = models.BooleanField(default=False)
     
     # Eixos editoriais da Fase 2 para Thematic Steering

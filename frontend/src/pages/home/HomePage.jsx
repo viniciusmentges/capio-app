@@ -119,7 +119,7 @@ export default function HomePage() {
           </p>
           <div className="space-y-6">
             <blockquote className="font-serif italic text-lg text-foreground/80 leading-relaxed">
-              “{nightData.share_quote}”
+              “{nightData.night_word}”
             </blockquote>
             <p className="text-[9px] uppercase tracking-[0.2em] font-sans font-light text-foreground/45">
               — {nightData.scripture_reference}
@@ -129,7 +129,7 @@ export default function HomePage() {
                 Oração de encerramento
               </p>
               <p className="font-serif text-sm text-foreground/60 italic leading-relaxed">
-                {nightData.closing_prayer}
+                {nightData.night_prayer}
               </p>
             </div>
           </div>

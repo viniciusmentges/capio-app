@@ -361,17 +361,20 @@ class AnthropicAIService(AIService):
             "- 'scripture_text': O texto da Palavra.\n"
             "- 'reflection_body': Meditação profunda (máx 1000 caracteres). Começa no chão humano, encontra a Palavra, deixa espaço. ATENÇÃO: Não domesticar a reflexão do dia! A reflexão diurna deve preservar toda a força, tensão bíblica, profundidade e confronto saudável (honestidade espiritual, podendo falar de luta, obediência ativa, chamado, tentação, conflito interior e resistência). Não a torne artificialmente calma ou anestesiada.\n"
             "- 'guiding_question': Pergunta para carregar no coração.\n"
-            "- 'closing_prayer': Oração curta de encerramento para a noite (Palavra da Noite). Deve conduzir o tema do dia ao silêncio. Calibre-a estritamente para o repouso noturno: evite tensões ou confronto aqui. Deve inspirar confiança silenciosa, repouso, desaceleração, respiração, quietude e entrega de fim de dia no Senhor.\n"
-            "- 'share_quote': Um eco ou fragmento de recolhimento noturno (máx 15 palavras) inspirado ou extraído da própria reflexão. Deve soar como uma vela acesa no fim do dia, uma releitura silenciosa que repousa e permanece no silêncio da noite, inspirando quietude e confiança tranquila.\n"
+            "- 'closing_prayer': Oração curta de encerramento da meditação DIURNA.\n"
+            "- 'share_quote': Um fragmento ou eco memorável (máx 15 palavras) extraído ou inspirado na reflexão, próprio para um card compartilhável.\n"
+            "- 'night_word': Crie uma frase NOVA, curta e contemplativa para a noite (Palavra da Noite). Ela deve ecoar o tema da reflexão do dia, mas NÃO DEVE repetir frases, imagens ou construções já usadas no texto principal ou no share_quote. Absolutamente proibida a cópia literal.\n"
+            "- 'night_prayer': Crie uma oração curta de entrega, própria para o fim do dia. Ela deve nascer do mesmo tema espiritual, mas não repetir frases da reflexão diária nem da Palavra da Noite. Calibre-a estritamente para o repouso noturno: evite tensões ou confronto aqui. Deve inspirar confiança silenciosa, repouso, desaceleração, respiração, quietude e entrega de fim de dia no Senhor.\n"
             "- 'emotional_theme': Subtema em até 5 palavras, usado para rastreamento semântico.\n\n"
-            "REGRAS ESTRITAS DE RITUAL NOTURNO PARA 'closing_prayer' E 'share_quote':\n"
+            "REGRAS ESTRITAS DE RITUAL NOTURNO PARA 'night_prayer' E 'night_word':\n"
             "1. DIREÇÃO DA NOITE: A noite não apaga o tema do dia; ela apenas o conduz suavemente ao silêncio, ao repouso e à permanência pacífica no Senhor.\n"
-            "2. PROIBIÇÃO DE CONFRONTO E TENSÃO NA NOITE: A oração de encerramento e o share_quote devem focar em paz, descanso espiritual e respiração calma, sem acusações ou pressões.\n\n"
-            "REGRAS ESTRITAS DE ARQUITETURA PARA 'share_quote':\n"
+            "2. PROIBIÇÃO DE CONFRONTO E TENSÃO NA NOITE: A oração de encerramento e a palavra da noite devem focar em paz, descanso espiritual e respiração calma, sem acusações ou pressões.\n"
+            "3. ANTI-REPETIÇÃO ESTRITA: A Palavra da Noite ('night_word') NÃO pode ser idêntica ou substring de 'reflection_body', 'title' ou 'share_quote'. A Oração da Noite ('night_prayer') NÃO pode copiar frases de 'closing_prayer'.\n\n"
+            "REGRAS ESTRITAS DE ARQUITETURA PARA 'share_quote' E 'night_word':\n"
             "1. LINGUAGEM DE LIVRO: Use palavras densas, sóbrias e humanas. Não se limite apenas a 'silêncio, presença, espera' — expresse verdade e profundidade.\n"
             "2. PROIBIÇÃO DE AUTOAJUDA/COACHING: Banido imperativos (não use 'lembre-se', 'busque', 'confie', 'mude'). Banido jargões gospel ('Deus vai fazer', 'vitória', 'jornada', 'bênção').\n"
             "3. ZERO PONTUAÇÃO EXCESSIVA: Proibido absolutamente o uso de exclamações (!). Use apenas pontos e vírgulas.\n"
-            "4. RITMO E COMPRIMENTO: Curto e memorável sem ser clichê. Máximo de 15 palavras. Frase limpa, sem aspas adicionais dentro da string."
+            "4. RITMO E COMPRIMENTO: Curtos e memoráveis sem serem clichês. Máximo de 15 palavras. Frase limpa, sem aspas adicionais dentro da string."
         )
         return self._call_claude(
             prompt, system_prompt, 0.75,
@@ -384,7 +387,8 @@ class AnthropicAIService(AIService):
             },
             expected_keys=[
                 'title', 'scripture_reference', 'scripture_text', 'reflection_body', 
-                'guiding_question', 'closing_prayer', 'share_quote', 'emotional_theme'
+                'guiding_question', 'closing_prayer', 'share_quote', 'emotional_theme',
+                'night_word', 'night_prayer'
             ],
             ai_request_id=ai_request_id,
             endpoint_origin="DAILY_REFLECTION"

@@ -73,11 +73,12 @@ export default function BibleExplainPage() {
   }, []);
 
   useEffect(() => {
-    if ((mutation.isError || isError) && lastSavedExplanation) {
+    const isValidationError = mutation.error?.response?.status === 400 || mutation.error?.response?.status === 422;
+    if ((mutation.isError || isError) && !isValidationError && lastSavedExplanation) {
       console.warn('[CAPIO PWA] Falha de conexao fisica na API de exegese biblica. Oferecendo reidratacao contemplativa da ultima explicacao do IndexedDB.');
       setShowOfflineOption(true);
     }
-  }, [mutation.isError, isError, lastSavedExplanation]);
+  }, [mutation.isError, isError, lastSavedExplanation, mutation.error]);
 
   const handleExplain = (passage) => {
     captureEvent(ANALYTICS_EVENTS.BIBLE_EXPLANATION_REQUESTED, {
@@ -169,7 +170,10 @@ export default function BibleExplainPage() {
   const activeExplanation = explanation || localExplanation;
   const isGeneralOffline = !navigator.onLine && !activeExplanation && !lastSavedExplanation;
 
-  if (isGeneralOffline || ((mutation.isError || isError) && !lastSavedExplanation)) {
+  const isValidationError = mutation.error?.response?.status === 400 || mutation.error?.response?.status === 422;
+  const showOfflineScreen = (mutation.isError || isError) && !isValidationError && !lastSavedExplanation;
+
+  if (isGeneralOffline || showOfflineScreen) {
     return (
       <div className="flex flex-col justify-center min-h-[100dvh]">
         <OfflineState onRetry={() => refetch()} />
@@ -222,6 +226,7 @@ export default function BibleExplainPage() {
       <BibleExplainForm
         onSubmit={handleExplain}
         isLoading={mutation.isPending}
+        serverError={mutation.isError ? (mutation.error?.response?.data?.reference?.[0] || mutation.error?.response?.data?.message) : null}
       />
     </div>
   );

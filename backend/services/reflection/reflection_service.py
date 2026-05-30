@@ -283,16 +283,45 @@ class ReflectionService:
                 }
             )
 
+            # Extrair chaves
+            reflection_body = ai_response.get("reflection_body", "")
+            share_quote = ai_response.get("share_quote", "")
+            title = ai_response.get("title", "")
+            closing_prayer = ai_response.get("closing_prayer", "")
+            
+            night_word = ai_response.get("night_word", "")
+            night_prayer = ai_response.get("night_prayer", "")
+
+            # --- PROTEÇÃO ANTI-REPETIÇÃO ---
+            # Se night_word for idêntica ou substring de algo já dito, aplicar fallback
+            clean_night_word = night_word.strip().lower()
+            if (clean_night_word in reflection_body.lower() or 
+                clean_night_word in share_quote.lower() or 
+                clean_night_word in title.lower() or
+                clean_night_word == ""):
+                
+                log_event("night_word_fallback_used", reason="repetition_or_empty", date=target_date)
+                logger.warning(f"[CAPIO] Fallback noturno acionado para {target_date}: {night_word}")
+                
+                # Fallback seguro e neutro, que não repete o corpo
+                night_word = "Há um repouso silencioso que nos aguarda no fim de tudo."
+                
+            if night_prayer.strip().lower() == closing_prayer.strip().lower() or night_prayer.strip() == "":
+                log_event("night_prayer_fallback_used", reason="repetition_or_empty", date=target_date)
+                night_prayer = "Senhor, entrego este dia em tuas mãos. Que a noite traga repouso e a certeza de que não estou só. Amém."
+
             reflection = DailyReflection.objects.create(
                 date=target_date,
                 passage=bible_passage,
-                title=ai_response.get("title", ""),
+                title=title,
                 scripture_reference=ref_raw,
                 scripture_text=bible_passage.text_original,
-                reflection_body=ai_response.get("reflection_body", ""),
+                reflection_body=reflection_body,
                 guiding_question=ai_response.get("guiding_question", ""),
-                closing_prayer=ai_response.get("closing_prayer", ""),
-                share_quote=ai_response.get("share_quote", ""),
+                closing_prayer=closing_prayer,
+                share_quote=share_quote,
+                night_word=night_word,
+                night_prayer=night_prayer,
                 ai_generated=ai_response.get("ai_generated", True),
                 emotional_theme=ai_response.get("emotional_theme", ""),
                 theme_key=theme.get("key", "")

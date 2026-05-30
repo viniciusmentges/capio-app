@@ -57,11 +57,45 @@ class BibleTests(APITestCase):
             self.assertEqual(response.data['biblical_context'], "Contexto curto")
 
     def test_hard_block_passage(self):
+        from unittest.mock import patch
         url = reverse('explain')
         data = {'reference': 'feitiçaria'} # Termo presente em HARD_BLOCK_TERMS
-        response = self.client.post(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_422_UNPROCESSABLE_ENTITY)
-        self.assertEqual(response.data['error'], 'content_blocked')
+        
+        # Bypass reference validation to test the content filter hard block
+        with patch('services.bible.normalization.NormalizationService.is_valid_reference', return_value=True):
+            response = self.client.post(url, data, format='json')
+            self.assertEqual(response.status_code, status.HTTP_422_UNPROCESSABLE_ENTITY)
+            self.assertEqual(response.data['error'], 'content_blocked')
+
+    def test_explain_passage_invalid_input(self):
+        from unittest.mock import patch
+        
+        # Patcha o serviço de IA para garantir que não será chamado
+        with patch('services.bible.explanation_service.get_ai_service') as mock_get_ai:
+            mock_service = mock_get_ai.return_value
+            
+            url = reverse('explain')
+            
+            invalid_inputs = [
+                'estou sofrendo',
+                'preciso de um salmo para ansiedade',
+                'Deus me abandonou?',
+                'estou ansioso'
+            ]
+            
+            for invalid_input in invalid_inputs:
+                data = {'reference': invalid_input}
+                response = self.client.post(url, data, format='json')
+                
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+                self.assertIn('reference', response.data)
+                self.assertEqual(
+                    response.data['reference'][0], 
+                    "Este espaço acolhe uma passagem da Escritura. Para caminhar com o que você está sentindo, procure o devocional por emoção."
+                )
+                
+            # Garante explicitamente que nenhum token de IA foi gasto
+            mock_service.explain_passage.assert_not_called()
 
     def test_bible_history(self):
         PassageExplanation.objects.create(
