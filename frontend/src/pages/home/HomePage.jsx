@@ -21,7 +21,7 @@ export default function HomePage() {
   });
 
   const { data: nightData } = useQuery({
-    queryKey: ['reflection', 'night'],
+    queryKey: ['reflection', 'night', 'v2'],
     queryFn: getNightReflection,
     enabled: isNight,
     staleTime: 1000 * 60 * 60,
@@ -112,7 +112,7 @@ export default function HomePage() {
       </section>
 
       {/* Bloco 3: Palavra da Noite (Sessão Noturna Dinâmica) */}
-      {isNight && nightData && (
+      {isNight && nightData && nightData.night_word && (
         <section className="space-y-8 pt-8 border-t border-foreground/[0.015] animate-fade-in max-w-lg">
           <p className="text-[9px] font-sans font-light uppercase tracking-[0.25em] text-foreground/35">
             Palavra da Noite
