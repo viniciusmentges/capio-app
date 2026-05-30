@@ -266,6 +266,19 @@ if (not CELERY_BROKER_URL or not CELERY_RESULT_BACKEND) and not DEBUG:
     raise ValueError("Variáveis de ambiente CELERY_BROKER_URL e CELERY_RESULT_BACKEND são obrigatórias em produção!")
 
 CELERY_ACCEPT_CONTENT = ['json']
+
+# ==========================================
+# CONFIGURAÇÃO DE INFRAESTRUTURA: CELERY & REDIS
+# ==========================================
+
+# Se em produção as variáveis não forem fornecidas, lançamos ValueError explícito
+CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND', default='redis://localhost:6379/0')
+
+if (not CELERY_BROKER_URL or not CELERY_RESULT_BACKEND) and not DEBUG:
+    raise ValueError("Variáveis de ambiente CELERY_BROKER_URL e CELERY_RESULT_BACKEND são obrigatórias em produção!")
+
+CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
@@ -276,3 +289,17 @@ CELERY_TRACK_STARTED = True
 # ==========================================
 # Geração dinâmica automática desativada por padrão em produção (Biblioteca-First/Cache-First)
 ENABLE_DYNAMIC_GENERATION = env.bool('ENABLE_DYNAMIC_GENERATION', default=False)
+
+# ==========================================
+# CONFIGURAÇÃO DE E-MAIL
+# ==========================================
+EMAIL_BACKEND = env('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = env('EMAIL_HOST', default='')
+EMAIL_PORT = env.int('EMAIL_PORT', default=587)
+EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', default=True)
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='CAPIO <suporte@capio.com.br>')
+
+# URL do Frontend para links (ex: e-mail de reset)
+FRONTEND_URL = env('FRONTEND_URL', default='http://localhost:5173')

@@ -52,6 +52,7 @@ function PublicRoute({ children }) {
 const SharedContentViewer = React.lazy(() => import('../pages/public/SharedContentViewer'));
 const SupportPage = React.lazy(() => import('../pages/support/SupportPage'));
 const ForgotPasswordPage = React.lazy(() => import('../pages/auth/ForgotPasswordPage'));
+const ResetPasswordConfirmPage = React.lazy(() => import('../pages/auth/ResetPasswordConfirmPage'));
 
 export const router = createBrowserRouter([
   {
@@ -94,6 +95,11 @@ export const router = createBrowserRouter([
   {
     path: "/recuperar-senha",
     element: <ForgotPasswordPage />,
+    errorElement: <ContemplativeErrorBoundary />
+  },
+  {
+    path: "/reset-password/confirm/:uid/:token",
+    element: <ResetPasswordConfirmPage />,
     errorElement: <ContemplativeErrorBoundary />
   },
   {

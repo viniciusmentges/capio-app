@@ -1,10 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProgressiveReveal from '../../components/devotional/ProgressiveReveal';
 import Button from '../../components/ui/Button';
+import { api } from '../../lib/api';
 
 export default function ForgotPasswordPage() {
-  const supportUrl = import.meta.env.VITE_SUPPORT_CONTACT_URL;
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email) return;
+    
+    setIsSubmitting(true);
+    setMessage('');
+    
+    try {
+      await api.post('/api/auth/password-reset/', { email });
+      // Always show generic success message
+      setMessage('Se este e-mail estiver cadastrado, enviaremos instruções para redefinir sua senha.');
+    } catch (error) {
+      // Even on error we should probably show generic message to prevent enumeration,
+      // but let's be safe and show it.
+      setMessage('Se este e-mail estiver cadastrado, enviaremos instruções para redefinir sua senha.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div 
@@ -28,28 +51,48 @@ export default function ForgotPasswordPage() {
         <ProgressiveReveal delay={800}>
           <div className="space-y-10">
             <p className="text-contemplative text-foreground/70 text-center leading-relaxed">
-              A recuperação automática de senha ainda está sendo preparada. 
-              Se você precisar de ajuda para acessar sua conta, entre em contato conosco.
+              Informe o e-mail associado à sua conta.
             </p>
             
-            {supportUrl && (
-              <div className="flex justify-center pt-4">
-                <a 
-                  href={supportUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-block"
-                >
-                  <Button variant="outline" className="text-[10px] uppercase tracking-[0.2em] px-8">
-                    Pedir ajuda
-                  </Button>
-                </a>
+            {message ? (
+              <div className="text-center bg-foreground/5 p-6 rounded-md">
+                <p className="text-sm font-sans text-foreground/80 leading-relaxed">
+                  {message}
+                </p>
               </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="space-y-2">
+                  <label htmlFor="email" className="block text-[10px] uppercase tracking-[0.2em] font-sans text-foreground/50 ml-1">
+                    E-mail
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full bg-transparent border-b border-foreground/10 px-1 py-3 text-sm font-sans text-foreground/80 focus:outline-none focus:border-foreground/30 transition-colors placeholder:text-foreground/20"
+                    placeholder="seu@email.com"
+                  />
+                </div>
+                
+                <div className="pt-4">
+                  <Button 
+                    type="submit" 
+                    variant="outline" 
+                    className="w-full text-[10px] uppercase tracking-[0.2em] py-4"
+                    disabled={isSubmitting || !email}
+                  >
+                    {isSubmitting ? 'Enviando...' : 'Enviar instruções'}
+                  </Button>
+                </div>
+              </form>
             )}
           </div>
         </ProgressiveReveal>
 
-        <ProgressiveReveal delay={1500}>
+        <ProgressiveReveal delay={1000}>
           <footer className="pt-12 text-center">
             <Link 
               to="/login" 

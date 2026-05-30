@@ -3,11 +3,21 @@ from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .serializers import UserSerializer, RegisterSerializer, FeedbackSerializer, PushSubscriptionSerializer
+from django.conf import settings
+from django.core.mail import send_mail
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.contrib.auth import get_user_model
+from .serializers import (
+    UserSerializer, RegisterSerializer, FeedbackSerializer, 
+    PushSubscriptionSerializer, PasswordResetRequestSerializer, PasswordResetConfirmSerializer
+)
 from services.feedback.feedback_service import FeedbackService
 from services.exceptions import ContentBlockedException, NotFoundException
 from apps.users.models import PushSubscription
 
+User = get_user_model()
 logger = logging.getLogger(__name__)
 
 class RegisterView(generics.CreateAPIView):
@@ -151,3 +161,59 @@ class PushPreferencesView(APIView):
                 {"error": "Não foi possível atualizar as preferências no momento. Preservando a quietude do espaço."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+
+class PasswordResetRequestView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = PasswordResetRequestSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+            user = User.objects.filter(email=email).first()
+            
+            if user:
+                uid = urlsafe_base64_encode(force_bytes(user.pk))
+                token = PasswordResetTokenGenerator().make_token(user)
+                
+                frontend_url = getattr(settings, 'FRONTEND_URL', 'http://localhost:5173').rstrip('/')
+                reset_link = f"{frontend_url}/reset-password/confirm/{uid}/{token}"
+                
+                subject = "Redefinir senha na CAPIO"
+                message = (
+                    "Recebemos uma solicitação para redefinir sua senha na CAPIO.\n\n"
+                    "Para criar uma nova senha, acesse o link abaixo:\n\n"
+                    f"{reset_link}\n\n"
+                    "Se você não solicitou isso, pode ignorar este e-mail."
+                )
+                from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'CAPIO <suporte@capio.com.br>')
+                
+                try:
+                    send_mail(subject, message, from_email, [email])
+                except Exception as e:
+                    logger.error(f"Erro ao enviar email de reset: %s", e)
+            
+            # Sempre retorna a mesma mensagem de sucesso, independentemente de o usuário existir ou não.
+            return Response(
+                {"message": "Se este e-mail estiver cadastrado, enviaremos instruções para redefinir sua senha."},
+                status=status.HTTP_200_OK
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PasswordResetConfirmView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = PasswordResetConfirmSerializer(data=request.data)
+        if serializer.is_valid():
+            try:
+                uid = urlsafe_base64_decode(serializer.validated_data['uid']).decode()
+                user = User.objects.get(pk=uid)
+                user.set_password(serializer.validated_data['new_password'])
+                user.save()
+                return Response({"message": "Senha redefinida com sucesso."}, status=status.HTTP_200_OK)
+            except Exception as e:
+                logger.error("Erro ao redefinir senha: %s", e)
+                return Response({"error": "Ocorreu um erro ao redefinir sua senha."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -4,6 +4,10 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from django.contrib.auth import get_user_model
+from django.core import mail
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
 from apps.users.models import UserFeedback, PushSubscription
 from apps.users.tasks import should_send_push
 from apps.bible.models import PassageExplanation
@@ -138,4 +142,80 @@ class PushSuppressionTests(APITestCase):
             
             # Deve silenciar já que a reflexão de hoje já foi lida!
             self.assertFalse(should_send_push(self.user, self.subscription))
+
+class PasswordResetTests(APITestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser2', email='test@test.com', password='testpassword')
+        self.reset_url = '/api/auth/password-reset/'
+        self.confirm_url = '/api/auth/password-reset/confirm/'
+
+    def test_request_reset_existing_email(self):
+        response = self.client.post(self.reset_url, {'email': 'test@test.com'}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['message'], 'Se este e-mail estiver cadastrado, enviaremos instruções para redefinir sua senha.')
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn('Redefinir senha na CAPIO', mail.outbox[0].subject)
+
+    def test_request_reset_non_existing_email(self):
+        response = self.client.post(self.reset_url, {'email': 'nobody@test.com'}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['message'], 'Se este e-mail estiver cadastrado, enviaremos instruções para redefinir sua senha.')
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_confirm_reset_valid_token(self):
+        uid = urlsafe_base64_encode(force_bytes(self.user.pk))
+        token = PasswordResetTokenGenerator().make_token(self.user)
+        
+        data = {
+            'uid': uid,
+            'token': token,
+            'new_password': 'NewPassword123!',
+            'confirm_password': 'NewPassword123!'
+        }
+        response = self.client.post(self.confirm_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # Verify password changed
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password('NewPassword123!'))
+
+    def test_confirm_reset_invalid_token(self):
+        uid = urlsafe_base64_encode(force_bytes(self.user.pk))
+        data = {
+            'uid': uid,
+            'token': 'invalid-token',
+            'new_password': 'NewPassword123!',
+            'confirm_password': 'NewPassword123!'
+        }
+        response = self.client.post(self.confirm_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('token', response.data)
+
+    def test_confirm_reset_weak_password(self):
+        uid = urlsafe_base64_encode(force_bytes(self.user.pk))
+        token = PasswordResetTokenGenerator().make_token(self.user)
+        
+        data = {
+            'uid': uid,
+            'token': token,
+            'new_password': '123',
+            'confirm_password': '123'
+        }
+        response = self.client.post(self.confirm_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('new_password', response.data)
+
+    def test_confirm_reset_mismatched_passwords(self):
+        uid = urlsafe_base64_encode(force_bytes(self.user.pk))
+        token = PasswordResetTokenGenerator().make_token(self.user)
+        
+        data = {
+            'uid': uid,
+            'token': token,
+            'new_password': 'NewPassword123!',
+            'confirm_password': 'DifferentPassword123!'
+        }
+        response = self.client.post(self.confirm_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('confirm_password', response.data)
 
