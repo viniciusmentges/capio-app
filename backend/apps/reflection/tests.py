@@ -310,31 +310,121 @@ class ReflectionTests(APITestCase):
         self.assertEqual(response.data['night_word'], "Há um repouso silencioso que nos aguarda no fim de tudo.")
         self.assertEqual(response.data['night_prayer'], "Senhor, entrego este dia em tuas mãos. Que a noite traga repouso e a certeza de que não estou só. Amém.")
 
-    def test_reflection_service_anti_repetition_fallback(self):
+    def test_anti_repetition_literal_match(self):
         from services.reflection.reflection_service import ReflectionService
-        from apps.ai_core.models import AIRequest
         from unittest.mock import patch
 
-        # Simula resposta falha da IA onde night_word copia share_quote e night_prayer copia closing_prayer
         mock_ai_response = {
             "title": "Teste",
             "scripture_reference": "Joao 1",
             "scripture_text": "No inicio...",
-            "reflection_body": "Corpo da reflexão",
-            "share_quote": "A mesma frase",
-            "closing_prayer": "A mesma oração",
-            "night_word": "A mesma frase",
+            "reflection_body": "Corpo da reflexão muito bonito e longo",
+            "share_quote": "A mesma frase exata",
+            "closing_prayer": "Senhor, proteja-nos nesta noite.",
+            "night_word": "A mesma frase exata", # Identical to share_quote
             "night_prayer": "A mesma oração",
             "ai_generated": True
         }
 
         with patch('services.ai.anthropic.AnthropicAIService.generate_reflection', return_value=mock_ai_response):
+            DailyReflection.objects.all().delete()
             today = timezone.localtime().date()
             reflection = ReflectionService.warmup_reflection(target_date=today)
             
-            # Garante que o fallback protegeu o banco de dados contra repetição
-            self.assertNotEqual(reflection.night_word, "A mesma frase")
             self.assertEqual(reflection.night_word, "Há um repouso silencioso que nos aguarda no fim de tudo.")
+
+    def test_anti_repetition_with_prefix(self):
+        from services.reflection.reflection_service import ReflectionService
+        from unittest.mock import patch
+
+        mock_ai_response = {
+            "title": "Teste",
+            "scripture_reference": "Joao 1",
+            "scripture_text": "No inicio...",
+            "reflection_body": "Corpo longo sobre paz e luz",
+            "share_quote": "A coragem é a luz na escuridão.",
+            "closing_prayer": "Senhor, proteja-nos.",
+            "night_word": "Lembre-se: A coragem é a luz na escuridão.", # Prefix added, high similarity
+            "night_prayer": "A mesma oração",
+            "ai_generated": True
+        }
+
+        with patch('services.ai.anthropic.AnthropicAIService.generate_reflection', return_value=mock_ai_response):
+            DailyReflection.objects.all().delete()
+            today = timezone.localtime().date()
+            reflection = ReflectionService.warmup_reflection(target_date=today)
             
-            self.assertNotEqual(reflection.night_prayer, "A mesma oração")
+            self.assertEqual(reflection.night_word, "Há um repouso silencioso que nos aguarda no fim de tudo.")
+
+    def test_anti_repetition_changed_punctuation(self):
+        from services.reflection.reflection_service import ReflectionService
+        from unittest.mock import patch
+
+        mock_ai_response = {
+            "title": "Teste",
+            "scripture_reference": "Joao 1",
+            "scripture_text": "No inicio...",
+            "reflection_body": "O perdão não é um sentimento, mas uma escolha profunda de libertação.",
+            "share_quote": "Apenas confie",
+            "closing_prayer": "Senhor, proteja-nos.",
+            "night_word": "O perdão não é um sentimento, mas uma escolha profunda de libertação!", # Exclamation mark changed, matches reflection_body
+            "night_prayer": "A mesma oração",
+            "ai_generated": True
+        }
+
+        with patch('services.ai.anthropic.AnthropicAIService.generate_reflection', return_value=mock_ai_response):
+            DailyReflection.objects.all().delete()
+            today = timezone.localtime().date()
+            reflection = ReflectionService.warmup_reflection(target_date=today)
+            
+            self.assertEqual(reflection.night_word, "Há um repouso silencioso que nos aguarda no fim de tudo.")
+
+    def test_anti_repetition_prayer_almost_equal(self):
+        from services.reflection.reflection_service import ReflectionService
+        from unittest.mock import patch
+
+        mock_ai_response = {
+            "title": "Teste",
+            "scripture_reference": "Joao 1",
+            "scripture_text": "No inicio...",
+            "reflection_body": "Corpo",
+            "share_quote": "Frase",
+            "closing_prayer": "Deus de paz, dai-nos a graça de descansar em Ti. Amém.",
+            "night_word": "Frase bem diferente inédita noturna",
+            "night_prayer": "Deus de paz, dai-nos a graça de descansar em Ti nesta noite. Amém.", # Almost equal (> 50% similarity)
+            "ai_generated": True
+        }
+
+        with patch('services.ai.anthropic.AnthropicAIService.generate_reflection', return_value=mock_ai_response):
+            DailyReflection.objects.all().delete()
+            today = timezone.localtime().date()
+            reflection = ReflectionService.warmup_reflection(target_date=today)
+            
             self.assertEqual(reflection.night_prayer, "Senhor, entrego este dia em tuas mãos. Que a noite traga repouso e a certeza de que não estou só. Amém.")
+            # Valid word should NOT be replaced
+            self.assertEqual(reflection.night_word, "Frase bem diferente inédita noturna")
+
+    def test_anti_repetition_valid_different_text(self):
+        from services.reflection.reflection_service import ReflectionService
+        from unittest.mock import patch
+
+        mock_ai_response = {
+            "title": "Esperança",
+            "scripture_reference": "Joao 1",
+            "scripture_text": "No inicio...",
+            "reflection_body": "Um texto completamente inédito sobre a graça diária, focado na superação e na confiança.",
+            "share_quote": "A superação vem do alto.",
+            "closing_prayer": "Senhor, abençoe nosso trabalho.",
+            "night_word": "As estrelas nos lembram que a luz prevalece.", # Completely different!
+            "night_prayer": "Pai, no silêncio da madrugada, restabelece minhas forças.", # Completely different!
+            "ai_generated": True
+        }
+
+        with patch('services.ai.anthropic.AnthropicAIService.generate_reflection', return_value=mock_ai_response):
+            DailyReflection.objects.all().delete()
+            today = timezone.localtime().date()
+            reflection = ReflectionService.warmup_reflection(target_date=today)
+            
+            # The exact generated texts should be preserved!
+            self.assertEqual(reflection.night_word, "As estrelas nos lembram que a luz prevalece.")
+            self.assertEqual(reflection.night_prayer, "Pai, no silêncio da madrugada, restabelece minhas forças.")

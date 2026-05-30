@@ -2,6 +2,7 @@ import hashlib
 import random
 from typing import Dict, Any, Optional
 from datetime import date as date_type, timedelta
+from difflib import SequenceMatcher
 from django.db import transaction
 from django.utils import timezone
 from apps.reflection.models import DailyReflection, UserReflectionResponse
@@ -292,22 +293,48 @@ class ReflectionService:
             night_word = ai_response.get("night_word", "")
             night_prayer = ai_response.get("night_prayer", "")
 
-            # --- PROTEÇÃO ANTI-REPETIÇÃO ---
-            # Se night_word for idêntica ou substring de algo já dito, aplicar fallback
+            # --- PROTEÇÃO ANTI-REPETIÇÃO AVANÇADA ---
+            # Se night_word for parecida com algo já dito, aplicar fallback
             clean_night_word = night_word.strip().lower()
-            if (clean_night_word in reflection_body.lower() or 
-                clean_night_word in share_quote.lower() or 
-                clean_night_word in title.lower() or
-                clean_night_word == ""):
+            clean_share_quote = share_quote.strip().lower()
+            clean_reflection = reflection_body.strip().lower()
+            clean_title = title.strip().lower()
+            
+            def get_similarity(a: str, b: str) -> float:
+                if not a or not b: return 0.0
+                return SequenceMatcher(None, a, b).ratio()
+            
+            similarity_with_quote = get_similarity(clean_night_word, clean_share_quote)
+            
+            # Para o corpo da reflexão, o SequenceMatcher.ratio() pode ser baixo porque o corpo é muito longo,
+            # mas vamos checar substring matching mais robusto ou a similaridade caso seja muito alta.
+            # Um método melhor para textos longos é checar se a frase está contida, ou focar em blocos.
+            # Por segurança, mantemos o `in` e a similaridade.
+            similarity_with_body = get_similarity(clean_night_word, clean_reflection)
+            
+            is_empty = clean_night_word == ""
+            is_literal = (clean_night_word in clean_reflection) or (clean_night_word in clean_share_quote) or (clean_night_word in clean_title)
+            is_similar_quote = similarity_with_quote >= 0.45
+            is_similar_body = similarity_with_body >= 0.55
+            
+            if is_empty or is_literal or is_similar_quote or is_similar_body:
+                reason = "repetition_or_empty"
+                if is_similar_quote: reason = "similarity_quote_45"
+                elif is_similar_body: reason = "similarity_body_55"
                 
-                log_event("night_word_fallback_used", reason="repetition_or_empty", date=target_date)
-                logger.warning(f"[CAPIO] Fallback noturno acionado para {target_date}: {night_word}")
+                log_event("night_word_fallback_used", reason=reason, date=target_date)
+                logger.warning(f"[CAPIO] Fallback noturno acionado para {target_date}: {night_word} (Motivo: {reason})")
                 
                 # Fallback seguro e neutro, que não repete o corpo
                 night_word = "Há um repouso silencioso que nos aguarda no fim de tudo."
                 
-            if night_prayer.strip().lower() == closing_prayer.strip().lower() or night_prayer.strip() == "":
-                log_event("night_prayer_fallback_used", reason="repetition_or_empty", date=target_date)
+            clean_night_prayer = night_prayer.strip().lower()
+            clean_closing_prayer = closing_prayer.strip().lower()
+            similarity_prayer = get_similarity(clean_night_prayer, clean_closing_prayer)
+            
+            if similarity_prayer >= 0.50 or clean_night_prayer == "":
+                reason = "similarity_prayer_50" if similarity_prayer >= 0.50 else "empty"
+                log_event("night_prayer_fallback_used", reason=reason, date=target_date)
                 night_prayer = "Senhor, entrego este dia em tuas mãos. Que a noite traga repouso e a certeza de que não estou só. Amém."
 
             reflection = DailyReflection.objects.create(
