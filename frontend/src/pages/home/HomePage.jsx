@@ -80,33 +80,47 @@ export default function HomePage() {
       {/* Bloco 2: Devocional (Card de Papel) */}
       <section>
         <div 
-          className="flex flex-col space-y-6"
+          onClick={() => navigate('/devotional/emotions')}
+          className="relative overflow-hidden flex flex-col space-y-3 cursor-pointer transition-all hover:bg-[#f6f4f0] group"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === 'Enter') navigate('/devotional/emotions') }}
           style={{
             backgroundColor: '#FCFBF8',
             border: '1px solid #E6E1D8',
-            borderRadius: '20px',
-            padding: '24px',
+            borderRadius: '24px',
+            padding: '32px',
             boxShadow: 'none'
           }}
         >
-          <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-foreground/35">
+          {/* Elemento orgânico sutil (Ramo botânico) */}
+          <svg 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="0.5" 
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="absolute -right-4 -bottom-4 w-32 h-32 text-[#A68463] opacity-[0.08] pointer-events-none transform -rotate-12"
+          >
+            <path d="M12 22c0-8 4-12 8-16M12 18c-3-2-6-2-8-4M13 14c4-2 7-1 9 2M11 10c-3-2-6-1-8 2" />
+          </svg>
+
+          <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-[#A68463]">
             Devocional
           </p>
-          <div className="space-y-4">
-            <h2 className="text-xl font-serif text-foreground/75 leading-snug">
+          <div className="space-y-1.5 z-10 relative">
+            <h2 className="text-xl font-serif text-foreground/80 leading-snug">
               Como está seu coração hoje?
             </h2>
-            <p className="text-foreground/50 font-sans text-xs font-light max-w-md leading-relaxed">
+            <p className="text-foreground/50 font-sans text-[11px] font-light max-w-[85%] leading-relaxed">
               Escolha uma emoção e receba um devocional preparado para este momento.
             </p>
           </div>
-          <div className="pt-2">
-            <button 
-              onClick={() => navigate('/devotional/emotions')}
-              className="text-[9px] font-sans font-medium uppercase tracking-[0.25em] text-foreground/45 hover:text-foreground/85 transition-colors underline underline-offset-8 decoration-foreground/10 hover:decoration-foreground/30 py-2 cursor-pointer text-left"
-            >
+          <div className="pt-2 z-10 relative">
+            <span className="inline-block text-[9px] font-sans font-medium uppercase tracking-[0.25em] text-[#A68463] transition-colors underline underline-offset-8 decoration-[#A68463]/20 group-hover:decoration-[#A68463]/50">
               Silenciar e escolher
-            </button>
+            </span>
           </div>
         </div>
       </section>
