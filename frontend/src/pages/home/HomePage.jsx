@@ -93,19 +93,6 @@ export default function HomePage() {
             boxShadow: 'none'
           }}
         >
-          {/* Elemento orgânico sutil (Ramo botânico) */}
-          <svg 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="0.5" 
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="absolute -right-4 -bottom-4 w-32 h-32 text-[#A68463] opacity-[0.08] pointer-events-none transform -rotate-12"
-          >
-            <path d="M12 22c0-8 4-12 8-16M12 18c-3-2-6-2-8-4M13 14c4-2 7-1 9 2M11 10c-3-2-6-1-8 2" />
-          </svg>
-
           <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-[#A68463]">
             Devocional
           </p>
@@ -127,7 +114,7 @@ export default function HomePage() {
 
       {/* Bloco 3: Reflexão de Hoje (O Centro Absoluto) */}
       <section className="space-y-6 pt-4 border-t border-foreground/[0.015]">
-        <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-foreground/35">
+        <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-[#A68463]">
           Reflexão do Dia
         </p>
         {isReflectionLoading ? (
@@ -150,7 +137,7 @@ export default function HomePage() {
             <div className="pt-2">
               <button 
                 onClick={() => navigate('/reflection/today')}
-                className="text-[9px] font-sans font-medium uppercase tracking-[0.25em] text-foreground/45 hover:text-foreground/85 transition-colors underline underline-offset-8 decoration-foreground/10 hover:decoration-foreground/30 py-2 cursor-pointer"
+                className="text-[9px] font-sans font-medium uppercase tracking-[0.25em] text-[#A68463] transition-colors underline underline-offset-8 decoration-[#A68463]/20 hover:decoration-[#A68463]/50 py-2 cursor-pointer"
               >
                 Mergulhar na leitura
               </button>
@@ -162,7 +149,7 @@ export default function HomePage() {
       {/* Bloco 4: Palavra da Noite (Sessão Noturna Dinâmica) */}
       {isNight && nightData && nightData.night_word && (
         <section className="space-y-8 pt-8 border-t border-foreground/[0.015] animate-fade-in max-w-lg">
-          <p className="text-[9px] font-sans font-light uppercase tracking-[0.25em] text-foreground/35">
+          <p className="text-[9px] font-sans font-light uppercase tracking-[0.25em] text-[#A68463]">
             Palavra da Noite
           </p>
           <div className="space-y-6">
@@ -173,7 +160,7 @@ export default function HomePage() {
               — {nightData.scripture_reference}
             </p>
             <div className="space-y-2 pt-6 border-t border-foreground/[0.02]">
-              <p className="text-[9px] font-sans font-light uppercase text-foreground/30 tracking-widest">
+              <p className="text-[9px] font-sans font-light uppercase tracking-widest text-[#A68463]">
                 Oração de encerramento
               </p>
               <p className="font-serif text-sm text-foreground/60 italic leading-relaxed">
@@ -187,7 +174,7 @@ export default function HomePage() {
       {/* Bloco 5: Memória Espiritual / Observação Pastoral */}
       {journeyData && journeyData.show_journey && journeyData.journey_text && (
         <section className="space-y-4 pt-8 border-t border-foreground/[0.015] max-w-md animate-fade-in">
-          <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-foreground/35">
+          <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-[#A68463]">
             Observação Pastoral
           </p>
           <p className="font-serif italic text-sm text-foreground/55 leading-relaxed">
@@ -199,7 +186,7 @@ export default function HomePage() {
       {/* Bloco 6: Diário Litúrgico (Arquivo Silencioso) */}
       {archiveData && archiveData.length > 1 && (
         <section className="space-y-6 pt-8 border-t border-foreground/[0.015]">
-          <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-foreground/35">
+          <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-[#A68463]">
             Diário Litúrgico
           </p>
           <div className="space-y-4 max-w-md">
@@ -217,7 +204,7 @@ export default function HomePage() {
                   </div>
                   <Link 
                     to={`/share/reflection/${ref.id}`} 
-                    className="text-[9px] uppercase tracking-wider text-foreground/40 hover:text-foreground/75 transition-colors underline decoration-foreground/10"
+                    className="text-[9px] uppercase tracking-wider text-[#A68463] transition-colors underline decoration-[#A68463]/20 hover:decoration-[#A68463]/50"
                   >
                     Revisitar
                   </Link>
@@ -236,7 +223,7 @@ export default function HomePage() {
           </p>
           <Link 
             to="/apoie" 
-            className="inline-block text-[9px] uppercase tracking-[0.2em] text-foreground/45 hover:text-foreground/80 underline underline-offset-4 decoration-foreground/10 transition-colors"
+            className="inline-block text-[9px] uppercase tracking-[0.2em] text-[#A68463] transition-colors underline underline-offset-4 decoration-[#A68463]/20 hover:decoration-[#A68463]/50"
           >
             Ajudar a causa
           </Link>
