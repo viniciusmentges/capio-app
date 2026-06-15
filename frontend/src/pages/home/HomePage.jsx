@@ -77,7 +77,41 @@ export default function HomePage() {
         </p>
       </section>
 
-      {/* Bloco 2: Reflexão de Hoje (O Centro Absoluto) */}
+      {/* Bloco 2: Devocional (Card de Papel) */}
+      <section>
+        <div 
+          className="flex flex-col space-y-6"
+          style={{
+            backgroundColor: '#FCFBF8',
+            border: '1px solid #E6E1D8',
+            borderRadius: '20px',
+            padding: '24px',
+            boxShadow: 'none'
+          }}
+        >
+          <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-foreground/35">
+            Devocional
+          </p>
+          <div className="space-y-4">
+            <h2 className="text-xl font-serif text-foreground/75 leading-snug">
+              Como está seu coração hoje?
+            </h2>
+            <p className="text-foreground/50 font-sans text-xs font-light max-w-md leading-relaxed">
+              Escolha uma emoção e receba um devocional preparado para este momento.
+            </p>
+          </div>
+          <div className="pt-2">
+            <button 
+              onClick={() => navigate('/devotional/emotions')}
+              className="text-[9px] font-sans font-medium uppercase tracking-[0.25em] text-foreground/45 hover:text-foreground/85 transition-colors underline underline-offset-8 decoration-foreground/10 hover:decoration-foreground/30 py-2 cursor-pointer text-left"
+            >
+              Silenciar e escolher
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Bloco 3: Reflexão de Hoje (O Centro Absoluto) */}
       <section className="space-y-6 pt-4 border-t border-foreground/[0.015]">
         <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-foreground/35">
           Reflexão do Dia
@@ -111,7 +145,7 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* Bloco 3: Palavra da Noite (Sessão Noturna Dinâmica) */}
+      {/* Bloco 4: Palavra da Noite (Sessão Noturna Dinâmica) */}
       {isNight && nightData && nightData.night_word && (
         <section className="space-y-8 pt-8 border-t border-foreground/[0.015] animate-fade-in max-w-lg">
           <p className="text-[9px] font-sans font-light uppercase tracking-[0.25em] text-foreground/35">
@@ -135,29 +169,6 @@ export default function HomePage() {
           </div>
         </section>
       )}
-
-      {/* Bloco 4: Do que seu coração precisa hoje? (Presença Emocional) */}
-      <section className="space-y-6 pt-8 border-t border-foreground/[0.015]">
-        <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-foreground/35">
-          Presença & Acolhimento
-        </p>
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <h2 className="font-serif text-lg text-foreground/80 leading-snug">Do que seu coração precisa hoje?</h2>
-            <p className="text-foreground/50 font-sans text-xs font-light max-w-md leading-relaxed">
-              Parem por um instante. Escolham uma nuance de seu coração para receber um acolhimento pastoral sob medida.
-            </p>
-          </div>
-          <div className="pt-2">
-            <button 
-              onClick={() => navigate('/devotional/emotions')}
-              className="text-[9px] font-sans font-medium uppercase tracking-[0.25em] text-foreground/45 hover:text-foreground/85 transition-colors underline underline-offset-8 decoration-foreground/10 hover:decoration-foreground/30 py-2 cursor-pointer"
-            >
-              Silenciar e escolher
-            </button>
-          </div>
-        </div>
-      </section>
 
       {/* Bloco 5: Memória Espiritual / Observação Pastoral */}
       {journeyData && journeyData.show_journey && journeyData.journey_text && (
