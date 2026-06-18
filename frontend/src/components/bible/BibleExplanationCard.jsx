@@ -4,12 +4,28 @@ import BibleSection from './BibleSection';
 import ProgressiveReveal from '../devotional/ProgressiveReveal';
 import ShareButton from '../ui/ShareButton';
 
-export default function BibleExplanationCard({ explanation }) {
+export default function BibleExplanationCard({ explanation, onNavigate }) {
   const [isVerseExpanded, setIsVerseExpanded] = React.useState(false);
 
   const reference = explanation.reference_display || "Passagem";
-  const verseText = explanation.scripture_text;
+  const verseRequested = explanation.verse_requested;
+  const rawVerseText = explanation.scripture_text;
   
+  let parsedVerses = [];
+  let isStructured = false;
+  
+  try {
+    const parsed = JSON.parse(rawVerseText);
+    if (Array.isArray(parsed)) {
+      parsedVerses = parsed;
+      isStructured = true;
+    }
+  } catch (e) {
+    // É uma string simples do cache antigo
+  }
+
+  // Fallback text if not structured
+  const verseText = isStructured ? "" : rawVerseText;
   const isLongVerse = verseText && verseText.length > 200;
   const displayedVerse = isLongVerse && !isVerseExpanded 
     ? `${verseText.substring(0, 180)}...` 
@@ -17,7 +33,10 @@ export default function BibleExplanationCard({ explanation }) {
 
   // Formatação para compartilhamento
   const publicUrl = `${window.location.origin}/share/explanation/${explanation.id}`;
-  const shareText = `Uma Palavra para hoje.\n\n${reference}\n\n"${verseText}"\n\nLer na CAPIO:`;
+  const shareTextContent = isStructured 
+    ? parsedVerses.map(v => `[${v.number}] ${v.text}`).join('\n')
+    : verseText;
+  const shareText = `Uma Palavra para hoje.\n\n${reference}\n\n"${shareTextContent}"\n\nLer na CAPIO:`;
 
   return (
     <div className="space-y-24 pb-32 pt-8">
@@ -25,29 +44,81 @@ export default function BibleExplanationCard({ explanation }) {
       <div className="px-6 md:px-0 mb-20">
         <ProgressiveReveal delay={400} duration={1200}>
           <div className="space-y-8">
-            <p className="font-serif text-[10px] text-foreground/45 italic tracking-[0.2em] text-center uppercase">
-              {reference}
-            </p>
-            {verseText && (
-              <div className="relative group px-2">
-                <p className="font-serif italic text-foreground/85 text-2xl leading-relaxed text-center max-w-lg mx-auto">
-                  "{displayedVerse}"
+            <div className="text-center space-y-2 mb-12">
+              <p className="font-serif text-lg text-foreground/80 tracking-wide">
+                {explanation.book_name || reference}
+              </p>
+              {explanation.chapter && (
+                <p className="font-serif text-[10px] text-foreground/45 italic tracking-[0.2em] uppercase">
+                  Capítulo {explanation.chapter}
                 </p>
-                {isLongVerse && !isVerseExpanded && (
-                  <button 
-                    onClick={() => setIsVerseExpanded(true)}
-                    className="mt-6 mx-auto block text-[10px] font-serif italic text-foreground/50 hover:text-foreground/70 transition-colors uppercase tracking-widest"
-                  >
-                    continuar leitura ↓
-                  </button>
-                )}
+              )}
+            </div>
+
+            {isStructured ? (
+              <div className="relative group px-2 max-w-lg mx-auto space-y-4">
+                {parsedVerses.map((verse, index) => {
+                  const isHighlighted = verseRequested && String(verse.number) === String(verseRequested);
+                  return (
+                    <p 
+                      key={index} 
+                      className={`font-serif leading-relaxed transition-colors duration-500 rounded-sm px-2 py-1 ${
+                        isHighlighted 
+                          ? "text-foreground/85 bg-[#A68463]/[0.05] border-l-[1.5px] border-[#A68463]/40" 
+                          : "text-foreground/85"
+                      }`}
+                    >
+                      <sup className={`text-[9px] mr-2 font-sans tracking-tight ${isHighlighted ? "opacity-70 text-[#A68463]" : "opacity-40"}`}>{verse.number}</sup>
+                      {verse.text}
+                    </p>
+                  );
+                })}
+                <div className="flex items-center justify-between pt-16">
+                  {explanation.prev_chapter && onNavigate ? (
+                    <button onClick={() => onNavigate(explanation.prev_chapter)} className="font-serif text-[10px] text-foreground/40 hover:text-foreground/70 transition-colors uppercase tracking-widest">
+                      &larr; Capítulo {explanation.prev_chapter.split(" ").pop()}
+                    </button>
+                  ) : <div className="w-16" />}
+                  <div className="w-16" />
+                  {explanation.next_chapter && onNavigate ? (
+                    <button onClick={() => onNavigate(explanation.next_chapter)} className="font-serif text-[10px] text-foreground/40 hover:text-foreground/70 transition-colors uppercase tracking-widest">
+                      Capítulo {explanation.next_chapter.split(" ").pop()} &rarr;
+                    </button>
+                  ) : <div className="w-16" />}
+                </div>
               </div>
+            ) : (
+              verseText && (
+                <div className="relative group px-2">
+                  <p className="font-serif italic text-foreground/85 text-2xl leading-relaxed text-center max-w-lg mx-auto">
+                    "{displayedVerse}"
+                  </p>
+                  {isLongVerse && !isVerseExpanded && (
+                    <button 
+                      onClick={() => setIsVerseExpanded(true)}
+                      className="mt-6 mx-auto block text-[10px] font-serif italic text-foreground/50 hover:text-foreground/70 transition-colors uppercase tracking-widest"
+                    >
+                      continuar leitura ↓
+                    </button>
+                  )}
+                </div>
+              )
             )}
           </div>
         </ProgressiveReveal>
       </div>
 
-      <div className="space-y-40 px-6 md:px-0 border-t border-foreground/[0.03] pt-24">
+      <div className="space-y-40 px-6 md:px-0 pt-16">
+        <ProgressiveReveal delay={1600}>
+          <div className="flex items-center justify-center space-x-6 max-w-md mx-auto mb-16 opacity-60">
+            <div className="h-px bg-foreground/10 flex-grow" />
+            <p className="font-serif text-[9px] uppercase tracking-[0.2em] text-foreground/60 italic">
+              Compreendendo esta passagem
+            </p>
+            <div className="h-px bg-foreground/10 flex-grow" />
+          </div>
+        </ProgressiveReveal>
+
         <ProgressiveReveal delay={1800}>
           <div className="space-y-8">
              <p className="text-[9px] font-serif italic text-foreground/40 text-center tracking-[0.2em] uppercase">

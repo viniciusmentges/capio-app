@@ -71,6 +71,22 @@ class NormalizationService:
         'ap': 'REV', 'apocalipse': 'REV', 'revelation': 'REV',
     }
 
+    CHAPTER_COUNTS = {
+        'GEN': 50, 'EXO': 40, 'LEV': 27, 'NUM': 36, 'DEU': 34,
+        'JOS': 24, 'JDG': 21, 'RUT': 4, '1SA': 31, '2SA': 24,
+        '1KI': 22, '2KI': 25, '1CH': 29, '2CH': 36, 'EZR': 10,
+        'NEH': 13, 'EST': 10, 'JOB': 42, 'PSA': 150, 'PRO': 31,
+        'ECC': 12, 'SNG': 8, 'ISA': 66, 'JER': 52, 'LAM': 5,
+        'EZK': 48, 'DAN': 12, 'HOS': 14, 'JOE': 3, 'AMO': 9,
+        'OBA': 1, 'MIC': 7, 'NAH': 3, 'HAB': 3, 'ZEP': 3,
+        'HAG': 2, 'ZEC': 14, 'MAL': 4, 'MAT': 28, 'MRK': 16,
+        'LUK': 24, 'JHN': 21, 'ACT': 28, 'ROM': 16, '1CO': 16,
+        '2CO': 13, 'GAL': 6, 'EPH': 6, 'PHP': 4, 'COL': 4,
+        '1TH': 5, '2TH': 3, '1TI': 6, '2TI': 4, 'TIT': 3,
+        'PHM': 1, 'HEB': 13, 'JAS': 5, '1PE': 5, '2PE': 3,
+        '1JN': 5, '2JN': 1, '3JN': 1, 'JUD': 1, 'REV': 22
+    }
+
     @classmethod
     def is_valid_reference(cls, reference: str) -> bool:
         """
@@ -93,10 +109,10 @@ class NormalizationService:
     def normalize(cls, reference: str) -> Tuple[str, str, int, Optional[str]]:
         """
         Retorna (canonical_id, book_name, chapter, verses)
+        A partir de agora, canonical_id representa sempre O CAPÍTULO INTEIRO.
         """
         ref = reference.lower().strip()
         # Regex para separar livro de capítulo/versículo
-        # Pega o último espaço ou a transição para número
         match = re.match(r'^(.+?)\s*(\d+.*)$', ref)
         if not match:
             return ref.upper(), ref.title(), 0, None
@@ -112,8 +128,7 @@ class NormalizationService:
         chapter = int(parts[0]) if parts[0].isdigit() else 0
         verses = parts[1] if len(parts) > 1 else None
         
+        # canonical_id agora é sempre a nível de capítulo (ex: MAT.8)
         canonical_id = f"{book_id}.{chapter}"
-        if verses:
-            canonical_id += f"{verses}" if canonical_id.endswith('.') else f".{verses}"
             
         return canonical_id, book_raw.title(), chapter, verses

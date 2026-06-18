@@ -2,6 +2,7 @@ import hashlib
 import logging
 from typing import Dict, Any
 import httpx
+import json
 from django.db import transaction
 from services.bible.normalization import NormalizationService
 from apps.bible.models import PassageExplanation, BiblePassage
@@ -57,6 +58,7 @@ class BibleService:
     def _fetch_from_api(cls, reference_display: str) -> str:
         """
         Consulta a API pública e aberta bible-api.com de forma ultra-resiliente
+        Retorna o array de versículos serializado em JSON.
         """
         ref_encoded = reference_display.strip().replace(" ", "+")
         url = f"https://bible-api.com/{ref_encoded}?translation=almeida"
@@ -64,16 +66,27 @@ class BibleService:
             response = httpx.get(url, timeout=3.5)
             if response.status_code == 200:
                 data = response.json()
-                return data.get("text", "").strip()
+                verses = data.get("verses", [])
+                formatted_verses = [{"number": v.get("verse"), "text": v.get("text", "").strip()} for v in verses]
+                return json.dumps(formatted_verses)
         except Exception as e:
             logger.warning("Falha ao consultar api externa bible-api.com: %s", e)
         return ""
 
     @classmethod
     def explain(cls, reference: str, user) -> Dict[str, Any]:
-        # 1. Normalização Canônica
-        can_id, book, chap, verses = NormalizationService.normalize(reference)
-        ref_display = cls._display_reference(reference)
+        # 1. Normalização Canônica (a nível de CAPÍTULO)
+        can_id, book, chap, verses_req = NormalizationService.normalize(reference)
+        ref_display = f"{book} {chap}" if chap else book
+        
+        # O display para o usuário continua sendo a referência completa que ele pediu
+        full_reference_display = cls._display_reference(reference)
+        
+        book_id = can_id.split(".")[0]
+        max_chap = NormalizationService.CHAPTER_COUNTS.get(book_id, 150)
+        
+        prev_chapter = f"{book} {chap - 1}" if chap > 1 else None
+        next_chapter = f"{book} {chap + 1}" if chap > 0 and chap < max_chap else None
 
         # 2. Verificar se a Palavra já existe
         bible_passage = BiblePassage.objects.filter(canonical_id=can_id).first()
@@ -93,8 +106,14 @@ class BibleService:
                         metadata={"cached": True, "source": "foundation"}
                     )
                 return {
-                    "reference_display": explanation.reference_display,
+                    "canonical_id": can_id,
+                    "reference_display": full_reference_display,
+                    "book_name": book,
+                    "chapter": chap,
+                    "verse_requested": verses_req,
                     "scripture_text": bible_passage.text_original,
+                    "prev_chapter": prev_chapter,
+                    "next_chapter": next_chapter,
                     "simple_explanation": explanation.simple_explanation,
                     "biblical_context": explanation.biblical_context,
                     "practical_application": explanation.practical_application,
@@ -116,7 +135,15 @@ class BibleService:
         if not scripture_text:
             scripture_text = cls._fetch_from_api(ref_display)
             if not scripture_text:
-                scripture_text = "A Palavra de Deus está sendo acolhida em silêncio e oração neste instante..."
+                scripture_text = json.dumps([{"number": 1, "text": "A Palavra de Deus está sendo acolhida em silêncio e oração neste instante..."}])
+                
+        # Preparar texto contínuo para a IA ler facilmente
+        ai_scripture_input = scripture_text
+        try:
+            parsed_verses = json.loads(scripture_text)
+            ai_scripture_input = " ".join([f"[{v.get('number')}] {v.get('text')}" for v in parsed_verses])
+        except:
+            pass
 
         # 6. Chamada de IA (I/O pesado fora de transações ativas do banco)
         ai_service = get_ai_service()
@@ -133,7 +160,7 @@ class BibleService:
 
         try:
             # IA recebe o texto bíblico canônico predefinido!
-            ai_response = ai_service.explain_passage(can_id, ref_display, scripture_text, ai_request_id=ai_request.id)
+            ai_response = ai_service.explain_passage(can_id, ref_display, ai_scripture_input, ai_request_id=ai_request.id)
         except Exception as e:
             logger.error("Falha ao chamar a API de IA no fluxo de explicação bíblica: %s", e)
             capture_exception(e, event="ai_request_failed", request_type="bible", reference=can_id, ai_request_id=ai_request.id)
@@ -143,7 +170,7 @@ class BibleService:
             ai_request.save()
             raise e
 
-        fallback = cls._get_fallback_response(ref_display)
+        fallback = cls._get_fallback_response(full_reference_display)
         
         # 7. Validação e Truncamento
         simple_explanation = cls._validate_and_truncate_field(ai_response.get("simple_explanation", ""), 900, fallback["simple_explanation"])
@@ -193,9 +220,9 @@ class BibleService:
                     canonical_id=can_id,
                     book_name=book,
                     chapter=chap,
-                    verses=verses,
+                    verses=None,
                     text_original=scripture_text,
-                    translation="NVI",
+                    translation="almeida",
                     language="pt"
                 )
 
@@ -220,8 +247,14 @@ class BibleService:
             )
 
         return {
-            "reference_display": explanation.reference_display,
+            "canonical_id": can_id,
+            "reference_display": full_reference_display,
+            "book_name": book,
+            "chapter": chap,
+            "verse_requested": verses_req,
             "scripture_text": bible_passage.text_original,
+            "prev_chapter": prev_chapter,
+            "next_chapter": next_chapter,
             "simple_explanation": explanation.simple_explanation,
             "biblical_context": explanation.biblical_context,
             "practical_application": explanation.practical_application,

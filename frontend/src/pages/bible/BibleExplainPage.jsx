@@ -193,7 +193,7 @@ export default function BibleExplainPage() {
           </div>
         )}
         <TextSizeSelector />
-        <BibleExplanationCard explanation={activeExplanation} />
+        <BibleExplanationCard explanation={activeExplanation} onNavigate={handleExplain} />
         <div className="flex justify-center pb-12 pt-8">
           <Button
             variant="outline"
