@@ -12,10 +12,13 @@
   --font-ui: "Inter", sans-serif;
   --font-content: "Lora", serif;
 
-  /* Espaçamento */
-  --space-section: 120px;
-  --space-heading-text: 24px;
-  --space-content-cta: 48px;
+  /* Espaçamento (Escala Modular) */
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
 
   /* Motion */
   --transition-fade: 1600ms cubic-bezier(0.25, 1, 0.5, 1);

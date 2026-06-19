@@ -1,8 +1,14 @@
 import React from 'react';
-import Card from '../ui/Card';
-import BibleSection from './BibleSection';
 import ProgressiveReveal from '../devotional/ProgressiveReveal';
 import ShareButton from '../ui/ShareButton';
+import {
+  EditorialCard,
+  EditorialLabel,
+  EditorialTitle,
+  EditorialDivider,
+  EditorialNavigation,
+  EditorialSection
+} from '../design-system/editorial';
 
 export default function BibleExplanationCard({ explanation, onNavigate }) {
   const [isVerseExpanded, setIsVerseExpanded] = React.useState(false);
@@ -39,20 +45,20 @@ export default function BibleExplanationCard({ explanation, onNavigate }) {
   const shareText = `Uma Palavra para hoje.\n\n${reference}\n\n"${shareTextContent}"\n\nLer na CAPIO:`;
 
   return (
-    <div className="px-4 md:px-8 pb-12">
-      <Card className="space-y-24 pb-24 pt-16 max-w-4xl mx-auto">
+    <div className="w-full">
+      <EditorialCard className="space-y-xl">
         {/* 1. A Palavra no topo */}
-      <div className="px-6 md:px-0 mb-20">
+      <div className="mb-lg">
         <ProgressiveReveal delay={400} duration={1200}>
-          <div className="space-y-8">
-            <div className="text-center space-y-2 mb-12">
-              <p className="font-serif text-lg text-brand tracking-wide">
+          <div className="space-y-md">
+            <div className="text-center space-y-xs mb-lg">
+              <EditorialTitle as="p">
                 {explanation.book_name || reference}
-              </p>
+              </EditorialTitle>
               {explanation.chapter && (
-                <p className="font-serif text-[10px] text-accent italic tracking-[0.2em] uppercase">
+                <EditorialLabel>
                   Capítulo {explanation.chapter}
-                </p>
+                </EditorialLabel>
               )}
             </div>
 
@@ -76,7 +82,7 @@ export default function BibleExplanationCard({ explanation, onNavigate }) {
                   return (
                     <p 
                       key={index} 
-                      className={`font-serif text-bible transition-colors duration-500 rounded-sm px-2 py-1 ${
+                      className={`editorial-body text-bible transition-colors duration-500 rounded-sm px-2 py-1 ${
                         isHighlighted 
                           ? "text-foreground bg-accent/[0.05] border-l-[1.5px] border-accent/40" 
                           : "text-foreground/90"
@@ -87,59 +93,53 @@ export default function BibleExplanationCard({ explanation, onNavigate }) {
                     </p>
                   );
                 })}
-                <div className="flex items-center justify-between pt-16">
-                  {explanation.prev_chapter && onNavigate ? (
-                    <button onClick={() => onNavigate(explanation.prev_chapter)} className="font-serif text-[10px] text-accent hover:opacity-70 transition-opacity uppercase tracking-widest">
-                      &larr; Capítulo {explanation.prev_chapter.split(" ").pop()}
-                    </button>
-                  ) : <div className="w-16" />}
-                  <div className="w-16" />
-                  {explanation.next_chapter && onNavigate ? (
-                    <button onClick={() => onNavigate(explanation.next_chapter)} className="font-serif text-[10px] text-accent hover:opacity-70 transition-opacity uppercase tracking-widest">
-                      Capítulo {explanation.next_chapter.split(" ").pop()} &rarr;
-                    </button>
-                  ) : <div className="w-16" />}
-                </div>
+                <EditorialNavigation 
+                    prevTitle={explanation.prev_chapter ? `Capítulo ${explanation.prev_chapter.split(" ").pop()}` : null}
+                    onPrev={explanation.prev_chapter && onNavigate ? () => onNavigate(explanation.prev_chapter) : null}
+                    nextTitle={explanation.next_chapter ? `Capítulo ${explanation.next_chapter.split(" ").pop()}` : null}
+                    onNext={explanation.next_chapter && onNavigate ? () => onNavigate(explanation.next_chapter) : null}
+                    className="mt-md"
+                  />
               </div>
             ) : (
               verseText && (
-                <div className="relative group px-2">
-                  <p className="font-serif italic text-foreground text-bible text-center max-w-lg mx-auto">
+                <>
+                  <p className="editorial-body text-bible text-center max-w-lg mx-auto italic">
                     "{displayedVerse}"
                   </p>
                   {isLongVerse && !isVerseExpanded && (
                     <button 
                       onClick={() => setIsVerseExpanded(true)}
-                      className="mt-6 mx-auto block text-[10px] font-serif italic text-brand hover:text-brand/70 transition-colors uppercase tracking-widest"
+                      className="mt-sm mx-auto block editorial-label hover:opacity-70 transition-opacity"
                     >
                       continuar leitura ↓
                     </button>
                   )}
-                </div>
+                </>
               )
             )}
           </div>
         </ProgressiveReveal>
       </div>
 
-      <div className="space-y-40 px-4 md:px-12 border-t border-border pt-16">
+      <EditorialSection className="border-t border-border mt-xl pt-xl space-y-xl">
         <ProgressiveReveal delay={1600}>
-          <div className="flex items-center justify-center space-x-6 max-w-md mx-auto mb-16 opacity-60">
+          <div className="flex items-center justify-center space-x-4 max-w-md mx-auto mb-lg opacity-60">
             <div className="h-px bg-border flex-grow" />
-            <p className="font-serif text-[9px] uppercase tracking-[0.2em] text-accent italic">
+            <EditorialLabel>
               Compreendendo esta passagem
-            </p>
+            </EditorialLabel>
             <div className="h-px bg-border flex-grow" />
           </div>
         </ProgressiveReveal>
 
         {explanation.reading_focus_content && (
           <ProgressiveReveal delay={1700}>
-            <div className="max-w-md mx-auto mb-16 py-12 px-8 rounded-sm space-y-6 border border-border bg-surface">
-              <p className="text-[9px] font-serif italic text-brand text-center tracking-[0.2em] uppercase">
+            <div className="max-w-md mx-auto mb-lg py-lg px-md rounded-sm space-y-md border border-border bg-surface">
+              <EditorialLabel className="text-center text-brand">
                 {explanation.reading_focus_title || "O foco desta leitura"}
-              </p>
-              <p className="text-sm font-sans font-light text-foreground/80 text-center leading-relaxed italic">
+              </EditorialLabel>
+              <p className="editorial-subtitle text-center">
                 {explanation.reading_focus_content}
               </p>
             </div>
@@ -147,26 +147,26 @@ export default function BibleExplanationCard({ explanation, onNavigate }) {
         )}
 
         <ProgressiveReveal delay={1800}>
-          <div className="space-y-8">
-             <p className="text-[9px] font-serif italic text-accent text-center tracking-[0.2em] uppercase">
+          <div className="space-y-sm">
+             <EditorialLabel className="text-center">
                 O coração do texto
-              </p>
+              </EditorialLabel>
             <div className="max-w-xl mx-auto">
-              <p className="text-contemplative text-foreground/80 text-center leading-relaxed">
+              <p className="editorial-body text-center">
                 {explanation.simple_explanation}
               </p>
             </div>
           </div>
         </ProgressiveReveal>
 
-        <div className="space-y-32">
+        <div className="space-y-xl">
           <ProgressiveReveal delay={3500}>
-            <div className="space-y-8">
-              <p className="text-[9px] font-serif italic text-accent text-center tracking-[0.2em] uppercase">
+            <div className="space-y-sm">
+              <EditorialLabel className="text-center">
                 Contexto
-              </p>
+              </EditorialLabel>
               <div className="max-w-xl mx-auto">
-                <p className="text-sm font-sans font-light text-foreground/80 text-center leading-relaxed">
+                <p className="editorial-body text-center">
                   {explanation.biblical_context}
                 </p>
               </div>
@@ -174,11 +174,11 @@ export default function BibleExplanationCard({ explanation, onNavigate }) {
           </ProgressiveReveal>
 
           <ProgressiveReveal delay={5500}>
-            <div className="max-w-md mx-auto py-12 px-8 rounded-sm space-y-6 border border-border bg-background">
-              <p className="text-[9px] font-serif italic text-accent text-center tracking-widest uppercase">
+            <div className="max-w-md mx-auto py-lg px-md rounded-sm space-y-md border border-border bg-background">
+              <EditorialLabel className="text-center">
                 Eco na vida
-              </p>
-              <p className="text-sm font-sans font-light text-foreground/80 text-center leading-relaxed italic">
+              </EditorialLabel>
+              <p className="editorial-subtitle text-center">
                 {explanation.practical_application}
               </p>
             </div>
@@ -186,12 +186,12 @@ export default function BibleExplanationCard({ explanation, onNavigate }) {
         </div>
 
         <ProgressiveReveal delay={7500}>
-           <div className="space-y-8">
-              <p className="text-[9px] font-serif italic text-accent text-center tracking-[0.2em] uppercase">
+           <div className="space-y-sm">
+              <EditorialLabel className="text-center">
                 Reflexão Espiritual
-              </p>
+              </EditorialLabel>
               <div className="max-w-xl mx-auto">
-                <p className="text-contemplative text-foreground/80 text-center leading-relaxed italic">
+                <p className="editorial-body text-center italic">
                   {explanation.spiritual_reflection}
                 </p>
               </div>
@@ -200,20 +200,20 @@ export default function BibleExplanationCard({ explanation, onNavigate }) {
 
         {explanation.optional_prayer && (
           <ProgressiveReveal delay={9500}>
-            <div className="pt-16 space-y-12">
-              <div className="w-6 h-px bg-border mx-auto" />
-              <div className="space-y-10">
-                <p className="text-[9px] font-serif italic text-accent text-center tracking-widest uppercase">
+            <div className="pt-xl space-y-md">
+              <EditorialDivider variant="short" />
+              <div className="space-y-sm">
+                <EditorialLabel className="text-center">
                   Oração
-                </p>
-                <p className="font-serif italic text-foreground/70 text-lg leading-relaxed text-center max-w-sm mx-auto">
+                </EditorialLabel>
+                <p className="editorial-body text-center max-w-sm mx-auto italic opacity-80">
                   {explanation.optional_prayer}
                 </p>
               </div>
             </div>
           </ProgressiveReveal>
         )}
-      </div>
+      </EditorialSection>
 
       <ProgressiveReveal delay={11000}>
         <div className="flex justify-center pt-8">
@@ -227,14 +227,14 @@ export default function BibleExplanationCard({ explanation, onNavigate }) {
 
 
       <ProgressiveReveal delay={12000}>
-        <div className="text-center pt-12">
-          <div className="w-1 h-1 bg-border rounded-full mx-auto mb-8" />
-          <p className="text-[9px] text-accent font-serif italic tracking-[0.3em] uppercase">
+        <div className="text-center pt-xl">
+          <EditorialDivider variant="dot" />
+          <EditorialLabel>
             Luz
-          </p>
+          </EditorialLabel>
         </div>
       </ProgressiveReveal>
-      </Card>
+      </EditorialCard>
     </div>
   );
 }

@@ -1,8 +1,14 @@
 import React, { useState, useRef } from 'react';
-import Card from '../ui/Card';
 import ShareButton from '../ui/ShareButton';
 import ShareableCard from '../ui/ShareableCard';
 import ShareCardActions from '../ui/ShareCardActions';
+import {
+  EditorialCard,
+  EditorialLabel,
+  EditorialTitle,
+  EditorialDivider,
+  EditorialSection
+} from '../design-system/editorial';
 
 export default function ReflectionCard({ data }) {
   const [showVerse, setShowVerse] = useState(false);
@@ -46,28 +52,28 @@ export default function ReflectionCard({ data }) {
   const shareText = `Uma Palavra para hoje.\n\n${title}\n${scriptureReference}\n\n"${scriptureText || ''}"\n\nLer na CAPIO:`;
 
   return (
-    <div className="px-4 md:px-8 pb-12">
-      <Card className="space-y-16 pb-24 max-w-4xl mx-auto pt-16">
+    <div className="w-full">
+      <EditorialCard className="space-y-xl">
         {/* 1. A Palavra no topo */}
       {(scriptureReference || scriptureText) && (
-        <section className="space-y-6">
-          <p className="font-serif text-[11px] text-accent italic tracking-widest text-center">
+        <section className="space-y-sm">
+          <EditorialLabel className="text-center">
             {scriptureReference} — NVI
-          </p>
+          </EditorialLabel>
           {!showVerse ? (
             <div className="text-center">
               <button 
                 onClick={() => setShowVerse(true)}
-                className="group inline-flex items-center space-x-3 text-[11px] font-serif italic text-accent hover:text-accent/70 transition-colors"
+                className="group inline-flex items-center space-x-3 editorial-label hover:opacity-70 transition-opacity"
               >
                 <span>Mergulhar na Palavra</span>
                 <span className="text-[8px] transition-transform group-hover:translate-y-1">↓</span>
               </button>
             </div>
           ) : (
-            <div className="space-y-4 animate-fade-in-fast max-w-lg mx-auto text-center">
+            <div className="space-y-sm animate-fade-in-fast max-w-lg mx-auto text-center">
               {scriptureText && (
-                <p className="font-serif italic text-foreground text-xl leading-relaxed">
+                <p className="editorial-title text-xl leading-relaxed opacity-90">
                   "{scriptureText}"
                 </p>
               )}
@@ -76,22 +82,22 @@ export default function ReflectionCard({ data }) {
         </section>
       )}
 
-      <div className="space-y-24">
+      <div className="space-y-xl">
         {/* 2. Título como tema emergente */}
-        <header className="text-center pt-8">
-          <h1 className="font-serif text-2xl text-brand italic leading-tight">
+        <header className="text-center pt-md">
+          <EditorialTitle>
             {title}
-          </h1>
+          </EditorialTitle>
         </header>
 
         {/* 3. Reflexão com Micro-condução */}
         {mainContent && (
-          <section className="space-y-8">
-            <p className="text-[10px] font-serif italic text-accent text-center tracking-widest">
+          <section className="space-y-sm">
+            <EditorialLabel className="text-center">
               Para guardar no coração
-            </p>
+            </EditorialLabel>
             <div className="max-w-xl mx-auto">
-              <p className="text-contemplative text-foreground/80 whitespace-pre-wrap">
+              <p className="editorial-body text-center whitespace-pre-wrap">
                 {mainContent}
               </p>
             </div>
@@ -100,26 +106,26 @@ export default function ReflectionCard({ data }) {
 
         {/* 4. Meditação e Oração com Micro-conduções */}
         {(question || prayer) && (
-          <div className="space-y-24 pt-16">
+          <div className="space-y-xl pt-lg">
             {question && (
-              <section className="space-y-8 max-w-[85%] mx-auto text-center">
-                <p className="text-[10px] font-serif italic text-accent tracking-widest">
+              <section className="space-y-sm max-w-[85%] mx-auto text-center">
+                <EditorialLabel>
                   Reflita por um instante
-                </p>
-                <p className="font-serif text-lg text-foreground/80 italic leading-relaxed">
+                </EditorialLabel>
+                <p className="editorial-title text-lg opacity-80 leading-relaxed">
                   {question}
                 </p>
               </section>
             )}
 
             {prayer && (
-              <section className="text-center space-y-10">
-                <div className="w-8 h-px bg-border mx-auto" />
-                <div className="space-y-8">
-                  <p className="text-[10px] font-serif italic text-accent tracking-widest">
+              <section className="text-center space-y-md">
+                <EditorialDivider variant="short" />
+                <div className="space-y-sm">
+                  <EditorialLabel>
                     Fale com Deus no seu silêncio
-                  </p>
-                  <p className="font-serif text-base text-foreground/70 italic leading-relaxed max-w-sm mx-auto">
+                  </EditorialLabel>
+                  <p className="editorial-body opacity-80 italic leading-relaxed max-w-sm mx-auto">
                     {prayer}
                   </p>
                 </div>
@@ -129,22 +135,24 @@ export default function ReflectionCard({ data }) {
         )}
 
         {/* 5. Fragmento Final Compartilhável */}
-        <section className="space-y-8 pt-16 border-t border-border">
-          <ShareableCard 
-            ref={cardRef}
-            type="reflection"
-            quote={shareQuote}
-            reference="Reflexão do Dia"
-            variant="light"
-          />
-          <ShareCardActions 
-            cardRef={cardRef}
-            shareText={`"${shareQuote}"\n\nReflexão do Dia na CAPIO:\n${publicUrl}`}
-            fileName="capio-reflexao.png"
-          />
-        </section>
+        <EditorialSection className="border-t border-border mt-xl">
+          <div className="space-y-sm">
+            <ShareableCard 
+              ref={cardRef}
+              type="reflection"
+              quote={shareQuote}
+              reference="Reflexão do Dia"
+              variant="light"
+            />
+            <ShareCardActions 
+              cardRef={cardRef}
+              shareText={`"${shareQuote}"\n\nReflexão do Dia na CAPIO:\n${publicUrl}`}
+              fileName="capio-reflexao.png"
+            />
+          </div>
+        </EditorialSection>
 
-        <div className="flex justify-center pt-16 pb-8">
+        <div className="flex justify-center pb-md">
           <ShareButton 
             title={`Uma Palavra para você`} 
             text={shareText} 
@@ -152,7 +160,7 @@ export default function ReflectionCard({ data }) {
           />
         </div>
         </div>
-      </Card>
+      </EditorialCard>
     </div>
   );
 }

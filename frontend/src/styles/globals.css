@@ -10,6 +10,35 @@
   --color-accent: var(--color-accent);
   --font-sans: var(--font-ui);
   --font-serif: var(--font-content);
+  
+  --spacing-xs: var(--space-xs);
+  --spacing-sm: var(--space-sm);
+  --spacing-md: var(--space-md);
+  --spacing-lg: var(--space-lg);
+  --spacing-xl: var(--space-xl);
+  --spacing-2xl: var(--space-2xl);
+}
+
+@layer components {
+  /* CAPIO Design System - Tipografia */
+  .editorial-label {
+    @apply text-[10px] font-serif italic tracking-[0.2em] uppercase text-accent;
+  }
+  .editorial-title {
+    @apply font-serif text-2xl text-brand italic leading-tight;
+  }
+  .editorial-subtitle {
+    @apply font-sans font-light text-sm italic text-foreground/80 leading-relaxed;
+  }
+  .editorial-body {
+    line-height: 1.9;
+    letter-spacing: -0.015em;
+    font-family: var(--font-content);
+    @apply text-foreground/80;
+  }
+  .editorial-small {
+    @apply text-xs font-sans text-foreground/60;
+  }
 }
 
 @layer base {
@@ -126,7 +155,8 @@
 
 /* --- SISTEMA EDITORIAL DE ZOOM A- / A / A+ --- */
 /* Nível A- (Confortável Menor) */
-.capio-text-sm .text-contemplative {
+.capio-text-sm .text-contemplative,
+.capio-text-sm .editorial-body {
   font-size: 15px !important;
   line-height: 1.8;
 }
@@ -145,7 +175,8 @@
 }
 
 /* Nível A (Padrão) */
-.capio-text-base .text-contemplative {
+.capio-text-base .text-contemplative,
+.capio-text-base .editorial-body {
   font-size: 17px !important;
   line-height: 1.9;
 }
@@ -167,7 +198,8 @@
 }
 
 /* Nível A+ (Ampliado) */
-.capio-text-lg .text-contemplative {
+.capio-text-lg .text-contemplative,
+.capio-text-lg .editorial-body {
   font-size: 21px !important;
   line-height: 2.0;
 }

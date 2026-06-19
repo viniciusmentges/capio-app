@@ -11,6 +11,13 @@ import PushOptInPrompt from '../../components/layout/PushOptInPrompt';
 import Button from '../../components/ui/Button';
 import TextSizeSelector from '../../components/ui/TextSizeSelector';
 import localforage from 'localforage';
+import {
+  EditorialContainer,
+  EditorialSection,
+  EditorialTitle,
+  EditorialSubtitle,
+  EditorialLabel
+} from '../../components/design-system/editorial';
 import { saveOfflineItem, getLatestOfflineItem } from '../../pwa/offlineStorage';
 import { OFFLINE_KEYS } from '../../pwa/offlineKeys';
 import { ANALYTICS_EVENTS, CONTENT_TYPES } from '../../analytics/events';
@@ -135,12 +142,12 @@ export default function EmotionPage() {
   // Se der erro na geração E tivermos o último devocional gerado, oferecemos a leitura direta dele
   if (showOfflineOption && lastSavedDevotional) {
     return (
-      <div className="flex flex-col justify-center min-h-[100dvh] px-6 text-center space-y-12 animate-fade-in">
-        <div className="space-y-6 max-w-sm mx-auto">
-          <h2 className="font-serif text-2xl text-foreground/80 leading-tight">Conexão Interrompida</h2>
-          <p className="font-serif italic text-sm text-foreground/45 leading-relaxed">
+      <div className="flex flex-col justify-center min-h-[100dvh] safe-x text-center space-y-xl animate-fade-in">
+        <div className="space-y-lg max-w-sm mx-auto">
+          <EditorialTitle as="h2" className="text-2xl leading-tight">Conexão Interrompida</EditorialTitle>
+          <EditorialSubtitle as="p">
             Não conseguimos nos conectar para gerar uma nova leitura. Deseja abrir a última Palavra guardada no seu coração?
-          </p>
+          </EditorialSubtitle>
         </div>
         <div className="flex flex-col sm:flex-row justify-center items-center gap-6 max-w-xs mx-auto w-full">
           <Button
@@ -184,13 +191,13 @@ export default function EmotionPage() {
   // Se estiver completamente offline, mas temos o último devocional salvo, podemos dar a opção direta
   if (!navigator.onLine && !devotional && lastSavedDevotional) {
     return (
-      <div className="flex flex-col justify-center min-h-[100dvh] px-6 text-center space-y-16 animate-fade-in">
-        <div className="space-y-6 max-w-sm mx-auto">
-          <div className="w-12 h-px bg-foreground/10 mx-auto mb-6" />
-          <h2 className="font-serif text-2xl text-foreground/80 tracking-tight">Espaço Offline</h2>
-          <p className="font-serif italic text-sm text-foreground/45 leading-relaxed">
+      <div className="flex flex-col justify-center min-h-[100dvh] safe-x text-center space-y-xl animate-fade-in">
+        <div className="space-y-lg max-w-sm mx-auto">
+          <div className="w-12 h-px bg-foreground/10 mx-auto mb-lg" />
+          <EditorialTitle as="h2" className="text-2xl tracking-tight">Espaço Offline</EditorialTitle>
+          <EditorialSubtitle as="p">
             Você está sem conexão de rede. Deseja meditar com a última leitura guardada no seu dispositivo?
-          </p>
+          </EditorialSubtitle>
         </div>
         <div className="flex justify-center max-w-xs mx-auto w-full">
           <Button
@@ -241,28 +248,28 @@ export default function EmotionPage() {
   }
 
   return (
-    <div className="space-y-[var(--space-section)] pb-12">
-      <header className="space-y-6 text-center">
+    <EditorialContainer className="pb-xl">
+      <EditorialSection className="space-y-md text-center">
         {isEmotionsOffline && (
           <span className="font-sans text-[7px] uppercase tracking-[0.3em] bg-foreground/5 text-foreground/40 px-2 py-0.5 rounded-full inline-block mb-2">
             Modo Presença Offline
           </span>
         )}
-        <h1 className="font-serif text-3xl text-foreground leading-tight">Do que seu coração precisa hoje?</h1>
-        <p className="text-foreground/40 font-sans font-light tracking-wide text-xs">
+        <EditorialTitle as="h1" className="text-3xl">Do que seu coração precisa hoje?</EditorialTitle>
+        <EditorialSubtitle as="p">
           Escolha a emoção que mais se aproxima deste momento.
-        </p>
-      </header>
+        </EditorialSubtitle>
+      </EditorialSection>
 
-      <div className="max-w-md mx-auto w-full">
+      <EditorialSection className="max-w-md mx-auto w-full pt-0">
         <EmotionSelector 
           emotions={activeEmotions || []} 
           selectedSlug={selectedSlug}
           onSelect={handleEmotionSelect}
         />
-      </div>
+      </EditorialSection>
 
-      <div className="pt-4 flex flex-col items-center space-y-8">
+      <EditorialSection className="pt-sm flex flex-col items-center space-y-md">
         <Button 
           onClick={handleReceiveDevotional}
           disabled={!selectedSlug}
@@ -273,11 +280,11 @@ export default function EmotionPage() {
 
         <button 
           onClick={() => navigate('/bible/explain')}
-          className="text-[#A68463] text-[10px] uppercase tracking-widest font-serif italic opacity-70 hover:opacity-100 transition-opacity"
+          className="editorial-label opacity-70 hover:opacity-100 transition-opacity"
         >
           Ou busque uma passagem específica
         </button>
-      </div>
-    </div>
+      </EditorialSection>
+    </EditorialContainer>
   );
 }
