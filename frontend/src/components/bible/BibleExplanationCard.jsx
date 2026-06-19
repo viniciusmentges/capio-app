@@ -133,6 +133,19 @@ export default function BibleExplanationCard({ explanation, onNavigate }) {
           </div>
         </ProgressiveReveal>
 
+        {explanation.reading_focus_content && (
+          <ProgressiveReveal delay={1700}>
+            <div className="max-w-md mx-auto mb-16 py-12 px-8 rounded-sm space-y-6 border border-border bg-surface">
+              <p className="text-[9px] font-serif italic text-brand text-center tracking-[0.2em] uppercase">
+                {explanation.reading_focus_title || "O foco desta leitura"}
+              </p>
+              <p className="text-sm font-sans font-light text-foreground/80 text-center leading-relaxed italic">
+                {explanation.reading_focus_content}
+              </p>
+            </div>
+          </ProgressiveReveal>
+        )}
+
         <ProgressiveReveal delay={1800}>
           <div className="space-y-8">
              <p className="text-[9px] font-serif italic text-accent text-center tracking-[0.2em] uppercase">

@@ -38,6 +38,14 @@ class MockAIService(AIService):
             "ai_generated": False
         }
 
+    def generate_reading_focus(self, chapter_text: str, reference_display: str, verse_start: int, verse_end: int) -> Dict[str, Any]:
+        logger.warning(f"[CAPIO AI] Mock acionado no fluxo de foco da leitura para {reference_display}.")
+        return {
+            "title": "O foco desta leitura",
+            "content": f"A meditação no recorte dos versículos {verse_start} ao {verse_end} traz luz à importância da obediência silenciosa.",
+            "ai_generated": False
+        }
+
     def devotional_for_emotion(self, emotion_name: str, reference_display: str, scripture_text: str) -> Dict[str, Any]:
         logger.warning(f"[CAPIO AI] Fallback acionado no fluxo de devocional por emoção para {emotion_name}. Servindo do MockAIService por falha de API ou ambiente.")
         

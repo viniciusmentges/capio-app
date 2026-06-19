@@ -5,7 +5,7 @@ import httpx
 import json
 from django.db import transaction
 from services.bible.normalization import NormalizationService
-from apps.bible.models import PassageExplanation, BiblePassage
+from apps.bible.models import PassageExplanation, BiblePassage, ReadingFocus
 from apps.ai_core.models import AIRequest, GeneratedResponse
 from services.ai import get_ai_service
 from services.filters.content_filter import ContentFilter, FilterAction
@@ -88,166 +88,220 @@ class BibleService:
         prev_chapter = f"{book} {chap - 1}" if chap > 1 else None
         next_chapter = f"{book} {chap + 1}" if chap > 0 and chap < max_chap else None
 
+        # Helper para parsear verses_req
+        v_start, v_end = None, None
+        if verses_req:
+            try:
+                if '-' in verses_req:
+                    vs, ve = verses_req.split('-')
+                    v_start, v_end = int(vs), int(ve)
+                else:
+                    v_start = int(verses_req)
+                    v_end = v_start
+            except ValueError:
+                v_start, v_end = None, None
+
         # 2. Verificar se a Palavra já existe
         bible_passage = BiblePassage.objects.filter(canonical_id=can_id).first()
+        explanation = None
         
         # 3. Se a Palavra existe, verificar se existe explicação
         if bible_passage:
             explanation = PassageExplanation.objects.filter(passage=bible_passage).first()
-            if explanation:
-                log_event("cache_hit", content_type="bible_explanation", reference=can_id, content_id=explanation.id)
-                log_event("bible_explanation_served_from_cache", reference=can_id, content_id=explanation.id, cached=True)
-                with transaction.atomic():
-                    GeneratedResponse.objects.create(
-                        response_type='BIBLE',
-                        user=user,
-                        content_ref_id=explanation.id,
-                        filter_status='clean',
-                        metadata={"cached": True, "source": "foundation"}
-                    )
-                return {
-                    "canonical_id": can_id,
-                    "reference_display": full_reference_display,
-                    "book_name": book,
-                    "chapter": chap,
-                    "verse_requested": verses_req,
-                    "scripture_text": bible_passage.text_original,
-                    "prev_chapter": prev_chapter,
-                    "next_chapter": next_chapter,
-                    "simple_explanation": explanation.simple_explanation,
-                    "biblical_context": explanation.biblical_context,
-                    "practical_application": explanation.practical_application,
-                    "spiritual_reflection": explanation.spiritual_reflection,
-                    "optional_prayer": explanation.optional_prayer,
-                    "ai_generated": explanation.ai_generated,
-                    "cached": True
-                }
+            
+        cached_explanation = False
+        if explanation:
+            log_event("cache_hit", content_type="bible_explanation", reference=can_id, content_id=explanation.id)
+            log_event("bible_explanation_served_from_cache", reference=can_id, content_id=explanation.id, cached=True)
+            with transaction.atomic():
+                GeneratedResponse.objects.create(
+                    response_type='BIBLE',
+                    user=user,
+                    content_ref_id=explanation.id,
+                    filter_status='clean',
+                    metadata={"cached": True, "source": "foundation"}
+                )
+            cached_explanation = True
+        else:
+            log_event("cache_miss", content_type="bible_explanation", reference=can_id)
 
-        log_event("cache_miss", content_type="bible_explanation", reference=can_id)
+            # 4. Filtro de Entrada
+            filter_res = ContentFilter.check_input(can_id)
+            if filter_res.action == FilterAction.HARD_BLOCK:
+                raise ContentBlockedException(category=filter_res.category)
 
-        # 4. Filtro de Entrada
-        filter_res = ContentFilter.check_input(can_id)
-        if filter_res.action == FilterAction.HARD_BLOCK:
-            raise ContentBlockedException(category=filter_res.category)
-
-        # 5. Scripture First: Garantir scripture_text puramente canônico de fonte confiável
-        scripture_text = POPULAR_SCRIPTURES.get(can_id.upper())
-        if not scripture_text:
-            scripture_text = cls._fetch_from_api(ref_display)
+            # 5. Scripture First: Garantir scripture_text puramente canônico de fonte confiável
+            scripture_text = POPULAR_SCRIPTURES.get(can_id.upper())
             if not scripture_text:
-                scripture_text = json.dumps([{"number": 1, "text": "A Palavra de Deus está sendo acolhida em silêncio e oração neste instante..."}])
+                scripture_text = cls._fetch_from_api(ref_display)
+                if not scripture_text:
+                    scripture_text = json.dumps([{"number": 1, "text": "A Palavra de Deus está sendo acolhida em silêncio e oração neste instante..."}])
+                    
+            # Preparar texto contínuo para a IA ler facilmente
+            ai_scripture_input = scripture_text
+            try:
+                parsed_verses = json.loads(scripture_text)
+                ai_scripture_input = " ".join([f"[{v.get('number')}] {v.get('text')}" for v in parsed_verses])
+            except:
+                pass
+
+            if verses_req:
+                ai_scripture_input += f"\n\n[INSTRUÇÃO IMPORTANTE: O usuário focou a leitura especificamente no(s) versículo(s): {verses_req}. Embora você tenha o capítulo inteiro acima para contexto, direcione o 'Coração', o 'Contexto', a 'Reflexão' e a 'Oração' com um peso maior para iluminar a mensagem desta passagem em particular.]"
+
+            # 6. Chamada de IA (I/O pesado fora de transações ativas do banco)
+            ai_service = get_ai_service()
+            input_hash = hashlib.sha256(can_id.encode()).hexdigest()
+            
+            ai_request = AIRequest.objects.create(
+                request_type='bible',
+                input_hash=input_hash,
+                input_data={"canonical_id": can_id, "reference_display": ref_display},
+                flagged_for_review=(filter_res.action == FilterAction.SOFT_FLAG),
+                status='pending'
+            )
+            log_event("ai_request_started", request_type="bible", reference=can_id, ai_request_id=ai_request.id)
+
+            try:
+                # IA recebe o texto bíblico canônico predefinido!
+                ai_response = ai_service.explain_passage(can_id, ref_display, ai_scripture_input, ai_request_id=ai_request.id)
+            except Exception as e:
+                logger.error("Falha ao chamar a API de IA no fluxo de explicação bíblica: %s", e)
+                capture_exception(e, event="ai_request_failed", request_type="bible", reference=can_id, ai_request_id=ai_request.id)
+                log_event("ai_request_failed", request_type="bible", reference=can_id, ai_request_id=ai_request.id, error_type=type(e).__name__)
+                ai_request.status = 'failed'
+                ai_request.output_data = {"error": str(e)}
+                ai_request.save()
+                raise e
+
+            fallback = cls._get_fallback_response(full_reference_display)
+            
+            # 7. Validação e Truncamento
+            simple_explanation = cls._validate_and_truncate_field(ai_response.get("simple_explanation", ""), 900, fallback["simple_explanation"])
+            biblical_context = cls._validate_and_truncate_field(ai_response.get("biblical_context", ""), 600, fallback["biblical_context"])
+            practical_application = cls._validate_and_truncate_field(ai_response.get("practical_application", ""), 600, fallback["practical_application"])
+            spiritual_reflection = cls._validate_and_truncate_field(ai_response.get("spiritual_reflection", ""), 500, fallback["spiritual_reflection"])
+            optional_prayer = cls._validate_and_truncate_field(ai_response.get("optional_prayer", ""), 400, fallback["optional_prayer"])
+
+            # 8. Filtro de Saída
+            ai_text_combined = f"{simple_explanation} {biblical_context} {practical_application} {spiritual_reflection} {optional_prayer}"
+            out_filter_res = ContentFilter.check_output(ai_text_combined)
+            
+            if out_filter_res.action == FilterAction.HARD_BLOCK:
+                ai_request.status = 'blocked'
+                ai_request.save()
+                raise ContentBlockedException(category=out_filter_res.category)
                 
-        # Preparar texto contínuo para a IA ler facilmente
-        ai_scripture_input = scripture_text
-        try:
-            parsed_verses = json.loads(scripture_text)
-            ai_scripture_input = " ".join([f"[{v.get('number')}] {v.get('text')}" for v in parsed_verses])
-        except:
-            pass
-
-        if verses_req:
-            ai_scripture_input += f"\n\n[INSTRUÇÃO IMPORTANTE: O usuário focou a leitura especificamente no(s) versículo(s): {verses_req}. Embora você tenha o capítulo inteiro acima para contexto, direcione o 'Coração', o 'Contexto', a 'Reflexão' e a 'Oração' com um peso maior para iluminar a mensagem desta passagem em particular.]"
-
-        # 6. Chamada de IA (I/O pesado fora de transações ativas do banco)
-        ai_service = get_ai_service()
-        input_hash = hashlib.sha256(can_id.encode()).hexdigest()
-        
-        ai_request = AIRequest.objects.create(
-            request_type='bible',
-            input_hash=input_hash,
-            input_data={"canonical_id": can_id, "reference_display": ref_display},
-            flagged_for_review=(filter_res.action == FilterAction.SOFT_FLAG),
-            status='pending'
-        )
-        log_event("ai_request_started", request_type="bible", reference=can_id, ai_request_id=ai_request.id)
-
-        try:
-            # IA recebe o texto bíblico canônico predefinido!
-            ai_response = ai_service.explain_passage(can_id, ref_display, ai_scripture_input, ai_request_id=ai_request.id)
-        except Exception as e:
-            logger.error("Falha ao chamar a API de IA no fluxo de explicação bíblica: %s", e)
-            capture_exception(e, event="ai_request_failed", request_type="bible", reference=can_id, ai_request_id=ai_request.id)
-            log_event("ai_request_failed", request_type="bible", reference=can_id, ai_request_id=ai_request.id, error_type=type(e).__name__)
-            ai_request.status = 'failed'
-            ai_request.output_data = {"error": str(e)}
-            ai_request.save()
-            raise e
-
-        fallback = cls._get_fallback_response(full_reference_display)
-        
-        # 7. Validação e Truncamento
-        simple_explanation = cls._validate_and_truncate_field(ai_response.get("simple_explanation", ""), 900, fallback["simple_explanation"])
-        biblical_context = cls._validate_and_truncate_field(ai_response.get("biblical_context", ""), 600, fallback["biblical_context"])
-        practical_application = cls._validate_and_truncate_field(ai_response.get("practical_application", ""), 600, fallback["practical_application"])
-        spiritual_reflection = cls._validate_and_truncate_field(ai_response.get("spiritual_reflection", ""), 500, fallback["spiritual_reflection"])
-        optional_prayer = cls._validate_and_truncate_field(ai_response.get("optional_prayer", ""), 400, fallback["optional_prayer"])
-
-        # 8. Filtro de Saída
-        ai_text_combined = f"{simple_explanation} {biblical_context} {practical_application} {spiritual_reflection} {optional_prayer}"
-        out_filter_res = ContentFilter.check_output(ai_text_combined)
-        
-        if out_filter_res.action == FilterAction.HARD_BLOCK:
-            ai_request.status = 'blocked'
-            ai_request.save()
-            raise ContentBlockedException(category=out_filter_res.category)
+            ai_request.status = 'success'
+            ai_request.output_data = ai_response
             
-        ai_request.status = 'success'
-        ai_request.output_data = ai_response
-        
-        # Copiar telemetria para o objeto local do Django para evitar sobrescrever campos do BD com NULL
-        metrics = ai_response.get('_ai_metrics', {})
-        if metrics:
-            from decimal import Decimal
-            ai_request.input_tokens = metrics.get('input_tokens')
-            ai_request.output_tokens = metrics.get('output_tokens')
-            ai_request.estimated_cost_usd = Decimal(str(round(metrics.get('estimated_cost_usd', 0.0), 10)))
-            ai_request.duration_ms = metrics.get('duration_ms')
-            ai_request.model_name = metrics.get('model_name')
-            ai_request.endpoint_origin = metrics.get('endpoint_origin')
-            ai_request.cache_hit = metrics.get('cache_hit', False)
-            
-        ai_request.save()
-        log_event(
-            "ai_request_success",
-            request_type="bible",
-            reference=can_id,
-            ai_request_id=ai_request.id,
-            duration_ms=ai_request.duration_ms,
-            cache_hit=ai_request.cache_hit,
-        )
+            metrics = ai_response.get('_ai_metrics', {})
+            if metrics:
+                from decimal import Decimal
+                ai_request.input_tokens = metrics.get('input_tokens')
+                ai_request.output_tokens = metrics.get('output_tokens')
+                ai_request.estimated_cost_usd = Decimal(str(round(metrics.get('estimated_cost_usd', 0.0), 10)))
+                ai_request.duration_ms = metrics.get('duration_ms')
+                ai_request.model_name = metrics.get('model_name')
+                ai_request.endpoint_origin = metrics.get('endpoint_origin')
+                ai_request.cache_hit = metrics.get('cache_hit', False)
+                
+            ai_request.save()
+            log_event(
+                "ai_request_success",
+                request_type="bible",
+                reference=can_id,
+                ai_request_id=ai_request.id,
+                duration_ms=ai_request.duration_ms,
+                cache_hit=ai_request.cache_hit,
+            )
 
-        # Operações de escrita em banco agrupadas em bloco atômico curto
-        with transaction.atomic():
-            if not bible_passage:
-                bible_passage = BiblePassage.objects.create(
-                    canonical_id=can_id,
-                    book_name=book,
-                    chapter=chap,
-                    verses=None,
-                    text_original=scripture_text,
-                    translation="almeida",
-                    language="pt"
+            # Operações de escrita em banco agrupadas em bloco atômico curto
+            with transaction.atomic():
+                if not bible_passage:
+                    bible_passage = BiblePassage.objects.create(
+                        canonical_id=can_id,
+                        book_name=book,
+                        chapter=chap,
+                        verses=None,
+                        text_original=scripture_text,
+                        translation="almeida",
+                        language="pt"
+                    )
+
+                explanation = PassageExplanation.objects.create(
+                    passage=bible_passage,
+                    reference_normalized=can_id,
+                    reference_display=ref_display,
+                    simple_explanation=simple_explanation,
+                    biblical_context=biblical_context,
+                    practical_application=practical_application,
+                    spiritual_reflection=spiritual_reflection,
+                    optional_prayer=optional_prayer,
+                    ai_generated=ai_response.get("ai_generated", True)
                 )
 
-            explanation = PassageExplanation.objects.create(
-                passage=bible_passage,
-                reference_normalized=can_id,
-                reference_display=ref_display,
-                simple_explanation=simple_explanation,
-                biblical_context=biblical_context,
-                practical_application=practical_application,
-                spiritual_reflection=spiritual_reflection,
-                optional_prayer=optional_prayer,
-                ai_generated=ai_response.get("ai_generated", True)
-            )
+                GeneratedResponse.objects.create(
+                    response_type='BIBLE',
+                    user=user,
+                    ai_request=ai_request,
+                    content_ref_id=explanation.id,
+                    filter_status='clean'
+                )
 
-            GeneratedResponse.objects.create(
-                response_type='BIBLE',
-                user=user,
-                ai_request=ai_request,
-                content_ref_id=explanation.id,
-                filter_status='clean'
-            )
+        # 9. Tratar o ReadingFocus
+        reading_focus_title = None
+        reading_focus_content = None
+        
+        if v_start is not None and v_end is not None:
+            # Buscar ReadingFocus existente
+            rf = ReadingFocus.objects.filter(
+                canonical_id=can_id,
+                verse_start=v_start,
+                verse_end=v_end
+            ).first()
+            
+            if rf:
+                reading_focus_title = rf.title
+                reading_focus_content = rf.content
+                log_event("cache_hit", content_type="reading_focus", reference=full_reference_display)
+            else:
+                log_event("cache_miss", content_type="reading_focus", reference=full_reference_display)
+                ai_service = get_ai_service()
+                
+                # Montar input do capítulo
+                ai_scripture_input = bible_passage.text_original
+                try:
+                    parsed_verses = json.loads(bible_passage.text_original)
+                    ai_scripture_input = " ".join([f"[{v.get('number')}] {v.get('text')}" for v in parsed_verses])
+                except:
+                    pass
+                    
+                # Chamar IA
+                try:
+                    focus_resp = ai_service.generate_reading_focus(
+                        chapter_text=ai_scripture_input,
+                        reference_display=full_reference_display,
+                        verse_start=v_start,
+                        verse_end=v_end
+                    )
+                    reading_focus_title = focus_resp.get('title', 'O foco desta leitura')
+                    reading_focus_content = focus_resp.get('content', '')
+                    
+                    if reading_focus_content:
+                        # Salvar no banco
+                        ReadingFocus.objects.create(
+                            chapter=bible_passage,
+                            canonical_id=can_id,
+                            verse_start=v_start,
+                            verse_end=v_end,
+                            reference_display=full_reference_display,
+                            title=reading_focus_title,
+                            content=reading_focus_content,
+                            ai_generated=focus_resp.get('ai_generated', True),
+                            ai_version=focus_resp.get('_ai_metrics', {}).get('model_name')
+                        )
+                except Exception as e:
+                    logger.error("Falha ao gerar ReadingFocus: %s", e)
 
         return {
             "canonical_id": can_id,
@@ -264,5 +318,7 @@ class BibleService:
             "spiritual_reflection": explanation.spiritual_reflection,
             "optional_prayer": explanation.optional_prayer,
             "ai_generated": explanation.ai_generated,
-            "cached": False
+            "cached": cached_explanation,
+            "reading_focus_title": reading_focus_title,
+            "reading_focus_content": reading_focus_content
         }

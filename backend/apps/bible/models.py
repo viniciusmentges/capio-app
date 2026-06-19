@@ -28,3 +28,24 @@ class PassageExplanation(models.Model):
 
     def __str__(self):
         return self.reference_display
+
+class ReadingFocus(models.Model):
+    chapter = models.ForeignKey(BiblePassage, on_delete=models.CASCADE, related_name='reading_focuses')
+    canonical_id = models.CharField(max_length=100, db_index=True)
+    verse_start = models.IntegerField()
+    verse_end = models.IntegerField()
+    reference_display = models.CharField(max_length=150)
+    title = models.CharField(max_length=100, default="O foco desta leitura")
+    content = models.TextField()
+    ai_generated = models.BooleanField(default=False)
+    ai_version = models.CharField(max_length=50, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['canonical_id', 'verse_start', 'verse_end'], name='unique_reading_focus_per_range')
+        ]
+
+    def __str__(self):
+        return f"{self.reference_display} Focus"

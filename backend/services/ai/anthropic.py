@@ -288,6 +288,31 @@ class AnthropicAIService(AIService):
         res['scripture_text'] = scripture_text
         return res
 
+    def generate_reading_focus(self, chapter_text: str, reference_display: str, verse_start: int, verse_end: int, ai_request_id: int = None) -> Dict[str, Any]:
+        system_prompt = self._get_base_constitution() + (
+            "\n\nCOMPOSER.FOCUS: Iluminação pontual de trechos específicos da Palavra. Foco em profundidade contemplativa e simplicidade pastoral."
+        )
+        prompt = (
+            f"Capítulo Bíblico Guia (Contexto): \"{chapter_text}\"\n\n"
+            f"Trecho Focado: {reference_display}\n\n"
+            "Ilumine o trecho focado à luz do capítulo inteiro. "
+            "Retorne UM objeto JSON com os seguintes campos:\n"
+            "- 'title': Título curto, por padrão use 'O foco desta leitura' ou variação sutil.\n"
+            "- 'content': Um texto breve, contemplativo e pastoral (entre 80 e 150 palavras) que explique o trecho focado.\n\n"
+            "Restrições:\n"
+            "- Não gere oração, contexto completo, eco, ou reflexão longa.\n"
+            "- Não repita explicações gerais do capítulo."
+        )
+        res = self._call_claude(
+            prompt, system_prompt, 0.3,
+            self.mock_fallback.generate_reading_focus, 
+            {"chapter_text": chapter_text, "reference_display": reference_display, "verse_start": verse_start, "verse_end": verse_end},
+            expected_keys=['title', 'content'],
+            ai_request_id=ai_request_id,
+            endpoint_origin="READING_FOCUS"
+        )
+        return res
+
     def devotional_for_emotion(self, emotion_name: str, reference_display: str, scripture_text: str, ai_request_id: int = None) -> Dict[str, Any]:
         system_prompt = self._get_editorial_constitution()
         prompt = (

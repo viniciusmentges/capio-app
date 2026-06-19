@@ -8,6 +8,11 @@ class AIService(ABC):
         pass
 
     @abstractmethod
+    def generate_reading_focus(self, chapter_text: str, reference_display: str, verse_start: int, verse_end: int) -> Dict[str, Any]:
+        """Returns: {'title': str, 'content': str}"""
+        pass
+
+    @abstractmethod
     def devotional_for_emotion(self, emotion_name: str, reference_display: str, scripture_text: str) -> Dict[str, Any]:
         """Returns: {'title': str, 'reflection': str, 'practical_application': str, 'guiding_question': str, 'prayer': str, 'ai_generated': bool}"""
         pass
