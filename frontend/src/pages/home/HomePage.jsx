@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import Card from '../../components/ui/Card';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '../../hooks/useAuth';
 import { getGreetingContext, formatFirstName } from '../../utils/greeting';
@@ -79,21 +80,14 @@ export default function HomePage() {
 
       {/* Bloco 2: Devocional (Card de Papel) */}
       <section>
-        <div 
+        <Card 
           onClick={() => navigate('/devotional/emotions')}
-          className="relative overflow-hidden flex flex-col space-y-3 cursor-pointer transition-all hover:bg-[#f6f4f0] group"
+          className="relative overflow-hidden flex flex-col space-y-3 cursor-pointer transition-all hover:opacity-90 group"
           role="button"
           tabIndex={0}
           onKeyDown={(e) => { if (e.key === 'Enter') navigate('/devotional/emotions') }}
-          style={{
-            backgroundColor: '#FCFBF8',
-            border: '1px solid #E6E1D8',
-            borderRadius: '24px',
-            padding: '32px',
-            boxShadow: 'none'
-          }}
         >
-          <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-[#A68463]">
+          <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
             Devocional
           </p>
           <div className="space-y-1.5 z-10 relative">
@@ -105,16 +99,16 @@ export default function HomePage() {
             </p>
           </div>
           <div className="pt-2 z-10 relative">
-            <span className="inline-block text-[9px] font-sans font-medium uppercase tracking-[0.25em] text-[#A68463] transition-colors underline underline-offset-8 decoration-[#A68463]/20 group-hover:decoration-[#A68463]/50">
+            <span className="inline-block text-[9px] font-sans font-medium uppercase tracking-[0.25em] text-accent transition-colors underline underline-offset-8 decoration-accent/20 group-hover:decoration-accent/50">
               Silenciar e escolher
             </span>
           </div>
-        </div>
+        </Card>
       </section>
 
       {/* Bloco 3: Reflexão de Hoje (O Centro Absoluto) */}
-      <section className="space-y-6 pt-4 border-t border-foreground/[0.015]">
-        <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-[#A68463]">
+      <section className="space-y-6 pt-4 border-t border-border">
+        <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
           Reflexão do Dia
         </p>
         {isReflectionLoading ? (
@@ -137,7 +131,7 @@ export default function HomePage() {
             <div className="pt-2">
               <button 
                 onClick={() => navigate('/reflection/today')}
-                className="text-[9px] font-sans font-medium uppercase tracking-[0.25em] text-[#A68463] transition-colors underline underline-offset-8 decoration-[#A68463]/20 hover:decoration-[#A68463]/50 py-2 cursor-pointer"
+                className="text-[9px] font-sans font-medium uppercase tracking-[0.25em] text-accent transition-colors underline underline-offset-8 decoration-accent/20 hover:decoration-accent/50 py-2 cursor-pointer"
               >
                 Mergulhar na leitura
               </button>
@@ -148,8 +142,8 @@ export default function HomePage() {
 
       {/* Bloco 4: Palavra da Noite (Sessão Noturna Dinâmica) */}
       {isNight && nightData && nightData.night_word && (
-        <section className="space-y-8 pt-8 border-t border-foreground/[0.015] animate-fade-in max-w-lg">
-          <p className="text-[9px] font-sans font-light uppercase tracking-[0.25em] text-[#A68463]">
+        <section className="space-y-8 pt-8 border-t border-border animate-fade-in max-w-lg">
+          <p className="text-[9px] font-sans font-light uppercase tracking-[0.25em] text-accent">
             Palavra da Noite
           </p>
           <div className="space-y-6">
@@ -159,8 +153,8 @@ export default function HomePage() {
             <p className="text-[9px] uppercase tracking-[0.2em] font-sans font-light text-foreground/45">
               — {nightData.scripture_reference}
             </p>
-            <div className="space-y-2 pt-6 border-t border-foreground/[0.02]">
-              <p className="text-[9px] font-sans font-light uppercase tracking-widest text-[#A68463]">
+            <div className="space-y-2 pt-6 border-t border-border">
+              <p className="text-[9px] font-sans font-light uppercase tracking-widest text-accent">
                 Oração de encerramento
               </p>
               <p className="font-serif text-sm text-foreground/60 italic leading-relaxed">
@@ -173,8 +167,8 @@ export default function HomePage() {
 
       {/* Bloco 5: Memória Espiritual / Observação Pastoral */}
       {journeyData && journeyData.show_journey && journeyData.journey_text && (
-        <section className="space-y-4 pt-8 border-t border-foreground/[0.015] max-w-md animate-fade-in">
-          <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-[#A68463]">
+        <section className="space-y-4 pt-8 border-t border-border max-w-md animate-fade-in">
+          <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
             Observação Pastoral
           </p>
           <p className="font-serif italic text-sm text-foreground/55 leading-relaxed">
@@ -185,15 +179,15 @@ export default function HomePage() {
 
       {/* Bloco 6: Diário Litúrgico (Arquivo Silencioso) */}
       {archiveData && archiveData.length > 1 && (
-        <section className="space-y-6 pt-8 border-t border-foreground/[0.015]">
-          <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-[#A68463]">
+        <section className="space-y-6 pt-8 border-t border-border">
+          <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
             Diário Litúrgico
           </p>
           <div className="space-y-4 max-w-md">
             {archiveData.slice(1, 4).map((ref, idx) => {
               const label = idx === 0 ? "Ontem" : idx === 1 ? "Anteontem" : "Esta semana";
               return (
-                <div key={ref.id} className="flex justify-between items-center py-2 border-b border-foreground/[0.02]">
+                <div key={ref.id} className="flex justify-between items-center py-2 border-b border-border">
                   <div className="space-y-1">
                     <span className="text-[9px] font-sans font-light uppercase tracking-wider text-foreground/30">
                       {label}
@@ -204,7 +198,7 @@ export default function HomePage() {
                   </div>
                   <Link 
                     to={`/share/reflection/${ref.id}`} 
-                    className="text-[9px] uppercase tracking-wider text-[#A68463] transition-colors underline decoration-[#A68463]/20 hover:decoration-[#A68463]/50"
+                    className="text-[9px] uppercase tracking-wider text-accent transition-colors underline decoration-accent/20 hover:decoration-accent/50"
                   >
                     Revisitar
                   </Link>
@@ -216,14 +210,14 @@ export default function HomePage() {
       )}
 
       {/* Bloco de Apoio - Discreto e Contextual */}
-      <section className="pt-12 border-t border-foreground/[0.01]">
+      <section className="pt-12 border-t border-border">
         <div className="space-y-3">
           <p className="text-[9px] font-sans font-light text-foreground/35 leading-relaxed max-w-xs">
             A CAPIO é mantida por quem a utiliza de forma totalmente voluntária. Considere apoiar o projeto.
           </p>
           <Link 
             to="/apoie" 
-            className="inline-block text-[9px] uppercase tracking-[0.2em] text-[#A68463] transition-colors underline underline-offset-4 decoration-[#A68463]/20 hover:decoration-[#A68463]/50"
+            className="inline-block text-[9px] uppercase tracking-[0.2em] text-accent transition-colors underline underline-offset-4 decoration-accent/20 hover:decoration-accent/50"
           >
             Ajudar a causa
           </Link>

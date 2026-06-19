@@ -7,8 +7,8 @@ export function EmotionCard({ emotion, isSelected, onSelect }) {
       onClick={() => onSelect(emotion.slug)}
       className={`w-full text-left p-6 rounded-2xl transition-all duration-300 border relative z-10 ${
         isSelected 
-          ? 'bg-[#F3F1ED] border-foreground/20 text-foreground ring-1 ring-foreground/5 shadow-sm' 
-          : 'bg-transparent border-foreground/[0.03] text-foreground/40 hover:border-foreground/10 hover:bg-foreground/[0.01]'
+          ? 'bg-surface border-brand/20 text-brand ring-1 ring-brand/5 shadow-sm' 
+          : 'bg-transparent border-border text-foreground/50 hover:border-brand/20 hover:bg-surface'
       }`}
     >
       <span className={`font-serif text-lg tracking-wide transition-colors duration-300 ${isSelected ? 'opacity-100' : 'opacity-80'}`}>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { getEmotions, getDevotionalByEmotion } from '../../lib/devotional';
 import EmotionSelector from '../../components/devotional/EmotionSelector';
@@ -22,6 +23,7 @@ export default function EmotionPage() {
   const [cachedEmotions, setCachedEmotions] = useState(null);
   const [lastSavedDevotional, setLastSavedDevotional] = useState(null);
   const [showOfflineOption, setShowOfflineOption] = useState(false);
+  const navigate = useNavigate();
 
   // Buscar lista de emoções da API
   const { data: emotions, isLoading: isEmotionsLoading, isError: isEmotionsError } = useQuery({
@@ -260,7 +262,7 @@ export default function EmotionPage() {
         />
       </div>
 
-      <div className="pt-4 flex justify-center">
+      <div className="pt-4 flex flex-col items-center space-y-8">
         <Button 
           onClick={handleReceiveDevotional}
           disabled={!selectedSlug}
@@ -268,6 +270,13 @@ export default function EmotionPage() {
         >
           {navigator.onLine ? 'Receber devocional' : 'Gerar (Requer internet)'}
         </Button>
+
+        <button 
+          onClick={() => navigate('/bible/explain')}
+          className="text-[#A68463] text-[10px] uppercase tracking-widest font-serif italic opacity-70 hover:opacity-100 transition-opacity"
+        >
+          Ou busque uma passagem específica
+        </button>
       </div>
     </div>
   );

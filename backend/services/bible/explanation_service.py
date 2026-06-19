@@ -145,6 +145,9 @@ class BibleService:
         except:
             pass
 
+        if verses_req:
+            ai_scripture_input += f"\n\n[INSTRUÇÃO IMPORTANTE: O usuário focou a leitura especificamente no(s) versículo(s): {verses_req}. Embora você tenha o capítulo inteiro acima para contexto, direcione o 'Coração', o 'Contexto', a 'Reflexão' e a 'Oração' com um peso maior para iluminar a mensagem desta passagem em particular.]"
+
         # 6. Chamada de IA (I/O pesado fora de transações ativas do banco)
         ai_service = get_ai_service()
         input_hash = hashlib.sha256(can_id.encode()).hexdigest()

@@ -4,7 +4,10 @@
 @theme {
   --color-background: var(--color-background);
   --color-surface: var(--color-surface);
+  --color-border: var(--color-border);
   --color-foreground: var(--color-text-primary);
+  --color-brand: var(--color-brand);
+  --color-accent: var(--color-accent);
   --font-sans: var(--font-ui);
   --font-serif: var(--font-content);
 }
@@ -136,6 +139,10 @@
   font-size: 14px !important;
   line-height: 1.7;
 }
+.capio-text-sm .text-bible {
+  font-size: 16px !important;
+  line-height: 1.8;
+}
 
 /* Nível A (Padrão) */
 .capio-text-base .text-contemplative {
@@ -147,6 +154,10 @@
 }
 .capio-text-base .text-prayer {
   font-size: 14px !important;
+}
+.capio-text-base .text-bible {
+  font-size: 18px !important;
+  line-height: 1.85;
 }
 .capio-text-base .font-serif.text-base {
   font-size: 16px !important;
@@ -167,6 +178,10 @@
 .capio-text-lg .font-serif.text-base {
   font-size: 19px !important;
   line-height: 1.95;
+}
+.capio-text-lg .text-bible {
+  font-size: 22px !important;
+  line-height: 2.0;
 }
 .capio-text-lg .font-serif.text-lg {
   font-size: 23px !important;

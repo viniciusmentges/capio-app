@@ -46,18 +46,19 @@ export default function ReflectionCard({ data }) {
   const shareText = `Uma Palavra para hoje.\n\n${title}\n${scriptureReference}\n\n"${scriptureText || ''}"\n\nLer na CAPIO:`;
 
   return (
-    <div className="space-y-16 pb-24">
-      {/* 1. A Palavra no topo */}
+    <div className="px-4 md:px-8 pb-12">
+      <Card className="space-y-16 pb-24 max-w-4xl mx-auto pt-16">
+        {/* 1. A Palavra no topo */}
       {(scriptureReference || scriptureText) && (
         <section className="space-y-6">
-          <p className="font-serif text-[11px] text-foreground/45 italic tracking-widest text-center">
+          <p className="font-serif text-[11px] text-accent italic tracking-widest text-center">
             {scriptureReference} — NVI
           </p>
           {!showVerse ? (
             <div className="text-center">
               <button 
                 onClick={() => setShowVerse(true)}
-                className="group inline-flex items-center space-x-3 text-[11px] font-serif italic text-foreground/50 hover:text-foreground/70 transition-colors"
+                className="group inline-flex items-center space-x-3 text-[11px] font-serif italic text-accent hover:text-accent/70 transition-colors"
               >
                 <span>Mergulhar na Palavra</span>
                 <span className="text-[8px] transition-transform group-hover:translate-y-1">↓</span>
@@ -66,7 +67,7 @@ export default function ReflectionCard({ data }) {
           ) : (
             <div className="space-y-4 animate-fade-in-fast max-w-lg mx-auto text-center">
               {scriptureText && (
-                <p className="font-serif italic text-foreground/80 text-xl leading-relaxed">
+                <p className="font-serif italic text-foreground text-xl leading-relaxed">
                   "{scriptureText}"
                 </p>
               )}
@@ -78,7 +79,7 @@ export default function ReflectionCard({ data }) {
       <div className="space-y-24">
         {/* 2. Título como tema emergente */}
         <header className="text-center pt-8">
-          <h1 className="font-serif text-2xl text-foreground/55 italic leading-tight">
+          <h1 className="font-serif text-2xl text-brand italic leading-tight">
             {title}
           </h1>
         </header>
@@ -86,7 +87,7 @@ export default function ReflectionCard({ data }) {
         {/* 3. Reflexão com Micro-condução */}
         {mainContent && (
           <section className="space-y-8">
-            <p className="text-[10px] font-serif italic text-foreground/40 text-center tracking-widest">
+            <p className="text-[10px] font-serif italic text-accent text-center tracking-widest">
               Para guardar no coração
             </p>
             <div className="max-w-xl mx-auto">
@@ -102,7 +103,7 @@ export default function ReflectionCard({ data }) {
           <div className="space-y-24 pt-16">
             {question && (
               <section className="space-y-8 max-w-[85%] mx-auto text-center">
-                <p className="text-[10px] font-serif italic text-foreground/40 tracking-widest">
+                <p className="text-[10px] font-serif italic text-accent tracking-widest">
                   Reflita por um instante
                 </p>
                 <p className="font-serif text-lg text-foreground/80 italic leading-relaxed">
@@ -113,12 +114,12 @@ export default function ReflectionCard({ data }) {
 
             {prayer && (
               <section className="text-center space-y-10">
-                <div className="w-8 h-px bg-foreground/5 mx-auto" />
+                <div className="w-8 h-px bg-border mx-auto" />
                 <div className="space-y-8">
-                  <p className="text-[10px] font-serif italic text-foreground/40 tracking-widest">
+                  <p className="text-[10px] font-serif italic text-accent tracking-widest">
                     Fale com Deus no seu silêncio
                   </p>
-                  <p className="font-serif text-base text-foreground/55 italic leading-relaxed max-w-sm mx-auto">
+                  <p className="font-serif text-base text-foreground/70 italic leading-relaxed max-w-sm mx-auto">
                     {prayer}
                   </p>
                 </div>
@@ -128,7 +129,7 @@ export default function ReflectionCard({ data }) {
         )}
 
         {/* 5. Fragmento Final Compartilhável */}
-        <section className="space-y-8 pt-16 border-t border-foreground/[0.03]">
+        <section className="space-y-8 pt-16 border-t border-border">
           <ShareableCard 
             ref={cardRef}
             type="reflection"
@@ -150,7 +151,8 @@ export default function ReflectionCard({ data }) {
             url={publicUrl}
           />
         </div>
-      </div>
+        </div>
+      </Card>
     </div>
   );
 }

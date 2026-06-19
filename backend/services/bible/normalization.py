@@ -1,4 +1,5 @@
 import re
+import unicodedata
 from typing import Tuple, Optional
 
 class NormalizationService:
@@ -88,17 +89,22 @@ class NormalizationService:
     }
 
     @classmethod
+    def _remove_accents(cls, text: str) -> str:
+        text = unicodedata.normalize('NFD', text)
+        return ''.join(c for c in text if unicodedata.category(c) != 'Mn')
+
+    @classmethod
     def is_valid_reference(cls, reference: str) -> bool:
         """
         Valida se a entrada contém apenas uma referência bíblica válida (Livro + opcionais Capítulo/Versículo).
         Impede entradas emocionais (ex: "estou sofrendo igual Jó" ou "preciso de um salmo para ansiedade").
         """
-        ref = reference.lower().strip()
+        ref = cls._remove_accents(reference.lower().strip())
         
         # Regex rigorosa: A string inteira deve ser (Livro) opcionalmente seguido de espaços e (Capitulo/Versículo)
         # ^([a-zà-ú0-9\s]+?)(?:\s+(\d+[\d:.,\s\-]*))?$
         # Isso garante que não haja palavras soltas no final
-        match = re.match(r'^([a-zà-ú0-9\s]+?)(?:\s+(\d+[\d:.,\s\-]*))?$', ref)
+        match = re.match(r'^([a-z0-9\s]+?)(?:\s+(\d+[\d:.,\s\-]*))?$', ref)
         if not match:
             return False
             
@@ -111,24 +117,28 @@ class NormalizationService:
         Retorna (canonical_id, book_name, chapter, verses)
         A partir de agora, canonical_id representa sempre O CAPÍTULO INTEIRO.
         """
-        ref = reference.lower().strip()
+        ref_clean = cls._remove_accents(reference.lower().strip())
         # Regex para separar livro de capítulo/versículo
-        match = re.match(r'^(.+?)\s*(\d+.*)$', ref)
+        match = re.match(r'^(.+?)\s*(\d+.*)$', ref_clean)
         if not match:
-            return ref.upper(), ref.title(), 0, None
+            return reference.upper().strip(), reference.title().strip(), 0, None
             
         book_raw = match.group(1).strip()
         rest = match.group(2).strip()
         
         book_id = cls.BOOK_MAPPING.get(book_raw, book_raw.upper()[:3])
         
-        # Tratar capítulo e versículos (3:16 ou 3,16 ou 3 16)
+        # Tratar capítulo e versículos (ex: 3:16 ou 3,16 ou 3 16 ou 6:10-18)
         rest = rest.replace(',', ':').replace(' ', ':')
-        parts = rest.split(':')
+        parts = rest.split(':', 1) # Split only on first colon
         chapter = int(parts[0]) if parts[0].isdigit() else 0
-        verses = parts[1] if len(parts) > 1 else None
+        verses = parts[1].strip() if len(parts) > 1 else None
         
         # canonical_id agora é sempre a nível de capítulo (ex: MAT.8)
         canonical_id = f"{book_id}.{chapter}"
+        
+        # Usamos o nome original enviado pelo usuário para exibição
+        match_orig = re.match(r'^(.+?)\s*(\d+.*)$', reference.strip())
+        book_display = match_orig.group(1).strip().title() if match_orig else book_raw.title()
             
-        return canonical_id, book_raw.title(), chapter, verses
+        return canonical_id, book_display, chapter, verses
