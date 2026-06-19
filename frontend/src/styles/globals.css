@@ -10,35 +10,6 @@
   --color-accent: var(--color-accent);
   --font-sans: var(--font-ui);
   --font-serif: var(--font-content);
-  
-  --spacing-xs: var(--space-xs);
-  --spacing-sm: var(--space-sm);
-  --spacing-md: var(--space-md);
-  --spacing-lg: var(--space-lg);
-  --spacing-xl: var(--space-xl);
-  --spacing-2xl: var(--space-2xl);
-}
-
-@layer components {
-  /* CAPIO Design System - Tipografia */
-  .editorial-label {
-    @apply text-[10px] font-serif italic tracking-[0.2em] uppercase text-accent;
-  }
-  .editorial-title {
-    @apply font-serif text-2xl text-brand italic leading-tight;
-  }
-  .editorial-subtitle {
-    @apply font-sans font-light text-sm italic text-foreground/80 leading-relaxed;
-  }
-  .editorial-body {
-    line-height: 1.9;
-    letter-spacing: -0.015em;
-    font-family: var(--font-content);
-    @apply text-foreground/80;
-  }
-  .editorial-small {
-    @apply text-xs font-sans text-foreground/60;
-  }
 }
 
 @layer base {
@@ -103,57 +74,59 @@
   }
 }
 
-@utility text-contemplative {
-  line-height: 1.9;
-  letter-spacing: -0.015em;
-  font-family: var(--font-content);
-}
+@layer utilities {
+  .text-contemplative {
+    line-height: 1.9;
+    letter-spacing: -0.015em;
+    font-family: var(--font-content);
+  }
 
-@utility editorial-surface {
-  @apply bg-transparent p-0 md:p-0 rounded-none;
-}
+  .editorial-surface {
+    @apply bg-transparent p-0 md:p-0 rounded-none;
+  }
 
-@utility mt-editorial-lg {
-  @apply mt-24 md:mt-32;
-}
+  .mt-editorial-lg {
+    @apply mt-24 md:mt-32;
+  }
 
-@utility mt-editorial-sm {
-  @apply mt-8 md:mt-12;
-}
+  .mt-editorial-sm {
+    @apply mt-8 md:mt-12;
+  }
 
-@utility text-prayer {
-  @apply font-serif italic text-foreground/40 text-center leading-relaxed;
-}
+  .text-prayer {
+    @apply font-serif italic text-foreground/40 text-center leading-relaxed;
+  }
 
-@utility safe-top {
-  padding-top: env(safe-area-inset-top, 24px);
-}
+  /* Utilitários Premium de Safe Area & PWA Standalone */
+  .safe-top {
+    padding-top: env(safe-area-inset-top, 24px);
+  }
 
-@utility safe-bottom {
-  padding-bottom: env(safe-area-inset-bottom, 24px);
-}
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 24px);
+  }
 
-@utility safe-x {
-  padding-left: env(safe-area-inset-left, 24px);
-  padding-right: env(safe-area-inset-right, 24px);
-}
+  .safe-x {
+    padding-left: env(safe-area-inset-left, 16px);
+    padding-right: env(safe-area-inset-right, 16px);
+  }
 
-@utility mobile-shell {
-  width: 100%;
-  max-width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-}
+  .mobile-shell {
+    width: 100%;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
-@utility standalone-shell {
-  overscroll-behavior-y: contain;
-  -webkit-overflow-scrolling: touch;
+  .standalone-shell {
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 /* --- SISTEMA EDITORIAL DE ZOOM A- / A / A+ --- */
 /* Nível A- (Confortável Menor) */
-.capio-text-sm .text-contemplative,
-.capio-text-sm .editorial-body {
+.capio-text-sm .text-contemplative {
   font-size: 15px !important;
   line-height: 1.8;
 }
@@ -172,8 +145,7 @@
 }
 
 /* Nível A (Padrão) */
-.capio-text-base .text-contemplative,
-.capio-text-base .editorial-body {
+.capio-text-base .text-contemplative {
   font-size: 17px !important;
   line-height: 1.9;
 }
@@ -195,8 +167,7 @@
 }
 
 /* Nível A+ (Ampliado) */
-.capio-text-lg .text-contemplative,
-.capio-text-lg .editorial-body {
+.capio-text-lg .text-contemplative {
   font-size: 21px !important;
   line-height: 2.0;
 }

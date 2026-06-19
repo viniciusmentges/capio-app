@@ -31,10 +31,10 @@ export default function AppShell() {
 
       {/* Aumento do padding superior para compensar o header e o ritmo editorial */}
       <main 
-        className="mx-auto w-full box-border max-w-xl safe-x flex flex-col min-h-[100dvh]"
+        className="mx-auto w-full max-w-xl px-6 flex flex-col space-y-[var(--space-section)] min-h-[100dvh]"
         style={{
-          paddingTop: 'calc(6rem + env(safe-area-inset-top, 0px))',
-          paddingBottom: 'calc(8rem + env(safe-area-inset-bottom, 24px))',
+          paddingTop: 'calc(8rem + env(safe-area-inset-top, 0px))',
+          paddingBottom: 'calc(10rem + env(safe-area-inset-bottom, 16px))',
         }}
       >
         {/* Container animado com base na rota para efeito suave de respiração */}

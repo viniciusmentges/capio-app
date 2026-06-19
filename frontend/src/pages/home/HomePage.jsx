@@ -1,15 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import Card from '../../components/ui/Card';
 import { useQuery } from '@tanstack/react-query';
-import {
-  EditorialContainer,
-  EditorialSection,
-  EditorialCard,
-  EditorialTitle,
-  EditorialSubtitle,
-  EditorialLabel,
-  EditorialDivider
-} from '../../components/design-system/editorial';
 import { useAuth } from '../../hooks/useAuth';
 import { getGreetingContext, formatFirstName } from '../../utils/greeting';
 import { getTodayReflection, getNightReflection, getLiturgicalArchive, getSpiritualJourney } from '../../lib/reflection';
@@ -71,142 +63,142 @@ export default function HomePage() {
   };
 
   return (
-    <EditorialContainer className={`space-y-md animate-fade-in ${isNight ? 'capio-night-theme' : ''}`}>
+    <div className={`space-y-16 animate-fade-in pb-24 ${isNight ? 'capio-night-theme' : ''}`}>
       
       {/* Bloco 1: Saudação Contextual e Contemplativa */}
-      <EditorialSection className="pt-sm space-y-sm">
-        <EditorialTitle as="h1" className="text-3xl tracking-tight">
+      <section className="space-y-4 pt-4">
+        <h1 className="text-3xl font-serif tracking-tight">
           {title}
-        </EditorialTitle>
-        <p className="editorial-subtitle">
+        </h1>
+        <p className="text-foreground/45 font-sans font-light tracking-wide text-xs">
           {isNight 
             ? "Encontre repouso e silêncio ao fechar este dia." 
             : "Que este momento seja vivido com calma e atenção plena."
           }
         </p>
-      </EditorialSection>
+      </section>
 
       {/* Bloco 2: Devocional (Card de Papel) */}
-      <EditorialSection>
-        <EditorialCard 
+      <section>
+        <Card 
           onClick={() => navigate('/devotional/emotions')}
-          className="relative overflow-hidden flex flex-col space-y-sm cursor-pointer transition-all hover:opacity-90 group"
+          className="relative overflow-hidden flex flex-col space-y-3 cursor-pointer transition-all hover:opacity-90 group"
           role="button"
           tabIndex={0}
           onKeyDown={(e) => { if (e.key === 'Enter') navigate('/devotional/emotions') }}
         >
-          <EditorialLabel>
+          <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
             Devocional
-          </EditorialLabel>
-          <div className="space-y-xs z-10 relative">
-            <h2 className="editorial-title text-xl">
+          </p>
+          <div className="space-y-1.5 z-10 relative">
+            <h2 className="text-xl font-serif text-foreground/80 leading-snug">
               Como está seu coração hoje?
             </h2>
-            <p className="editorial-subtitle max-w-[85%]">
+            <p className="text-foreground/50 font-sans text-[11px] font-light max-w-[85%] leading-relaxed">
               Escolha uma emoção e receba um devocional preparado para este momento.
             </p>
           </div>
-          <div className="pt-xs z-10 relative">
-            <span className="editorial-label underline underline-offset-8 decoration-accent/20 group-hover:decoration-accent/50">
+          <div className="pt-2 z-10 relative">
+            <span className="inline-block text-[9px] font-sans font-medium uppercase tracking-[0.25em] text-accent transition-colors underline underline-offset-8 decoration-accent/20 group-hover:decoration-accent/50">
               Silenciar e escolher
             </span>
           </div>
-        </EditorialCard>
-      </EditorialSection>
+        </Card>
+      </section>
 
       {/* Bloco 3: Reflexão de Hoje (O Centro Absoluto) */}
-      <EditorialSection className="border-t border-border pt-md space-y-sm">
-        <EditorialLabel>
+      <section className="space-y-6 pt-4 border-t border-border">
+        <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
           Reflexão do Dia
-        </EditorialLabel>
+        </p>
         {isReflectionLoading ? (
-          <div className="py-md space-y-sm animate-pulse">
+          <div className="py-8 space-y-4 animate-pulse">
             <div className="h-4 bg-foreground/5 rounded w-3/4"></div>
             <div className="h-4 bg-foreground/5 rounded w-5/6"></div>
             <div className="h-4 bg-foreground/5 rounded w-2/3"></div>
-            <p className="editorial-subtitle pt-xs">
+            <p className="text-xs font-serif italic text-foreground/30 pt-2">
               A leitura de hoje aguarda em silêncio...
             </p>
           </div>
         ) : (
-          <div className="space-y-md">
-            <h2 className="editorial-title text-xl opacity-75">
+          <div className="space-y-8">
+            <h2 className="text-xl font-serif italic text-foreground/75 leading-snug">
               {reflectionData?.reflection?.title || "Algo reservado para este dia"}
             </h2>
-            <p className="editorial-body line-clamp-4">
+            <p className="text-contemplative text-foreground/80 line-clamp-4 leading-relaxed">
               {getReflectionPreview()}
             </p>
-            <div className="pt-xs">
+            <div className="pt-2">
               <button 
                 onClick={() => navigate('/reflection/today')}
-                className="editorial-label underline underline-offset-8 decoration-accent/20 hover:decoration-accent/50 py-sm cursor-pointer"
+                className="text-[9px] font-sans font-medium uppercase tracking-[0.25em] text-accent transition-colors underline underline-offset-8 decoration-accent/20 hover:decoration-accent/50 py-2 cursor-pointer"
               >
                 Mergulhar na leitura
               </button>
             </div>
           </div>
         )}
-      </EditorialSection>
+      </section>
 
       {/* Bloco 4: Palavra da Noite (Sessão Noturna Dinâmica) */}
       {isNight && nightData && nightData.night_word && (
-        <EditorialSection className="border-t border-border pt-md max-w-lg space-y-md">
-          <EditorialLabel>
+        <section className="space-y-8 pt-8 border-t border-border animate-fade-in max-w-lg">
+          <p className="text-[9px] font-sans font-light uppercase tracking-[0.25em] text-accent">
             Palavra da Noite
-          </EditorialLabel>
-          <div className="space-y-sm">
-            <blockquote className="editorial-title text-lg opacity-80">
+          </p>
+          <div className="space-y-6">
+            <blockquote className="font-serif italic text-lg text-foreground/80 leading-relaxed">
               “{nightData.night_word}”
             </blockquote>
-            <EditorialLabel className="opacity-45 lowercase">
+            <p className="text-[9px] uppercase tracking-[0.2em] font-sans font-light text-foreground/45">
               — {nightData.scripture_reference}
-            </EditorialLabel>
-            <div className="space-y-xs pt-md border-t border-border">
-              <EditorialLabel>
+            </p>
+            <div className="space-y-2 pt-6 border-t border-border">
+              <p className="text-[9px] font-sans font-light uppercase tracking-widest text-accent">
                 Oração de encerramento
-              </EditorialLabel>
-              <p className="editorial-subtitle opacity-60">
+              </p>
+              <p className="font-serif text-sm text-foreground/60 italic leading-relaxed">
                 {nightData.night_prayer}
               </p>
             </div>
           </div>
-        </EditorialSection>
+        </section>
       )}
 
       {/* Bloco 5: Memória Espiritual / Observação Pastoral */}
       {journeyData && journeyData.show_journey && journeyData.journey_text && (
-        <EditorialSection className="border-t border-border pt-md max-w-md space-y-xs">
-          <EditorialLabel>
+        <section className="space-y-4 pt-8 border-t border-border max-w-md animate-fade-in">
+          <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
             Observação Pastoral
-          </EditorialLabel>
-          <p className="editorial-subtitle opacity-55">
+          </p>
+          <p className="font-serif italic text-sm text-foreground/55 leading-relaxed">
             "{journeyData.journey_text}"
           </p>
-        </EditorialSection>
+        </section>
       )}
 
       {/* Bloco 6: Diário Litúrgico (Arquivo Silencioso) */}
       {archiveData && archiveData.length > 1 && (
-        <EditorialSection className="border-t border-border pt-md space-y-sm">
-          <EditorialLabel>
+        <section className="space-y-6 pt-8 border-t border-border">
+          <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
             Diário Litúrgico
-          </EditorialLabel>
-          <div className="space-y-sm max-w-md">
+          </p>
+          <div className="space-y-4 max-w-md">
             {archiveData.slice(1, 4).map((ref, idx) => {
               const label = idx === 0 ? "Ontem" : idx === 1 ? "Anteontem" : "Esta semana";
               return (
-                <div key={ref.id} className="flex justify-between items-center py-xs border-b border-border">
+                <div key={ref.id} className="flex justify-between items-center py-2 border-b border-border">
                   <div className="space-y-1">
-                    <span className="editorial-label opacity-30">
+                    <span className="text-[9px] font-sans font-light uppercase tracking-wider text-foreground/30">
                       {label}
                     </span>
-                    <p className="editorial-subtitle text-foreground/75 opacity-100">
+                    <p className="font-serif text-sm text-foreground/75 italic">
                       {ref.title}
                     </p>
                   </div>
                   <Link 
                     to={`/share/reflection/${ref.id}`} 
-                    className="editorial-label underline decoration-accent/20 hover:decoration-accent/50"
+                    className="text-[9px] uppercase tracking-wider text-accent transition-colors underline decoration-accent/20 hover:decoration-accent/50"
                   >
                     Revisitar
                   </Link>
@@ -214,38 +206,38 @@ export default function HomePage() {
               );
             })}
           </div>
-        </EditorialSection>
+        </section>
       )}
 
       {/* Bloco de Apoio - Discreto e Contextual */}
-      <EditorialSection className="border-t border-border pt-lg">
-        <div className="space-y-xs">
-          <p className="editorial-subtitle opacity-35 max-w-xs">
+      <section className="pt-12 border-t border-border">
+        <div className="space-y-3">
+          <p className="text-[9px] font-sans font-light text-foreground/35 leading-relaxed max-w-xs">
             A CAPIO é mantida por quem a utiliza de forma totalmente voluntária. Considere apoiar o projeto.
           </p>
           <Link 
             to="/apoie" 
-            className="inline-block editorial-label underline underline-offset-4 decoration-accent/20 hover:decoration-accent/50"
+            className="inline-block text-[9px] uppercase tracking-[0.2em] text-accent transition-colors underline underline-offset-4 decoration-accent/20 hover:decoration-accent/50"
           >
             Ajudar a causa
           </Link>
         </div>
-      </EditorialSection>
+      </section>
 
       {/* Bloco de Rodapé - Discreto e Contemplativo */}
-      <footer className="pt-xl space-y-lg">
-        <EditorialDivider variant="dot" />
+      <footer className="pt-16 space-y-12">
+        <div className="w-1.5 h-1.5 bg-foreground/10 rounded-full mx-auto" />
         
-        <div className="flex flex-col items-center space-y-sm">
+        <div className="flex flex-col items-center space-y-8">
           <button 
             onClick={logout}
-            className="editorial-label text-foreground/20 hover:text-foreground/40 transition-colors"
+            className="text-[9px] uppercase tracking-[0.2em] text-foreground/20 hover:text-foreground/40 transition-colors"
           >
             Sair da conta
           </button>
         </div>
       </footer>
 
-    </EditorialContainer>
+    </div>
   );
 }
