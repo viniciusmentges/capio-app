@@ -4,6 +4,7 @@ import * as htmlToImage from 'html-to-image';
 import { ANALYTICS_EVENTS } from '../../analytics/events';
 import { captureEvent } from '../../analytics/posthogClient';
 import { captureException } from '../../observability/sentry';
+import EditorialActionRow from './EditorialActionRow';
 
 export default function ShareCardActions({ cardRef, shareText, fileName = "capio-fragmento.png" }) {
   const [isCopied, setIsCopied] = useState(false);
@@ -93,52 +94,28 @@ export default function ShareCardActions({ cardRef, shareText, fileName = "capio
     }
   };
 
-  return (
-    <div className="flex items-center justify-center space-x-6 pt-6">
-      <button 
-        onClick={handleDownload}
-        disabled={isExporting}
-        className="flex flex-col items-center space-y-3 group disabled:opacity-50"
-        aria-label="Salvar Imagem"
-      >
-        <div className="w-12 h-12 rounded-full bg-foreground/5 flex items-center justify-center group-hover:bg-foreground/10 transition-colors">
-          <Download className="w-4 h-4 text-foreground/60" />
-        </div>
-        <span className="text-[9px] font-serif uppercase tracking-[0.2em] text-foreground/40 group-hover:text-foreground/60 transition-colors">
-          Salvar fragmento
-        </span>
-      </button>
+  const actions = [
+    {
+      label: "Salvar",
+      ariaLabel: "Salvar Imagem",
+      icon: Download,
+      onClick: handleDownload,
+      disabled: isExporting
+    },
+    {
+      label: "Compartilhar",
+      ariaLabel: "Compartilhar Imagem",
+      icon: Share2,
+      onClick: handleShare,
+      disabled: isExporting
+    },
+    {
+      label: "Copiar",
+      ariaLabel: "Copiar Texto",
+      icon: isCopied ? Check : Copy,
+      onClick: handleCopyText
+    }
+  ];
 
-      <button 
-        onClick={handleShare}
-        disabled={isExporting}
-        className="flex flex-col items-center space-y-3 group disabled:opacity-50"
-        aria-label="Compartilhar Imagem"
-      >
-        <div className="w-12 h-12 rounded-full bg-foreground/5 flex items-center justify-center group-hover:bg-foreground/10 transition-colors">
-          <Share2 className="w-4 h-4 text-foreground/60" />
-        </div>
-        <span className="text-[9px] font-serif uppercase tracking-[0.2em] text-foreground/40 group-hover:text-foreground/60 transition-colors">
-          Compartilhar
-        </span>
-      </button>
-
-      <button 
-        onClick={handleCopyText}
-        className="flex flex-col items-center space-y-3 group"
-        aria-label="Copiar Texto"
-      >
-        <div className="w-12 h-12 rounded-full bg-foreground/5 flex items-center justify-center group-hover:bg-foreground/10 transition-colors">
-          {isCopied ? (
-            <Check className="w-4 h-4 text-foreground/60" />
-          ) : (
-            <Copy className="w-4 h-4 text-foreground/60" />
-          )}
-        </div>
-        <span className="text-[9px] font-serif uppercase tracking-[0.2em] text-foreground/40 group-hover:text-foreground/60 transition-colors">
-          Copiar
-        </span>
-      </button>
-    </div>
-  );
+  return <EditorialActionRow actions={actions} />;
 }
