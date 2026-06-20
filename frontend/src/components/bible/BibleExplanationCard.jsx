@@ -1,5 +1,6 @@
 import React from 'react';
 import Card from '../ui/Card';
+import EditorialLabel from '../ui/EditorialLabel';
 import BibleSection from './BibleSection';
 import ProgressiveReveal from '../devotional/ProgressiveReveal';
 import ShareButton from '../ui/ShareButton';
@@ -126,9 +127,9 @@ export default function BibleExplanationCard({ explanation, onNavigate }) {
         <ProgressiveReveal delay={1600}>
           <div className="flex items-center justify-center space-x-6 max-w-md mx-auto mb-16 opacity-60">
             <div className="h-px bg-border flex-grow" />
-            <p className="font-serif text-[9px] uppercase tracking-[0.2em] text-accent italic">
+            <EditorialLabel>
               Compreendendo esta passagem
-            </p>
+            </EditorialLabel>
             <div className="h-px bg-border flex-grow" />
           </div>
         </ProgressiveReveal>
@@ -136,9 +137,9 @@ export default function BibleExplanationCard({ explanation, onNavigate }) {
         {explanation.reading_focus_content && (
           <ProgressiveReveal delay={1700}>
             <div className="max-w-md mx-auto mb-16 py-12 px-8 rounded-sm space-y-6 border border-border bg-surface">
-              <p className="text-[9px] font-serif italic text-brand text-center tracking-[0.2em] uppercase">
+              <EditorialLabel className="text-brand">
                 {explanation.reading_focus_title || "O foco desta leitura"}
-              </p>
+              </EditorialLabel>
               <p className="text-sm font-sans font-light text-foreground/80 text-center leading-relaxed italic">
                 {explanation.reading_focus_content}
               </p>
@@ -148,9 +149,9 @@ export default function BibleExplanationCard({ explanation, onNavigate }) {
 
         <ProgressiveReveal delay={1800}>
           <div className="space-y-8">
-             <p className="text-[9px] font-serif italic text-accent text-center tracking-[0.2em] uppercase">
+             <EditorialLabel>
                 O coração do texto
-              </p>
+              </EditorialLabel>
             <div className="max-w-xl mx-auto">
               <p className="text-contemplative text-foreground/80 text-center leading-relaxed">
                 {explanation.simple_explanation}
@@ -162,9 +163,9 @@ export default function BibleExplanationCard({ explanation, onNavigate }) {
         <div className="space-y-32">
           <ProgressiveReveal delay={3500}>
             <div className="space-y-8">
-              <p className="text-[9px] font-serif italic text-accent text-center tracking-[0.2em] uppercase">
+              <EditorialLabel>
                 Contexto
-              </p>
+              </EditorialLabel>
               <div className="max-w-xl mx-auto">
                 <p className="text-sm font-sans font-light text-foreground/80 text-center leading-relaxed">
                   {explanation.biblical_context}
@@ -175,9 +176,9 @@ export default function BibleExplanationCard({ explanation, onNavigate }) {
 
           <ProgressiveReveal delay={5500}>
             <div className="max-w-md mx-auto py-12 px-8 rounded-sm space-y-6 border border-border bg-background">
-              <p className="text-[9px] font-serif italic text-accent text-center tracking-widest uppercase">
+              <EditorialLabel>
                 Eco na vida
-              </p>
+              </EditorialLabel>
               <p className="text-sm font-sans font-light text-foreground/80 text-center leading-relaxed italic">
                 {explanation.practical_application}
               </p>
@@ -187,9 +188,9 @@ export default function BibleExplanationCard({ explanation, onNavigate }) {
 
         <ProgressiveReveal delay={7500}>
            <div className="space-y-8">
-              <p className="text-[9px] font-serif italic text-accent text-center tracking-[0.2em] uppercase">
+              <EditorialLabel>
                 Reflexão Espiritual
-              </p>
+              </EditorialLabel>
               <div className="max-w-xl mx-auto">
                 <p className="text-contemplative text-foreground/80 text-center leading-relaxed italic">
                   {explanation.spiritual_reflection}
@@ -203,9 +204,9 @@ export default function BibleExplanationCard({ explanation, onNavigate }) {
             <div className="pt-16 space-y-12">
               <div className="w-6 h-px bg-border mx-auto" />
               <div className="space-y-10">
-                <p className="text-[9px] font-serif italic text-accent text-center tracking-widest uppercase">
+                <EditorialLabel>
                   Oração
-                </p>
+                </EditorialLabel>
                 <p className="font-serif italic text-foreground/70 text-lg leading-relaxed text-center max-w-sm mx-auto">
                   {explanation.optional_prayer}
                 </p>
