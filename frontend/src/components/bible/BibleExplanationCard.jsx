@@ -3,6 +3,7 @@ import Card from '../ui/Card';
 import EditorialLabel from '../ui/EditorialLabel';
 import EditorialDivider from '../ui/EditorialDivider';
 import EditorialNavigation from '../ui/EditorialNavigation';
+import EditorialCard from '../ui/EditorialCard';
 import BibleSection from './BibleSection';
 import ProgressiveReveal from '../devotional/ProgressiveReveal';
 import ShareButton from '../ui/ShareButton';
@@ -130,14 +131,14 @@ export default function BibleExplanationCard({ explanation, onNavigate }) {
 
         {explanation.reading_focus_content && (
           <ProgressiveReveal delay={1700}>
-            <div className="max-w-md mx-auto mb-16 py-12 px-8 rounded-sm space-y-6 border border-border bg-surface">
+            <EditorialCard variant="focus" className="max-w-md mx-auto mb-16 space-y-6">
               <EditorialLabel className="text-brand">
                 {explanation.reading_focus_title || "O foco desta leitura"}
               </EditorialLabel>
               <p className="text-sm font-sans font-light text-foreground/80 text-center leading-relaxed italic">
                 {explanation.reading_focus_content}
               </p>
-            </div>
+            </EditorialCard>
           </ProgressiveReveal>
         )}
 
