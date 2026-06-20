@@ -2,6 +2,7 @@ import React from 'react';
 import Card from '../ui/Card';
 import EditorialLabel from '../ui/EditorialLabel';
 import EditorialDivider from '../ui/EditorialDivider';
+import EditorialNavigation from '../ui/EditorialNavigation';
 import BibleSection from './BibleSection';
 import ProgressiveReveal from '../devotional/ProgressiveReveal';
 import ShareButton from '../ui/ShareButton';
@@ -89,19 +90,13 @@ export default function BibleExplanationCard({ explanation, onNavigate }) {
                     </p>
                   );
                 })}
-                <div className="flex items-center justify-between pt-16">
-                  {explanation.prev_chapter && onNavigate ? (
-                    <button onClick={() => onNavigate(explanation.prev_chapter)} className="font-serif text-[10px] text-accent hover:opacity-70 transition-opacity uppercase tracking-widest">
-                      &larr; Capítulo {explanation.prev_chapter.split(" ").pop()}
-                    </button>
-                  ) : <div className="w-16" />}
-                  <div className="w-16" />
-                  {explanation.next_chapter && onNavigate ? (
-                    <button onClick={() => onNavigate(explanation.next_chapter)} className="font-serif text-[10px] text-accent hover:opacity-70 transition-opacity uppercase tracking-widest">
-                      Capítulo {explanation.next_chapter.split(" ").pop()} &rarr;
-                    </button>
-                  ) : <div className="w-16" />}
-                </div>
+                <EditorialNavigation 
+                  className="pt-16"
+                  prevText={explanation.prev_chapter ? `Capítulo ${explanation.prev_chapter.split(" ").pop()}` : null}
+                  nextText={explanation.next_chapter ? `Capítulo ${explanation.next_chapter.split(" ").pop()}` : null}
+                  onPrev={onNavigate ? () => onNavigate(explanation.prev_chapter) : null}
+                  onNext={onNavigate ? () => onNavigate(explanation.next_chapter) : null}
+                />
               </div>
             ) : (
               verseText && (
