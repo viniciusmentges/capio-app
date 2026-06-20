@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from '../ui/Card';
 import EditorialLabel from '../ui/EditorialLabel';
+import EditorialDivider from '../ui/EditorialDivider';
 import BibleSection from './BibleSection';
 import ProgressiveReveal from '../devotional/ProgressiveReveal';
 import ShareButton from '../ui/ShareButton';
@@ -125,13 +126,11 @@ export default function BibleExplanationCard({ explanation, onNavigate }) {
 
       <div className="space-y-40 px-4 md:px-12 border-t border-border pt-16">
         <ProgressiveReveal delay={1600}>
-          <div className="flex items-center justify-center space-x-6 max-w-md mx-auto mb-16 opacity-60">
-            <div className="h-px bg-border flex-grow" />
+          <EditorialDivider variant="content" className="max-w-md mx-auto mb-16">
             <EditorialLabel>
               Compreendendo esta passagem
             </EditorialLabel>
-            <div className="h-px bg-border flex-grow" />
-          </div>
+          </EditorialDivider>
         </ProgressiveReveal>
 
         {explanation.reading_focus_content && (
@@ -202,7 +201,7 @@ export default function BibleExplanationCard({ explanation, onNavigate }) {
         {explanation.optional_prayer && (
           <ProgressiveReveal delay={9500}>
             <div className="pt-16 space-y-12">
-              <div className="w-6 h-px bg-border mx-auto" />
+              <EditorialDivider />
               <div className="space-y-10">
                 <EditorialLabel>
                   Oração
@@ -229,7 +228,7 @@ export default function BibleExplanationCard({ explanation, onNavigate }) {
 
       <ProgressiveReveal delay={12000}>
         <div className="text-center pt-12">
-          <div className="w-1 h-1 bg-border rounded-full mx-auto mb-8" />
+          <EditorialDivider variant="dot" className="mb-8" />
           <p className="text-[9px] text-accent font-serif italic tracking-[0.3em] uppercase">
             Luz
           </p>
