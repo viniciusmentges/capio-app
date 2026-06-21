@@ -12,6 +12,7 @@ const BibleExplainPage = React.lazy(() => import('../pages/bible/BibleExplainPag
 const TodayReflectionPage = React.lazy(() => import('../pages/reflection/TodayReflectionPage'));
 const LoginPage = React.lazy(() => import('../pages/auth/LoginPage'));
 const RegisterPage = React.lazy(() => import('../pages/auth/RegisterPage'));
+const LandingPage = React.lazy(() => import('../pages/public/LandingPage'));
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated, loadingAuth } = useAuth();
@@ -90,6 +91,11 @@ export const router = createBrowserRouter([
   {
     path: "/apoie",
     element: <SupportPage />,
+    errorElement: <ContemplativeErrorBoundary />
+  },
+  {
+    path: "/comece",
+    element: <LandingPage />,
     errorElement: <ContemplativeErrorBoundary />
   },
   {
