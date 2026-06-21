@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function LandingScreenshot({ src, alt, placeholderText, className = '' }) {
+  const [hasError, setHasError] = useState(false);
+
   return (
     <figure className={`w-full flex justify-center items-center my-32 px-6 md:px-0 ${className}`}>
-      {src ? (
+      {src && !hasError ? (
         <img 
           src={src} 
           alt={alt} 
           loading="lazy"
+          onError={() => setHasError(true)}
           className="w-full max-w-xl object-contain rounded-sm shadow-none opacity-90 hover:opacity-100 transition-opacity duration-[2000ms] ease-in-out border border-border/40 bg-surface/50"
         />
       ) : (

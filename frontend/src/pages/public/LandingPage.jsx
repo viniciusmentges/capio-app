@@ -1,19 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
 import { useSEO } from '../../hooks/useSEO';
 import LandingScreenshot from '../../components/landing/LandingScreenshot';
-import { api } from '../../lib/api';
-
-const fetchScreenshots = async () => {
-  try {
-    const { data } = await api.get('/public/landing-screenshots/');
-    return data;
-  } catch (err) {
-    console.error('Failed to fetch screenshots', err);
-    return [];
-  }
-};
 
 export default function LandingPage() {
   useSEO({
@@ -24,19 +12,6 @@ export default function LandingPage() {
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
-
-  const { data: screenshots = [] } = useQuery({
-    queryKey: ['landingScreenshots'],
-    queryFn: fetchScreenshots,
-    staleTime: 1000 * 60 * 60, // 1 hour
-  });
-
-  const getScreenshot = (key) => screenshots.find(s => s.key === key);
-
-  const homeScreenshot = getScreenshot('home');
-  const reflexaoScreenshot = getScreenshot('reflexao');
-  const bibliaScreenshot = getScreenshot('biblia');
-  const noiteScreenshot = getScreenshot('noite');
 
   return (
     <div 
@@ -68,8 +43,8 @@ export default function LandingPage() {
       {/* 2. Primeira Imagem (Home) & Início Rotina - bg-surface */}
       <div className="w-full bg-surface text-foreground safe-x flex flex-col items-center py-20">
         <LandingScreenshot 
-          src={homeScreenshot?.image_url} 
-          alt={homeScreenshot?.alt_text || "Abertura do dia na CAPIO"} 
+          src="/images/landing/home.webp" 
+          alt="Abertura do dia na CAPIO" 
           placeholderText="Imagem da Home da CAPIO"
           className="my-0 mb-20"
         />
@@ -86,8 +61,8 @@ export default function LandingPage() {
       {/* 3. Imagem Reflexão & A Rotina Bíblia - bg-background */}
       <div className="w-full bg-background text-foreground safe-x flex flex-col items-center py-20">
         <LandingScreenshot 
-          src={reflexaoScreenshot?.image_url} 
-          alt={reflexaoScreenshot?.alt_text || "Leitura devocional diária"} 
+          src="/images/landing/reflexao.webp" 
+          alt="Leitura devocional diária" 
           placeholderText="Imagem da Reflexão do Dia"
           className="my-0 mb-20"
         />
@@ -103,8 +78,8 @@ export default function LandingPage() {
       {/* 4. Imagem Bíblia & A Rotina Noite - bg-surface */}
       <div className="w-full bg-surface text-foreground safe-x flex flex-col items-center py-20">
         <LandingScreenshot 
-          src={bibliaScreenshot?.image_url} 
-          alt={bibliaScreenshot?.alt_text || "A Escritura na CAPIO"} 
+          src="/images/landing/biblia.webp" 
+          alt="A Escritura na CAPIO" 
           placeholderText="Imagem da Bíblia"
           className="my-0 mb-20"
         />
@@ -120,8 +95,8 @@ export default function LandingPage() {
       {/* 5. Tema Noturno & CTA Final */}
       <div className="w-full capio-night-theme safe-x safe-bottom flex flex-col items-center py-24">
         <LandingScreenshot 
-          src={noiteScreenshot?.image_url} 
-          alt={noiteScreenshot?.alt_text || "A Palavra da noite"} 
+          src="/images/landing/noite.webp" 
+          alt="A Palavra da noite" 
           placeholderText="Imagem da Palavra da Noite"
           className="my-0 mb-24"
         />
