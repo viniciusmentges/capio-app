@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
 from django.http import JsonResponse
 from django.db import connection
 from django.utils import timezone
@@ -30,4 +31,8 @@ urlpatterns = [
     path('api/bible/', include('apps.bible.urls')),
     path('api/devotional/', include('apps.devotional.urls')),
     path('api/reflection/', include('apps.reflection.urls')),
+    path('api/public/', include('apps.landing.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

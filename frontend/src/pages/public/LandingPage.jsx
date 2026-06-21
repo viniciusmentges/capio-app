@@ -1,7 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { useSEO } from '../../hooks/useSEO';
 import LandingScreenshot from '../../components/landing/LandingScreenshot';
+import { api } from '../../lib/api';
+
+const fetchScreenshots = async () => {
+  try {
+    const { data } = await api.get('/public/landing-screenshots/');
+    return data;
+  } catch (err) {
+    console.error('Failed to fetch screenshots', err);
+    return [];
+  }
+};
 
 export default function LandingPage() {
   useSEO({
@@ -12,6 +24,19 @@ export default function LandingPage() {
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
+
+  const { data: screenshots = [] } = useQuery({
+    queryKey: ['landingScreenshots'],
+    queryFn: fetchScreenshots,
+    staleTime: 1000 * 60 * 60, // 1 hour
+  });
+
+  const getScreenshot = (key) => screenshots.find(s => s.key === key);
+
+  const homeScreenshot = getScreenshot('home');
+  const reflexaoScreenshot = getScreenshot('reflexao');
+  const bibliaScreenshot = getScreenshot('biblia');
+  const noiteScreenshot = getScreenshot('noite');
 
   return (
     <div 
@@ -39,7 +64,11 @@ export default function LandingPage() {
         </p>
       </section>
 
-      <LandingScreenshot src="/images/landing/home.svg" alt="Abertura do dia na CAPIO" />
+      <LandingScreenshot 
+        src={homeScreenshot?.image_url} 
+        alt={homeScreenshot?.alt_text || "Abertura do dia na CAPIO"} 
+        placeholderText="Imagem da Home da CAPIO"
+      />
 
       {/* 3. A Rotina - Manhã */}
       <section className="w-full max-w-[50ch] mt-32 mb-20 px-6 text-center">
@@ -50,7 +79,11 @@ export default function LandingPage() {
         </p>
       </section>
 
-      <LandingScreenshot src="/images/landing/reflexao.svg" alt="Leitura devocional diária" />
+      <LandingScreenshot 
+        src={reflexaoScreenshot?.image_url} 
+        alt={reflexaoScreenshot?.alt_text || "Leitura devocional diária"} 
+        placeholderText="Imagem da Reflexão do Dia"
+      />
 
       {/* 4. A Rotina - Bíblia */}
       <section className="w-full max-w-[50ch] mt-32 mb-20 px-6 text-center">
@@ -60,7 +93,11 @@ export default function LandingPage() {
         </p>
       </section>
 
-      <LandingScreenshot src="/images/landing/biblia.svg" alt="A Escritura na CAPIO" />
+      <LandingScreenshot 
+        src={bibliaScreenshot?.image_url} 
+        alt={bibliaScreenshot?.alt_text || "A Escritura na CAPIO"} 
+        placeholderText="Imagem da Bíblia"
+      />
 
       {/* 5. A Rotina - Noite */}
       <section className="w-full max-w-[50ch] mt-32 mb-20 px-6 text-center">
@@ -70,7 +107,11 @@ export default function LandingPage() {
         </p>
       </section>
 
-      <LandingScreenshot src="/images/landing/noite.svg" alt="A Palavra da noite" />
+      <LandingScreenshot 
+        src={noiteScreenshot?.image_url} 
+        alt={noiteScreenshot?.alt_text || "A Palavra da noite"} 
+        placeholderText="Imagem da Palavra da Noite"
+      />
 
       {/* 6. A Caminhada Silenciosa (Prova Social Humana) */}
       <section className="w-full max-w-[45ch] text-center mt-48 mb-48 px-6">
@@ -87,13 +128,13 @@ export default function LandingPage() {
         </p>
         <Link 
           to="/register" 
-          className="inline-block px-12 py-5 border border-foreground/15 text-foreground/80 font-sans text-sm tracking-widest uppercase hover:opacity-60 transition-opacity duration-500 rounded-sm mb-12"
+          className="inline-block px-12 py-5 border border-foreground/15 text-foreground/80 font-sans text-sm tracking-widest uppercase hover:text-brand hover:border-brand/40 transition-all duration-500 rounded-sm mb-12"
         >
           Começar minha leitura
         </Link>
         <Link 
           to="/login" 
-          className="font-sans text-xs tracking-wider text-foreground/40 hover:opacity-60 transition-opacity duration-500"
+          className="font-sans text-xs tracking-wider text-foreground/40 hover:text-brand transition-colors duration-500"
         >
           Ou retorne à sua leitura
         </Link>

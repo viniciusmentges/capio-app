@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'apps.devotional',
     'apps.reflection',
     'apps.ai_core',
+    'apps.landing',
 ]
 
 MIDDLEWARE = [
@@ -167,6 +168,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # CORS Configuration
