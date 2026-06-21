@@ -5,7 +5,6 @@ import ScrollToTop from './ScrollToTop';
 import { useScrollDirection } from '../../hooks/useScrollDirection';
 import EditorialSkeleton from './EditorialSkeleton';
 import { useStandaloneMode } from '../../hooks/useStandaloneMode';
-import PWAUpdatePrompt from './PWAUpdatePrompt';
 
 export default function AppShell() {
   const scrollDir = useScrollDirection();
@@ -45,7 +44,6 @@ export default function AppShell() {
         </div>
       </main>
       <BottomNav />
-      <PWAUpdatePrompt />
     </div>
   );
 }

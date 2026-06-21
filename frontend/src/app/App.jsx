@@ -8,6 +8,7 @@ import { AnalyticsProvider } from '../analytics/AnalyticsProvider';
 import EditorialSplash from '../components/pwa/EditorialSplash';
 import ErrorBoundary from '../components/ui/ErrorBoundary';
 import LoadingState from '../components/ui/LoadingState';
+import PWAUpdatePrompt from '../components/layout/PWAUpdatePrompt';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -47,6 +48,7 @@ function App() {
         <AuthProvider>
           <AnalyticsProvider>
             <TextSizeProvider>
+              <PWAUpdatePrompt />
               <React.Suspense fallback={<div className="min-h-[100dvh] flex flex-col justify-center bg-background"><LoadingState /></div>}>
                 <RouterProvider router={router} />
               </React.Suspense>
