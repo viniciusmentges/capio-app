@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSEO } from '../../hooks/useSEO';
-import LandingScreenshot from '../../components/landing/LandingScreenshot';
 
 export default function LandingPage() {
   useSEO({
@@ -72,20 +71,17 @@ export default function LandingPage() {
               <h2 className="text-xl md:text-2xl font-serif text-foreground/90 leading-tight">
                 Antes que o seu dia comece.
               </h2>
-              <p className="text-contemplative text-foreground/80 leading-relaxed">
-                Antes das notificações. Antes das conversas. Antes da correria.
-                Reserve dois minutos para lembrar aquilo que realmente sustenta o restante do seu dia.
-                É para isso que existe a Reflexão do Dia.
-              </p>
-            </div>
-
-            <div className="w-full">
-              <LandingScreenshot 
-                src="/images/landing/home.png" 
-                alt="Abertura do dia na CAPIO" 
-                placeholderText="Reflexão da Manhã"
-                variant="immersive"
-              />
+              <div className="space-y-4">
+                <p className="text-contemplative text-foreground/80 leading-relaxed">
+                  Antes das notificações. Antes das conversas. Antes da correria.
+                </p>
+                <p className="text-contemplative text-foreground/80 leading-relaxed">
+                  Reserve dois minutos para lembrar aquilo que realmente sustenta o restante do seu dia.
+                </p>
+                <p className="text-contemplative text-foreground/80 leading-relaxed">
+                  É para isso que existe a Reflexão do Dia.
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -121,20 +117,15 @@ export default function LandingPage() {
               <h2 className="text-xl md:text-2xl font-serif text-foreground/90 leading-tight">
                 A Palavra não precisa ficar na estante.
               </h2>
-              <p className="text-contemplative text-foreground/80 leading-relaxed">
-                Na missa. No culto. Durante um estudo bíblico.
-                Ou naquele momento em que você simplesmente precisa voltar ao texto.
-                A Bíblia continua perto.
-              </p>
-            </div>
-
-            <div className="w-full">
-              <LandingScreenshot 
-                src="/images/landing/biblia.webp" 
-                alt="A Escritura na CAPIO" 
-                placeholderText="Texto Bíblico"
-                variant="immersive"
-              />
+              <div className="space-y-4">
+                <p className="text-contemplative text-foreground/80 leading-relaxed">
+                  Na missa. No culto. Durante um estudo bíblico.
+                  Ou naquele momento em que você simplesmente precisa voltar ao texto.
+                </p>
+                <p className="text-contemplative text-foreground/80 leading-relaxed">
+                  A Bíblia continua perto.
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -173,18 +164,17 @@ export default function LandingPage() {
                 Quando a noite chega, tudo desacelera.
               </p>
               <p className="text-contemplative text-foreground/80 leading-relaxed">
-                Antes de dormir, existe mais uma oportunidade de terminar o dia do mesmo jeito que ele começou:<br />
-                perto de Deus.
+                A CAPIO prepara uma palavra breve para ajudar você a encerrar o dia perto de Deus.
+              </p>
+              <p className="text-contemplative text-foreground/80 leading-relaxed">
+                Depois, uma oração simples conduz esse momento de entrega.
+              </p>
+              <p className="text-contemplative text-foreground/80 leading-relaxed">
+                Uma última mensagem.<br />
+                Uma última oração.<br />
+                Um último silêncio antes do descanso.
               </p>
             </div>
-          </div>
-          <div className="pt-2">
-            <LandingScreenshot 
-              src="/images/landing/noite.webp" 
-              alt="A Palavra da noite" 
-              placeholderText="Palavra da Noite"
-              isNight={true}
-            />
           </div>
         </section>
 
