@@ -16,52 +16,69 @@ export default function LandingPage() {
   return (
     <div className={`min-h-[100dvh] bg-background text-foreground flex flex-col items-center selection:bg-border/30 transition-opacity duration-[2000ms] ease-out ${mounted ? 'opacity-100' : 'opacity-0'}`}>
       
-      <main className="w-full max-w-lg mx-auto px-6 space-y-16 pt-16 pb-24">
+      <main className="w-full max-w-lg mx-auto px-6 space-y-24 pt-16 pb-32">
         
-        {/* 1. Hero */}
+        {/* HERO */}
         <section className="space-y-6 pt-4 animate-fade-in">
           <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
             A Gramática do Silêncio
           </p>
           <h1 className="text-3xl md:text-4xl font-serif tracking-tight leading-[1.15] text-foreground/90">
-            Um lugar simples para encontrar Deus na Escritura.
+            Da primeira leitura da manhã à última oração da noite.
           </h1>
           <p className="text-foreground/55 font-sans font-light tracking-wide text-xs leading-relaxed max-w-sm">
-            Todos os dias, um pequeno momento preparado para ler, compreender e permanecer na Palavra.
+            A CAPIO acompanha diferentes momentos do seu dia para ajudar você a manter uma rotina com Deus.
           </p>
+          <div className="pt-2">
+            <Link 
+              to="/register" 
+              className="inline-block text-[10px] font-sans font-medium uppercase tracking-[0.25em] text-accent transition-colors underline underline-offset-8 decoration-accent/20 hover:decoration-accent/50 py-2"
+            >
+              Começar minha leitura
+            </Link>
+          </div>
         </section>
 
-        {/* 2. Pausa Emocional */}
-        <section className="space-y-5 pt-8 border-t border-border animate-fade-in" style={{ animationDelay: '150ms' }}>
+        {/* Abertura (A Rotina) */}
+        <section className="space-y-5 pt-12 border-t border-border animate-fade-in" style={{ animationDelay: '150ms' }}>
           <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
-            O Peso da Rotina
+            A Rotina
           </p>
-          <blockquote className="font-serif italic text-lg text-foreground/75 leading-relaxed">
-            "Sabemos como a rotina pesa. O despertador toca cedo, o tempo escapa e o silêncio parece quase impossível."
-          </blockquote>
-          <p className="text-contemplative text-foreground/80 leading-relaxed">
-            Mas a graça nos encontra no chão da nossa imperfeição comum.
-          </p>
+          <h2 className="font-serif text-xl md:text-2xl text-foreground/90 leading-snug">
+            Todos nós queremos passar mais tempo com Deus.
+          </h2>
+          <div className="space-y-4">
+            <p className="text-contemplative text-foreground/80 leading-relaxed">
+              O difícil quase nunca é querer.
+            </p>
+            <p className="text-contemplative text-foreground/80 leading-relaxed">
+              O difícil é conseguir manter essa rotina quando o despertador toca cedo, a agenda aperta e o dia começa antes mesmo de conseguirmos respirar.
+            </p>
+            <p className="text-contemplative text-foreground/80 leading-relaxed">
+              Foi justamente pensando nessa realidade que a CAPIO nasceu.
+              Não para criar mais uma obrigação.
+              Mas para facilitar um reencontro diário com a Palavra.
+            </p>
+          </div>
         </section>
 
-        {/* 3. A Manhã (Reflexão) - SEÇÃO EM AUDITORIA (LP-002.14) */}
-        <section className="pt-16 border-t border-border">
+        {/* Reflexão (A Manhã) */}
+        <section className="pt-12 border-t border-border">
           <div className="flex flex-col space-y-12">
-            
-            {/* O bloco de texto se torna uma introdução elegante à imagem */}
             <div className="space-y-4">
               <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
-                O Início do Dia
+                A Manhã
               </p>
-              <h2 className="text-2xl md:text-3xl font-serif text-foreground/90 leading-tight">
-                A folha vira.<br />O barulho cessa.
+              <h2 className="text-xl md:text-2xl font-serif text-foreground/90 leading-tight">
+                Antes que o seu dia comece.
               </h2>
-              <p className="text-contemplative text-foreground/80 leading-relaxed max-w-[40ch]">
-                Uma reflexão honesta e simples aguarda para iniciar o dia na companhia de Deus. Lemos a Escritura juntos, para lembrar da fidelidade do Senhor antes mesmo de sair de casa.
+              <p className="text-contemplative text-foreground/80 leading-relaxed">
+                Antes das notificações. Antes das conversas. Antes da correria.
+                Reserve dois minutos para lembrar aquilo que realmente sustenta o restante do seu dia.
+                É para isso que existe a Reflexão do Dia.
               </p>
             </div>
 
-            {/* A Imagem ganha mais respiro e perde a moldura grossa para se fundir ao papel */}
             <div className="w-full">
               <LandingScreenshot 
                 src="/images/landing/home.png" 
@@ -70,44 +87,96 @@ export default function LandingPage() {
                 variant="immersive"
               />
             </div>
-
           </div>
         </section>
 
-        {/* 4. A Escritura */}
-        <section className="space-y-6 pt-10 border-t border-border">
-          <div className="space-y-3">
-            <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
-              A Leitura
-            </p>
-            <h2 className="text-xl font-serif text-foreground/80 leading-snug">
-              A Escritura permanece próxima.
-            </h2>
+        {/* Devocional (O Tempo) */}
+        <section className="space-y-5 pt-12 border-t border-border">
+          <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
+            O Tempo
+          </p>
+          <h2 className="text-xl md:text-2xl font-serif text-foreground/90 leading-snug">
+            O momento de permanecer.
+          </h2>
+          <div className="space-y-4">
             <p className="text-contemplative text-foreground/80 leading-relaxed">
-              Um ambiente sem distrações para que você possa voltar aos Salmos e aos Evangelhos a qualquer momento, lendo a Palavra viva em seu próprio ritmo.
+              Há dias em que uma breve reflexão basta.
+              Em outros, o coração pede mais tempo.
             </p>
-          </div>
-          <div className="pt-2">
-            <LandingScreenshot 
-              src="/images/landing/biblia.webp" 
-              alt="A Escritura na CAPIO" 
-              placeholderText="Texto Bíblico"
-            />
+            <p className="text-contemplative text-foreground/80 leading-relaxed">
+              O Devocional foi pensado para esses momentos.
+              Um espaço para permanecer na Palavra sem pressa.
+              Ler. Meditar. Orar. E deixar que Deus fale com calma.
+            </p>
           </div>
         </section>
 
-        {/* 5. A Noite */}
-        <section className="mt-12 capio-night-theme bg-surface border border-border/40 rounded-sm p-6 md:p-8 space-y-8 shadow-sm transition-colors">
-          <div className="space-y-3">
-            <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
-              O Fim do Dia
-            </p>
-            <h2 className="text-xl font-serif text-foreground/80 leading-snug">
-              O repouso da alma.
-            </h2>
+        {/* Bíblia (A Palavra) */}
+        <section className="pt-12 border-t border-border">
+          <div className="flex flex-col space-y-12">
+            <div className="space-y-4">
+              <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
+                A Palavra
+              </p>
+              <h2 className="text-xl md:text-2xl font-serif text-foreground/90 leading-tight">
+                A Palavra não precisa ficar na estante.
+              </h2>
+              <p className="text-contemplative text-foreground/80 leading-relaxed">
+                Na missa. No culto. Durante um estudo bíblico.
+                Ou naquele momento em que você simplesmente precisa voltar ao texto.
+                A Bíblia continua perto.
+              </p>
+            </div>
+
+            <div className="w-full">
+              <LandingScreenshot 
+                src="/images/landing/biblia.webp" 
+                alt="A Escritura na CAPIO" 
+                placeholderText="Texto Bíblico"
+                variant="immersive"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Explicações (O Entendimento) */}
+        <section className="space-y-5 pt-12 border-t border-border">
+          <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
+            O Entendimento
+          </p>
+          <h2 className="text-xl md:text-2xl font-serif text-foreground/90 leading-snug">
+            Compreenda aquilo que está lendo.
+          </h2>
+          <div className="space-y-4">
             <p className="text-contemplative text-foreground/80 leading-relaxed">
-              Quando a noite cai, a tela acompanha o cansaço dos olhos. O mesmo tema da manhã retorna brevemente, conduzindo uma oração de entrega antes do sono.
+              Algumas passagens são simples.
+              Outras fazem a gente parar e perguntar:
+              "O que Deus queria dizer aqui?"
             </p>
+            <p className="text-contemplative text-foreground/80 leading-relaxed">
+              A CAPIO ajuda você a compreender essas passagens sem complicar a linguagem e sem perder o respeito pela Escritura.
+            </p>
+          </div>
+        </section>
+
+        {/* Noite (O Descanso) */}
+        <section className="mt-16 capio-night-theme bg-surface border border-border/40 rounded-sm p-6 md:p-8 space-y-8 shadow-sm transition-colors">
+          <div className="space-y-4">
+            <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
+              O Descanso
+            </p>
+            <h2 className="text-xl md:text-2xl font-serif text-foreground/90 leading-snug">
+              Termine o dia da mesma forma que começou.
+            </h2>
+            <div className="space-y-4">
+              <p className="text-contemplative text-foreground/80 leading-relaxed">
+                Quando a noite chega, tudo desacelera.
+              </p>
+              <p className="text-contemplative text-foreground/80 leading-relaxed">
+                Antes de dormir, existe mais uma oportunidade de terminar o dia do mesmo jeito que ele começou:<br />
+                perto de Deus.
+              </p>
+            </div>
           </div>
           <div className="pt-2">
             <LandingScreenshot 
@@ -119,26 +188,26 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* 6. CTA Final */}
-        <section className="space-y-8 pt-16 border-t border-border flex flex-col items-center text-center">
-          <div className="space-y-4">
+        {/* CTA Final */}
+        <section className="space-y-8 pt-20 border-t border-border flex flex-col items-center text-center">
+          <div className="space-y-6">
             <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
               O Próximo Passo
             </p>
-            <h2 className="text-2xl font-serif italic text-foreground/80 leading-snug">
-              A folha já está em branco.
+            <h2 className="text-2xl md:text-3xl font-serif italic text-foreground/80 leading-snug max-w-sm mx-auto">
+              Porque uma vida com Deus não é construída em um único grande momento.
             </h2>
-            <p className="text-foreground/55 font-sans font-light text-xs tracking-wide max-w-[250px] mx-auto leading-relaxed">
-              A leitura de hoje aguarda por você.
+            <p className="text-contemplative text-foreground/80 max-w-[280px] mx-auto leading-relaxed">
+              É construída em pequenos encontros, todos os dias.
             </p>
           </div>
           
-          <div className="pt-4 flex flex-col items-center space-y-6">
+          <div className="pt-8 flex flex-col items-center space-y-6">
             <Link 
               to="/register" 
               className="inline-block text-[10px] font-sans font-medium uppercase tracking-[0.25em] text-accent transition-colors underline underline-offset-8 decoration-accent/20 hover:decoration-accent/50 py-3 px-6"
             >
-              Começar minha leitura
+              Criar minha conta gratuitamente
             </Link>
             <Link 
               to="/login" 
@@ -149,8 +218,8 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* 7. Footer */}
-        <footer className="pt-12 pb-8 flex flex-col items-center space-y-8">
+        {/* Footer */}
+        <footer className="pt-16 flex flex-col items-center space-y-8">
           <div className="w-1.5 h-1.5 bg-foreground/10 rounded-full" />
           <p className="text-[9px] uppercase tracking-[0.2em] text-foreground/20">
             CAPIO &copy; {new Date().getFullYear()}
