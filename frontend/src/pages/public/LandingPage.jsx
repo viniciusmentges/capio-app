@@ -16,7 +16,6 @@ export default function LandingPage() {
   return (
     <div className={`min-h-[100dvh] bg-background text-foreground flex flex-col items-center selection:bg-border/30 transition-opacity duration-[2000ms] ease-out ${mounted ? 'opacity-100' : 'opacity-0'}`}>
       
-      {/* Container principal contido, similar à largura da Home para manter foco editorial */}
       <main className="w-full max-w-lg mx-auto px-6 space-y-16 pt-16 pb-24">
         
         {/* 1. Hero */}
@@ -45,25 +44,33 @@ export default function LandingPage() {
           </p>
         </section>
 
-        {/* 3. A Manhã (Reflexão) */}
-        <section className="space-y-6 pt-10 border-t border-border">
-          <div className="space-y-3">
-            <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
-              O Início do Dia
-            </p>
-            <h2 className="text-xl font-serif text-foreground/80 leading-snug">
-              A folha vira. O barulho cessa.
-            </h2>
-            <p className="text-contemplative text-foreground/80 leading-relaxed">
-              Uma reflexão honesta e simples aguarda para iniciar o dia na companhia de Deus. Lemos a Escritura juntos, para lembrar da fidelidade do Senhor antes mesmo de sair de casa.
-            </p>
-          </div>
-          <div className="pt-2">
-            <LandingScreenshot 
-              src="/images/landing/home.webp" 
-              alt="Abertura do dia na CAPIO" 
-              placeholderText="Reflexão da Manhã"
-            />
+        {/* 3. A Manhã (Reflexão) - SEÇÃO EM AUDITORIA (LP-002.14) */}
+        <section className="pt-16 border-t border-border">
+          <div className="flex flex-col space-y-12">
+            
+            {/* O bloco de texto se torna uma introdução elegante à imagem */}
+            <div className="space-y-4">
+              <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
+                O Início do Dia
+              </p>
+              <h2 className="text-2xl md:text-3xl font-serif text-foreground/90 leading-tight">
+                A folha vira.<br />O barulho cessa.
+              </h2>
+              <p className="text-contemplative text-foreground/80 leading-relaxed max-w-[40ch]">
+                Uma reflexão honesta e simples aguarda para iniciar o dia na companhia de Deus. Lemos a Escritura juntos, para lembrar da fidelidade do Senhor antes mesmo de sair de casa.
+              </p>
+            </div>
+
+            {/* A Imagem ganha mais respiro e perde a moldura grossa para se fundir ao papel */}
+            <div className="w-full">
+              <LandingScreenshot 
+                src="/images/landing/home.png" 
+                alt="Abertura do dia na CAPIO" 
+                placeholderText="Reflexão da Manhã"
+                variant="immersive"
+              />
+            </div>
+
           </div>
         </section>
 
@@ -89,7 +96,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* 5. A Noite (Isolado no Tema Noturno) */}
+        {/* 5. A Noite */}
         <section className="mt-12 capio-night-theme bg-surface border border-border/40 rounded-sm p-6 md:p-8 space-y-8 shadow-sm transition-colors">
           <div className="space-y-3">
             <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
@@ -112,7 +119,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* 6. CTA Final (Integrado à narrativa) */}
+        {/* 6. CTA Final */}
         <section className="space-y-8 pt-16 border-t border-border flex flex-col items-center text-center">
           <div className="space-y-4">
             <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
@@ -142,7 +149,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* 7. Footer Contemplativo */}
+        {/* 7. Footer */}
         <footer className="pt-12 pb-8 flex flex-col items-center space-y-8">
           <div className="w-1.5 h-1.5 bg-foreground/10 rounded-full" />
           <p className="text-[9px] uppercase tracking-[0.2em] text-foreground/20">
