@@ -21,7 +21,7 @@ export default function LandingPage() {
         {/* HERO */}
         <section className="space-y-6 pt-4 animate-fade-in">
           <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
-            A Gramática do Silêncio
+            CAPIO
           </p>
           <h1 className="text-3xl md:text-4xl font-serif tracking-tight leading-[1.15] text-foreground/90">
             Da primeira leitura da manhã à última oração da noite.
