@@ -68,6 +68,22 @@ export function AuthProvider({ children }) {
     return response;
   };
 
+  const loginWithGoogle = async (token) => {
+    const response = await authApi.googleLogin(token);
+    const access = response.access || response.data?.access;
+    const refresh = response.refresh || response.data?.refresh;
+
+    if (access) {
+      setTokens(access, refresh);
+      await loadUser();
+    }
+
+    captureEvent(ANALYTICS_EVENTS.USER_LOGGED_IN, {
+      method: 'google',
+    });
+    return response;
+  };
+
   const register = async (userData) => {
     const response = await authApi.register(userData);
     const access = response.access || response.data?.access;
@@ -94,6 +110,7 @@ export function AuthProvider({ children }) {
       isAuthenticated,
       loadingAuth,
       login,
+      loginWithGoogle,
       register,
       logout,
       loadUser

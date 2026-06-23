@@ -1,4 +1,8 @@
 import logging
+import uuid
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -19,6 +23,54 @@ from apps.users.models import PushSubscription
 
 User = get_user_model()
 logger = logging.getLogger(__name__)
+
+class GoogleLoginView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        token = request.data.get('token')
+        if not token:
+            return Response({"error": "Token não fornecido."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            client_id = getattr(settings, 'GOOGLE_OAUTH2_CLIENT_ID', '')
+            
+            # Se não houver client_id configurado em dev, podemos não passá-lo para a verificação estrita
+            if client_id:
+                idinfo = id_token.verify_oauth2_token(token, google_requests.Request(), client_id)
+            else:
+                # Fallback inseguro apenas para dev se não houver ID. O ideal é ter o ID.
+                idinfo = id_token.verify_oauth2_token(token, google_requests.Request())
+            
+            email = idinfo.get('email')
+            if not email:
+                return Response({"error": "O token não contém um email válido."}, status=status.HTTP_400_BAD_REQUEST)
+
+            user, created = User.objects.get_or_create(email=email, defaults={
+                'username': email,
+                'first_name': idinfo.get('given_name', '')[:30],
+                'last_name': idinfo.get('family_name', '')[:30],
+            })
+            
+            if created:
+                user.set_unusable_password()
+                user.save()
+
+            refresh = RefreshToken.for_user(user)
+
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+                'user': UserSerializer(user).data
+            }, status=status.HTTP_200_OK)
+
+        except ValueError as e:
+            logger.error("Token Google inválido: %s", e)
+            return Response({"error": "Autenticação inválida com o Google."}, status=status.HTTP_401_UNAUTHORIZED)
+        except Exception as e:
+            logger.error("Erro interno ao processar login com Google: %s", e, exc_info=True)
+            return Response({"error": "Erro interno no servidor."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer

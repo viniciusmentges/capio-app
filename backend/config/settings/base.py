@@ -37,6 +37,8 @@ USE_REAL_AI = env.bool('USE_REAL_AI', default=False)
 ANTHROPIC_API_KEY = env('ANTHROPIC_API_KEY', default='')
 ANTHROPIC_MODEL = env('ANTHROPIC_MODEL', default='claude-haiku-4-5-20251001')
 
+GOOGLE_OAUTH2_CLIENT_ID = env('GOOGLE_OAUTH2_CLIENT_ID', default='')
+
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])
 
 

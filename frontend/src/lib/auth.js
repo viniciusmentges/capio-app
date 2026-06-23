@@ -11,6 +11,11 @@ export const authApi = {
     return response.data;
   },
 
+  async googleLogin(token) {
+    const response = await api.post('/api/auth/google/', { token });
+    return response.data;
+  },
+
   async refreshToken(refresh) {
     const response = await api.post('/api/auth/refresh/', { refresh });
     return response.data;

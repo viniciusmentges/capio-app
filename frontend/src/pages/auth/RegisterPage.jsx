@@ -4,6 +4,7 @@ import { useAuth } from '../../hooks/useAuth';
 import Card from '../../components/ui/Card';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
+import GoogleLoginButton from '../../components/auth/GoogleLoginButton';
 
 export default function RegisterPage() {
   const [name, setName] = useState('');
@@ -11,7 +12,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const { register, login } = useAuth();
+  const { register, login, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -56,8 +57,28 @@ export default function RegisterPage() {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-12">
+      <form onSubmit={handleSubmit} className="space-y-8">
         <div className="space-y-6">
+          <GoogleLoginButton 
+            onSuccess={async (token) => {
+              setError('');
+              try {
+                await loginWithGoogle(token);
+                navigate('/');
+              } catch (err) {
+                setError('Não foi possível entrar com o Google. Tente novamente.');
+              }
+            }} 
+            onError={() => setError('Falha na autenticação com Google.')} 
+          />
+          
+          <div className="flex items-center space-x-4">
+            <div className="h-px bg-foreground/10 flex-1"></div>
+            <span className="text-[10px] uppercase tracking-[0.2em] text-foreground/30 font-sans">ou</span>
+            <div className="h-px bg-foreground/10 flex-1"></div>
+          </div>
+
+          <div className="space-y-6 pt-2">
           <Input 
             type="text" 
             placeholder="Seu nome" 

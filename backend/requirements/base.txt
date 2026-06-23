@@ -11,3 +11,5 @@ dj-database-url
 celery
 redis
 sentry-sdk
+google-auth
+requests
