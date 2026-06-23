@@ -88,6 +88,7 @@ export default function LoginPage() {
             className="bg-transparent border-b border-foreground/10 rounded-none px-0 py-4 focus:border-foreground/30 transition-colors"
           />
         </div>
+        </div>
 
         {error && (
           <div className="py-2">
