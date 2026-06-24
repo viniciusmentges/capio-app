@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
 import logging
+import uuid
 
 logger = logging.getLogger(__name__)
 
@@ -14,6 +15,7 @@ class Emotion(models.Model):
         return self.name
 
 class DevotionalContent(models.Model):
+    public_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     emotion = models.ForeignKey(Emotion, on_delete=models.CASCADE, related_name='devotionals')
     passage = models.ForeignKey('bible.BiblePassage', on_delete=models.SET_NULL, null=True, blank=True, related_name='devotionals')
     title = models.CharField(max_length=180)

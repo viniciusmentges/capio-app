@@ -1,7 +1,9 @@
+import uuid
 from django.db import models
 from django.conf import settings
 
 class DailyReflection(models.Model):
+    public_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     date = models.DateField(unique=True)
     passage = models.ForeignKey('bible.BiblePassage', on_delete=models.SET_NULL, null=True, blank=True, related_name='daily_reflections')
     title = models.CharField(max_length=180)

@@ -64,9 +64,9 @@ class HistoryView(APIView):
 class PublicReflectionDetailView(APIView):
     permission_classes = [AllowAny]
 
-    def get(self, request, pk):
+    def get(self, request, public_id):
         try:
-            reflection = DailyReflection.objects.get(pk=pk)
+            reflection = DailyReflection.objects.get(public_id=public_id)
             serializer = DailyReflectionSerializer(reflection)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except DailyReflection.DoesNotExist:

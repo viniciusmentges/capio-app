@@ -42,7 +42,7 @@ export default function ReflectionCard({ data }) {
   const shareQuote = data.share_quote || data.final_fragment || data.highlight || getDynamicFallback(data.reflection_body);
 
   // Formatação para compartilhamento
-  const publicUrl = `${window.location.origin}/share/reflection/${data.id}`;
+  const publicUrl = data.public_id ? `${window.location.origin}/share/reflection/${data.public_id}` : '';
   const shareText = `Uma Palavra para hoje.\n\n${title}\n${scriptureReference}\n\n"${scriptureText || ''}"\n\nLer na CAPIO:`;
 
   return (
@@ -129,28 +129,32 @@ export default function ReflectionCard({ data }) {
         )}
 
         {/* 5. Fragmento Final Compartilhável */}
-        <section className="space-y-8 pt-16 border-t border-border">
-          <ShareableCard 
-            ref={cardRef}
-            type="reflection"
-            quote={shareQuote}
-            reference="Reflexão do Dia"
-            variant="light"
-          />
-          <ShareCardActions 
-            cardRef={cardRef}
-            shareText={`"${shareQuote}"\n\nReflexão do Dia na CAPIO:\n${publicUrl}`}
-            fileName="capio-reflexao.png"
-          />
-        </section>
+        {publicUrl && (
+          <section className="space-y-8 pt-16 border-t border-border">
+            <ShareableCard 
+              ref={cardRef}
+              type="reflection"
+              quote={shareQuote}
+              reference="Reflexão do Dia"
+              variant="light"
+            />
+            <ShareCardActions 
+              cardRef={cardRef}
+              shareText={`"${shareQuote}"\n\nReflexão do Dia na CAPIO:\n${publicUrl}`}
+              fileName="capio-reflexao.png"
+            />
+          </section>
+        )}
 
-        <div className="flex justify-center pt-16 pb-8">
-          <ShareButton 
-            title={`Uma Palavra para você`} 
-            text={shareText} 
-            url={publicUrl}
-          />
-        </div>
+        {publicUrl && (
+          <div className="flex justify-center pt-16 pb-8">
+            <ShareButton 
+              title={`Uma Palavra para você`} 
+              text={shareText} 
+              url={publicUrl}
+            />
+          </div>
+        )}
         </div>
       </Card>
     </div>

@@ -57,9 +57,9 @@ from rest_framework.permissions import AllowAny
 class PublicDevotionalDetailView(APIView):
     permission_classes = [AllowAny]
 
-    def get(self, request, pk):
+    def get(self, request, public_id):
         try:
-            content = DevotionalContent.objects.get(pk=pk)
+            content = DevotionalContent.objects.get(public_id=public_id, is_active=True)
             serializer = DevotionalContentSerializer(content)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except DevotionalContent.DoesNotExist:

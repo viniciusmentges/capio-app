@@ -24,7 +24,7 @@ export default function DevotionalResult({ devotional }) {
     : verseText;
 
   // Formatação para compartilhamento
-  const publicUrl = `${window.location.origin}/share/devotional/${devotional.id}`;
+  const publicUrl = devotional.public_id ? `${window.location.origin}/share/devotional/${devotional.public_id}` : '';
   const shareText = `Uma Palavra para hoje.\n\n${title}\n${verse}\n\n"${verseText || ''}"\n\nLer na CAPIO:`;
 
   return (
@@ -130,30 +130,32 @@ export default function DevotionalResult({ devotional }) {
 
       <ProgressiveReveal delay={9000}>
         {/* 7. Fragmento Final Compartilhável */}
-        <section className="space-y-8 pt-16 border-t border-border">
-          <ShareableCard 
-            ref={cardRef}
-            type="devotional"
-            quote={verseText || verse}
-            reference={verse}
-            variant="dark"
-          />
-          <ShareCardActions 
-            cardRef={cardRef}
-            shareText={`"${verseText || verse}"\n\n${verse}\n\nLer na CAPIO:\n${publicUrl}`}
-            fileName="capio-devocional.png"
-          />
-        </section>
-      </ProgressiveReveal>
+        {publicUrl && (
+          <section className="space-y-8 pt-16 border-t border-border">
+            <ShareableCard 
+              ref={cardRef}
+              type="devotional"
+              quote={verseText || verse}
+              reference={verse}
+              variant="dark"
+            />
+            <ShareCardActions 
+              cardRef={cardRef}
+              shareText={`"${verseText || verse}"\n\n${verse}\n\nLer na CAPIO:\n${publicUrl}`}
+              fileName="capio-devocional.png"
+            />
+          </section>
+        )}
 
-      <ProgressiveReveal delay={10000}>
-        <div className="flex justify-center pt-16 pb-8">
-          <ShareButton 
-            title={`Uma Palavra para você`} 
-            text={shareText} 
-            url={publicUrl}
-          />
-        </div>
+        {publicUrl && (
+          <div className="flex justify-center pt-16 pb-8">
+            <ShareButton 
+              title={`Uma Palavra para hoje`} 
+              text={shareText} 
+              url={publicUrl}
+            />
+          </div>
+        )}
       </ProgressiveReveal>
 
 

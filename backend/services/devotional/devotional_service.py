@@ -375,6 +375,7 @@ class DevotionalService:
             log_event("devotional_generated", emotion_slug=emotion.slug, content_id=chosen_content.id)
 
         return {
+            "public_id": str(chosen_content.public_id),
             "title": chosen_content.title,
             "scripture_reference": chosen_content.scripture_reference,
             "scripture_text": chosen_content.scripture_text,

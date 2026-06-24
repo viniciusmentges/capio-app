@@ -13,7 +13,7 @@ class DevotionalContentSerializer(serializers.ModelSerializer):
     class Meta:
         model = DevotionalContent
         fields = (
-            'id', 'passage', 'title', 'scripture_reference', 'scripture_text', 
+            'id', 'public_id', 'passage', 'title', 'scripture_reference', 'scripture_text', 
             'reflection', 'practical_application', 'guiding_question', 
             'prayer', 'ai_generated', 'created_at'
         )
