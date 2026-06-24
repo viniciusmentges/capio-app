@@ -145,7 +145,7 @@ export default function ReflectionCard({ data }) {
           />
           <ShareCardActions 
             cardRef={cardRef}
-            shareText={`"${shareQuote}"\n\nReflexão do Dia na CAPIO:`}
+            shareText={`"${shareQuote}"\n\nReflexão do Dia na CAPIO:\n${publicUrl}`}
             shareUrl={publicUrl}
             fileName="capio-reflexao.png"
           />
@@ -157,6 +157,12 @@ export default function ReflectionCard({ data }) {
             text={shareText} 
             url={publicUrl}
           />
+        </div>
+
+        <div className="bg-red-500/10 text-red-700 p-2 text-[10px] font-mono mt-8 mb-4 text-left break-all rounded border border-red-500/20">
+          <strong>DEBUG INFO:</strong><br/>
+          public_id: {data.public_id ? String(data.public_id) : 'MISSING'}<br/>
+          url: {publicUrl}
         </div>
         </div>
       </Card>
