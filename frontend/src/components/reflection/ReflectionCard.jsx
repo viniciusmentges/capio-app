@@ -42,7 +42,7 @@ export default function ReflectionCard({ data }) {
   const shareQuote = data.share_text || data.share_quote || data.final_fragment || data.highlight || getDynamicFallback(data.reflection_body);
 
   // Formatação para compartilhamento
-  const publicUrl = data.public_id ? `${window.location.origin}/share/reflection/${data.public_id}` : '';
+  const publicUrl = data.public_id ? `${window.location.origin}/share/reflection/${data.public_id}` : window.location.origin;
   const shareText = `Uma Palavra para hoje.\n\n${title}\n${scriptureReference}\n\n"${scriptureText || ''}"\n\nLer na CAPIO:`;
 
   return (
@@ -61,7 +61,7 @@ export default function ReflectionCard({ data }) {
                 className="group inline-flex items-center space-x-3 text-[11px] font-serif italic text-accent hover:text-accent/70 transition-colors"
               >
                 <span>Mergulhar na Palavra</span>
-                <span className="text-[8px] transition-transform group-hover:translate-y-1">↓</span>
+                <span className="text-[8px] transition-transform group-hover:translate-y-1">▼</span>
               </button>
             </div>
           ) : (
@@ -129,36 +129,30 @@ export default function ReflectionCard({ data }) {
         )}
 
         {/* 5. Fragmento Final Compartilhável */}
-        {publicUrl && (
-          <section className="space-y-8 pt-16 border-t border-border">
-            <ShareableCard 
-              ref={cardRef}
-              type="reflection"
-              quote={shareQuote}
-              reference="Reflexão do Dia"
-              bgImage={data.share_bg_image || "gradient_light"}
-            />
-            <ShareCardActions 
-              cardRef={cardRef}
-              shareText={`"${shareQuote}"\n\nReflexão do Dia na CAPIO:\n${publicUrl}`}
-              fileName="capio-reflexao.png"
-            />
-          </section>
-        )}
+        <section className="space-y-8 pt-16 border-t border-border">
+          <ShareableCard 
+            ref={cardRef}
+            type="reflection"
+            quote={shareQuote}
+            reference="Reflexão do Dia"
+            bgImage={data.share_bg_image || "gradient_light"}
+          />
+          <ShareCardActions 
+            cardRef={cardRef}
+            shareText={`"${shareQuote}"\n\nReflexão do Dia na CAPIO:\n${publicUrl}`}
+            fileName="capio-reflexao.png"
+          />
+        </section>
 
-        {publicUrl && (
-          <div className="flex justify-center pt-16 pb-8">
-            <ShareButton 
-              title={`Uma Palavra para você`} 
-              text={shareText} 
-              url={publicUrl}
-            />
-          </div>
-        )}
+        <div className="flex justify-center pt-16 pb-8">
+          <ShareButton 
+            title={`Uma Palavra para você`} 
+            text={shareText} 
+            url={publicUrl}
+          />
+        </div>
         </div>
       </Card>
     </div>
   );
 }
-
-
