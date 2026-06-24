@@ -59,12 +59,18 @@ const PresentationViewer = ({ slug }) => {
 
   const handleIframeLoad = () => {
     try {
-      const iframeDoc = iframeRef.current?.contentWindow?.document;
+      const iframeWin = iframeRef.current?.contentWindow;
+      const iframeDoc = iframeWin?.document;
       if (iframeDoc) {
         // Injetar listeners de inatividade dentro do iframe também, pois ele consome os eventos
         iframeDoc.addEventListener('mousemove', wakeControls);
         iframeDoc.addEventListener('touchstart', wakeControls);
         iframeDoc.addEventListener('keydown', wakeControls);
+      }
+      
+      // Auto-focus para teclado funcionar imediatamente sem precisar clicar
+      if (iframeWin) {
+        iframeWin.focus();
       }
     } catch (e) {
       console.warn("Could not attach listeners to iframe due to cross-origin or other error", e);
