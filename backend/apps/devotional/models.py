@@ -14,6 +14,13 @@ class Emotion(models.Model):
     def __str__(self):
         return self.name
 
+SHARE_BACKGROUND_CHOICES = [
+    ("gradient_light", "Fundo padrão claro"),
+    ("gradient_dark", "Fundo padrão escuro"),
+    ("window_light", "Luz da janela"),
+    ("coffee_table", "Mesa com café"),
+]
+
 class DevotionalContent(models.Model):
     public_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     emotion = models.ForeignKey(Emotion, on_delete=models.CASCADE, related_name='devotionals')
@@ -27,7 +34,7 @@ class DevotionalContent(models.Model):
     prayer = models.TextField()
     share_quote = models.TextField(blank=True, default='')
     share_text = models.CharField(max_length=110, blank=True, default='', help_text="Frase pastoral curta para repost. Máx 110 caracteres.")
-    share_bg_image = models.CharField(max_length=50, blank=True, default='gradient_light', help_text="Chave do fundo da imagem (ex: rain_glass, coffee_table)")
+    share_bg_image = models.CharField(max_length=50, blank=True, choices=SHARE_BACKGROUND_CHOICES, default='gradient_light', help_text="Selecione o fundo da imagem de compartilhamento.")
     emotional_theme = models.CharField(max_length=150, blank=True, default='')
     reviewed_by_human = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
