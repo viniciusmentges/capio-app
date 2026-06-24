@@ -45,6 +45,12 @@ export default function ReflectionCard({ data }) {
   const publicUrl = data.public_id ? `${window.location.origin}/share/reflection/${data.public_id}` : window.location.origin;
   const shareText = `Uma Palavra para hoje.\n\n${title}\n${scriptureReference}\n\n"${scriptureText || ''}"\n\nLer na CAPIO:`;
 
+  console.log("[CAPIO DEBUG SHARE] ReflectionCard gerou os seguintes dados:", {
+    data_public_id: data.public_id,
+    publicUrl: publicUrl,
+    shareText: shareText
+  });
+
   return (
     <div className="px-4 md:px-8 pb-12">
       <Card className="space-y-16 pb-24 max-w-4xl mx-auto pt-16">

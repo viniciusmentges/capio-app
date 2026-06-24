@@ -12,7 +12,7 @@ export default function ShareCardActions({ cardRef, shareText, shareUrl, fileNam
 
   const getExportOptions = () => ({
     pixelRatio: 3,
-    backgroundColor: '#000000', // Força fundo opaco preto absoluto se houver transparência nas bordas
+    backgroundColor: '#F8F7F4',
     style: {
       transform: 'none',
       transition: 'none',
@@ -29,31 +29,46 @@ export default function ShareCardActions({ cardRef, shareText, shareUrl, fileNam
       share_type: 'image',
       surface: 'share_card_actions',
     });
+
+    console.log("[CAPIO DEBUG SHARE] handleShare iniciado. Params recebidos no componente:", {
+      shareText,
+      shareUrl
+    });
+
     try {
       setIsExporting(true);
-      const dataUrl = await htmlToImage.toPng(cardRef.current, getExportOptions());
+      const dataUrl = await htmlToImage.toJpeg(cardRef.current, getExportOptions());
       captureEvent(ANALYTICS_EVENTS.SHARE_IMAGE_GENERATED, {
         action: 'native_share',
       });
       
       const res = await fetch(dataUrl);
       const blob = await res.blob();
-      const file = new File([blob], fileName, { type: 'image/png' });
+      const file = new File([blob], fileName.replace('.png', '.jpg'), { type: 'image/jpeg' });
+
+      console.log("[CAPIO DEBUG SHARE] Arquivo gerado para share:", {
+        fileName: file.name,
+        fileType: file.type,
+        fileSize: file.size
+      });
 
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
       if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
         try {
-          await navigator.share({
+          const sharePayload = {
             title: 'CAPIO',
             text: shareText,
             url: shareUrl,
             files: [file]
-          });
+          };
+          console.log("[CAPIO DEBUG SHARE] Chamando navigator.share() com o payload:", sharePayload);
+          await navigator.share(sharePayload);
+          console.log("[CAPIO DEBUG SHARE] navigator.share() sucesso!");
           return;
         } catch (err) {
           if (err.name === 'AbortError') return;
-          console.error("Erro no share nativo:", err);
+          console.error("[CAPIO DEBUG SHARE] Erro no share nativo:", err);
         }
       }
       
