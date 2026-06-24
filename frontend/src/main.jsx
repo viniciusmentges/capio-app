@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import React, { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './styles/globals.css'
 import App from './app/App.jsx'
@@ -27,8 +27,22 @@ if (typeof window !== 'undefined') {
 
 initSentry()
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+const isPresentation = window.location.pathname.startsWith('/presentation/');
+
+if (isPresentation) {
+  const slug = window.location.pathname.split('/')[2];
+  const PresentationViewer = React.lazy(() => import('./pages/presentation/PresentationViewer'));
+  createRoot(document.getElementById('root')).render(
+    <StrictMode>
+      <React.Suspense fallback={<div className="min-h-[100dvh] bg-background"></div>}>
+        <PresentationViewer slug={slug} />
+      </React.Suspense>
+    </StrictMode>
+  );
+} else {
+  createRoot(document.getElementById('root')).render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  )
+}
