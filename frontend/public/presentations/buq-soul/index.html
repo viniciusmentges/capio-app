@@ -12,11 +12,13 @@
 :root {
   --black: #080808;
   --white: #F8F7F5;
+  --off-white: #F7F4EF;
   --purple: #7B5AA6;
   --purple-light: #B69DD4;
   --purple-pale: #EDE8F5;
   --purple-deep: #1A1228;
-  --gray: #666;
+  --gray: #B7B0BE;
+  --gray-dark: #666;
   --gray-light: #999;
   --easing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --easing-out: cubic-bezier(0.0, 0.0, 0.2, 1);
@@ -103,7 +105,7 @@ body.hovering #cursor-ring { width: 44px; height: 44px; border-color: rgba(182,1
   position: absolute;
   bottom: 2.25rem;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) scale(0.9);
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -218,7 +220,7 @@ body.hovering #cursor-ring { width: 44px; height: 44px; border-color: rgba(182,1
 
 /* ── BACKGROUNDS ── */
 .bg-black { background: var(--black); }
-.bg-white { background: var(--white); }
+.bg-white { background: var(--off-white); }
 .bg-purple-deep { background: var(--purple-deep); }
 .bg-dark-mid { background: #0D0A14; }
 .bg-motor { background: #0A0814; }
@@ -249,6 +251,7 @@ body.hovering #cursor-ring { width: 44px; height: 44px; border-color: rgba(182,1
 .c-purple { color: var(--purple); }
 .c-pl     { color: var(--purple-light); }
 .c-gray   { color: var(--gray); }
+.c-gray-dark { color: var(--gray-dark); }
 .c-gl     { color: var(--gray-light); }
 
 .center { text-align: center; padding: 2rem 3rem; }
@@ -421,130 +424,25 @@ body.hovering #cursor-ring { width: 44px; height: 44px; border-color: rgba(182,1
 #s11 { background: #0A0710; }
 .mockup-layout {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: 1fr 1fr;
   width: 100%; height: 100%;
   align-items: center;
 }
 .ml-left {
-  padding: 4vw 3vw 4vw 8vw;
+  padding: 4vw 4vw 4vw 8vw;
   display: flex; flex-direction: column; justify-content: center;
 }
 .ml-right {
   display: flex; align-items: center; justify-content: center;
-  height: 100%; padding: 2.5rem 2.5rem 2.5rem 1.5rem;
-  border-left: 1px solid rgba(123,90,166,0.12);
+  height: 100%; padding: 2.5rem 4rem;
 }
-/* Phone */
-.phone {
-  width: 252px;
+.mockup-img {
+  width: 100%;
+  max-width: 440px;
   border-radius: 40px;
-  background: #F0ECF8;
-  border: 1px solid rgba(200,180,235,0.25);
-  box-shadow:
-    0 50px 100px rgba(0,0,0,0.65),
-    0 20px 40px rgba(0,0,0,0.4),
-    0 0 0 1px rgba(255,255,255,0.04) inset,
-    inset 0 1px 0 rgba(255,255,255,0.12);
-  overflow: hidden;
-  position: relative;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+  display: block;
 }
-.phone-notch {
-  width: 90px; height: 24px;
-  background: #F0ECF8;
-  border-radius: 0 0 14px 14px;
-  margin: 0 auto;
-  position: relative; z-index: 2;
-  display: flex; align-items: center; justify-content: center;
-  gap: 5px;
-}
-.notch-cam { width: 8px; height: 8px; border-radius: 50%; background: #1A0A2E; }
-.notch-sensor { width: 3px; height: 3px; border-radius: 50%; background: #3A1A5E; }
-.phone-body { padding: 0.6rem 0.9rem 0; }
-.phone-status {
-  display: flex; justify-content: space-between; align-items: center;
-  font-size: 0.55rem; color: #5A4A7A; font-weight: 600;
-  margin-bottom: 0.6rem; padding: 0 0.1rem;
-}
-.phone-header { text-align: center; margin-bottom: 0.8rem; }
-.ph-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: #5B3E9B; letter-spacing: 0.06em; }
-.ph-sub { font-size: 0.6rem; color: #9B7CC8; font-style: italic; letter-spacing: 0.05em; display: block; margin-top: -0.1rem; }
-.ph-heart { font-size: 0.65rem; color: #B8A0D8; display: block; margin-top: 0.2rem; }
-.phone-greet { margin-bottom: 0.9rem; }
-.pg-hi { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; color: #2A1A4A; }
-.pg-sub { font-size: 0.58rem; color: #8B7AAA; margin-top: 0.15rem; line-height: 1.4; }
-
-/* Cards */
-.ph-card {
-  background: white;
-  border-radius: 14px;
-  padding: 0.85rem;
-  margin-bottom: 0.5rem;
-  box-shadow: 0 2px 16px rgba(91,62,155,0.08), 0 1px 3px rgba(91,62,155,0.04);
-}
-.ph-card-badge {
-  display: inline-flex; align-items: center; gap: 0.25rem;
-  font-size: 0.5rem; font-weight: 700;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: #7B5AA6; background: rgba(123,90,166,0.08);
-  padding: 0.2rem 0.45rem; border-radius: 100px;
-  margin-bottom: 0.5rem;
-}
-.ph-card-title { font-family: 'Playfair Display', serif; font-size: 0.82rem; font-weight: 700; color: #2A1A4A; line-height: 1.3; }
-.ph-card-desc { font-size: 0.57rem; color: #8B7AAA; margin-top: 0.25rem; line-height: 1.4; }
-.ph-card-btn {
-  display: inline-flex; align-items: center; gap: 0.3rem;
-  background: #5B3E9B; color: white;
-  font-size: 0.55rem; font-weight: 600;
-  padding: 0.35rem 0.75rem; border-radius: 100px;
-  margin-top: 0.55rem;
-}
-
-.ph-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; margin-bottom: 0.5rem; }
-.ph-mini {
-  background: white;
-  border-radius: 12px; padding: 0.7rem 0.65rem;
-  box-shadow: 0 2px 10px rgba(91,62,155,0.06);
-}
-.ph-mini-badge {
-  font-size: 0.48rem; font-weight: 700;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: #7B5AA6; display: flex; align-items: center; gap: 0.2rem;
-  margin-bottom: 0.35rem;
-}
-.ph-mini-txt { font-size: 0.57rem; color: #4A3A6A; line-height: 1.4; }
-.ph-mini-ref { font-size: 0.48rem; color: #7B5AA6; font-weight: 600; margin-top: 0.2rem; }
-
-/* Clube card */
-.ph-clube {
-  background: linear-gradient(135deg, #3D2280 0%, #5B3E9B 100%);
-  border-radius: 14px; padding: 0.85rem;
-  margin-bottom: 0.5rem;
-}
-.ph-clube-badge {
-  font-size: 0.48rem; font-weight: 700;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: rgba(255,255,255,0.6); margin-bottom: 0.4rem; display: block;
-}
-.ph-clube-title { font-family: 'Playfair Display', serif; font-size: 0.8rem; font-weight: 700; color: white; line-height: 1.3; }
-.ph-clube-desc { font-size: 0.55rem; color: rgba(255,255,255,0.55); margin-top: 0.25rem; line-height: 1.4; }
-.ph-clube-cta {
-  display: inline-flex; align-items: center; gap: 0.25rem;
-  background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9);
-  font-size: 0.52rem; font-weight: 600;
-  padding: 0.3rem 0.6rem; border-radius: 100px;
-  margin-top: 0.5rem;
-}
-
-/* Nav bar */
-.ph-nav {
-  background: white;
-  border-top: 1px solid #EDE8F5;
-  display: flex; justify-content: space-around;
-  padding: 0.55rem 0.5rem 0.7rem;
-}
-.ph-nav-item { text-align: center; font-size: 0.48rem; color: #A090C0; line-height: 1.4; }
-.ph-nav-item.active { color: #5B3E9B; }
-.ph-nav-icon { font-size: 0.9rem; display: block; margin-bottom: 0.1rem; }
 
 /* ━━━━━━━━━━━ SLIDE 12 ━━━━━━━━━━━ */
 #s12 { background: var(--black); }
@@ -606,13 +504,13 @@ body.hovering #cursor-ring { width: 44px; height: 44px; border-color: rgba(182,1
   font-size: clamp(2.2rem, 4.5vw, 3.8rem);
   font-weight: 900; min-width: 7.5rem; line-height: 1;
 }
-.tn-dim { color: #252525; }
+.tn-dim { color: #555555; }
 .tn-bright { color: var(--white); }
 .time-bar { flex: 1; height: 2px; border-radius: 1px; max-width: 280px; }
-.tb-dim { background: #1A1A1A; }
+.tb-dim { background: #333333; }
 .tb-purple { background: linear-gradient(to right, var(--purple), var(--purple-light)); box-shadow: 0 0 8px rgba(182,157,212,0.25); }
 .time-lbl { font-size: 0.8rem; min-width: 160px; line-height: 1.4; }
-.tl-dim { color: #2E2E2E; }
+.tl-dim { color: #666666; }
 .tl-active { color: var(--purple-light); }
 .time-note { font-size: 0.8rem; color: var(--gray); margin-top: 2.5rem; max-width: 460px; line-height: 1.7; font-style: italic; }
 
@@ -687,7 +585,7 @@ body.hovering #cursor-ring { width: 44px; height: 44px; border-color: rgba(182,1
 <div id="progress" style="width:0"></div>
 
 <!-- SLIDE COUNTER -->
-<div id="counter"><span class="cur">1</span> <span style="color:rgba(255,255,255,0.1);">/</span> 16</div>
+<div id="counter"><span class="cur">1</span> <span style="color:rgba(255,255,255,0.1);">/</span> 17</div>
 
 <!-- UI OVERLAY -->
 <div id="ui" class="visible">
@@ -795,7 +693,7 @@ body.hovering #cursor-ring { width: 44px; height: 44px; border-color: rgba(182,1
 <!-- S5 AUDIÊNCIA -->
 <div class="slide bg-white" id="s5">
   <div class="concept-wrap">
-    <span class="cs-eyebrow c-gray anim">Estágio 1</span>
+    <span class="cs-eyebrow c-gray-dark anim">Estágio 1</span>
     <h2 class="cs-title c-black anim">Audiência</h2>
     <div class="cs-rule anim" style="background:#D8D8D8;"></div>
     <div class="cs-body anim" style="color:#555;">
@@ -881,77 +779,10 @@ body.hovering #cursor-ring { width: 44px; height: 44px; border-color: rgba(182,1
 <div class="slide" id="s11" style="background:#0A0710;">
   <div class="mockup-layout">
     <div class="ml-left">
-      <p class="t-label anim" style="color:var(--purple-light);margin-bottom:1.75rem;">BUQ Soul</p>
       <h2 class="anim" style="font-family:'Playfair Display',serif;font-size:clamp(1.9rem,3.2vw,3rem);font-weight:700;color:#F0ECFC;line-height:1.15;margin-bottom:1.5rem;">Como seria acordar<br>com ela todos os dias.</h2>
-      <p class="anim" style="font-size:0.88rem;color:rgba(240,236,248,0.4);line-height:1.8;max-width:360px;font-weight:300;">Não um feed. Não entretenimento.<br>Um espaço quieto — com a voz,<br>a linguagem e o calor da Rayssa —<br>para os outros 364 dias do ano.</p>
-      <div class="anim" style="margin-top:2.75rem;display:flex;gap:2.5rem;">
-        <div>
-          <span style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:var(--purple-light);display:block;">Reflexão</span>
-          <span style="font-size:0.65rem;color:rgba(240,236,248,0.3);">diária</span>
-        </div>
-        <div>
-          <span style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:var(--purple-light);display:block;">Devocional</span>
-          <span style="font-size:0.65rem;color:rgba(240,236,248,0.3);">com oração</span>
-        </div>
-        <div>
-          <span style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:var(--purple-light);display:block;">Jornadas</span>
-          <span style="font-size:0.65rem;color:rgba(240,236,248,0.3);">30 dias</span>
-        </div>
-      </div>
     </div>
     <div class="ml-right anim">
-      <div class="phone">
-        <div class="phone-notch">
-          <div class="notch-sensor"></div>
-          <div class="notch-cam"></div>
-        </div>
-        <div class="phone-body">
-          <div class="phone-status">
-            <span>09:41</span>
-            <span>●●●● ᯤ 🔋</span>
-          </div>
-          <div class="phone-header">
-            <div class="ph-logo">BUQ</div>
-            <span class="ph-sub">soul</span>
-            <span class="ph-heart">♡</span>
-          </div>
-          <div class="phone-greet">
-            <div class="pg-hi">Bom dia, Rayssa. 💜</div>
-            <div class="pg-sub">Deus já preparou graça suficiente para este dia.</div>
-          </div>
-          <!-- Devocional -->
-          <div class="ph-card">
-            <div class="ph-card-badge">✦ Devocional</div>
-            <div class="ph-card-title">Quando Deus pede silêncio, Ele continua trabalhando.</div>
-            <div class="ph-card-desc">Confie no tempo d'Ele e descanse no cuidado que não falha.</div>
-            <div class="ph-card-btn">Ler devocional →</div>
-          </div>
-          <!-- Row -->
-          <div class="ph-row">
-            <div class="ph-mini">
-              <div class="ph-mini-badge">☩ Reflexão do Dia</div>
-              <div class="ph-mini-txt">"Não temas, porque eu sou contigo..."</div>
-              <div class="ph-mini-ref">Isaías 41:10</div>
-            </div>
-            <div class="ph-mini">
-              <div class="ph-mini-badge">♡ Oração</div>
-              <div class="ph-mini-txt">Reserve dois minutos para entregar seu dia nas mãos d'Ele.</div>
-            </div>
-          </div>
-          <!-- Clube -->
-          <div class="ph-clube">
-            <span class="ph-clube-badge">♛ Clube BUQ Soul · Exclusivo</span>
-            <div class="ph-clube-title">Aprofunde sua caminhada com conteúdos exclusivos.</div>
-            <div class="ph-clube-desc">Estudos, séries e jornadas para fortalecer sua fé.</div>
-            <div class="ph-clube-cta">Conhecer o clube →</div>
-          </div>
-        </div>
-        <div class="ph-nav">
-          <div class="ph-nav-item active"><span class="ph-nav-icon">⌂</span>Início</div>
-          <div class="ph-nav-item"><span class="ph-nav-icon">📖</span>Bíblia</div>
-          <div class="ph-nav-item"><span class="ph-nav-icon">✦</span>Reflexão</div>
-        </div>
-      </div>
+      <img src="assets/home-mockup.png" alt="BUQ Soul App Interface" class="mockup-img" />
     </div>
   </div>
 </div>
@@ -972,6 +803,22 @@ body.hovering #cursor-ring { width: 44px; height: 44px; border-color: rgba(182,1
   </div>
 </div>
 
+<!-- S12.5 A PREPARAÇÃO -->
+<div class="slide bg-black" id="s12-5">
+  <div class="center" style="max-width:800px;">
+    <h2 class="t-huge c-white anim" style="margin-bottom:2rem;line-height:1.15;">
+      Outros começam<br>com uma ideia.
+    </h2>
+    <h2 class="t-huge c-white anim" style="margin-bottom:3rem;line-height:1.15;">
+      <em style="color:var(--purple-light);font-style:italic;">Eu começo<br>com um motor pronto.</em>
+    </h2>
+    <div class="anim" style="width:36px;height:1px;background:var(--purple);margin:0 auto 3rem;"></div>
+    <p class="anim" style="font-size:1.1rem;color:var(--gray);line-height:1.8;max-width:520px;margin:0 auto;font-weight:300;">
+      A CAPIO já existe. Já funciona.<br>Foi construída para acompanhar pessoas na caminhada diária com Deus.<br><br>O trabalho não começa do zero.<br><span style="color:var(--white);font-style:italic;">Começa da experiência.</span>
+    </p>
+  </div>
+</div>
+
 <!-- S13 O MOTOR -->
 <div class="slide bg-motor" id="s13">
   <div class="motor-inner center">
@@ -979,16 +826,16 @@ body.hovering #cursor-ring { width: 44px; height: 44px; border-color: rgba(182,1
     <h2 class="t-large c-white anim">Existe um motor pronto para isso.</h2>
     <div class="motor-diagram anim">
       <div class="m-box capio">
-        <span class="m-box-label">Motor</span>
-        <span class="m-box-name">CAPIO</span>
+        <span class="m-box-label">CAPIO</span>
+        <span class="m-box-name">Infraestrutura</span>
       </div>
-      <span class="m-arrow">→</span>
+      <span class="m-arrow">&rarr;</span>
       <div class="m-box buq">
-        <span class="m-box-label">O produto</span>
-        <span class="m-box-name">BUQ Soul</span>
+        <span class="m-box-label">BUQ Soul</span>
+        <span class="m-box-name">Experiência</span>
       </div>
     </div>
-    <p class="motor-note anim">A CAPIO é a infraestrutura invisível.<br>Para a usuária, o produto é 100% BUQ Soul.<br>Motores não aparecem — eles apenas fazem o carro funcionar.</p>
+    <p class="motor-note anim">A CAPIO é a infraestrutura invisível.<br>Para quem usa, a experiência é 100% BUQ Soul.<br>Motores não aparecem. Eles apenas fazem tudo funcionar.</p>
   </div>
 </div>
 
@@ -1038,8 +885,11 @@ body.hovering #cursor-ring { width: 44px; height: 44px; border-color: rgba(182,1
   <div class="close-inner">
     <h2 class="close-main anim">Creators não<br>constroem audiência.<br>Constroem <em>patrimônio.</em></h2>
     <div class="close-line anim"></div>
-    <p class="close-body anim">Rayssa já fez a parte que nenhum dinheiro compra.<br>Construiu confiança. Construiu propósito.<br>Construiu uma geração inteira ao redor de uma missão.<br><br>O próximo passo é fazer essa missão<br>sobreviver além das plataformas.</p>
-    <div class="close-mark anim">BUQ Soul · 2025</div>
+    <p class="close-body anim">A pergunta nunca foi apenas<br>como crescer mais.<br><br>A pergunta é<br>como fazer essa missão continuar<br>além das plataformas.</p>
+    <div class="anim" style="margin-top: 3.5rem;">
+      <h3 style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--white);margin-bottom:0.5rem;">BUQ Soul.</h3>
+      <p style="font-size:1.1rem;color:var(--purple-light);font-style:italic;line-height:1.6;">Uma comunidade.<br>Um legado.<br>Uma geração.</p>
+    </div>
   </div>
 </div>
 
