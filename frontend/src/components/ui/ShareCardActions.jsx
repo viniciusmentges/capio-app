@@ -6,15 +6,13 @@ import { captureEvent } from '../../analytics/posthogClient';
 import { captureException } from '../../observability/sentry';
 import EditorialActionRow from './EditorialActionRow';
 
-export default function ShareCardActions({ cardRef, shareText, fileName = "capio-fragmento.png" }) {
-  const [isCopied, setIsCopied] = useState(false);
+export default function ShareCardActions({ cardRef, shareText, shareUrl, fileName = "capio-fragmento.png" }) {
   const [isExporting, setIsExporting] = useState(false);
   const [manualSaveDataUrl, setManualSaveDataUrl] = useState(null);
 
   const getExportOptions = () => ({
     pixelRatio: 3,
-    backgroundColor: null,
-    // Remover animações e transições na hora do print
+    backgroundColor: '#000000', // Força fundo opaco preto absoluto se houver transparência nas bordas
     style: {
       transform: 'none',
       transition: 'none',
@@ -49,6 +47,7 @@ export default function ShareCardActions({ cardRef, shareText, fileName = "capio
           await navigator.share({
             title: 'CAPIO',
             text: shareText,
+            url: shareUrl,
             files: [file]
           });
           return;
@@ -75,22 +74,6 @@ export default function ShareCardActions({ cardRef, shareText, fileName = "capio
     }
   };
 
-  const handleCopyText = async () => {
-    localStorage.setItem('capio_engaged_share', 'true');
-    captureEvent(ANALYTICS_EVENTS.SHARE_CLICKED, {
-      share_type: 'copy_text',
-      surface: 'share_card_actions',
-    });
-    try {
-      await navigator.clipboard.writeText(shareText);
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
-    } catch (error) {
-      console.error('Erro ao copiar texto:', error);
-      captureException(error, { tags: { area: 'share', action: 'copy_text' } });
-    }
-  };
-
   const actions = [
     {
       label: "Compartilhar",
@@ -98,12 +81,6 @@ export default function ShareCardActions({ cardRef, shareText, fileName = "capio
       icon: Share2,
       onClick: handleShare,
       disabled: isExporting
-    },
-    {
-      label: "Copiar",
-      ariaLabel: "Copiar Texto",
-      icon: isCopied ? Check : Copy,
-      onClick: handleCopyText
     }
   ];
 

@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function EditorialActionRow({ actions, className = "" }) {
   return (
-    <div className={`grid grid-cols-3 gap-2 w-full max-w-[280px] mx-auto pt-6 ${className}`}>
+    <div className={`flex flex-row items-center justify-center gap-8 w-full max-w-[280px] mx-auto pt-6 ${className}`}>
       {actions.map((action, index) => {
         const Icon = action.icon;
         return (
