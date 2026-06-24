@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import Card from '../ui/Card';
 import ProgressiveReveal from './ProgressiveReveal';
 import ShareButton from '../ui/ShareButton';
-import ShareableCard from '../ui/ShareableCard';
+import DevotionalShareableCard from '../ui/DevotionalShareableCard';
 import ShareCardActions from '../ui/ShareCardActions';
 
 export default function DevotionalResult({ devotional }) {
@@ -24,8 +24,10 @@ export default function DevotionalResult({ devotional }) {
     : verseText;
 
   // Formatação para compartilhamento
-  const publicUrl = devotional.public_id ? `${window.location.origin}/share/devotional/${devotional.public_id}` : '';
-  const shareText = `Uma Palavra para hoje.\n\n${title}\n${verse}\n\n"${verseText || ''}"\n\nLer na CAPIO:`;
+  const publicUrl = devotional.public_id ? `${window.location.origin}/share/devotional/${devotional.public_id}` : window.location.origin;
+  
+  // Garantir que a passagem inteira nunca seja usada, priorizando share_quote
+  const shareQuote = devotional.share_quote || devotional.share_text || "O silêncio que nos conduz à Palavra.";
 
   return (
     <div className="px-4 md:px-8 pb-12">
@@ -130,32 +132,20 @@ export default function DevotionalResult({ devotional }) {
 
       <ProgressiveReveal delay={9000}>
         {/* 7. Fragmento Final Compartilhável */}
-        {publicUrl && (
-          <section className="space-y-8 pt-16 border-t border-border">
-            <ShareableCard 
-              ref={cardRef}
-              type="devotional"
-              quote={devotional.share_text || devotional.share_quote || verseText || verse}
-              reference={verse}
-              bgImage={devotional.share_bg_image || "gradient_dark"}
-            />
-            <ShareCardActions 
-              cardRef={cardRef}
-              shareText={`"${devotional.share_text || devotional.share_quote || verseText || verse}"\n\n${verse}\n\nLer na CAPIO:\n${publicUrl}`}
-              fileName="capio-devocional.png"
-            />
-          </section>
-        )}
-
-        {publicUrl && (
-          <div className="flex justify-center pt-16 pb-8">
-            <ShareButton 
-              title={`Uma Palavra para hoje`} 
-              text={shareText} 
-              url={publicUrl}
-            />
-          </div>
-        )}
+        <section className="space-y-8 pt-16 border-t border-border">
+          <DevotionalShareableCard 
+            ref={cardRef}
+            quote={shareQuote}
+            reference={verse}
+            bgImage="random"
+          />
+          <ShareCardActions 
+            cardRef={cardRef}
+            shareText={`"${shareQuote}"\n\nDevocional na CAPIO:`}
+            shareUrl={publicUrl}
+            fileName="capio-devocional.jpg"
+          />
+        </section>
       </ProgressiveReveal>
 
 
