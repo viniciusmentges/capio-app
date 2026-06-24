@@ -135,7 +135,7 @@ export default function ReflectionCard({ data }) {
             type="reflection"
             quote={shareQuote}
             reference="Reflexão do Dia"
-            bgImage={data.share_bg_image || "gradient_light"}
+            bgImage={(!data.share_bg_image || data.share_bg_image === "gradient_light") ? "random" : data.share_bg_image}
           />
           <ShareCardActions 
             cardRef={cardRef}
