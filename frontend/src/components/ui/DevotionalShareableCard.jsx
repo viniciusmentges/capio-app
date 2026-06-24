@@ -5,7 +5,8 @@ const DevotionalShareableCard = forwardRef(({ quote, reference, bgImage }, ref) 
   const [imgError, setImgError] = useState(false);
   
   // O componente Devocional sempre usa imagens fotográficas, então a cor do texto é clara com sombra suave.
-  const bgUrl = getShareDevotionalBackground(bgImage);
+  // Usamos useMemo para garantir que o 'random' não mude a cada re-render (ex: quando o ShareCardActions atualiza estado)
+  const bgUrl = React.useMemo(() => getShareDevotionalBackground(bgImage), [bgImage]);
   
   return (
     <div className="w-full max-w-[320px] mx-auto aspect-[9/16] relative overflow-hidden rounded-none">
@@ -32,7 +33,7 @@ const DevotionalShareableCard = forwardRef(({ quote, reference, bgImage }, ref) 
 
         {/* Conteúdo Principal (Centralizado) */}
         <div className="flex-1 flex flex-col justify-center items-center z-10 space-y-6">
-          <p className="text-xl md:text-2xl leading-relaxed italic text-center text-[#FCFBF8] drop-shadow-md px-2 whitespace-pre-wrap">
+          <p className="text-base md:text-lg leading-relaxed italic text-center text-[#FCFBF8] drop-shadow-md px-2 whitespace-pre-wrap">
             {quote}
           </p>
           
