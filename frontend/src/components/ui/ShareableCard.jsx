@@ -1,6 +1,18 @@
 import React, { forwardRef } from 'react';
 
-const ShareableCard = forwardRef(({ type, quote, reference, brandLabel = "CAPIO", bgImage = "gradient_light" }, ref) => {
+const AVAILABLE_BGS = [
+  'road_horizon',
+  'golden_path',
+  'tree_tunnel'
+];
+
+const ShareableCard = forwardRef(({ type, quote, reference, brandLabel = "CAPIO", bgImage: _ignoredBgImage }, ref) => {
+  // Calculamos a imagem do dia baseada no número de dias desde 1970
+  // Isso garante que a imagem mude todo dia e nunca repita em dias seguidos (desde que haja >1 imagem)
+  // e será igual para todos os usuários que abrirem no mesmo dia.
+  const epochDays = Math.floor(Date.now() / 86400000);
+  const bgImage = AVAILABLE_BGS[epochDays % AVAILABLE_BGS.length];
+
   const isLight = bgImage === "gradient_light";
   const isImage = bgImage && bgImage !== "gradient_light" && bgImage !== "gradient_dark";
   
