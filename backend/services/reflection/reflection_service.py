@@ -185,6 +185,7 @@ class ReflectionService:
         return {
             "reflection": {
                 "id": reflection.id,
+                "public_id": str(reflection.public_id) if reflection.public_id else None,
                 "date": reflection.date,
                 "title": reflection.title,
                 "scripture_reference": reflection.scripture_reference,
@@ -193,6 +194,8 @@ class ReflectionService:
                 "guiding_question": reflection.guiding_question,
                 "closing_prayer": reflection.closing_prayer,
                 "share_quote": reflection.share_quote,
+                "share_text": reflection.share_text,
+                "share_bg_image": reflection.share_bg_image,
                 "ai_generated": reflection.ai_generated,
             },
             "user_response": user_response_text

@@ -37,7 +37,6 @@ const ShareableCard = forwardRef(({ type, quote, reference, brandLabel = "CAPIO"
               src={finalConfig.src} 
               alt="background" 
               className="absolute inset-0 w-full h-full object-cover z-0"
-              crossOrigin="anonymous"
               onError={() => setImgError(true)}
             />
             <div className="absolute inset-0 bg-black/40 z-0" />

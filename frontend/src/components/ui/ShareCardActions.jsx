@@ -22,49 +22,7 @@ export default function ShareCardActions({ cardRef, shareText, fileName = "capio
     }
   });
 
-  const handleDownload = async () => {
-    if (!cardRef.current || isExporting) return;
-    localStorage.setItem('capio_engaged_share', 'true');
-    try {
-      setIsExporting(true);
-      const dataUrl = await htmlToImage.toPng(cardRef.current, getExportOptions());
-      captureEvent(ANALYTICS_EVENTS.SHARE_IMAGE_GENERATED, { action: 'download' });
 
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-      if (isMobile) {
-        try {
-          const res = await fetch(dataUrl);
-          const blob = await res.blob();
-          const file = new File([blob], fileName, { type: 'image/png' });
-
-          if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-            await navigator.share({
-              files: [file]
-            });
-            return;
-          }
-        } catch (err) {
-          if (err.name === 'AbortError') return;
-          console.error("Erro no share nativo para salvar:", err);
-        }
-
-        // Fallback: Mostrar imagem em tela cheia para salvar manualmente
-        setManualSaveDataUrl(dataUrl);
-      } else {
-        // Desktop Fallback
-        const link = document.createElement('a');
-        link.download = fileName;
-        link.href = dataUrl;
-        link.click();
-      }
-    } catch (error) {
-      console.error('Erro ao gerar imagem:', error);
-      captureException(error, { tags: { area: 'share', action: 'image_download' } });
-    } finally {
-      setIsExporting(false);
-    }
-  };
 
   const handleShare = async () => {
     if (!cardRef.current || isExporting) return;
@@ -84,19 +42,34 @@ export default function ShareCardActions({ cardRef, shareText, fileName = "capio
       const blob = await res.blob();
       const file = new File([blob], fileName, { type: 'image/png' });
 
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
       if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          title: 'CAPIO',
-          text: shareText,
-          files: [file]
-        });
+        try {
+          await navigator.share({
+            title: 'CAPIO',
+            text: shareText,
+            files: [file]
+          });
+          return;
+        } catch (err) {
+          if (err.name === 'AbortError') return;
+          console.error("Erro no share nativo:", err);
+        }
+      }
+      
+      // Fallback
+      if (isMobile) {
+        setManualSaveDataUrl(dataUrl);
       } else {
-        handleDownload();
+        const link = document.createElement('a');
+        link.download = fileName;
+        link.href = dataUrl;
+        link.click();
       }
     } catch (error) {
       console.error('Erro ao compartilhar imagem:', error);
       captureException(error, { tags: { area: 'share', action: 'image_share' } });
-      handleDownload();
     } finally {
       setIsExporting(false);
     }
@@ -119,13 +92,6 @@ export default function ShareCardActions({ cardRef, shareText, fileName = "capio
   };
 
   const actions = [
-    {
-      label: "Salvar",
-      ariaLabel: "Salvar Imagem",
-      icon: Download,
-      onClick: handleDownload,
-      disabled: isExporting
-    },
     {
       label: "Compartilhar",
       ariaLabel: "Compartilhar Imagem",
