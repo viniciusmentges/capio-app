@@ -1,26 +1,21 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
+import { getShareBackground, SHARE_BACKGROUNDS } from '../../utils/shareBackgrounds';
 
-const AVAILABLE_BGS = [
-  'road_horizon',
-  'golden_path',
-  'tree_tunnel'
-];
-
-const ShareableCard = forwardRef(({ type, quote, reference, brandLabel = "CAPIO", bgImage: _ignoredBgImage }, ref) => {
-  // Calculamos a imagem do dia baseada no número de dias desde 1970
-  // Isso garante que a imagem mude todo dia e nunca repita em dias seguidos (desde que haja >1 imagem)
-  // e será igual para todos os usuários que abrirem no mesmo dia.
-  const epochDays = Math.floor(Date.now() / 86400000);
-  const bgImage = AVAILABLE_BGS[epochDays % AVAILABLE_BGS.length];
-
-  const isLight = bgImage === "gradient_light";
-  const isImage = bgImage && bgImage !== "gradient_light" && bgImage !== "gradient_dark";
+const ShareableCard = forwardRef(({ type, quote, reference, brandLabel = "CAPIO", bgImage: backendBgImage }, ref) => {
+  const [imgError, setImgError] = useState(false);
   
-  const textColor = isImage || bgImage === "gradient_dark" ? "text-[#FCFBF8]" : "text-[#4A3B32]";
-  const dividerColor = isImage || bgImage === "gradient_dark" ? "bg-[#7A5C3E]/50" : "bg-[#E6E1D8]";
-  const subtitleColor = isImage || bgImage === "gradient_dark" ? "text-[#FCFBF8]/50" : "text-[#7A5C3E]/70";
-  const referenceColor = isImage || bgImage === "gradient_dark" ? "text-[#FCFBF8]/80" : "text-[#7A5C3E]/80";
-  const brandColor = isImage || bgImage === "gradient_dark" ? "text-[#FCFBF8]/55" : "text-[#7A5C3E]";
+  const bgConfig = getShareBackground(backendBgImage);
+  const finalConfig = imgError ? SHARE_BACKGROUNDS.gradient_light : bgConfig;
+
+  const isLight = finalConfig.variant === "light";
+  const isImage = finalConfig.variant === "image";
+  const variant = finalConfig.variant; // 'light', 'dark', 'image'
+  
+  const textColor = variant === "light" ? "text-[#4A3B32]" : "text-[#FCFBF8]";
+  const dividerColor = variant === "light" ? "bg-[#E6E1D8]" : "bg-[#7A5C3E]/50";
+  const subtitleColor = variant === "light" ? "text-[#7A5C3E]/70" : "text-[#FCFBF8]/50";
+  const referenceColor = variant === "light" ? "text-[#7A5C3E]/80" : "text-[#FCFBF8]/80";
+  const brandColor = variant === "light" ? "text-[#7A5C3E]" : "text-[#FCFBF8]/55";
   
   const backgroundClass = isImage 
     ? "bg-[#111111]" // dark base color behind image
@@ -36,13 +31,14 @@ const ShareableCard = forwardRef(({ type, quote, reference, brandLabel = "CAPIO"
           fontFamily: "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif"
         }}
       >
-        {isImage && (
+        {isImage && finalConfig.src && (
           <>
             <img 
-              src={`/assets/share-backgrounds/${bgImage}.jpg`} 
+              src={finalConfig.src} 
               alt="background" 
               className="absolute inset-0 w-full h-full object-cover z-0"
               crossOrigin="anonymous"
+              onError={() => setImgError(true)}
             />
             <div className="absolute inset-0 bg-black/40 z-0" />
           </>
