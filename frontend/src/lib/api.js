@@ -90,8 +90,13 @@ api.interceptors.response.use(
       return api(originalRequest);
     } catch (refreshError) {
       processQueue(refreshError, null);
-      clearTokens();
-      window.dispatchEvent(new Event('auth-expired'));
+      
+      const status = refreshError.response?.status;
+      if (status === 401 || status === 400 || status === 403) {
+        clearTokens();
+        window.dispatchEvent(new Event('auth-expired'));
+      }
+      
       captureException(refreshError, {
         tags: { area: 'auth', action: 'refresh_token' },
       });

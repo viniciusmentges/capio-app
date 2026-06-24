@@ -32,10 +32,17 @@ export function AuthProvider({ children }) {
       setIsAuthenticated(true);
     } catch (error) {
       console.error('Falha ao carregar usuario:', error);
+      
+      const status = error.response?.status;
+      if (status === 401 || status === 403) {
+        performLogout();
+      } else {
+        setIsAuthenticated(true);
+      }
+      
       captureException(error, {
         tags: { area: 'auth', action: 'load_user' },
       });
-      performLogout();
     } finally {
       setLoadingAuth(false);
     }
