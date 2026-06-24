@@ -39,7 +39,7 @@ export default function ReflectionCard({ data }) {
     return firstParagraph.substring(0, 127) + "...";
   };
 
-  const shareQuote = data.share_quote || data.final_fragment || data.highlight || getDynamicFallback(data.reflection_body);
+  const shareQuote = data.share_text || data.share_quote || data.final_fragment || data.highlight || getDynamicFallback(data.reflection_body);
 
   // Formatação para compartilhamento
   const publicUrl = data.public_id ? `${window.location.origin}/share/reflection/${data.public_id}` : '';
@@ -136,7 +136,7 @@ export default function ReflectionCard({ data }) {
               type="reflection"
               quote={shareQuote}
               reference="Reflexão do Dia"
-              variant="light"
+              bgImage={data.share_bg_image || "gradient_light"}
             />
             <ShareCardActions 
               cardRef={cardRef}

@@ -16,6 +16,8 @@ class DailyReflection(models.Model):
     # --- ATIVO EDITORIAL: share_quote ---
     # Este campo representa a assinatura editorial compartilhável do dia.
     share_quote = models.TextField(blank=True, default="")
+    share_text = models.CharField(max_length=110, blank=True, default="", help_text="Frase pastoral curta para repost. Máx 110 caracteres.")
+    share_bg_image = models.CharField(max_length=50, blank=True, default="gradient_light", help_text="Chave do fundo da imagem (ex: rain_glass, coffee_table)")
     
     # --- ATIVOS NOTURNOS ---
     night_word = models.TextField(blank=True, default="")

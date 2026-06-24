@@ -383,6 +383,8 @@ class DevotionalService:
             "practical_application": chosen_content.practical_application,
             "guiding_question": chosen_content.guiding_question,
             "prayer": chosen_content.prayer,
+            "share_text": chosen_content.share_text,
+            "share_bg_image": chosen_content.share_bg_image,
             "ai_generated": chosen_content.ai_generated,
             "cached": source_metadata.get("cached", True)
         }

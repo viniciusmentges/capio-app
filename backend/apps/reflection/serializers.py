@@ -10,7 +10,7 @@ class DailyReflectionSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'public_id', 'date', 'passage', 'title', 'scripture_reference', 
             'scripture_text', 'reflection_body', 'guiding_question', 
-            'closing_prayer', 'share_quote', 'ai_generated'
+            'closing_prayer', 'share_quote', 'share_text', 'share_bg_image', 'ai_generated'
         )
 
 class UserReflectionResponseSerializer(serializers.ModelSerializer):

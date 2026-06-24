@@ -135,13 +135,13 @@ export default function DevotionalResult({ devotional }) {
             <ShareableCard 
               ref={cardRef}
               type="devotional"
-              quote={verseText || verse}
+              quote={devotional.share_text || devotional.share_quote || verseText || verse}
               reference={verse}
-              variant="dark"
+              bgImage={devotional.share_bg_image || "gradient_dark"}
             />
             <ShareCardActions 
               cardRef={cardRef}
-              shareText={`"${verseText || verse}"\n\n${verse}\n\nLer na CAPIO:\n${publicUrl}`}
+              shareText={`"${devotional.share_text || devotional.share_quote || verseText || verse}"\n\n${verse}\n\nLer na CAPIO:\n${publicUrl}`}
               fileName="capio-devocional.png"
             />
           </section>
