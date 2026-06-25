@@ -23,8 +23,8 @@ export default function DevotionalResult({ devotional }) {
     ? `${verseText.substring(0, 180)}...` 
     : verseText;
 
-  // Formatação para compartilhamento
-  const publicUrl = devotional.public_id ? `${window.location.origin}/share/devotional/${devotional.public_id}` : window.location.origin;
+  // Formatação para compartilhamento (direciona sempre para Home/Landing)
+  const publicUrl = window.location.origin;
   
   // Garantir que a passagem inteira nunca seja usada, priorizando share_quote
   const shareQuote = devotional.share_quote || devotional.share_text || "O silêncio que nos conduz à Palavra.";

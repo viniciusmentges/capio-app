@@ -13,7 +13,7 @@ const DevotionalShareableCard = forwardRef(({ quote, reference, bgImage }, ref) 
       {/* O container interno é o que será efetivamente exportado. Fundo F8F7F4 garante base sólida para o JPEG. */}
       <div 
         ref={ref}
-        className="w-full h-full flex flex-col justify-center p-8 pb-10 pt-10 relative overflow-hidden bg-[#F8F7F4] text-[#FCFBF8]"
+        className="w-full h-full flex flex-col justify-center p-10 pb-12 pt-12 relative overflow-hidden bg-[#F8F7F4] text-[#FCFBF8]"
         style={{
           fontFamily: "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif"
         }}
@@ -32,13 +32,13 @@ const DevotionalShareableCard = forwardRef(({ quote, reference, bgImage }, ref) 
         )}
 
         {/* Conteúdo Principal (Centralizado) */}
-        <div className="flex-1 flex flex-col justify-center items-center z-10 space-y-6">
-          <p className="text-base md:text-lg leading-relaxed italic text-center text-[#FCFBF8] drop-shadow-md px-2 whitespace-pre-wrap">
+        <div className="flex-1 flex flex-col justify-center items-center z-10 space-y-10">
+          <p className="text-base md:text-lg leading-relaxed italic text-center text-[#FCFBF8] drop-shadow-md px-4 whitespace-pre-wrap">
             {quote}
           </p>
           
           {reference && (
-            <p className="text-sm font-sans tracking-widest text-[#FCFBF8]/80 drop-shadow-sm uppercase">
+            <p className="text-[11px] md:text-xs text-[#FCFBF8]/70 italic tracking-wide font-light drop-shadow-sm">
               {reference}
             </p>
           )}
