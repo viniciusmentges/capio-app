@@ -289,6 +289,9 @@ class DevotionalService:
                         
                     ai_request.save()
 
+                    from services.editorial.editor import EditorialEditorService
+                    ai_response = EditorialEditorService.review_and_publish(ai_response, ai_request_id=ai_request.id)
+
                     with transaction.atomic():
                         content = DevotionalContent.objects.create(
                             emotion=emotion,

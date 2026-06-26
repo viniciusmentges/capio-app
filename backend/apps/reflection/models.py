@@ -20,6 +20,10 @@ class DailyReflection(models.Model):
     guiding_question = models.TextField()
     closing_prayer = models.TextField()
     
+    # --- ATIVOS DE PERCURSO DIURNO (O Fio da Palavra & A Palavra Continua) ---
+    main_truth = models.TextField(blank=True, default="", help_text="O Fio da Palavra: A verdade central destilada que permanece.")
+    daily_companion = models.TextField(blank=True, default="", help_text="A Palavra Continua: Ponte delicada de acompanhamento para as próximas horas.")
+    
     # --- ATIVO EDITORIAL: share_quote ---
     # Este campo representa a assinatura editorial compartilhável do dia.
     share_quote = models.TextField(blank=True, default="")

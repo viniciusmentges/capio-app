@@ -191,6 +191,8 @@ class ReflectionService:
                 "scripture_reference": reflection.scripture_reference,
                 "scripture_text": reflection.scripture_text,
                 "reflection_body": reflection.reflection_body,
+                "main_truth": reflection.main_truth,
+                "daily_companion": reflection.daily_companion,
                 "guiding_question": reflection.guiding_question,
                 "closing_prayer": reflection.closing_prayer,
                 "share_quote": reflection.share_quote,
@@ -271,6 +273,9 @@ class ReflectionService:
                 
             ai_request.save()
 
+            from services.editorial.editor import EditorialEditorService
+            ai_response = EditorialEditorService.review_and_publish(ai_response, ai_request_id=ai_request.id)
+
             # Normalização e Garantia da Passagem
             ref_raw = ai_response.get("scripture_reference", "")
             can_id, book, chap, verses = NormalizationService.normalize(ref_raw)
@@ -340,6 +345,9 @@ class ReflectionService:
                 log_event("night_prayer_fallback_used", reason=reason, date=target_date)
                 night_prayer = "Senhor, entrego este dia em tuas mãos. Que a noite traga repouso e a certeza de que não estou só. Amém."
 
+            main_truth = ai_response.get("main_truth") or ai_response.get("thread_of_the_word", "A Palavra de Deus sustenta e transforma o nosso silêncio.")
+            daily_companion = ai_response.get("daily_companion") or ai_response.get("the_word_continues", "Quando alguma preocupação surgir hoje, que a paz desta passagem volte silenciosamente à sua memória.")
+
             reflection = DailyReflection.objects.create(
                 date=target_date,
                 passage=bible_passage,
@@ -347,6 +355,8 @@ class ReflectionService:
                 scripture_reference=ref_raw,
                 scripture_text=bible_passage.text_original,
                 reflection_body=reflection_body,
+                main_truth=main_truth,
+                daily_companion=daily_companion,
                 guiding_question=ai_response.get("guiding_question", ""),
                 closing_prayer=closing_prayer,
                 share_quote=share_quote,

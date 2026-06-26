@@ -31,3 +31,9 @@ class AIService(ABC):
     def generate_share_quote(self, reflection: str) -> str:
         """Gera um share_quote (fragmento contemplativo) com base em uma meditação/reflexão textual."""
         pass
+
+    @abstractmethod
+    def evaluate_and_refine_editorial(self, content_dict: Dict[str, Any], ai_request_id: int = None) -> Dict[str, Any]:
+        """Avalia o conteúdo gerado atribuindo um Score Editorial (0 a 10) e reescreve com prompt de refinamento se abaixo do limiar."""
+        pass
+

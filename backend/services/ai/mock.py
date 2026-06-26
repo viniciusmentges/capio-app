@@ -90,7 +90,10 @@ class MockAIService(AIService):
             "title": "O amanhecer do Verbo",
             "scripture_reference": "João 1:1",
             "scripture_text": "No princípio era o Verbo.",
-            "reflection_body": "O dia começa com a Palavra que cria e sustenta a vida.",
+            "central_truth": "Tudo começa em Deus antes das pressas humanas.",
+            "reflection_body": "O dia começa com a Palavra que cria e sustenta a vida. Antes de qualquer ruído de nossas preocupações, o Verbo já está presente.",
+            "main_truth": "A Palavra de Deus antecede a rotina e sustenta cada hora. Tudo começa nela.",
+            "daily_companion": "Quando a pressa tentar tomar o controle nas próximas horas, a lembrança de que Deus sustenta este dia poderá voltar silenciosamente a você.",
             "guiding_question": "Como o Verbo quer habitar em seu silêncio hoje?",
             "closing_prayer": "Fica conosco, Senhor.",
             "share_quote": "A Palavra no princípio cria o silêncio que sustenta a nossa alma.",
@@ -123,3 +126,18 @@ class MockAIService(AIService):
         logger.warning("[CAPIO AI] Mock acionado no fluxo de geração de share_quote.")
         # Retorna um pedaço curto da meditação ou uma frase mock
         return "O silêncio é o solo fértil onde a oração de entrega amadurece."
+
+    def evaluate_and_refine_editorial(self, content_dict: Dict[str, Any], ai_request_id: int = None) -> Dict[str, Any]:
+        logger.warning("[CAPIO AI] Mock acionado no fluxo de evaluate_and_refine_editorial.")
+        return {
+            "scores": {
+                "clareza": 10.0,
+                "naturalidade": 10.0,
+                "correcao_gramatical": 10.0,
+                "aderencia_gramatica_silencio": 10.0
+            },
+            "aprovado": True,
+            "verdade_central_permanente": "O cuidado de Deus antecede a preocupação e sustenta a nossa alma em silêncio.",
+            "texto_refinado": None
+        }
+

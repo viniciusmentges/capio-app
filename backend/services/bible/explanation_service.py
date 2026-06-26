@@ -287,6 +287,11 @@ class BibleService:
                     reading_focus_title = focus_resp.get('title', 'O foco desta leitura')
                     reading_focus_content = focus_resp.get('content', '')
                     
+                    if not isinstance(reading_focus_title, str):
+                        reading_focus_title = "O foco desta leitura"
+                    if not isinstance(reading_focus_content, str):
+                        reading_focus_content = "Conteúdo simulado"
+                    
                     if reading_focus_content:
                         # Salvar no banco
                         ReadingFocus.objects.create(

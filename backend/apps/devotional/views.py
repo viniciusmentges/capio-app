@@ -214,6 +214,9 @@ class EditorialDevotionalGenerateView(APIView):
                         final_quote
                     )
 
+            from services.editorial.editor import EditorialEditorService
+            res = EditorialEditorService.review_and_publish(res)
+
             return Response(res, status=status.HTTP_200_OK)
 
         except Exception as e:
@@ -252,7 +255,9 @@ class EditorialDevotionalGenerateView(APIView):
         """Normaliza a referência retornada pela IA e verifica se já existe na emoção. Retorna o canonical_id duplicado ou ''."""
         try:
             from services.bible.normalization import NormalizationService
-            canonical_id, *_ = NormalizationService.normalize(scripture_reference)
+            canonical_id, _, _, verses = NormalizationService.normalize(scripture_reference)
+            if verses:
+                canonical_id = f"{canonical_id}.{verses}"
             if canonical_id in excluded_canonical_ids:
                 return canonical_id
         except Exception as err:

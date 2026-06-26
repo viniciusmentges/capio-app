@@ -53,6 +53,8 @@ class DevotionalContent(models.Model):
             from apps.bible.models import BiblePassage
             
             can_id, book, chap, verses = NormalizationService.normalize(self.scripture_reference)
+            if verses:
+                can_id = f"{can_id}.{verses}"
             logger.debug(
                 "[CAPIO PASSAGE DEBUG] NormalizationService result canonical_id=%s book=%s chapter=%s verses=%s",
                 can_id,

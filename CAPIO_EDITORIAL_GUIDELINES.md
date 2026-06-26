@@ -10,7 +10,7 @@ A CAPIO não foi concebida para ser mais uma voz na cacofonia digital. Ela nasce
 ### O que a CAPIO É
 * **Contemplativa**: Busca o repouso na presença, o olhar demorado, a escuta atenta do sussurro divino antes de qualquer tentativa de interpretação discursiva.
 * **Silenciosa**: Valoriza o espaço entre as palavras, a respiração do texto, o despojamento visual.
-* **Reverente e Litúrgica**: Trata o mistério com o pudor e a solenidade que lhe são devidos, respeitando os ritmos da alma e a tradição dos antigos Padres.
+* **Reverente e Contemplativa**: Trata o mistério com o pudor, a sobriedade e a solenidade que lhe são devidos, respeitando os ritmos da alma.
 * **Humana e Pastoral**: Acolhe a dor e a hesitação sem julgamentos ou pressas corretivas; fala a partir do chão da experiência comum da alma.
 * **Scripture-First**: A escritura não é um pretexto para ilustrar um ponto de vista; ela é a rocha sobre a qual a reflexão se apoia e respira.
 
@@ -26,11 +26,52 @@ A CAPIO não foi concebida para ser mais uma voz na cacofonia digital. Ela nasce
 
 A escrita da CAPIO deve respirar. A pressa e o ruído expressam-se através de parágrafos densos, excesso de adjetivação e pontuação histriônica. A contemplação, por sua vez, requer sobriedade e espaço.
 
+### A Voz da CAPIO
+A CAPIO não escreve para impressionar. Ela escreve para acompanhar.
+Ela não procura parecer um grande escritor. Ela procura ser compreendida.
+Quando existe dúvida entre uma frase bonita e uma frase clara, sempre escolher a frase clara.
+O leitor nunca deve admirar o autor. Ele deve compreender a Palavra.
+
+### Clareza acima da Elegância
+O texto sagrado e meditativo deve acolher quem lê. A beleza literária nunca pode sabotar a compreensão:
+* **Preferência pela Clareza**: Sempre preferir a frase que comunica melhor. Nunca escolher uma construção apenas porque ela parece mais bonita.
+* **Toda frase deve sobreviver sozinha**: Cada período deve possuir independência semântica. Se recortada para um card, imagem ou compartilhamento isolado, a frase precisa manter seu sentido integral sem depender do contexto bíblico anterior ou posterior.
+* **Teste da Avó & Leitura Única**: Uma reflexão só está pronta se passar no Teste da Avó (*"Uma senhora de aproximadamente 70 anos conseguiria compreender esta frase na primeira leitura?"*). Toda frase deve ser assimilada imediatamente na leitura única, sem exigir releituras exegéticas.
+* **Linguagem Pastoral**: O tom deve ser o de um guia experiente e próximo que acolhe, explica e aproxima, afastando-se de afetações poéticas obscuras.
+* **Diretriz de Abstrações vs Concretude**: Termos abstratos (*apelo, permanência, realidade, condição, escolha vaga, chamado genérico, caminhada, processo, jornada*) devem ser evitados como diretriz editorial de estilo. O contexto pastoral deve prevalecer, dando preferência a palavras concretas da experiência humana (*medo, culpa, esperança, tentação, perdão, ansiedade, cansaço, confiança, obediência, descanso, alegria*).
+
+### O Eco da Palavra
+A reflexão não existe para transmitir muitas ideias. Ela existe para conduzir o leitor até uma única verdade da Escritura.
+Ao terminar a leitura, o leitor deve conseguir responder naturalmente:
+> *"Qual foi a principal verdade que Deus colocou diante de mim hoje?"*
+
+Se houver várias mensagens competindo entre si, a reflexão perdeu foco. Toda reflexão deve possuir apenas um centro de gravidade. Todo o restante deve servir apenas para iluminar essa única verdade.
+
+### Economia de Metáforas
+A linguagem contemplativa não depende do excesso de símbolos. Cada parágrafo deve conter, preferencialmente:
+* apenas uma metáfora principal;
+* apenas uma imagem simbólica dominante.
+
+Evitar acumular várias imagens soltas num mesmo bloco (ex: *deserto, travessia, jornada, caminho, permanência, tempestade, silêncio*). Quando muitas metáforas aparecem juntas, a compreensão diminui. A simplicidade sempre vence.
+
+### Teste do Sublinhado
+Validação editorial indispensável. Ao concluir uma reflexão, a IA e o curador devem responder:
+> *"Se o leitor tivesse um lápis nas mãos, qual frase provavelmente ele sublinharia?"*
+
+Se nenhuma frase merecer ser sublinhada, a reflexão ainda não atingiu seu potencial máximo. Toda reflexão deve conter pelo menos um pensamento memorável. Memorável não significa complexo; significa verdadeiro.
+
+### Teste da Conversa
+Validação final e indispensável antes de qualquer publicação. Pergunta que a IA e o curador devem responder:
+> *"Se este texto fosse lido em voz alta durante um café entre dois amigos, ele soaria natural?"*
+
+Se parecer um ensaio literário, um sermão excessivamente elaborado ou uma poesia hermética, o texto deve ser refinado. A CAPIO conversa. Ela não performa.
+
 ### Princípios de Cadência e Respiração
 * **O Respiro das Margens**: O texto deve ter ar. Parágrafos curtos (raramente com mais de três sentenças) facilitam a leitura demorada e a interiorização.
 * **A Parada na Vírgula**: A pontuação deve conduzir o leitor a um ritmo cardíaco mais brando. Use períodos curtos. Permita que o leitor respire entre as ideias.
 * **A Economia das Palavras**: Diga apenas o essencial. Cada palavra deve carregar peso, substância e verdade histórica. O excesso de adjetivos desgasta o mistério; o substantivo sóbrio o sustenta.
 * **A Proibição do Exclamatório**: O ponto de exclamação é a assinatura do ruído e do entusiasmo fabricado. Na CAPIO, **pontos de exclamação são absolutamente proibidos**. O recolhimento e a reverência expressam-se na quietude do ponto final.
+* **Uso Pastoral de Interrogações**: Pontos de interrogação (`?`) são permitidos estritamente quando servem para conduzir uma reflexão genuína pastoral (*ex: "O que Deus deseja ensinar hoje?"*), mas **nunca** devem ser utilizados para criar urgência comercial, marketing ou dramatização performática.
 
 ---
 
@@ -49,13 +90,18 @@ Há limites editoriais intransponíveis. A introdução de jargões de autoajuda
 
 ## 4. O Tom da CAPIO
 
-O texto da CAPIO deve soar como a anotação a lápis nas margens de um livro antigo, ou a carta de um amigo sábio e maduro que partilha o silêncio conosco na penumbra de uma tarde de outono.
+O texto da CAPIO deve soar como a carta de um amigo sábio, próximo e humano que partilha o silêncio conosco, explicando a Palavra com simplicidade na penumbra de uma tarde de outono.
 
 ### Vetores Tonalidade
-* **Sóbrio e Denso**: Possui peso literário e teológico. Inspira-se na tradição monástica e mística (como João da Cruz, Teresa de Ávila, Henri Nouwen e Thomas Merton).
-* **Íntimo e Próximo**: Não fala do púlpito para a multidão, mas sussurra ao ouvido do leitor que está recolhido no quarto.
-* **Humilde e Vulnerável**: O escritor não se coloca na posição de quem resolveu todas as dúvidas, mas de quem caminha junto na noite escura da alma.
-* **Reverente**: Mantém o assombro respeitoso diante do Sagrado. A linguagem é de adoração e mistério, não de intimidade casual e desrespeitosa.
+* **Inspiração Literária (Ordem de Prioridade)**:
+  1. **Os Evangelhos**: Jesus como principal modelo de comunicação e clareza.
+  2. **C. S. Lewis**: Clareza ao explicar verdades profundas.
+  3. **Tim Keller**: Linguagem pastoral contemporânea.
+  4. **Henri Nouwen**: Acolhimento e vulnerabilidade.
+  *(Nota: Autores contemplativos e místicos como João da Cruz, Teresa de Ávila e Thomas Merton devem permanecer apenas como referências de atmosfera espiritual, nunca como modelo principal de escrita. O objetivo não é escrever como um monge medieval, é escrever de forma que qualquer pessoa consiga compreender sem perder a profundidade).*
+* **Íntimo e Próximo**: Não fala do púlpito para a multidão, mas sussurra ao leitor recolhido no quarto.
+* **Humilde e Vulnerável**: O escritor não se coloca como quem resolveu todas as dúvidas, mas de quem caminha junto na noite escura da alma.
+* **Reverente e Sóbrio**: Mantém o assombro respeitoso diante do Sagrado. Linguagem de adoração e mistério, nunca de intimidade casual ou desrespeitosa.
 
 ---
 
@@ -67,19 +113,19 @@ Cada devocional na CAPIO é um itinerário de recolhimento de cinco passos, proj
 +-------------------------------------------------------------+
 |                      1. ABERTURA (Título)                   |
 +-------------------------------------------------------------+
-                               v
+                                v
 +-------------------------------------------------------------+
 |               2. SCRIPTURE-FIRST (A Escritura)              |
 +-------------------------------------------------------------+
-                               v
+                                v
 +-------------------------------------------------------------+
 |                3. MEDITAÇÃO (A Reflexão Contemplativa)       |
 +-------------------------------------------------------------+
-                               v
+                                v
 +-------------------------------------------------------------+
 |                4. ECO NA VIDA (Aplicação Prática)           |
 +-------------------------------------------------------------+
-                               v
+                                v
 +-------------------------------------------------------------+
 |                     5. RECOLHIMENTO (A Oração)              |
 +-------------------------------------------------------------+
@@ -97,13 +143,23 @@ Cada devocional na CAPIO é um itinerário de recolhimento de cinco passos, proj
 
 ## 6. Diretrizes para Share Quotes (Fragmentos Compartilháveis)
 
-O *share_quote* não é um slogan de marketing ou uma legenda rápida de rede social. Ele é o **fragmento contemplativo** que permanece ecoando na memória do leitor, como um fragmento de um clássico espiritual.
+### O Share Quote
 
-### Regras de Ouro para Share Quotes
-* **Extrema Concisão**: Deve conter no máximo 15 palavras.
-* **Independência Semântica**: Deve ser compreensível e denso mesmo quando lido isoladamente, fora do contexto do devocional.
-* **Abstrato e Evocativo**: Deve evocar espaço, espera, mistério e paz silenciosa.
-* **Proibição Absoluta de Imperativos ou Clichês**: Nada de *"confie hoje"*, *"Deus vai vencer"* ou exclamações.
+O Share Quote não é:
+* um resumo da reflexão;
+* uma frase bonita;
+* uma legenda para redes sociais;
+* uma frase de efeito.
+
+O Share Quote é **o pensamento que continua acompanhando o leitor depois que ele fecha a CAPIO**.
+
+Ao ser lido isoladamente, ele deve:
+* fazer sentido sozinho;
+* despertar contemplação;
+* apontar discretamente para a Escritura;
+* convidar naturalmente o leitor a abrir a Palavra.
+
+A beleza da frase nunca pode ser mais importante do que sua verdade. Proibição absoluta de imperativos (*"confie hoje"*) ou exclamações.
 
 #### Exemplos de Alta Qualidade (O que funciona)
 > *"O silêncio não é a ausência de Deus, mas o solo onde a Sua presença repousa."*
@@ -138,33 +194,34 @@ A oração contemplativa na CAPIO é caracterizada pela sobriedade e pela renún
 
 ## 8. A Relação entre IA e Curadoria Humana
 
-Na CAPIO, a inteligência artificial é compreendida como um **assistente editorial inteligente**, nunca como o autor final absoluto. A criação de patrimônio espiritual e litúrgico duradouro requer discernimento humano.
+Na CAPIO, a inteligência artificial é compreendida como um **assistente editorial inteligente**, nunca como o autor final absoluto. A criação de patrimônio espiritual e contemplativo duradouro requer discernimento humano.
 
-### O Fluxo Híbrido da CAPIO
+### O Fluxo Híbrido e Automatizado da CAPIO
 ```
    +-------------------------------------------------------+
-   |   1. INSPIRAÇÃO: Claude 3.5 gera o primeiro rascunho   |
+   |   1. PRODUÇÃO: Claude gera o rascunho reflexivo       |
    +-------------------------------------------------------+
                                v
    +-------------------------------------------------------+
-   |   2. CURADORIA: Editor Humano audita a Gramática      |
-   |      do Silêncio e remove excessos ou ruídos          |
+   |   2. EDITOR EDITORIAL ÚNICO: Validação bíblica e      |
+   |      cálculo de Score Editorial (Clareza, Gramática)  |
    +-------------------------------------------------------+
                                v
    +-------------------------------------------------------+
-   |   3. REFINAMENTO: O texto é polido artesanalmente     |
-   |      para ressoar como literatura monástica clássica   |
+   |   3. REFINAMENTO POR IA: Se Score < 9.2, a própria    |
+   |      IA reescreve com prompt de refinamento editorial |
    +-------------------------------------------------------+
                                v
    +-------------------------------------------------------+
-   |   4. CONSAGRAÇÃO: Aprovado como 'reviewed_by_human'   |
+   |   4. CONSAGRAÇÃO: Publicação e salvamento no banco    |
    +-------------------------------------------------------+
 ```
 
 ### Por que a Curadoria Humana é Indispensável?
-* **O Detalhe Emocional**: A IA pode aproximar-se do tom, mas apenas o editor humano, que conhece a dor e a vulnerabilidade da sua própria história, pode discernir se uma frase soa artificial ou genuinamente pastoral.
+* **Rigor Editorial Elevado**: O limiar de aprovação (9.2) garante que a CAPIO priorize excelência sobre velocidade, publicando poucas reflexões por dia com padrão superior.
+* **O Detalhe Emocional**: A IA aproxima-se do tom, mas apenas o editor humano pode discernir se uma frase soa artificial ou genuinamente pastoral.
 * **A Proteção contra Alucinações**: O editor audita a exatidão teológica e bíblica das passagens propostas pela IA.
-* **A Flag `reviewed_by_human`**: Este booleano no banco de dados representa o selo oficial de qualidade litúrgica da CAPIO. Nenhum devocional entra no sistema público de rotação sem passar sob o crivo atento e o coração do curador.
+* **A Flag `reviewed_by_human`**: Este booleano no banco de dados representa o selo oficial de excelência editorial e contemplativa da CAPIO. Nenhum devocional entra no sistema público sem passar sob o crivo atento do curador.
 
 ---
 
@@ -205,10 +262,27 @@ Quando configurar ou interagir com o Claude para geração de devocionais na CAP
 
 Antes de marcar a flag `reviewed_by_human = True` em qualquer devocional no Django Admin, o curador humano deve submeter o texto ao seguinte crivo:
 
-* [ ] **Isso soa como um livro espiritual clássico?** (Se parecer uma legenda rápida de Instagram ou post de blog, rejeite).
+* [ ] **A Voz da CAPIO é clara e simples?** (O texto não tenta parecer erudito nem impressionar, explicando a Palavra com proximidade).
+* [ ] **Passou no Teste da Conversa?** ("Se este texto fosse lido em voz alta durante um café entre dois amigos, ele soaria natural?").
+* [ ] **Passou no Teste do Sublinhado?** ("Se o leitor tivesse um lápis nas mãos, qual frase provavelmente ele sublinharia?").
 * [ ] **Há algum ponto de exclamação no texto?** (Se houver, substitua por ponto final ou vírgula).
 * [ ] **Existe algum imperativo apressado?** (ex: *"não desista"*, *"confie agora"*. Se houver, reescreva como convite contemplativo).
 * [ ] **A dor do leitor é respeitada?** (O devocional evita respostas simples ou receitas açucaradas para problemas emocionais reais?).
 * [ ] **A passagem bíblica está correta e é a fundação real do devocional?**
-* [ ] **O share_quote possui menos de 15 palavras e pode ser lido de forma independente com profundidade?**
+* [ ] **O share_quote é o pensamento que continua acompanhando o leitor depois de fechar o app, despertando contemplação?**
 * [ ] **A oração final é sóbria, curta e isenta de discursos pomposos?**
+* [ ] **Validação Final do Editor Editorial:** ("Quando o leitor fechar a CAPIO daqui a cinco minutos, o que permanecerá com ele?"). A resposta deve ser apenas uma única verdade central da Escritura.
+
+---
+
+## 12. Objetivo Final
+
+A CAPIO não deseja que o leitor termine uma reflexão admirando um texto bem escrito.
+Ela deseja que o leitor feche o aplicativo levando consigo uma única verdade da Palavra.
+
+Quando isso acontece, a tecnologia desaparece.
+O design desaparece.
+Até a escrita desaparece.
+
+Permanece apenas a Escritura ecoando silenciosamente durante o restante do dia.
+Esse é o ponto mais alto da experiência que a CAPIO deseja oferecer.
