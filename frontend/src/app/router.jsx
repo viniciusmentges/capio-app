@@ -95,6 +95,16 @@ export const router = createBrowserRouter([
     errorElement: <ContemplativeErrorBoundary />
   },
   {
+    path: "/reflexao/:id",
+    element: <Suspended><SharedContentViewer defaultType="reflection" /></Suspended>,
+    errorElement: <ContemplativeErrorBoundary />
+  },
+  {
+    path: "/reflection/archive/:id",
+    element: <Suspended><SharedContentViewer defaultType="reflection" /></Suspended>,
+    errorElement: <ContemplativeErrorBoundary />
+  },
+  {
     path: "/apoie",
     element: <Suspended><SupportPage /></Suspended>,
     errorElement: <ContemplativeErrorBoundary />

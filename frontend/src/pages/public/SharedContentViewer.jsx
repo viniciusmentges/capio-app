@@ -21,8 +21,10 @@ async function fetchPublicContent(type, id) {
   return data;
 }
 
-export default function SharedContentViewer() {
-  const { type, id } = useParams();
+export default function SharedContentViewer({ defaultType = 'reflection' }) {
+  const params = useParams();
+  const type = params.type || defaultType;
+  const id = params.id;
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['public-content', type, id],

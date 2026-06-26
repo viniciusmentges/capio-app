@@ -178,14 +178,14 @@ export default function HomePage() {
       )}
 
       {/* Bloco 6: Diário Litúrgico (Arquivo Silencioso) */}
-      {archiveData && archiveData.length > 1 && (
+      {archiveData && archiveData.length > 0 && (
         <section className="space-y-6 pt-8 border-t border-border">
           <p className="text-[9px] font-medium uppercase tracking-[0.25em] text-accent">
             Diário Litúrgico
           </p>
           <div className="space-y-4 max-w-md">
-            {archiveData.slice(1, 4).map((ref, idx) => {
-              const label = idx === 0 ? "Ontem" : idx === 1 ? "Anteontem" : "Esta semana";
+            {archiveData.slice(0, 3).map((ref, idx) => {
+              const label = idx === 0 ? "Hoje" : idx === 1 ? "Ontem" : "Anteontem";
               return (
                 <div key={ref.id} className="flex justify-between items-center py-2 border-b border-border">
                   <div className="space-y-1">
@@ -197,7 +197,7 @@ export default function HomePage() {
                     </p>
                   </div>
                   <Link 
-                    to={`/share/reflection/${ref.id}`} 
+                    to={`/reflexao/${ref.date || ref.public_id || ref.id}`} 
                     className="text-[9px] uppercase tracking-wider text-accent transition-colors underline decoration-accent/20 hover:decoration-accent/50"
                   >
                     Revisitar

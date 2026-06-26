@@ -64,15 +64,20 @@ class HistoryView(APIView):
 class PublicReflectionDetailView(APIView):
     permission_classes = [AllowAny]
 
-    def get(self, request, public_id):
+    def get(self, request, identifier):
         try:
-            reflection = DailyReflection.objects.get(public_id=public_id)
+            if identifier.isdigit():
+                reflection = DailyReflection.objects.get(id=int(identifier))
+            elif len(identifier) == 10 and identifier[4] == '-' and identifier[7] == '-':
+                reflection = DailyReflection.objects.get(date=identifier)
+            else:
+                reflection = DailyReflection.objects.get(public_id=identifier)
             serializer = DailyReflectionSerializer(reflection)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        except DailyReflection.DoesNotExist:
+        except (DailyReflection.DoesNotExist, ValueError):
             return Response({"error": "not_found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({"error": "Internal server error."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"error": "not_found"}, status=status.HTTP_404_NOT_FOUND)
 
 def clean_and_truncate_literary(text: str, max_len: int) -> str:
     if not text:
