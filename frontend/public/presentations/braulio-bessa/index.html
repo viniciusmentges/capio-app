@@ -6,14 +6,15 @@
 <title>Braúlio Bessa — Plataforma Oficial</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Dancing+Script:wght@600&family=Inter:wght@300;400;500;600&display=swap">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Dancing+Script:wght@600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════════════════════════════════
-   1. RESET & ROOT VARIABLES — GRAMÁTICA DO PAPEL (v10)
+   1. RESET & ROOT VARIABLES — GRAMÁTICA DO PAPEL (v10 AUDITED)
    13 claros · 5 escuros
    Fundo claro: marrom escuro como tinta
    Fundo escuro: textos menores mais claros
-   Diagramação: 3 tipos de layout com ritmo
+   Diagramação: 3 tipos de layout com ritmo editorial e responsividade total
 ═══════════════════════════════════════════════════════════════════════════ */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -183,16 +184,26 @@ body.hov #cur-r { width: 38px; height: 38px; border-color: rgba(122,46,18,.38); 
   position: absolute;
   inset: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 3rem 0 5rem;
   opacity: 0;
   pointer-events: none;
   transition: opacity .8s var(--ease);
+  -webkit-overflow-scrolling: touch;
 }
 .slide.on {
   opacity: 1;
   pointer-events: all;
   z-index: 10;
+}
+.slide > div {
+  margin-top: auto;
+  margin-bottom: auto;
+  flex-shrink: 0;
 }
 .claro { background: var(--P); }
 .escuro { background: var(--E); }
@@ -215,23 +226,32 @@ body.hov #cur-r { width: 38px; height: 38px; border-color: rgba(122,46,18,.38); 
 .slide.on .v1 { animation: vem 1s var(--ease) .18s both; }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   3. TYPOGRAPHY (RESPONSIVE CLAMP SCALES)
+   3. TYPOGRAPHY (GROUPED & RESPONSIVE CLAMP SCALES)
 ═══════════════════════════════════════════════════════════════════════════ */
-.ty-display { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 6.2vw, 5.8rem); font-weight: 900; line-height: .93; letter-spacing: -.025em; }
-.ty-h1      { font-family: 'Playfair Display', serif; font-size: clamp(1.65rem, 3.2vw, 2.9rem); font-weight: 700; line-height: 1.06; letter-spacing: -.018em; }
-.ty-h2      { font-family: 'Playfair Display', serif; font-size: clamp(1.25rem, 2.2vw, 2rem); font-weight: 700; line-height: 1.1; }
-.ty-num     { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 4.2vw, 3.9rem); font-weight: 900; line-height: 1; }
-.ty-cordel  { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4.5vw, 3.8rem); font-weight: 700; line-height: 1.08; }
+.ty-display, .ty-h1, .ty-h2, .ty-num, .ty-cordel {
+  font-family: 'Playfair Display', serif;
+}
+.ty-display { font-size: clamp(2.4rem, 6.2vw, 5.8rem); font-weight: 900; line-height: .93; letter-spacing: -.025em; }
+.ty-h1      { font-size: clamp(1.65rem, 3.2vw, 2.9rem); font-weight: 700; line-height: 1.06; letter-spacing: -.018em; }
+.ty-h2      { font-size: clamp(1.25rem, 2.2vw, 2rem); font-weight: 700; line-height: 1.1; }
+.ty-num     { font-size: clamp(2.2rem, 4.2vw, 3.9rem); font-weight: 900; line-height: 1; }
+.ty-cordel  { font-size: clamp(1.8rem, 4.5vw, 3.8rem); font-weight: 700; line-height: 1.08; }
 
-/* Lora: APENAS vozes */
-.ty-voz     { font-family: 'Lora', serif; font-size: clamp(1.05rem, 2vw, 1.8rem); font-weight: 400; font-style: italic; line-height: 1.55; }
-.ty-voz-sm  { font-family: 'Lora', serif; font-size: clamp(.84rem, 1.3vw, 1.07rem); font-weight: 400; font-style: italic; line-height: 1.65; }
+/* Lora: APENAS vozes e destaques editoriais */
+.ty-voz, .ty-voz-sm, .app-ola, .acard-titulo, .bd-titulo-bar, .bd-poema, .bd-sug-nome {
+  font-family: 'Lora', serif;
+}
+.ty-voz     { font-size: clamp(1.05rem, 2vw, 1.8rem); font-weight: 400; font-style: italic; line-height: 1.55; }
+.ty-voz-sm  { font-size: clamp(.84rem, 1.3vw, 1.07rem); font-weight: 400; font-style: italic; line-height: 1.65; }
 .ty-script  { font-family: 'Dancing Script', cursive; font-size: clamp(.9rem, 1.5vw, 1.25rem); font-weight: 600; }
 
-/* Inter: labels, corpo, features */
-.ty-corpo   { font-family: 'Inter', sans-serif; font-size: clamp(.82rem, 1.22vw, .96rem); font-weight: 300; line-height: 1.8; letter-spacing: .01em; }
-.ty-feature { font-family: 'Inter', sans-serif; font-size: clamp(.9rem, 1.35vw, 1.08rem); font-weight: 600; line-height: 1.3; }
-.ty-label   { font-family: 'Inter', sans-serif; font-size: clamp(.56rem, .8vw, .62rem); font-weight: 500; letter-spacing: .22em; text-transform: uppercase; }
+/* Inter: labels, corpo, features, UI */
+.ty-corpo, .ty-feature, .ty-label, .sbar-t, .acard-tag, .acard-corpo, .acard-link, .ep, .appnav-i, .bdh, .bd-leg, .bd-sug-tipo {
+  font-family: 'Inter', sans-serif;
+}
+.ty-corpo   { font-size: clamp(.82rem, 1.22vw, .96rem); font-weight: 300; line-height: 1.8; letter-spacing: .01em; }
+.ty-feature { font-size: clamp(.9rem, 1.35vw, 1.08rem); font-weight: 600; line-height: 1.3; }
+.ty-label   { font-size: clamp(.56rem, .8vw, .62rem); font-weight: 500; letter-spacing: .22em; text-transform: uppercase; }
 
 /* ═══════════════════════════════════════════════════════════════════════════
    4. SEMANTIC COLORS & SEPARATORS
@@ -304,44 +324,51 @@ body.hov #cur-r { width: 38px; height: 38px; border-color: rgba(122,46,18,.38); 
 }
 .island { width: 88px; height: 28px; background: #0A0A0A; border-radius: 20px; margin: 10px auto 0; flex-shrink: 0; }
 .sbar { display: flex; align-items: center; justify-content: space-between; padding: 5px 16px 4px; flex-shrink: 0; }
-.sbar-t { font-size: .62rem; font-weight: 700; color: var(--APPT); font-family: 'Inter', sans-serif; }
+.sbar-t { font-size: .62rem; font-weight: 700; color: var(--APPT); }
 .sbar-icons { display: flex; gap: 3px; align-items: center; }
 .appcorpo { padding: 4px 14px 0; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-.app-ola { font-family: 'Lora', serif; font-size: 1.25rem; font-weight: 600; color: var(--APPT); line-height: 1.22; padding-bottom: 4px; }
+.app-ola { font-size: 1.25rem; font-weight: 600; color: var(--APPT); line-height: 1.22; padding-bottom: 4px; }
 
 .acard { background: var(--APPC); border-radius: 13px; padding: 13px; position: relative; overflow: hidden; }
-.acard-tag { font-size: .45rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--APPA); font-family: 'Inter', sans-serif; margin-bottom: 4px; }
-.acard-titulo { font-family: 'Lora', serif; font-size: .9rem; font-weight: 600; color: var(--APPT); line-height: 1.22; margin-bottom: 4px; }
-.acard-corpo { font-size: .6rem; color: var(--APPD); line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; margin-bottom: 6px; }
-.acard-link { font-size: .55rem; color: var(--APPA); font-family: 'Inter', sans-serif; font-weight: 500; }
+.acard-tag { font-size: .45rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--APPA); margin-bottom: 4px; }
+.acard-titulo { font-size: .9rem; font-weight: 600; color: var(--APPT); line-height: 1.22; margin-bottom: 4px; }
+.acard-corpo { font-size: .6rem; color: var(--APPD); line-height: 1.5; font-weight: 300; margin-bottom: 6px; }
+.acard-link { font-size: .55rem; color: var(--APPA); font-weight: 500; }
 
 .epills { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 3px; }
-.ep { font-size: .53rem; padding: 3px 9px; border-radius: 18px; background: rgba(234,217,184,.6); border: 1px solid rgba(44,21,8,.16); color: var(--APPD); font-family: 'Inter', sans-serif; }
+.ep { font-size: .53rem; padding: 3px 9px; border-radius: 18px; background: rgba(234,217,184,.6); border: 1px solid rgba(44,21,8,.16); color: var(--APPD); }
 .appnav { display: flex; align-items: center; justify-content: space-around; padding: 7px 0 9px; border-top: 1px solid rgba(44,21,8,.1); flex-shrink: 0; margin-top: auto; }
-.appnav-i { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: .4rem; font-family: 'Inter', sans-serif; color: var(--APPD); }
+.appnav-i { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: .4rem; color: var(--APPD); }
 .appnav-i.on { color: var(--APPA); }
 
 /* Tela 2 - Braúlio do Dia */
-.bdh { display: flex; align-items: center; justify-content: space-between; padding: 6px 14px 0; font-family: 'Inter', sans-serif; font-size: .75rem; color: var(--APPT); }
-.bd-titulo-bar { font-family: 'Lora', serif; font-size: .8rem; font-weight: 600; color: var(--APPT); }
+.bdh { display: flex; align-items: center; justify-content: space-between; padding: 6px 14px 0; font-size: .75rem; color: var(--APPT); }
+.bd-titulo-bar { font-size: .8rem; font-weight: 600; color: var(--APPT); }
 .bdbody { padding: 8px 14px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-.bd-leg { font-size: .46rem; letter-spacing: .2em; text-transform: uppercase; font-family: 'Inter', sans-serif; color: var(--APPD); }
+.bd-leg { font-size: .46rem; letter-spacing: .2em; text-transform: uppercase; color: var(--APPD); }
 .bd-emocao { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 900; color: var(--APPT); line-height: 1; }
 .bd-aspas { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--APPA); line-height: 1; margin-bottom: -2px; }
-.bd-poema { font-family: 'Lora', serif; font-size: .7rem; color: var(--APPT); line-height: 1.6; }
+.bd-poema { font-size: .7rem; color: var(--APPT); line-height: 1.6; }
 .bd-ass { font-family: 'Dancing Script', cursive; font-size: .82rem; color: var(--APPA); }
 .bd-div { height: 1px; background: rgba(44,21,8,.12); }
 .bd-sug { background: var(--APPC); border-radius: 10px; display: flex; gap: 8px; align-items: center; padding: 8px 10px; }
-.bd-sug-nome { font-family: 'Lora', serif; font-size: .65rem; font-weight: 600; color: var(--APPT); line-height: 1.22; }
-.bd-sug-tipo { font-size: .46rem; color: var(--APPD); font-family: 'Inter', sans-serif; }
+.bd-sug-nome { font-size: .65rem; font-weight: 600; color: var(--APPT); line-height: 1.22; }
+.bd-sug-tipo { font-size: .46rem; color: var(--APPD); }
 
-img, svg { max-width: 100%; height: auto; }
+img, svg { max-width: 100%; height: auto; display: block; }
+img { loading: lazy; decoding: async; content-visibility: auto; }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   6. MEDIA QUERIES & BREAKPOINTS (RESPONSIVIDADE EDITORIAL PREMIUM)
+   6. MEDIA QUERIES & BREAKPOINTS (AUDITADO PARA 100% PRODUÇÃO)
    Desktop: 1440+ · Notebook: 1200 · Tablet: 992
    Tablet pequeno: 768 · Celular grande: 576 · Celular pequeno: 375
 ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Touch Devices & iPad Pro (Pointer Coarse) */
+@media (hover: none), (pointer: coarse) {
+  #cur, #cur-r { display: none !important; }
+  body { cursor: auto !important; }
+}
 
 /* Notebook (≤ 1200px) */
 @media (max-width: 1200px) {
@@ -354,16 +381,6 @@ img, svg { max-width: 100%; height: auto; }
 @media (max-width: 992px) {
   #ctr { bottom: 1.25rem; right: 1.5rem; font-size: .52rem; }
   #nav { bottom: 1.25rem; gap: 1rem; }
-  
-  /* Slides no Tablet/Mobile ganham rolagem vertical suave para nunca cortar conteúdo */
-  .slide {
-    align-items: flex-start;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 3.5rem 0 5.5rem;
-    -webkit-overflow-scrolling: touch;
-  }
-  .slide.on { display: flex; }
   
   .pg, .pg-sm, .pg-lg { padding: 0 5vw; max-width: 100%; }
   
@@ -382,26 +399,22 @@ img, svg { max-width: 100%; height: auto; }
 
 /* Tablet Pequeno / Celular Grande (≤ 768px) */
 @media (max-width: 768px) {
-  /* Desativa cursor personalizado em telas touch/mobile para evitar bugs visuais */
-  #cur, #cur-r { display: none !important; }
-  body { cursor: auto; }
-  
-  .slide { padding: 3rem 0 5.5rem; }
+  .slide { padding: 2.5rem 0 5rem; }
   .pg, .pg-sm, .pg-lg { padding: 0 6vw; }
   
   /* Grids de 3 colunas (S13 Financeiro, S14 Parceria, S15 Métricas) viram coluna com margens generosas */
   .g3 { grid-template-columns: 1fr; gap: 1.5rem; }
   
   /* Separadores em grids verticais */
-  .g3 > div, .g4 > div, .g6 > div {
+  .g3 > div, .g6 > div {
     border-right: none !important;
     border-bottom: 1px solid var(--T4);
     padding: 1.25rem 0 !important;
   }
-  .escuro .g3 > div, .escuro .g4 > div, .escuro .g6 > div {
+  .escuro .g3 > div, .escuro .g6 > div {
     border-bottom: 1px solid rgba(234,217,184,.1) !important;
   }
-  .g3 > div:last-child, .g4 > div:last-child, .g6 > div:last-child {
+  .g3 > div:last-child, .g6 > div:last-child {
     border-bottom: none !important;
     padding-bottom: 0 !important;
   }
@@ -416,15 +429,16 @@ img, svg { max-width: 100%; height: auto; }
   /* Ocultar números romanos na coluna em S11 no mobile */
   .row-comp-3 > .ty-h2 { display: none; }
   
-  /* S4 Ativos, S16 Princípios, S18 Valores vão para 1 coluna no celular */
-  .g4, .g6 { grid-template-columns: 1fr; }
+  /* S4 Ativos e S18 Fechamento ganham grid 2x2 no mobile para ritmo editorial compacto e equilibrado */
+  .g4 { grid-template-columns: 1fr 1fr; gap: 1.5rem 1rem; }
+  .g4 > div { padding: 0.75rem 0 !important; border-right: none !important; border-bottom: none !important; }
+  
+  /* S16 Princípios vai para 1 coluna no celular */
+  .g6 { grid-template-columns: 1fr; }
 }
 
 /* Celular / Mobile (≤ 576px) */
 @media (max-width: 576px) {
-  .slide { padding: 2.5rem 0 5.5rem; }
-  .pg, .pg-sm, .pg-lg { padding: 0 6vw; }
-  
   /* Áreas de toque maiores para acessibilidade no mobile */
   .nb { width: 42px; height: 42px; font-size: 14px; }
   .dot { width: 5px; height: 5px; margin: 0 3px; }
@@ -432,7 +446,7 @@ img, svg { max-width: 100%; height: auto; }
   
   /* Botões e cards ocupando largura quase total com margens generosas */
   .acard { padding: 15px; border-radius: 15px; margin-bottom: 8px; }
-  .iphone { width: 230px; border-radius: 48px; padding: 7px; }
+  .iphone { width: 260px; border-radius: 48px; padding: 7px; }
   .tela { border-radius: 42px; min-height: 460px; }
   
   /* Tipografia no celular ganha respiro e altura de linha confortável */
@@ -445,7 +459,7 @@ img, svg { max-width: 100%; height: auto; }
 /* Celular Pequeno (≤ 375px) */
 @media (max-width: 375px) {
   .pg, .pg-sm, .pg-lg { padding: 0 5vw; }
-  .iphone { width: 215px; }
+  .iphone { width: 230px; }
   .tela { min-height: 440px; }
   .ty-display { font-size: 2.2rem; }
   .ty-h1 { font-size: 1.55rem; }
@@ -476,7 +490,7 @@ img, svg { max-width: 100%; height: auto; }
     </div>
     <div class="ty-corpo tc-corpo e3" style="max-width:350px">Uma casa digital para décadas de produção intelectual — onde a obra do Braúlio acompanha as pessoas todos os dias.</div>
     <div class="linha e4" style="max-width:280px;opacity:.5"></div>
-    <div class="e4" style="display:flex;gap:3.5rem;flex-wrap:wrap;justify-content:center">
+    <div class="e4" style="display:flex;gap:clamp(1.5rem, 4vw, 3.5rem);flex-wrap:wrap;justify-content:center">
       <div class="ctr" style="gap:4px"><div class="ty-num tc-titulo">6M</div><div class="ty-label tc-meta">seguidores</div></div>
       <div class="ctr" style="gap:4px"><div class="ty-num tc-titulo">+500k</div><div class="ty-label tc-meta">livros vendidos</div></div>
       <div class="ctr" style="gap:4px"><div class="ty-num tc-titulo">3º</div><div class="ty-label tc-meta">maior palestrante</div></div>
@@ -530,7 +544,7 @@ img, svg { max-width: 100%; height: auto; }
       </div>
       <div class="col sep-t" style="gap:.7rem;padding-top:1rem">
         <div class="ty-label tc-meta">CAPIO hoje</div>
-        <div style="display:flex;gap:0;flex-wrap:wrap">
+        <div style="display:flex;gap:1rem;flex-wrap:wrap">
           <div class="col sep-r" style="gap:3px;flex:1;min-width:100px;padding-right:1rem">
             <div class="ty-h2 tc-titulo">24</div><div class="ty-label tc-meta">usuários ativos</div>
           </div>
@@ -1169,7 +1183,7 @@ document.addEventListener('touchend', e => {
 
 document.getElementById('deck').addEventListener('click', e => {
   if (e.target.closest('button, .dot, a, .iphone')) return;
-  if (window.innerWidth <= 768) return;
+  if (window.innerWidth <= 992 || 'ontouchstart' in window || navigator.maxTouchPoints > 0) return;
   ir(e.clientX > window.innerWidth / 2 ? 1 : -1);
   mostrarNav();
 });
