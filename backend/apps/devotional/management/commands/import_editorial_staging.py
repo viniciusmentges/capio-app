@@ -66,10 +66,10 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR("[ERRO] Nenhum arquivo acervo_capio_*.md encontrado na pasta."))
             return
 
-        # Limpar registros em staging anteriores para garantir idempotencia e evitar duplicacao
-        deleted_count, _ = DevotionalContent.objects.filter(is_active=False, reviewed_by_human=True).delete()
+        # Limpar registros da biblioteca editorial anteriores para garantir idempotencia ao reimportar
+        deleted_count, _ = DevotionalContent.objects.filter(reviewed_by_human=True, emotion__slug__in=['ansioso', 'triste', 'medo', 'desmotivado']).delete()
         if deleted_count:
-            self.stdout.write(self.style.WARNING(f"[LIMPEZA] Removidos {deleted_count} registros em staging anteriores para reimportacao limpa."))
+            self.stdout.write(self.style.WARNING(f"[LIMPEZA] Removidos {deleted_count} registros editoriais anteriores para reimportacao limpa."))
 
         emotion_map = {
             '01_ansioso': ('ansioso', 'Ansioso'),
@@ -149,7 +149,7 @@ class Command(BaseCommand):
 
                     share_text = share_quote[:107] + "..." if len(share_quote) > 110 else share_quote
 
-                    # Criar ou atualizar no banco como staging (is_active=False, reviewed_by_human=True)
+                    # Criar ou atualizar no banco como ativo (is_active=True, reviewed_by_human=True)
                     dev_obj, created = DevotionalContent.objects.update_or_create(
                         emotion=emotion,
                         title=title,
@@ -163,7 +163,7 @@ class Command(BaseCommand):
                             'share_quote': share_quote,
                             'share_text': share_text,
                             'emotional_theme': title,
-                            'is_active': False,  # Modo staging/homologacao!
+                            'is_active': True,  # Biblioteca ativa em produção!
                             'reviewed_by_human': True,
                             'ai_generated': True,
                         }

@@ -2,9 +2,13 @@ from django.db import migrations
 from django.core.management import call_command
 import logging
 
+import sys
+
 logger = logging.getLogger(__name__)
 
 def import_editorial_data(apps, schema_editor):
+    if 'test' in sys.argv or 'test_coverage' in sys.argv:
+        return
     try:
         call_command('import_editorial_staging')
     except Exception as e:
