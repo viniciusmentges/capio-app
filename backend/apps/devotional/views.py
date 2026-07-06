@@ -59,7 +59,8 @@ class PublicDevotionalDetailView(APIView):
 
     def get(self, request, public_id):
         try:
-            content = DevotionalContent.objects.get(public_id=public_id, is_active=True)
+            from django.db.models import Q
+            content = DevotionalContent.objects.get(Q(is_active=True) | Q(reviewed_by_human=True), public_id=public_id)
             serializer = DevotionalContentSerializer(content)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except DevotionalContent.DoesNotExist:
