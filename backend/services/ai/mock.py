@@ -46,34 +46,42 @@ class MockAIService(AIService):
             "ai_generated": False
         }
 
-    def devotional_for_emotion(self, emotion_name: str, reference_display: str, scripture_text: str) -> Dict[str, Any]:
+    def devotional_for_emotion(self, emotion_name: str, reference_display: str, scripture_text: str, *args, **kwargs) -> Dict[str, Any]:
         logger.warning(f"[CAPIO AI] Fallback acionado no fluxo de devocional por emoção para {emotion_name}. Servindo do MockAIService por falha de API ou ambiente.")
         
         slug = emotion_name.lower().replace(" ", "-").replace("ç", "c").replace("ã", "a")
         filepath = os.path.join(self.fixtures_dir, 'devotional', f'{slug}.json')
         
         data = self._load_json(filepath)
+        if not data:
+            filepath_default = os.path.join(self.fixtures_dir, 'devotional', 'ansioso.json')
+            data = self._load_json(filepath_default)
+            
         if data:
             data['scripture_reference'] = reference_display
             data['scripture_text'] = scripture_text
+            if 'share_quote' not in data:
+                data['share_quote'] = "No silêncio do pastor, a alma encontra o que não pode ser comprado."
+            if 'main_truth' not in data:
+                data['main_truth'] = "O cuidado de Deus antecede a preocupação e sustenta a alma em repouso."
+            if 'daily_companion' not in data:
+                data['daily_companion'] = "Quando a pressa tentar tomar o controle, lembre-se do cuidado silencioso que te sustenta."
+            if 'emotional_theme' not in data:
+                data['emotional_theme'] = f"Repouso na {emotion_name}"
             return data
-            
-        # Fallback if specific emotion fixture missing
-        filepath_default = os.path.join(self.fixtures_dir, 'devotional', 'ansioso.json')
-        data_default = self._load_json(filepath_default)
-        if data_default:
-            data_default['scripture_reference'] = reference_display
-            data_default['scripture_text'] = scripture_text
-            return data_default
             
         return {
             "title": f"O repouso na {emotion_name}",
             "scripture_reference": reference_display,
             "scripture_text": scripture_text,
-            "reflection": "No silêncio do pastor, a alma encontra o que não pode ser comprado.",
+            "reflection": "No silêncio do pastor, a alma encontra o que não pode ser comprado. Há um convite permanente para depositar o peso onde ele pode ser sustentado. Não é uma técnica de alívio, mas um ato de reconhecimento: o cuidado de Deus antecede a preocupação e a envolve com atenção real.",
             "practical_application": "Respire fundo e entregue o peso do agora.",
             "guiding_question": "Onde o silêncio de Deus mais te toca neste momento?",
             "prayer": "Senhor, eu confio.",
+            "share_quote": "No silêncio do pastor, a alma encontra o que não pode ser comprado.",
+            "main_truth": "O cuidado de Deus antecede a preocupação e sustenta a alma em repouso.",
+            "daily_companion": "Quando a pressa tentar tomar o controle, lembre-se do cuidado silencioso que te sustenta.",
+            "emotional_theme": f"Repouso na {emotion_name}",
             "ai_generated": False
         }
 
@@ -118,6 +126,8 @@ class MockAIService(AIService):
             "reflection": "Há um convite permanente para depositar o peso onde ele pode ser sustentado. Não é uma técnica de alívio, mas um ato de reconhecimento: o cuidado de Deus antecede a preocupação e a envolve com atenção real.",
             "prayer": "Senhor, recebo o teu cuidado como resposta ao meu peso. Não preciso carregar sozinho.",
             "share_quote": "O cuidado de Deus antecede a preocupação e a envolve com atenção real.",
+            "main_truth": "O cuidado divino antecede o fardo humano e sustenta a alma em repouso.",
+            "daily_companion": "Quando a pressa tentar tomar o controle, a presença silenciosa do Pastor caminha ao seu lado.",
             "emotional_theme": f"Cuidado de Deus na {emotion_name}" if not tone_or_direction else tone_or_direction,
             "ai_generated": False
         }

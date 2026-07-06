@@ -12,6 +12,15 @@ django.setup()
 from services.editorial.editor import EditorialEditorService
 
 class EditorialEditorServiceTest(unittest.TestCase):
+    def setUp(self):
+        super().setUp()
+        self.argv_patcher = patch.object(sys, 'argv', ['test_editor.py'])
+        self.argv_patcher.start()
+
+    def tearDown(self):
+        self.argv_patcher.stop()
+        super().tearDown()
+
     @patch('services.editorial.editor.get_ai_service')
     def test_review_and_publish_approved(self, mock_get_ai):
         mock_ai = MagicMock()

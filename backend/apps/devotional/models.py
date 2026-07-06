@@ -33,6 +33,8 @@ class DevotionalContent(models.Model):
     guiding_question = models.TextField(blank=True)
     prayer = models.TextField()
     share_quote = models.TextField(blank=True, default='')
+    main_truth = models.TextField(blank=True, default='', help_text="O Fio da Palavra: a verdade central da reflexão.")
+    daily_companion = models.TextField(blank=True, default='', help_text="A Palavra Continua: pensamento silencioso para o dia.")
     share_text = models.CharField(max_length=110, blank=True, default='', help_text="Frase pastoral curta para repost. Máx 110 caracteres.")
     share_bg_image = models.CharField(max_length=50, blank=True, choices=SHARE_BACKGROUND_CHOICES, default='gradient_light', help_text="Selecione o fundo da imagem de compartilhamento.")
     emotional_theme = models.CharField(max_length=150, blank=True, default='')

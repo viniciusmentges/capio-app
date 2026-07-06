@@ -15,7 +15,8 @@ class DevotionalContentSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'public_id', 'passage', 'title', 'scripture_reference', 'scripture_text', 
             'reflection', 'practical_application', 'guiding_question', 
-            'prayer', 'share_text', 'share_bg_image', 'ai_generated', 'created_at'
+            'prayer', 'share_quote', 'emotional_theme', 'main_truth', 'daily_companion',
+            'share_text', 'share_bg_image', 'ai_generated', 'created_at'
         )
 
 

@@ -59,13 +59,19 @@ class AnthropicAIService(AIService):
             "2. HUMANIDADE CONCRETA: O texto nasce de experiência humana real e reconhecível.\n"
             "3. CLAREZA PRIORITÁRIA: Clareza acima da Elegância. Teste da Avó. Toda frase deve sobreviver sozinha.\n"
             "4. O ECO DA PALAVRA & METÁFORAS: Apenas uma verdade central por reflexão. Máximo de 1 metáfora dominante por parágrafo.\n"
-            "5. TESTE DO SUBLINHADO: Pelo menos um pensamento memorável e verdadeiro que mereça ser sublinhado a lápis.\n"
-            "6. A VOZ DA CAPIO: Ordem: 1. Evangelhos (Jesus); 2. C. S. Lewis; 3. Tim Keller; 4. Henri Nouwen. Místicos apenas atmosfera. TESTE DA CONVERSA: Soaria natural num café?\n"
-            "7. O SHARE QUOTE: O pensamento que continua acompanhando o leitor após fechar o app.\n"
-            "8. SEM AUTORREFERÊNCIA: Proibido 'eu', 'nós'. Proibido (!).\n"
-            "9. FRASES CURTAS: Máx 15 palavras. Sem imperativos apressados.\n"
-            "10. OBJETIVO FINAL: Tudo deve desaparecer para ficar apenas a Escritura ecoando no leitor.\n"
-            "11. FORMATO: Responda APENAS em JSON válido, sem markdown."
+            "5. REGRA DA COERÊNCIA INVISÍVEL: Os quatro campos formam uma única jornada: Reflection -> Fio da Palavra -> Palavra Continua -> Share Quote. Cada um conduz o leitor um passo adiante: nunca resume o anterior, nunca antecipa o próximo.\n"
+            "6. IDENTIDADE DOS CAMPOS:\n"
+            "   - Reflection: Conduz.\n"
+            "   - Fio da Palavra (main_truth): Ancora. Uma única verdade.\n"
+            "   - Palavra Continua (daily_companion): Acompanha. Sem ordens, sem conselhos, sem mandar. Caminha junto.\n"
+            "   - Share Quote: Permanece. Não é gerado, é descoberto. A frase que continua ecoando depois que o restante desaparece.\n"
+            "7. REGRA DO LÁPIS ESPONTÂNEO (SHARE QUOTE): Qual frase faria alguém parar a leitura e pensar: 'preciso enviar isso para alguém que amo?' O Share Quote é a frase que um leitor destacaria espontaneamente a lápis. Nunca criada para marketing ou redes sociais. Responda internamente: 'Essa frase existiria mesmo se ninguém fosse compartilhá-la?'.\n"
+            "8. AUDITORIA FINAL SILENCIOSA: Antes de aprovar, responda: 'Este texto parece escrito por alguém que deseja impressionar ou por alguém que deseja acompanhar?' Se houver qualquer traço de performance literária, reescreva. A beleza deve servir à Palavra, nunca competir com ela.\n"
+            "9. A VOZ DA CAPIO: Ordem: 1. Evangelhos (Jesus); 2. C. S. Lewis; 3. Tim Keller; 4. Henri Nouwen. Místicos apenas atmosfera. TESTE DA CONVERSA: Soaria natural num café?\n"
+            "10. SEM AUTORREFERÊNCIA: Proibido 'eu', 'nós'. Proibido (!).\n"
+            "11. FRASES CURTAS: Máx 15 palavras. Sem imperativos apressados.\n"
+            "12. OBJETIVO FINAL: Tudo deve desaparecer para ficar apenas a Escritura ecoando no leitor.\n"
+            "13. FORMATO: Responda APENAS em JSON válido, sem markdown."
         )
 
     def _call_claude(self, prompt: str, system_prompt: str, temperature: float, fallback_func, fallback_args: dict, expected_keys: list = None, max_tokens: int = 1500, ai_request_id: int = None, endpoint_origin: str = None) -> Dict[str, Any]:
@@ -314,27 +320,89 @@ class AnthropicAIService(AIService):
         )
         return res
 
-    def devotional_for_emotion(self, emotion_name: str, reference_display: str, scripture_text: str, ai_request_id: int = None) -> Dict[str, Any]:
+    def devotional_for_emotion(
+        self,
+        emotion_name: str,
+        reference_display: str,
+        scripture_text: str,
+        ai_request_id: int = None,
+        excluded_passages: list = None,
+        excluded_themes: list = None,
+        excluded_titles: list = None,
+        semantic_cooldown_words: list = None,
+    ) -> Dict[str, Any]:
         system_prompt = self._get_editorial_constitution()
+
+        emotion_key = emotion_name.lower().strip()
+        emotion_key = emotion_key.replace(",", "").replace(".", "").replace("ç", "c").replace("ã", "a").replace("é", "e").replace("í", "i").replace("ó", "o")
+        emotion_key = emotion_key.replace(" ", "-").replace("_", "-")
+
+        import random
+        angles = self._EDITORIAL_EMOTION_ANGLES.get(emotion_key, [])
+        chosen_angle = random.choice(angles) if angles else f"experiência vivida, humana e concreta de {emotion_name}"
+
+        style_key, style_instruction = self._pick_opening_style()
+        logger.info(
+            "[CAPIO OPENING STYLE AUDIT] Emoção '%s' — estilo de abertura selecionado: '%s' | Ângulo: '%s'",
+            emotion_name, style_key, chosen_angle
+        )
+
+        all_excluded_passages = set(self._EDITORIAL_PASSAGE_BLACKLIST.get(emotion_key, []))
+        if excluded_passages:
+            all_excluded_passages.update(excluded_passages)
+
         prompt = (
             f"Emoção: {emotion_name}\n"
-            f"Passagem Bíblica: {reference_display}\n"
-            f"Texto: \"{scripture_text}\"\n\n"
-            "PONTO DE PARTIDA: Comece pela experiência humana concreta desta emoção. "
-            "O leitor se reconhece antes de qualquer elaboração teológica. "
-            "Inclua uma imagem discreta do cotidiano (respiração, mãos, manhã, corpo, janela).\n"
-            "Retorne UM objeto JSON (todos em português):\n"
+            f"Passagem Bíblica Guia: {reference_display}\n"
+            f"Texto Bíblico: \"{scripture_text}\"\n"
+        )
+
+        if all_excluded_passages:
+            prompt += "\n[PROIBIDO] ABORDAGENS/PASSAGENS JÁ EXPLORADAS (evite repetir tons idênticos):\n"
+            prompt += "".join(f"  - {p}\n" for p in sorted(all_excluded_passages))
+
+        if excluded_themes:
+            prompt += "\n[PROIBIDO] TEMAS PROIBIDOS (já usados recentemente):\n"
+            prompt += "".join(f"  - {t}\n" for t in excluded_themes)
+
+        if excluded_titles:
+            prompt += "\n[PROIBIDO] TITULOS PROIBIDOS:\n"
+            prompt += "".join(f"  - {ti}\n" for ti in excluded_titles)
+
+        if semantic_cooldown_words:
+            prompt += "\n[RESFRIAMENTO SEMÂNTICO] Estas palavras saturaram os últimos devocionais. Evite-as absolutamente:\n"
+            prompt += "".join(f"  - {w}\n" for w in semantic_cooldown_words)
+
+        prompt += (
+            f"\n[ANGULO HUMANO OBRIGATORIO]\n"
+            f"Experiência humana concreta para esta meditação: \"{chosen_angle}\"\n"
+            f"(Sua reflexão DEVE construir ao redor desta experiência humana específica, sem tentar cobrir todos os aspectos de {emotion_name}. O leitor deve se reconhecer antes de qualquer elaboração teológica).\n\n"
+            f"[ABERTURA]\n"
+            f"Estilo obrigatório para iniciar a reflexão:\n{style_instruction}\n"
+            f"Proibido começar com \"Há momentos em que...\", \"Quando a vida...\", \"Todos nós...\" ou estruturas espelhadas.\n\n"
+            "Retorne UM objeto JSON com os seguintes campos (todos em português):\n"
             "- 'title': Título sóbrio e específico. Humano, não poético demais.\n"
-            "- 'reflection': Reflexão de até 800 caracteres. Começa no chão humano, encontra a Palavra, deixa espaço.\n"
+            "- 'reflection': Reflection. CONDUZ. Responde a: 'O que Deus revelou nesta passagem?'. Conduz o leitor da experiência humana concreta até a Escritura. Não precisa explicar tudo nem fechar tudo; abra espaço para contemplação. Entre 1200 e 1400 caracteres.\n"
             "- 'practical_application': Gesto humano pequeno e concreto. Não conselho abstrato.\n"
             "- 'guiding_question': Pergunta íntima nascida desta emoção específica. Sem respostas embutidas.\n"
-            "- 'prayer': Oração honesta e curta. Nascida da experiência, não de fórmula. Sem exclamações."
+            "- 'prayer': Oração honesta e curta. Nascida da experiência, não de fórmula. Sem exclamações (!).\n"
+            "- 'main_truth': Fio da Palavra. ANCORA. Responde a: 'Qual é a verdade que sustenta todo este texto?'. Uma única verdade bíblica sem a qual este devocional deixaria de existir. Extremamente simples, profundamente bíblica, memorável. NÃO É RESUMO nem conclusão.\n"
+            "- 'daily_companion': Palavra Continua. ACOMPANHA. Responde a: 'O que permanecerá acompanhando o leitor hoje?'. A frase que caminha junto com o leitor às 15h da tarde. Sem dar ordens, sem aconselhar, sem mandar (proibido imperativos!). É uma companhia silenciosa que cabe inteira na memória.\n"
+            "- 'share_quote': Share Quote. PERMANECE. Não é gerado, é DESCOBERTO. Responde a: 'Qual frase faria alguém parar a leitura e pensar: preciso enviar isso para alguém que amo?'. REGRA DO LÁPIS ESPONTÂNEO: A frase que um leitor destacaria espontaneamente com um lápis durante a leitura. Nunca criada para virar imagem ou rede social. Antes de gerar, responda internamente: 1. 'Se este devocional fosse publicado em um livro, qual frase um leitor marcaria a lápis?'; 2. 'Essa frase existiria exatamente assim se ninguém pudesse compartilhá-la?'. Se não, reescreva. Máximo 15 palavras. Proibido: paralelismos, frases espelhadas, slogans. Sem exclamações (!).\n"
+            "- 'emotional_theme': Max 5 palavras. Subtema humano direto para este ângulo.\n\n"
+            "AUDITORIA ANTI-REDUNDÂNCIA E COERÊNCIA INVISÍVEL:\n"
+            "Os quatro campos (Reflection -> Fio da Palavra -> Palavra Continua -> Share Quote) formam uma única experiência e jornada: cada um conduz um passo adiante, nunca resume o anterior, nunca antecipa o próximo.\n"
+            "Antes de aprovar o JSON, responda internamente:\n"
+            "1. 'Se eu remover completamente a Reflection... Os outros campos continuam fazendo sentido sozinho?' Se sim, estão grandes demais.\n"
+            "2. 'Se eu remover o Share Quote... O devocional perde algo?' Se não, o Share Quote está fraco.\n"
+            "3. 'Se o Daily Companion repetir o Main Truth:' Reescreva. Nenhum campo pode existir apenas para repetir outro.\n"
+            "4. AUDITORIA FINAL: 'Este texto parece escrito por alguém que deseja impressionar ou por alguém que deseja acompanhar?' Se houver traço de performance literária, reescreva. A beleza deve servir à Palavra, nunca competir com ela."
         )
         res = self._call_claude(
             prompt, system_prompt, 0.4,
             self.mock_fallback.devotional_for_emotion,
             {"emotion_name": emotion_name, "reference_display": reference_display, "scripture_text": scripture_text},
-            expected_keys=['title', 'reflection', 'practical_application', 'guiding_question', 'prayer'],
+            expected_keys=['title', 'reflection', 'practical_application', 'guiding_question', 'prayer', 'share_quote', 'main_truth', 'daily_companion'],
             ai_request_id=ai_request_id,
             endpoint_origin="EMOTIONAL_DEVOTIONAL"
         )
@@ -786,19 +854,23 @@ class AnthropicAIService(AIService):
             "IMAGEM COTIDIANA: Inclua uma imagem discreta do cotidiano (madrugada, janela, respiração, mãos, cama, passos).\n"
             "VOZ: De alguém que atravessou esta experiência, não de narrador espiritual abstrato.\n"
             "PROFUNDIDADE: Vem da verdade emocional específica, não da densidade verbal.\n"
-            "\nRetorne UM objeto JSON (todos os campos em português):\n"
+            "\nRetorne UM objeto JSON com os seguintes campos (todos em português):\n"
             "- 'title': Título sóbrio e específico. Humano, não poético demais.\n"
             "- 'scripture_reference': Use preferencialmente as passagens [PREFERENCIAL]. "
             "Nunca use nenhuma da lista [PROIBIDO].\n"
             "- 'scripture_text': Texto exato da passagem.\n"
-            "- 'reflection': Max 900 caracteres. Use o estilo de abertura [ABERTURA]. "
-            "Proibido começar com 'Ha um' ou 'Existe um'. "
-            "Comeca no chao humano, encontra a Palavra, deixa espaco.\n"
+            "- 'reflection': Reflection. CONDUZ. Responde a: 'O que Deus revelou nesta passagem?'. Max 900 caracteres. Use o estilo de abertura [ABERTURA]. Proibido começar com 'Ha um' ou 'Existe um'. Comeca no chao humano, encontra a Palavra, deixa espaco para contemplacao.\n"
+            "- 'practical_application': Gesto humano pequeno e concreto. Não conselho abstrato.\n"
+            "- 'guiding_question': Pergunta íntima nascida desta emoção específica. Sem respostas embutidas.\n"
             "- 'prayer': Oracao honesta nascida desta experiência específica. Curta. Sem exclamaçoes.\n"
-            "- 'share_quote': Max 15 palavras. Observacao íntima guardada no coracao, nao construída para impacto. "
-            "PROIBIDO: paralelismo, estrutura espelhada (A->B / A'->B'), frases criadas para soar memoráveis. "
-            "OBRIGATORIO: gramaticalmente correto. Tom interior, nao performático.\n"
+            "- 'main_truth': Fio da Palavra. ANCORA. Responde a: 'Qual é a verdade que sustenta todo este texto?'. Uma única verdade bíblica sem a qual este devocional deixaria de existir. Simples, bíblica, memorável. NÃO É RESUMO nem conclusão.\n"
+            "- 'daily_companion': Palavra Continua. ACOMPANHA. Responde a: 'O que permanecerá acompanhando o leitor hoje?'. Caminha junto com o leitor às 15h da tarde. Sem dar ordens, sem aconselhar, sem mandar (sem imperativos!).\n"
+            "- 'share_quote': Share Quote. PERMANECE. Não é gerado, é DESCOBERTO. Responde a: 'Qual frase faria alguém parar a leitura e pensar: preciso enviar isso para alguém que amo?'. REGRA DO LÁPIS ESPONTÂNEO: A frase que um leitor destacaria espontaneamente a lápis. Responda internamente: 'Essa frase existiria mesmo se ninguém fosse compartilhá-la?'. Max 15 palavras. PROIBIDO: paralelismo, frases espelhadas, slogans. Sem exclamaçoes (!).\n"
             "- 'emotional_theme': Max 5 palavras. Subtema humano direto. Sem travessao. Sem descricao adicional.\n\n"
+            "AUDITORIA ANTI-REDUNDÂNCIA E COERÊNCIA INVISÍVEL:\n"
+            "Reflection -> Fio da Palavra -> Palavra Continua -> Share Quote formam uma única jornada: cada um conduz um passo adiante, nunca resume o anterior, nunca antecipa o próximo.\n"
+            "Se remover a Reflection e os outros campos continuarem fazendo sentido sozinho, estão grandes demais. Se remover o Share Quote e o texto não perder nada, está fraco. Se o Daily Companion repetir o Main Truth, reescreva.\n"
+            "AUDITORIA FINAL: 'Este texto parece escrito por alguém que deseja impressionar ou por alguém que deseja acompanhar?' Se houver performance literária, reescreva. A beleza deve servir à Palavra.\n"
             "RESTRICOES FINAIS: Sem imperativos. Sem exclamaçoes (!). JSON valido apenas."
         )
 
@@ -806,7 +878,7 @@ class AnthropicAIService(AIService):
             prompt, system_prompt, 0.75,
             self.mock_fallback.editorial_generate_devotional,
             {"emotion_name": emotion_name, "tone_or_direction": tone_or_direction},
-            expected_keys=['title', 'scripture_reference', 'scripture_text', 'reflection', 'prayer', 'share_quote', 'emotional_theme'],
+            expected_keys=['title', 'scripture_reference', 'scripture_text', 'reflection', 'prayer', 'share_quote', 'main_truth', 'daily_companion', 'emotional_theme'],
             ai_request_id=ai_request_id,
             endpoint_origin="EDITORIAL_GENERATOR"
         )
@@ -820,9 +892,15 @@ class AnthropicAIService(AIService):
             "3. Pontuação: Exclamações (!) estritamente proibidas. Interrogações (?) permitidas estritamente para reflexão pastoral genuína.\n"
             "4. A Voz da CAPIO & Teste da Conversa: Escrever para ser compreendido. Pergunta crucial: 'Se este texto fosse lido em voz alta durante um café entre dois amigos, ele soaria natural?' Se parecer ensaio literário ou sermão elaborado, refine.\n"
             "5. O Eco da Palavra & Pergunta Final do Editor Editorial: Valide qual é a única verdade central da reflexão respondendo: 'Quando o leitor fechar a CAPIO daqui a cinco minutos, o que permanecerá com ele?' A resposta deve ser apenas uma ideia simples. Se não conseguir resumir em uma única frase simples, a reflexão perdeu foco e precisa de refinamento.\n"
-            "6. Exclusividade Funcional dos Blocos Diurnos: Verifique rigorosamente se Reflexão ('reflection_body' - explica e conduz), O Fio da Palavra ('main_truth' - destila a verdade sem resumir) e A Palavra Continua ('daily_companion' - acompanha sem tarefas, cobranças ou imperativos) possuem funções claramente distintas e não repetem ideias ou frases. Se houver redundância, reprove e reescreva no texto_refinado.\n"
-            "7. Score Editorial (0.0 a 10.0) em: 'clareza', 'naturalidade', 'correcao_gramatical', 'aderencia_gramatica_silencio'.\n"
-            "Limiar de Excelência: 9.2. Se qualquer critério for < 9.2, houver falta de foco central ou repetição funcional entre blocos, reescreva todo o conteúdo em 'texto_refinado' mantendo as chaves originais. Se todos >= 9.2 e sem redundâncias, texto_refinado = null."
+            "6. Regra da Coerência Invisível e Identidade dos 4 Campos: Reflection -> Fio da Palavra -> Palavra Continua -> Share Quote formam uma única jornada onde cada um conduz o leitor um passo adiante (nunca resume o anterior, nunca antecipa o próximo):\n"
+            "   - Reflection: CONDUZ. ('O que Deus revelou?').\n"
+            "   - Fio da Palavra (main_truth): ANCORA. Uma única verdade bíblica sem resumo ou conclusão.\n"
+            "   - Palavra Continua (daily_companion): ACOMPANHA. Sem dar ordens, sem aconselhar, sem mandar (zero imperativos). Caminha junto às 15h da tarde.\n"
+            "   - Share Quote: PERMANECE. Não é gerado, é DESCOBERTO. ('Qual frase faria alguém parar e pensar: preciso enviar isso para alguém que amo?'). REGRA DO LÁPIS ESPONTÂNEO: frase destacada a lápis durante a leitura. Teste: 'Essa frase existiria mesmo se ninguém fosse compartilhá-la?'.\n"
+            "   Auditoria Anti-Redundância: Se remover a Reflection e os outros campos fizerem sentido sozinho, estão grandes demais. Se remover o Share Quote e não perder nada, está fraco. Se houver redundância, reprove e reescreva no texto_refinado.\n"
+            "7. Auditoria Final Silenciosa: 'Este texto parece escrito por alguém que deseja impressionar ou por alguém que deseja acompanhar?' Se houver performance literária, reescreva. A beleza deve servir à Palavra, nunca competir com ela.\n"
+            "8. Score Editorial (0.0 a 10.0) em: 'clareza', 'naturalidade', 'correcao_gramatical', 'aderencia_gramatica_silencio'.\n"
+            "Limiar de Excelência: 9.2. Se qualquer critério for < 9.2, houver falta de foco central, repetição funcional ou performance literária, reescreva todo o conteúdo em 'texto_refinado' mantendo as chaves originais. Se todos >= 9.2 e sem redundâncias, texto_refinado = null."
         )
         import json
         prompt = (
@@ -849,17 +927,18 @@ class AnthropicAIService(AIService):
     def generate_share_quote(self, reflection: str, ai_request_id: int = None) -> str:
         system_prompt = (
             "Motor Editorial da CAPIO. Formulates ou extrai um Share Quote de até 15 palavras. "
-            "Sem autorreferência, sem exclamações."
+            "Sem autorreferência, sem exclamações. Regra do Lápis Espontâneo."
         )
         prompt = (
             f"Reflexão:\n\"{reflection}\"\n\n"
-            "Extraia ou formule um fragmento (share_quote) de até 15 palavras.\n\n"
+            "Descubra e extraia o fragmento (share_quote) de até 15 palavras.\n\n"
             "REGRAS (FILOSOFIA DOS SHARE QUOTES):\n"
-            "1. DEFINIÇÃO PROFUNDA: O Share Quote não é um resumo da reflexão, uma frase bonita, uma legenda para redes sociais nem uma frase de efeito. O Share Quote é o pensamento que continua acompanhando o leitor depois que ele fecha a CAPIO.\n"
-            "2. ISOLAMENTO CONTEMPLATIVO: Ao ser lido isoladamente, ele deve fazer sentido sozinho, despertar contemplação, apontar discretamente para a Escritura e convidar naturalmente o leitor a abrir a Palavra.\n"
-            "3. VERDADE SOBRE BELEZA: A beleza da frase nunca pode ser mais importante do que sua verdade. Toda frase deve passar pelo Teste da Leitura Única.\n"
-            "4. SEM IMPERATIVO OU EXCLAMAÇÃO: Proibido 'confie', 'lembre-se', 'busque', 'mude'. Proibido (!).\n"
-            "5. RETORNO: JSON com exclusivamente a chave 'share_quote'. Sem markdown."
+            "1. NÃO É GERADO, É DESCOBERTO: O Share Quote é a frase que um leitor destacaria espontaneamente com um lápis durante a leitura. Nunca uma frase criada para virar imagem; sempre uma frase encontrada dentro da própria verdade bíblica.\n"
+            "2. PENSANDO NO LEITOR: Qual frase faria alguém parar a leitura e pensar: 'preciso enviar isso para alguém que amo'?\n"
+            "3. PERGUNTAS DE AUDITORIA SILENCIOSA: Responda internamente antes de gerar: 1. 'Se este devocional fosse publicado em um livro, qual frase um leitor marcaria a lápis?'; 2. 'Essa frase existiria mesmo se ninguém pudesse compartilhá-la nas redes sociais?' Se a resposta for não, reescreva.\n"
+            "4. PERMANECE: É a frase que continua ecoando depois que todo o restante desaparece. A beleza deve servir à Palavra, nunca competir com ela.\n"
+            "5. SEM IMPERATIVO OU EXCLAMAÇÃO: Proibido 'confie', 'lembre-se', 'busque', 'mude'. Proibido paralelismo artificial ou frases espelhadas. Proibido (!).\n"
+            "6. RETORNO: JSON com exclusivamente a chave 'share_quote'. Sem markdown."
         )
 
         res = self._call_claude(

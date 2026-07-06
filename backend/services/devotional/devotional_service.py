@@ -93,6 +93,50 @@ EMOTION_SCRIPTURES = {
 }
 
 class DevotionalService:
+    @staticmethod
+    def build_exclusions_and_cooldown(emotion, limit: int = 5):
+        """Constrói listas de exclusão (passagens, temas, títulos) e palavras de resfriamento semântico para a emoção."""
+        existing_data = DevotionalContent.objects.filter(
+            emotion=emotion
+        ).select_related('passage').values_list(
+            'scripture_reference', 'passage__canonical_id', 'title', 'emotional_theme'
+        )
+
+        excluded_passages = []
+        excluded_canonical_ids = set()
+        excluded_themes = []
+        excluded_titles = []
+
+        for ref, canonical_id, title, theme in existing_data:
+            if ref and ref not in excluded_passages:
+                excluded_passages.append(ref)
+            if canonical_id and canonical_id not in excluded_canonical_ids:
+                excluded_canonical_ids.add(canonical_id)
+            if title and title not in excluded_titles:
+                excluded_titles.append(title)
+            if theme and theme not in excluded_themes:
+                excluded_themes.append(theme)
+
+        watchlist = [
+            'silêncio', 'espera', 'repouso', 'quietude', 'sustentação', 'fidelidade',
+            'mistério', 'contemplação', 'interioridade', 'descanso', 'serenidade',
+            'presença', 'interior', 'recolhimento',
+        ]
+        recent = DevotionalContent.objects.filter(
+            emotion=emotion
+        ).order_by('-created_at')[:limit].values_list(
+            'reflection', 'share_quote', 'emotional_theme', 'title'
+        )
+        word_occurrences = {}
+        for reflection, share_quote, emotional_theme, title in recent:
+            combined = ' '.join(filter(None, [reflection, share_quote, emotional_theme, title])).lower()
+            for word in watchlist:
+                if word.lower() in combined:
+                    word_occurrences[word] = word_occurrences.get(word, 0) + 1
+        cooldown = [w for w, count in word_occurrences.items() if count >= 2]
+
+        return excluded_passages[-8:], excluded_canonical_ids, excluded_themes[-8:], excluded_titles[-8:], cooldown[:6]
+
     @classmethod
     def get_for_emotion(cls, emotion_slug: str, user) -> Dict[str, Any]:
         from django.conf import settings
@@ -264,12 +308,17 @@ class DevotionalService:
                 )
 
                 try:
+                    exc_passages, _, exc_themes, exc_titles, semantic_cooldown = DevotionalService.build_exclusions_and_cooldown(emotion)
                     logger.info(f"Iniciando geração de devocional dinâmico por IA (Claude) para a emoção {emotion.slug}")
                     ai_response = ai_service.devotional_for_emotion(
                         emotion_name=emotion.name,
                         reference_display=scripture_seed["reference_display"],
                         scripture_text=bible_passage.text_original,
-                        ai_request_id=ai_request.id
+                        ai_request_id=ai_request.id,
+                        excluded_passages=exc_passages,
+                        excluded_themes=exc_themes,
+                        excluded_titles=exc_titles,
+                        semantic_cooldown_words=semantic_cooldown,
                     )
                     
                     ai_request.status = 'success'
@@ -303,6 +352,10 @@ class DevotionalService:
                             practical_application=ai_response.get("practical_application", ""),
                             guiding_question=ai_response.get("guiding_question", ""),
                             prayer=ai_response.get("prayer", ""),
+                            share_quote=ai_response.get("share_quote", ""),
+                            emotional_theme=ai_response.get("emotional_theme", ""),
+                            main_truth=ai_response.get("main_truth", ""),
+                            daily_companion=ai_response.get("daily_companion", ""),
                             reviewed_by_human=True,
                             is_active=True,
                             ai_generated=ai_response.get("ai_generated", True)
@@ -386,6 +439,10 @@ class DevotionalService:
             "practical_application": chosen_content.practical_application,
             "guiding_question": chosen_content.guiding_question,
             "prayer": chosen_content.prayer,
+            "share_quote": chosen_content.share_quote,
+            "emotional_theme": chosen_content.emotional_theme,
+            "main_truth": getattr(chosen_content, 'main_truth', ''),
+            "daily_companion": getattr(chosen_content, 'daily_companion', ''),
             "share_text": chosen_content.share_text,
             "share_bg_image": chosen_content.share_bg_image,
             "ai_generated": chosen_content.ai_generated,

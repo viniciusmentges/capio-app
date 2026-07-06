@@ -79,13 +79,6 @@ class EditorialDevotionalGenerateView(APIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated, IsAdminUser]
 
-    # Palavras que tendem a saturar vocabulário editorial — monitoradas nos últimos devocionais.
-    _SEMANTIC_WATCHLIST = [
-        'silêncio', 'espera', 'repouso', 'quietude', 'sustentação', 'fidelidade',
-        'mistério', 'contemplação', 'interioridade', 'descanso', 'serenidade',
-        'presença', 'interior', 'recolhimento',
-    ]
-
     def post(self, request):
         emotion_slug = request.data.get('emotion_slug')
         tone_or_direction = request.data.get('tone_or_direction', '')
@@ -100,34 +93,7 @@ class EditorialDevotionalGenerateView(APIView):
 
         try:
             # Consultar banco para construir listas de exclusão antes de chamar a IA
-            existing_data = DevotionalContent.objects.filter(
-                emotion=emotion
-            ).select_related('passage').values_list(
-                'scripture_reference', 'passage__canonical_id', 'title', 'emotional_theme'
-            )
-
-            excluded_passages = []
-            excluded_canonical_ids = set()
-            excluded_themes = []
-            excluded_titles = []
-
-            for ref, canonical_id, title, theme in existing_data:
-                if ref and ref not in excluded_passages:
-                    excluded_passages.append(ref)
-                if canonical_id and canonical_id not in excluded_canonical_ids:
-                    excluded_canonical_ids.add(canonical_id)
-                if title and title not in excluded_titles:
-                    excluded_titles.append(title)
-                if theme and theme not in excluded_themes:
-                    excluded_themes.append(theme)
-
-            # Limitar a 8 itens por lista — cap ampliado para combater viés gravitacional de passagens
-            exc_passages = excluded_passages[-8:]
-            exc_themes = excluded_themes[-8:]
-            exc_titles = excluded_titles[-8:]
-
-            # Resfriamento semântico: palavras saturadas nos últimos devocionais desta emoção
-            semantic_cooldown = self._build_semantic_cooldown(emotion)
+            exc_passages, excluded_canonical_ids, exc_themes, exc_titles, semantic_cooldown = DevotionalService.build_exclusions_and_cooldown(emotion)
 
             logger.info(
                 "[CAPIO EDITORIAL] Gerando devocional para '%s' com %d passagens excluídas, %d temas excluídos, %d títulos excluídos.",
@@ -171,9 +137,9 @@ class EditorialDevotionalGenerateView(APIView):
                     res = ai_service.editorial_generate_devotional(
                         emotion_name=emotion.name,
                         tone_or_direction=retry_direction,
-                        excluded_passages=excluded_passages[-8:],
-                        excluded_themes=excluded_themes[-8:],
-                        excluded_titles=excluded_titles[-8:],
+                        excluded_passages=exc_passages,
+                        excluded_themes=exc_themes,
+                        excluded_titles=exc_titles,
                         semantic_cooldown_words=semantic_cooldown,
                     )
 
@@ -232,23 +198,6 @@ class EditorialDevotionalGenerateView(APIView):
             logger.error("Falha ao gerar devocional com IA no fluxo editorial: %s", e)
             return Response({"error": "generation_failed", "message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    @staticmethod
-    def _build_semantic_cooldown(emotion, limit: int = 5) -> list:
-        """Analisa os últimos `limit` devocionais da emoção e retorna palavras da watchlist
-        que aparecem em 2 ou mais deles, sinalizando saturação semântica."""
-        recent = DevotionalContent.objects.filter(
-            emotion=emotion
-        ).order_by('-created_at')[:limit].values_list(
-            'reflection', 'share_quote', 'emotional_theme', 'title'
-        )
-        word_occurrences = {}
-        for reflection, share_quote, emotional_theme, title in recent:
-            combined = ' '.join(filter(None, [reflection, share_quote, emotional_theme, title])).lower()
-            for word in EditorialDevotionalGenerateView._SEMANTIC_WATCHLIST:
-                if word.lower() in combined:
-                    word_occurrences[word] = word_occurrences.get(word, 0) + 1
-        cooldown = [w for w, count in word_occurrences.items() if count >= 2]
-        return cooldown[:6]
 
     @staticmethod
     def _check_duplicate(scripture_reference: str, excluded_canonical_ids: set) -> str:
