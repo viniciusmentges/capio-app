@@ -146,12 +146,25 @@ class DevotionalService:
 
         # --- CAMADA 1: SISTEMA DE ROTAÇÃO E SLIDING WINDOW (BIBLIOTECA-FIRST) ---
         
-        # Obter todos os IDs ativos do pool para esta emoção
-        total_pool_ids = list(DevotionalContent.objects.filter(
-            emotion=emotion,
-            is_active=True,
-            reviewed_by_human=True
-        ).values_list('id', flat=True))
+        # Modo de visualização editorial (Homologação / Staging)
+        is_editorial_user = user and (getattr(user, 'is_staff', False) or getattr(user, 'is_superuser', False))
+        staging_pool_ids = []
+        if is_editorial_user and emotion.slug in ['ansioso', 'triste', 'medo', 'desmotivado']:
+            staging_pool_ids = list(DevotionalContent.objects.filter(
+                emotion=emotion,
+                is_active=False,
+                reviewed_by_human=True
+            ).values_list('id', flat=True))
+
+        if staging_pool_ids:
+            total_pool_ids = staging_pool_ids
+            logger.info("[CAPIO EDITORIAL MODE] Usuário staff/admin acessando acervo em staging para '%s' (%d devocionais).", emotion.slug, len(total_pool_ids))
+        else:
+            total_pool_ids = list(DevotionalContent.objects.filter(
+                emotion=emotion,
+                is_active=True,
+                reviewed_by_human=True
+            ).values_list('id', flat=True))
         total_pool_count = len(total_pool_ids)
 
         chosen_content = None
