@@ -139,6 +139,12 @@ class DevotionalContent(models.Model):
             self.reviewed_by_human,
             self.passage_id,
         )
+        # Higienização editorial: remover asteriscos de formatação markdown para exibir texto puro e limpo
+        for field_name in ['scripture_text', 'reflection', 'main_truth', 'daily_companion', 'prayer', 'share_quote']:
+            val = getattr(self, field_name, '')
+            if val and isinstance(val, str) and '*' in val:
+                setattr(self, field_name, val.replace('*', '').strip())
+
         self.resolve_passage()
 
         if (self.is_active or self.reviewed_by_human) and not self.passage_id:

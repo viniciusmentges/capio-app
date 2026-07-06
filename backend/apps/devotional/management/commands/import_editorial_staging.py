@@ -147,6 +147,13 @@ class Command(BaseCommand):
                         self.stdout.write(self.style.ERROR(f"  [ERRO] Campos incompletos no devocional: {title}"))
                         continue
 
+                    scripture_text = scripture_text.replace('*', '').strip()
+                    reflection = reflection.replace('*', '').strip()
+                    main_truth = main_truth.replace('*', '').strip()
+                    daily_companion = daily_companion.replace('*', '').strip()
+                    prayer = prayer.replace('*', '').strip()
+                    share_quote = share_quote.replace('*', '').strip()
+
                     share_text = share_quote[:107] + "..." if len(share_quote) > 110 else share_quote
 
                     # Criar ou atualizar no banco como ativo (is_active=True, reviewed_by_human=True)
