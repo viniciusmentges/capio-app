@@ -47,8 +47,13 @@ class Command(BaseCommand):
             possible_paths = [
                 os.path.join(base_dir, 'acervo_permanente'),
                 os.path.join(os.path.dirname(base_dir), 'acervo_permanente'),
+                os.path.join(os.path.dirname(os.path.dirname(base_dir)), 'acervo_permanente'),
+                '/opt/render/project/src/acervo_permanente',
+                '/opt/render/project/acervo_permanente',
+                '/opt/render/project/src/backend/acervo_permanente',
                 'acervo_permanente',
                 '../acervo_permanente',
+                '../../acervo_permanente',
             ]
             for p in possible_paths:
                 if os.path.exists(p) and os.path.isdir(p):
@@ -56,7 +61,7 @@ class Command(BaseCommand):
                     break
 
         if not path or not os.path.exists(path):
-            self.stdout.write(self.style.ERROR(f"[ERRO] Diretorio acervo_permanente nao encontrado. Caminho: {path}"))
+            self.stdout.write(self.style.ERROR(f"[ERRO] Diretorio acervo_permanente nao encontrado. Caminho procurado em: {possible_paths}"))
             return
 
         self.stdout.write(f"[ARQUIVOS] Lendo arquivos de: {os.path.abspath(path)}")

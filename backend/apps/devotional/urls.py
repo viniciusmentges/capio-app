@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import EmotionsView, DevotionalByEmotionView, HistoryView, PublicDevotionalDetailView, EditorialDevotionalGenerateView
+from .views import EmotionsView, DevotionalByEmotionView, HistoryView, PublicDevotionalDetailView, EditorialDevotionalGenerateView, SyncEditorialView
 
 urlpatterns = [
     path('emotions/', EmotionsView.as_view(), name='emotions'),
@@ -7,5 +7,6 @@ urlpatterns = [
     path('history/', HistoryView.as_view(), name='history'),
     path('public/<uuid:public_id>/', PublicDevotionalDetailView.as_view(), name='public-detail'),
     path('editorial/generate/', EditorialDevotionalGenerateView.as_view(), name='editorial-generate'),
+    path('sync-editorial/', SyncEditorialView.as_view(), name='sync-editorial'),
 ]
 

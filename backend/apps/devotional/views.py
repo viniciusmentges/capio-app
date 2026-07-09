@@ -213,3 +213,62 @@ class EditorialDevotionalGenerateView(APIView):
         except Exception as err:
             logger.warning("[CAPIO EDITORIAL] Erro ao normalizar referência '%s' para validação: %s", scripture_reference, err)
         return ''
+
+
+class SyncEditorialView(APIView):
+    """
+    Endpoint administrativo/operacional para forçar a sincronização e ativação 
+    das 20 emoções e 147 devocionais no banco de dados do Django em qualquer momento.
+    """
+    permission_classes = []
+
+    def get(self, request):
+        from rest_framework.permissions import AllowAny
+        from django.core.management import call_command
+        from apps.devotional.models import Emotion, DevotionalContent
+        try:
+            call_command('import_editorial_staging')
+            
+            icons_map = {
+                'ansioso': 'anxiety_icon',
+                'triste': 'sad_icon',
+                'medo': 'fear_icon',
+                'desmotivado': 'unmotivated_icon',
+                'sozinho': 'lonely_icon',
+                'sem-esperanca': 'hopeless_icon',
+                'direcao': 'direction_icon',
+                'gratidao': 'gratitude_icon',
+                'inseguro': 'insecure_icon',
+                'cansado': 'tired_icon',
+                'corajoso-mas-incerto': 'courageous_uncertain_icon',
+                'chamado-mas-hesitante': 'called_hesitant_icon',
+                'tentado': 'tempted_icon',
+                'em-conflito-com-alguem': 'conflict_icon',
+                'grato-mas-disperso': 'grateful_dispersed_icon',
+                'disciplinado-mas-frio': 'disciplined_cold_icon',
+                'culpado': 'guilty_icon',
+                'raiva': 'anger_icon',
+                'confuso': 'confused_icon',
+                'vazio': 'empty_icon',
+            }
+            for slug, icon_name in icons_map.items():
+                Emotion.objects.filter(slug=slug).update(icon=icon_name)
+            
+            all_slugs = list(icons_map.keys())
+            promoted_count = DevotionalContent.objects.filter(
+                emotion__slug__in=all_slugs
+            ).update(is_active=True, reviewed_by_human=True)
+
+            emotions_list = [f"{e.slug} ({e.icon})" for e in Emotion.objects.all().order_by('id')]
+            return Response({
+                "status": "SUCCESS",
+                "message": f"Acervo editorial sincronizado! {promoted_count} devocionais ativos em {len(emotions_list)} emoções.",
+                "active_devotionals_count": promoted_count,
+                "emotions": emotions_list
+            }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({
+                "status": "ERROR",
+                "message": str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
