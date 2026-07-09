@@ -272,3 +272,122 @@ class SyncEditorialView(APIView):
                 "message": str(e)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
+class DiagnosticReportView(APIView):
+    """
+    Endpoint de auditoria profunda e diagnóstico científico em produção.
+    Retorna estado real do banco de dados, contagens por emoção, registros de ansioso,
+    status de migrações e teste do motor editorial.
+    """
+    permission_classes = []
+
+    def get(self, request):
+        from rest_framework.permissions import AllowAny
+        import os, glob
+        from django.db import connection
+        from apps.devotional.models import Emotion, DevotionalContent
+        from django.db.models import Count, Q
+        
+        report = {}
+        try:
+            # 1. Banco de dados em produção
+            db_vendor = connection.vendor
+            db_name = str(connection.settings_dict.get('NAME', ''))
+            report['db'] = {
+                'vendor': db_vendor,
+                'name_masked': db_name[:6] + "..." if len(db_name) > 6 else db_name,
+            }
+
+            # 2. Emocoes e contagens de devocionais
+            emotions_detail = []
+            for emo in Emotion.objects.all().order_by('id'):
+                total_devs = DevotionalContent.objects.filter(emotion=emo).count()
+                active_devs = DevotionalContent.objects.filter(emotion=emo, is_active=True).count()
+                reviewed_devs = DevotionalContent.objects.filter(emotion=emo, reviewed_by_human=True).count()
+                emotions_detail.append({
+                    'id': emo.id,
+                    'slug': emo.slug,
+                    'name': emo.name,
+                    'icon': getattr(emo, 'icon', ''),
+                    'is_active': getattr(emo, 'is_active', True),
+                    'total_devs': total_devs,
+                    'active_devs': active_devs,
+                    'reviewed_devs': reviewed_devs
+                })
+            report['emotions_summary'] = {
+                'total_emotions': len(emotions_detail),
+                'total_devotionals_global': DevotionalContent.objects.count(),
+                'total_active_devotionals_global': DevotionalContent.objects.filter(is_active=True).count(),
+                'emotions': emotions_detail
+            }
+
+            # 3. Detalhamento especifico da emocao 'ansioso'
+            ansioso_list = []
+            ansioso_emo = Emotion.objects.filter(slug='ansioso').first()
+            if ansioso_emo:
+                for dev in DevotionalContent.objects.filter(emotion=ansioso_emo).order_by('id'):
+                    ansioso_list.append({
+                        'id': dev.id,
+                        'title': dev.title,
+                        'scripture_reference': dev.scripture_reference,
+                        'is_active': dev.is_active,
+                        'reviewed_by_human': dev.reviewed_by_human,
+                        'created_at': str(dev.created_at),
+                        'updated_at': str(dev.updated_at)
+                    })
+            report['ansioso_deep_check'] = {
+                'exists': bool(ansioso_emo),
+                'count': len(ansioso_list),
+                'devotionals': ansioso_list
+            }
+
+            # 4. Migrations aplicadas no banco
+            migrations_list = []
+            try:
+                with connection.cursor() as cursor:
+                    cursor.execute("SELECT name, applied FROM django_migrations WHERE app='devotional' ORDER BY applied DESC LIMIT 10")
+                    for row in cursor.fetchall():
+                        migrations_list.append({'name': str(row[0]), 'applied': str(row[1])})
+            except Exception as m_err:
+                migrations_list.append({'error': str(m_err)})
+            report['migrations'] = migrations_list
+
+            # 5. Verificacao no disco / acervo markdown em produção
+            base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            possible_paths = [
+                os.path.join(base_dir, 'acervo_permanente'),
+                os.path.join(os.path.dirname(base_dir), 'acervo_permanente'),
+                os.path.join(os.path.dirname(os.path.dirname(base_dir)), 'acervo_permanente'),
+                '/opt/render/project/src/acervo_permanente',
+                '/opt/render/project/acervo_permanente',
+                '/opt/render/project/src/backend/acervo_permanente',
+                'acervo_permanente',
+                '../acervo_permanente',
+                '../../acervo_permanente',
+            ]
+            found_paths = []
+            md_files_count = 0
+            for p in possible_paths:
+                if os.path.exists(p) and os.path.isdir(p):
+                    files = glob.glob(os.path.join(p, 'acervo_capio_*.md'))
+                    found_paths.append({'path': p, 'md_files_count': len(files), 'files': [os.path.basename(f) for f in files]})
+            report['acervo_disk_check'] = found_paths
+
+            # 6. Teste da API get_for_emotion em tempo real
+            try:
+                from services.devotional.devotional_service import DevotionalService
+                test_res = DevotionalService.get_for_emotion('ansioso', None)
+                report['test_get_for_emotion_ansioso'] = {
+                    'status': 'SUCCESS',
+                    'title': test_res.get('title'),
+                    'scripture_reference': test_res.get('scripture_reference'),
+                    'source': test_res.get('source', 'dynamic/db')
+                }
+            except Exception as s_err:
+                report['test_get_for_emotion_ansioso'] = {'status': 'ERROR', 'message': str(s_err)}
+
+            return Response(report, status=status.HTTP_200_OK)
+        except Exception as err:
+            return Response({'status': 'ERROR', 'message': str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
