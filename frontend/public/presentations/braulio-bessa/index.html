@@ -10,11 +10,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Dancing+Script:wght@600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════════════════════════════════
-   1. RESET & ROOT VARIABLES — GRAMÁTICA DO PAPEL (v10 AUDITED)
+   GRAMÁTICA DO PAPEL — v10 (AUDITADO E OTMIZADO PARA MOBILE/EDITORIAL)
    13 claros · 5 escuros
    Fundo claro: marrom escuro como tinta
    Fundo escuro: textos menores mais claros
-   Diagramação: 3 tipos de layout com ritmo editorial e responsividade total
+   Diagramação: 3 tipos de layout com ritmo e responsividade total
 ═══════════════════════════════════════════════════════════════════════════ */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -23,7 +23,6 @@
 }
 
 :root {
-  /* O Papel e O Escuro */
   --P:   #EAD9B8;   /* O Papel */
   --E:   #180903;   /* O Escuro */
 
@@ -62,7 +61,6 @@ html, body {
   -webkit-font-smoothing: antialiased;
   user-select: none;
   cursor: none;
-  scroll-behavior: smooth;
 }
 
 body::before {
@@ -74,9 +72,6 @@ body::before {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   2. LAYOUT & PROGRESSIVE PRESENTATION
-═══════════════════════════════════════════════════════════════════════════ */
 #cur {
   position: fixed;
   width: 5px;
@@ -108,26 +103,25 @@ body.hov #cur-r { width: 38px; height: 38px; border-color: rgba(122,46,18,.38); 
   position: fixed;
   top: 0;
   left: 0;
-  height: 2px;
+  height: 1px;
   background: var(--A);
   z-index: 500;
   transition: width .6s var(--ease);
-  opacity: .6;
+  opacity: .5;
 }
 
 #ctr {
   position: fixed;
   bottom: 2rem;
   right: 2.5rem;
-  font-size: .58rem;
+  font-size: .55rem;
   letter-spacing: .2em;
   color: var(--T3);
   z-index: 500;
   transition: opacity .5s;
   font-family: 'Inter', sans-serif;
-  font-weight: 500;
 }
-#ctr.off { opacity: 0; pointer-events: none; }
+#ctr.off { opacity: 0; }
 
 #nav {
   position: fixed;
@@ -140,39 +134,35 @@ body.hov #cur-r { width: 38px; height: 38px; border-color: rgba(122,46,18,.38); 
   z-index: 500;
   transition: opacity .5s;
 }
-#nav.off { opacity: 0; pointer-events: none; }
+#nav.off { opacity: 0; }
 
 .nb {
-  width: 38px;
-  height: 38px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   border: 1px solid var(--T4);
-  background: rgba(234,217,184,.75);
-  backdrop-filter: blur(8px);
+  background: rgba(234,217,184,.65);
+  backdrop-filter: blur(4px);
   color: var(--T3);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: none;
-  transition: all .25s var(--ease);
-  font-size: 13px;
-  outline: none;
+  transition: all .25s;
+  font-size: 11px;
 }
-.nb:hover, .nb:focus { border-color: var(--A); color: var(--A); transform: scale(1.08); }
+.nb:hover { border-color: var(--A); color: var(--A); }
 
-.dots { display: flex; gap: 6px; align-items: center; }
+.dots { display: flex; gap: 5px; align-items: center; }
 .dot {
-  width: 4px;
-  height: 4px;
+  width: 3px;
+  height: 3px;
   border-radius: 50%;
   background: var(--T4);
-  transition: all .3s var(--ease);
+  transition: all .3s;
   cursor: none;
-  border: none;
-  padding: 0;
-  outline: none;
 }
-.dot.on { background: var(--A); transform: scale(1.8); }
+.dot.on { background: var(--A); transform: scale(1.5); }
 
 #deck {
   width: 100vw;
@@ -184,100 +174,77 @@ body.hov #cur-r { width: 38px; height: 38px; border-color: rgba(122,46,18,.38); 
   position: absolute;
   inset: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 3rem 0 5rem;
+  justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity .8s var(--ease);
-  -webkit-overflow-scrolling: touch;
+  transition: opacity .9s var(--ease);
+  overflow: hidden;
 }
-.slide.on {
-  opacity: 1;
-  pointer-events: all;
-  z-index: 10;
-}
-.slide > div {
-  margin-top: auto;
-  margin-bottom: auto;
-  flex-shrink: 0;
-}
+.slide.on { opacity: 1; pointer-events: all; }
 .claro { background: var(--P); }
 .escuro { background: var(--E); }
 
-/* Animações Progressivas — Entrada Suave */
+/* Alinhamento inteligente da página interna para rolagem suave se exceder tela */
+.slide > div {
+  margin: auto 0;
+  max-height: 100vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.slide > div::-webkit-scrollbar { display: none; }
+
 @keyframes emerge {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 @keyframes vem {
-  from { opacity: 0; transform: scale(0.96); }
-  to { opacity: 1; transform: scale(1); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .slide.on .e1 { animation: emerge .8s var(--ease) .08s both; }
 .slide.on .e2 { animation: emerge .8s var(--ease) .22s both; }
 .slide.on .e3 { animation: emerge .8s var(--ease) .36s both; }
 .slide.on .e4 { animation: emerge .8s var(--ease) .50s both; }
-.slide.on .e5 { animation: emerge .8s var(--ease) .64s both; }
-.slide.on .v1 { animation: vem 1s var(--ease) .18s both; }
+.slide.on .e5 { animation: emerge .8s var(--ease) .60s both; }
+.slide.on .v1 { animation: vem 1s var(--ease) .15s both; }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   3. TYPOGRAPHY (GROUPED & RESPONSIVE CLAMP SCALES)
-═══════════════════════════════════════════════════════════════════════════ */
-.ty-display, .ty-h1, .ty-h2, .ty-num, .ty-cordel {
-  font-family: 'Playfair Display', serif;
-}
-.ty-display { font-size: clamp(2.4rem, 6.2vw, 5.8rem); font-weight: 900; line-height: .93; letter-spacing: -.025em; }
-.ty-h1      { font-size: clamp(1.65rem, 3.2vw, 2.9rem); font-weight: 700; line-height: 1.06; letter-spacing: -.018em; }
-.ty-h2      { font-size: clamp(1.25rem, 2.2vw, 2rem); font-weight: 700; line-height: 1.1; }
-.ty-num     { font-size: clamp(2.2rem, 4.2vw, 3.9rem); font-weight: 900; line-height: 1; }
-.ty-cordel  { font-size: clamp(1.8rem, 4.5vw, 3.8rem); font-weight: 700; line-height: 1.08; }
+/* ── TIPOGRAFIA ── */
+.ty-display { font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 6.5vw, 5.8rem); font-weight: 900; line-height: .93; letter-spacing: -.025em; }
+.ty-h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.75rem, 3.2vw, 2.9rem); font-weight: 700; line-height: 1.06; letter-spacing: -.018em; }
+.ty-h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.3rem, 2.2vw, 2rem); font-weight: 700; line-height: 1.1; }
+.ty-num { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4.2vw, 3.9rem); font-weight: 900; line-height: 1; }
+.ty-voz { font-family: 'Lora', serif; font-size: clamp(1.05rem, 2vw, 1.8rem); font-weight: 400; font-style: italic; line-height: 1.55; }
+.ty-voz-sm { font-family: 'Lora', serif; font-size: clamp(.84rem, 1.3vw, 1.07rem); font-weight: 400; font-style: italic; line-height: 1.65; }
+.ty-script { font-family: 'Dancing Script', cursive; font-size: clamp(.88rem, 1.5vw, 1.25rem); font-weight: 600; }
+.ty-corpo { font-family: 'Inter', sans-serif; font-size: clamp(.8rem, 1.22vw, .96rem); font-weight: 300; line-height: 1.8; letter-spacing: .01em; }
+.ty-feature { font-family: 'Inter', sans-serif; font-size: clamp(.88rem, 1.35vw, 1.05rem); font-weight: 600; line-height: 1.3; }
+.ty-label { font-family: 'Inter', sans-serif; font-size: .58rem; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; }
 
-/* Lora: APENAS vozes e destaques editoriais */
-.ty-voz, .ty-voz-sm, .app-ola, .acard-titulo, .bd-titulo-bar, .bd-poema, .bd-sug-nome {
-  font-family: 'Lora', serif;
-}
-.ty-voz     { font-size: clamp(1.05rem, 2vw, 1.8rem); font-weight: 400; font-style: italic; line-height: 1.55; }
-.ty-voz-sm  { font-size: clamp(.84rem, 1.3vw, 1.07rem); font-weight: 400; font-style: italic; line-height: 1.65; }
-.ty-script  { font-family: 'Dancing Script', cursive; font-size: clamp(.9rem, 1.5vw, 1.25rem); font-weight: 600; }
-
-/* Inter: labels, corpo, features, UI */
-.ty-corpo, .ty-feature, .ty-label, .sbar-t, .acard-tag, .acard-corpo, .acard-link, .ep, .appnav-i, .bdh, .bd-leg, .bd-sug-tipo {
-  font-family: 'Inter', sans-serif;
-}
-.ty-corpo   { font-size: clamp(.82rem, 1.22vw, .96rem); font-weight: 300; line-height: 1.8; letter-spacing: .01em; }
-.ty-feature { font-size: clamp(.9rem, 1.35vw, 1.08rem); font-weight: 600; line-height: 1.3; }
-.ty-label   { font-size: clamp(.56rem, .8vw, .62rem); font-weight: 500; letter-spacing: .22em; text-transform: uppercase; }
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   4. SEMANTIC COLORS & SEPARATORS
-═══════════════════════════════════════════════════════════════════════════ */
-/* Claro */
+/* ── CORES SEMÂNTICAS — CLARO ── */
 .tc-titulo { color: var(--T); }
 .tc-corpo  { color: var(--T2); }
 .tc-meta   { color: var(--T3); }
 .tc-linha  { color: var(--T4); }
 .tc-acento { color: var(--A); }
 
-/* Escuro */
+/* ── CORES SEMÂNTICAS — ESCURO ── */
 .te-titulo { color: var(--PE0); }
 .te-corpo  { color: var(--PE1); }
 .te-meta   { color: var(--PE2); }
 .te-sutil  { color: var(--PE3); }
 .te-acento { color: var(--AE); }
 
-/* Separadores */
-.linha       { width: 100%; height: 1px; background: var(--T4); }
-.linha-e     { width: 100%; height: 1px; background: rgba(234,217,184,.12); }
-.acento-linha{ width: 24px; height: 1px; background: var(--A); }
-.orn         { display: flex; align-items: center; gap: 1rem; width: 100%; }
-.orn-l       { flex: 1; height: 1px; }
+/* ── SEPARADORES ── */
+.linha { width: 100%; height: 1px; background: var(--T4); }
+.linha-e { width: 100%; height: 1px; background: rgba(234,217,184,.12); }
+.acento-linha { width: 24px; height: 1px; background: var(--A); }
+.orn { display: flex; align-items: center; gap: 1rem; width: 100%; }
+.orn-l { flex: 1; height: 1px; }
 
-/* Separadores de Coluna */
+/* ── SEPARADORES DE COLUNA ── */
 .sep-r  { border-right: 1px solid var(--T4); }
 .sep-b  { border-bottom: 1px solid var(--T4); }
 .sep-t  { border-top: 1px solid var(--T4); }
@@ -285,27 +252,28 @@ body.hov #cur-r { width: 38px; height: 38px; border-color: rgba(122,46,18,.38); 
 .sep-be { border-bottom: 1px solid rgba(234,217,184,.08); }
 .sep-te { border-top: 1px solid rgba(234,217,184,.08); }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   5. COMPONENTS & APP MOCKUPS
-═══════════════════════════════════════════════════════════════════════════ */
-.pg      { max-width: 900px; padding: 0 5vw; width: 100%; }
-.pg-sm   { max-width: 620px; padding: 0 4rem; width: 100%; }
-.pg-lg   { max-width: 960px; padding: 0 4vw; width: 100%; }
-.col     { display: flex; flex-direction: column; }
-.ctr     { display: flex; flex-direction: column; align-items: center; text-align: center; }
-
-/* Grids e Estruturas */
-.g2      { display: grid; grid-template-columns: 1fr 1fr; gap: 5vw; }
+/* ── LAYOUT ── */
+.pg { max-width: 900px; padding: 0 5vw; width: 100%; }
+.pg-sm { max-width: 620px; padding: 0 4rem; width: 100%; }
+.pg-lg { max-width: 960px; padding: 0 4vw; width: 100%; }
+.col { display: flex; flex-direction: column; }
+.ctr { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5vw; }
 .g2-wide { display: grid; grid-template-columns: 1.1fr 1fr; gap: 5vw; }
-.g3      { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; }
-.g4      { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
-.g6      { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; }
+.g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+.g6 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
 
-.row-comp   { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2vw; padding: 1.1rem 0; align-items: start; }
-.row-comp-3 { display: grid; grid-template-columns: auto 1.1fr 1fr; gap: 2vw; padding: 1.1rem 0; align-items: start; }
-.row-tl     { display: grid; grid-template-columns: 1.2fr 3fr; gap: 3vw; padding: 1.1rem 0; align-items: start; }
+/* Helpers de linhas de tabela para S11 e S17 */
+.row-comp, .row-comp-3, .row-tl {
+  display: grid;
+  align-items: start;
+}
+.row-comp { grid-template-columns: 1.2fr 1fr; gap: 2vw; padding: 1.1rem 0; }
+.row-comp-3 { grid-template-columns: .1fr 1.1fr 1fr; gap: 2vw; padding: 1.1rem 0; }
+.row-tl { grid-template-columns: 1fr 3fr; gap: 2vw; padding: 1.1rem 0; }
 
-/* APP MOCKUP */
+/* ── APP MOCKUP ── */
 .iphone {
   width: 215px;
   background: #0A0A0A;
@@ -324,145 +292,84 @@ body.hov #cur-r { width: 38px; height: 38px; border-color: rgba(122,46,18,.38); 
 }
 .island { width: 88px; height: 28px; background: #0A0A0A; border-radius: 20px; margin: 10px auto 0; flex-shrink: 0; }
 .sbar { display: flex; align-items: center; justify-content: space-between; padding: 5px 16px 4px; flex-shrink: 0; }
-.sbar-t { font-size: .62rem; font-weight: 700; color: var(--APPT); }
-.sbar-icons { display: flex; gap: 3px; align-items: center; }
+.sbar-t { font-size: .62rem; font-weight: 700; color: var(--APPT); font-family: 'Inter', sans-serif; }
 .appcorpo { padding: 4px 14px 0; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-.app-ola { font-size: 1.25rem; font-weight: 600; color: var(--APPT); line-height: 1.22; padding-bottom: 4px; }
-
+.app-ola { font-family: 'Lora', serif; font-size: 1.25rem; font-weight: 600; color: var(--APPT); line-height: 1.22; padding-bottom: 4px; }
 .acard { background: var(--APPC); border-radius: 13px; padding: 13px; position: relative; overflow: hidden; }
-.acard-tag { font-size: .45rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--APPA); margin-bottom: 4px; }
-.acard-titulo { font-size: .9rem; font-weight: 600; color: var(--APPT); line-height: 1.22; margin-bottom: 4px; }
-.acard-corpo { font-size: .6rem; color: var(--APPD); line-height: 1.5; font-weight: 300; margin-bottom: 6px; }
-.acard-link { font-size: .55rem; color: var(--APPA); font-weight: 500; }
-
+.acard-tag { font-size: .45rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--APPA); font-family: 'Inter', sans-serif; margin-bottom: 4px; }
+.acard-titulo { font-family: 'Lora', serif; font-size: .9rem; font-weight: 600; color: var(--APPT); line-height: 1.22; margin-bottom: 4px; }
+.acard-corpo { font-size: .6rem; color: var(--APPD); line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; margin-bottom: 6px; }
+.acard-link { font-size: .55rem; color: var(--APPA); font-family: 'Inter', sans-serif; }
 .epills { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 3px; }
-.ep { font-size: .53rem; padding: 3px 9px; border-radius: 18px; background: rgba(234,217,184,.6); border: 1px solid rgba(44,21,8,.16); color: var(--APPD); }
+.ep { font-size: .53rem; padding: 3px 9px; border-radius: 18px; background: rgba(234,217,184,.6); border: 1px solid rgba(44,21,8,.16); color: var(--APPD); font-family: 'Inter', sans-serif; }
 .appnav { display: flex; align-items: center; justify-content: space-around; padding: 7px 0 9px; border-top: 1px solid rgba(44,21,8,.1); flex-shrink: 0; margin-top: auto; }
-.appnav-i { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: .4rem; color: var(--APPD); }
+.appnav-i { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: .4rem; font-family: 'Inter', sans-serif; color: var(--APPD); }
 .appnav-i.on { color: var(--APPA); }
 
-/* Tela 2 - Braúlio do Dia */
-.bdh { display: flex; align-items: center; justify-content: space-between; padding: 6px 14px 0; font-size: .75rem; color: var(--APPT); }
-.bd-titulo-bar { font-size: .8rem; font-weight: 600; color: var(--APPT); }
+/* tela 2 (Braúlio do Dia) */
+.bdh { display: flex; align-items: center; justify-content: space-between; padding: 6px 14px 0; font-family: 'Inter', sans-serif; font-size: .75rem; color: var(--APPT); }
+.bd-titulo-bar { font-family: 'Lora', serif; font-size: .8rem; font-weight: 600; color: var(--APPT); }
 .bdbody { padding: 8px 14px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-.bd-leg { font-size: .46rem; letter-spacing: .2em; text-transform: uppercase; color: var(--APPD); }
+.bd-leg { font-size: .46rem; letter-spacing: .2em; text-transform: uppercase; font-family: 'Inter', sans-serif; color: var(--APPD); }
 .bd-emocao { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 900; color: var(--APPT); line-height: 1; }
 .bd-aspas { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--APPA); line-height: 1; margin-bottom: -2px; }
-.bd-poema { font-size: .7rem; color: var(--APPT); line-height: 1.6; }
+.bd-poema { font-family: 'Lora', serif; font-size: .7rem; color: var(--APPT); line-height: 1.6; }
 .bd-ass { font-family: 'Dancing Script', cursive; font-size: .82rem; color: var(--APPA); }
 .bd-div { height: 1px; background: rgba(44,21,8,.12); }
 .bd-sug { background: var(--APPC); border-radius: 10px; display: flex; gap: 8px; align-items: center; padding: 8px 10px; }
-.bd-sug-nome { font-size: .65rem; font-weight: 600; color: var(--APPT); line-height: 1.22; }
-.bd-sug-tipo { font-size: .46rem; color: var(--APPD); }
-
-img, svg { max-width: 100%; height: auto; display: block; }
-img { loading: lazy; decoding: async; content-visibility: auto; }
+.bd-sug-nome { font-family: 'Lora', serif; font-size: .65rem; font-weight: 600; color: var(--APPT); line-height: 1.22; }
+.bd-sug-tipo { font-size: .46rem; color: var(--APPD); font-family: 'Inter', sans-serif; }
+.sbar-icons { display: flex; gap: 3px; align-items: center; }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   6. MEDIA QUERIES & BREAKPOINTS (AUDITADO PARA 100% PRODUÇÃO)
-   Desktop: 1440+ · Notebook: 1200 · Tablet: 992
-   Tablet pequeno: 768 · Celular grande: 576 · Celular pequeno: 375
+   RESPONSIVIDADE EDITORIAL COMPLETA (TABLET & MOBILE-FIRST)
 ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 992px) {
+  .slide > div {
+    max-height: calc(100vh - 4.5rem);
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+  }
+  .pg, .pg-sm, .pg-lg { padding-left: 2rem; padding-right: 2rem; }
+  .g2, .g2-wide { grid-template-columns: 1fr; gap: 2rem; }
+  .v1 { margin: 0 auto; }
+  .row-comp { grid-template-columns: 1fr; gap: 0.6rem; }
+  .row-comp-3 { grid-template-columns: 24px 1fr; gap: 0.6rem; }
+  .row-comp-3 > .ty-voz-sm { grid-column: 2 / -1; }
+  .row-tl { grid-template-columns: 1fr; gap: 0.4rem; }
+}
 
-/* Touch Devices & iPad Pro (Pointer Coarse) */
+@media (max-width: 768px) {
+  .pg, .pg-sm, .pg-lg { padding-left: 1.5rem; padding-right: 1.5rem; }
+  /* Grids de 4 (S4 e S18) ajustados para 2x2 harmonioso no celular */
+  .g4 { grid-template-columns: 1fr 1fr; }
+  .g4 > .col { padding: 1.2rem !important; }
+  .g4 > .col.sep-r:nth-child(2n), .g4 > .col.sep-re:nth-child(2n) { border-right: none; }
+  .g4 > .col:nth-child(1), .g4 > .col:nth-child(2) { border-bottom: 1px solid var(--T4); }
+  .g4 > .col.sep-re:nth-child(1), .g4 > .col.sep-re:nth-child(2) { border-bottom: 1px solid rgba(234,217,184,.1); }
+  .g3, .g6 { grid-template-columns: 1fr; }
+  .g3 > .col, .g6 > .col { border-right: none !important; padding-left: 0 !important; padding-right: 0 !important; padding-top: 1.1rem; padding-bottom: 1.1rem; }
+  .g3 > .col:not(:last-child), .g6 > .col:not(:last-child) { border-bottom: 1px solid var(--T4); }
+  #ctr { right: 1.5rem; bottom: 1.5rem; }
+  #nav { bottom: 1.25rem; }
+}
+
+@media (max-width: 576px) {
+  .pg, .pg-sm, .pg-lg { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .iphone { width: 220px; }
+  .tela { min-height: 420px; }
+}
+
+@media (max-width: 375px) {
+  .pg, .pg-sm, .pg-lg { padding-left: 1rem; padding-right: 1rem; }
+  .iphone { width: 210px; }
+}
+
+/* Proteção em dispositivos Touch: desativa o cursor customizado e evita foco acidental */
 @media (hover: none), (pointer: coarse) {
   #cur, #cur-r { display: none !important; }
-  body { cursor: auto !important; }
-}
-
-/* Notebook (≤ 1200px) */
-@media (max-width: 1200px) {
-  .pg    { max-width: 860px; padding: 0 4vw; }
-  .pg-lg { max-width: 900px; padding: 0 3vw; }
-  .g2-wide { grid-template-columns: 1fr 1fr; gap: 4vw; }
-}
-
-/* Tablet (≤ 992px) */
-@media (max-width: 992px) {
-  #ctr { bottom: 1.25rem; right: 1.5rem; font-size: .52rem; }
-  #nav { bottom: 1.25rem; gap: 1rem; }
-  
-  .pg, .pg-sm, .pg-lg { padding: 0 5vw; max-width: 100%; }
-  
-  /* Hero e grids de 2 colunas viram coluna em tablet/mobile */
-  .g2, .g2-wide { grid-template-columns: 1fr; gap: 2.5rem; }
-  
-  /* Em S2 Construtor e S5 Problema, alinhar separadores na coluna */
-  .sep-r, .sep-re { border-right: none; }
-  
-  /* Grids de 4 e 6 colunas (S4 Ativos, S16 Princípios) no tablet vão para 2 colunas */
-  .g4, .g6 { grid-template-columns: 1fr 1fr; }
-  
-  /* Em S10 e S12 (mockups), centralizar o mockup */
-  .iphone { margin: 0 auto; }
-}
-
-/* Tablet Pequeno / Celular Grande (≤ 768px) */
-@media (max-width: 768px) {
-  .slide { padding: 2.5rem 0 5rem; }
-  .pg, .pg-sm, .pg-lg { padding: 0 6vw; }
-  
-  /* Grids de 3 colunas (S13 Financeiro, S14 Parceria, S15 Métricas) viram coluna com margens generosas */
-  .g3 { grid-template-columns: 1fr; gap: 1.5rem; }
-  
-  /* Separadores em grids verticais */
-  .g3 > div, .g6 > div {
-    border-right: none !important;
-    border-bottom: 1px solid var(--T4);
-    padding: 1.25rem 0 !important;
-  }
-  .escuro .g3 > div, .escuro .g6 > div {
-    border-bottom: 1px solid rgba(234,217,184,.1) !important;
-  }
-  .g3 > div:last-child, .g6 > div:last-child {
-    border-bottom: none !important;
-    padding-bottom: 0 !important;
-  }
-  
-  /* Linhas comparativas (S9, S11, S17) em coluna única */
-  .row-comp, .row-comp-3, .row-tl {
-    grid-template-columns: 1fr !important;
-    gap: 0.5rem !important;
-    padding: 1.25rem 0 !important;
-  }
-  
-  /* Ocultar números romanos na coluna em S11 no mobile */
-  .row-comp-3 > .ty-h2 { display: none; }
-  
-  /* S4 Ativos e S18 Fechamento ganham grid 2x2 no mobile para ritmo editorial compacto e equilibrado */
-  .g4 { grid-template-columns: 1fr 1fr; gap: 1.5rem 1rem; }
-  .g4 > div { padding: 0.75rem 0 !important; border-right: none !important; border-bottom: none !important; }
-  
-  /* S16 Princípios vai para 1 coluna no celular */
-  .g6 { grid-template-columns: 1fr; }
-}
-
-/* Celular / Mobile (≤ 576px) */
-@media (max-width: 576px) {
-  /* Áreas de toque maiores para acessibilidade no mobile */
-  .nb { width: 42px; height: 42px; font-size: 14px; }
-  .dot { width: 5px; height: 5px; margin: 0 3px; }
-  .dot.on { transform: scale(1.6); }
-  
-  /* Botões e cards ocupando largura quase total com margens generosas */
-  .acard { padding: 15px; border-radius: 15px; margin-bottom: 8px; }
-  .iphone { width: 260px; border-radius: 48px; padding: 7px; }
-  .tela { border-radius: 42px; min-height: 460px; }
-  
-  /* Tipografia no celular ganha respiro e altura de linha confortável */
-  .ty-display { line-height: 1.05; }
-  .ty-h1 { line-height: 1.15; }
-  .ty-corpo { line-height: 1.75; }
-  .ty-voz { line-height: 1.6; }
-}
-
-/* Celular Pequeno (≤ 375px) */
-@media (max-width: 375px) {
-  .pg, .pg-sm, .pg-lg { padding: 0 5vw; }
-  .iphone { width: 230px; }
-  .tela { min-height: 440px; }
-  .ty-display { font-size: 2.2rem; }
-  .ty-h1 { font-size: 1.55rem; }
+  html, body { cursor: auto !important; }
+  .nb, .dot { cursor: pointer !important; }
 }
 </style>
 </head>
@@ -470,9 +377,9 @@ img { loading: lazy; decoding: async; content-visibility: auto; }
 <div id="cur"></div><div id="cur-r"></div>
 <div id="prog"></div><div id="ctr"></div>
 <div id="nav">
-  <button class="nb" onclick="ir(-1)" aria-label="Slide anterior">&#8592;</button>
+  <button class="nb" onclick="ir(-1)">&#8592;</button>
   <div class="dots" id="dots"></div>
-  <button class="nb" onclick="ir(1)" aria-label="Próximo slide">&#8594;</button>
+  <button class="nb" onclick="ir(1)">&#8594;</button>
 </div>
 <div id="deck">
 
@@ -490,7 +397,7 @@ img { loading: lazy; decoding: async; content-visibility: auto; }
     </div>
     <div class="ty-corpo tc-corpo e3" style="max-width:350px">Uma casa digital para décadas de produção intelectual — onde a obra do Braúlio acompanha as pessoas todos os dias.</div>
     <div class="linha e4" style="max-width:280px;opacity:.5"></div>
-    <div class="e4" style="display:flex;gap:clamp(1.5rem, 4vw, 3.5rem);flex-wrap:wrap;justify-content:center">
+    <div class="e4" style="display:flex;gap:3.5rem;flex-wrap:wrap;justify-content:center">
       <div class="ctr" style="gap:4px"><div class="ty-num tc-titulo">6M</div><div class="ty-label tc-meta">seguidores</div></div>
       <div class="ctr" style="gap:4px"><div class="ty-num tc-titulo">+500k</div><div class="ty-label tc-meta">livros vendidos</div></div>
       <div class="ctr" style="gap:4px"><div class="ty-num tc-titulo">3º</div><div class="ty-label tc-meta">maior palestrante</div></div>
@@ -531,7 +438,7 @@ img { loading: lazy; decoding: async; content-visibility: auto; }
           </svg>
           <div class="ty-feature tc-titulo">CAPIO</div>
         </div>
-        <div class="ty-corpo tc-meta" style="padding-left:1.6rem">Senti falta de uma rotina diária com Deus simples e profunda. Construí a plataforma que queria usar.</div>
+        <div class="ty-corpo tc-meta" style="padding-left:1.6rem">Senti falta de uma rotina diária com Deus simples e profunda. Construí a plataforma que queria usar. Hoje é o laboratório permanente onde esse motor editorial foi desenvolvido, validado e continua evoluindo.</div>
       </div>
       <div class="col" style="gap:.3rem;padding:.9rem 0">
         <div style="display:flex;align-items:center;gap:.75rem">
@@ -540,22 +447,22 @@ img { loading: lazy; decoding: async; content-visibility: auto; }
           </svg>
           <div class="ty-feature tc-acento">Plataforma do Braúlio</div>
         </div>
-        <div class="ty-corpo tc-meta" style="padding-left:1.6rem">Grandes obras intelectuais morrem fragmentadas. O motor da CAPIO pode mudar isso.</div>
+        <div class="ty-corpo tc-meta" style="padding-left:1.6rem">Décadas de obra espalhadas em formatos que não conversam entre si. Já sabemos como mudar isso — e já provamos que funciona.</div>
       </div>
       <div class="col sep-t" style="gap:.7rem;padding-top:1rem">
         <div class="ty-label tc-meta">CAPIO hoje</div>
-        <div style="display:flex;gap:1rem;flex-wrap:wrap">
-          <div class="col sep-r" style="gap:3px;flex:1;min-width:100px;padding-right:1rem">
+        <div style="display:flex;gap:0;flex-wrap:wrap">
+          <div class="col sep-r" style="gap:3px;flex:1;padding-right:1rem">
             <div class="ty-h2 tc-titulo">24</div><div class="ty-label tc-meta">usuários ativos</div>
           </div>
-          <div class="col sep-r" style="gap:3px;flex:1;min-width:100px;padding:0 1rem">
+          <div class="col sep-r" style="gap:3px;flex:1;padding:0 1rem">
             <div class="ty-h2 tc-titulo">100%</div><div class="ty-label tc-meta">crescimento orgânico</div>
           </div>
-          <div class="col" style="gap:3px;flex:1;min-width:100px;padding-left:1rem">
+          <div class="col" style="gap:3px;flex:1;padding-left:1rem">
             <div class="ty-h2 tc-titulo">R$0</div><div class="ty-label tc-meta">em aquisição</div>
           </div>
         </div>
-        <div class="ty-voz-sm tc-meta">O produto existe, retém e funciona — sem publicidade.</div>
+        <div class="ty-voz-sm tc-meta">O produto existe, retém e funciona — sem publicidade, sem marketing.</div>
       </div>
     </div>
   </div>
@@ -566,10 +473,11 @@ img { loading: lazy; decoding: async; content-visibility: auto; }
   <div class="pg-sm ctr" style="gap:2.75rem">
     <div class="acento-linha e1" style="margin:0 auto;opacity:.4"></div>
     <div class="ty-voz te-titulo e2" style="font-size:clamp(1.3rem,2.6vw,2.2rem)">
-      "O Instagram mostra o que o Braúlio publicou.<br>
-      A plataforma acompanha o usuário<br>todos os dias."
+      "Cada nova obra do Braúlio<br>
+      não apenas entra na plataforma.<br>
+      Ela fortalece tudo que já existe."
     </div>
-    <div class="ty-corpo te-meta e3">Livros são estáticos. A plataforma torna a obra dinâmica.</div>
+    <div class="ty-corpo te-meta e3">Quanto mais a obra cresce, mais rica fica toda a experiência.</div>
     <div class="acento-linha e4" style="margin:0 auto;opacity:.4"></div>
   </div>
 </div>
@@ -617,7 +525,33 @@ img { loading: lazy; decoding: async; content-visibility: auto; }
       <div class="sep-b" style="display:flex;align-items:center;gap:1rem;padding:.65rem 0"><div style="width:3px;height:3px;border-radius:50%;background:var(--T4);flex-shrink:0"></div><div class="ty-corpo tc-corpo">Posts · duram 48 horas</div></div>
       <div class="sep-b" style="display:flex;align-items:center;gap:1rem;padding:.65rem 0"><div style="width:3px;height:3px;border-radius:50%;background:var(--T4);flex-shrink:0"></div><div class="ty-corpo tc-corpo">Podcasts · consumidos uma vez</div></div>
       <div class="sep-b" style="display:flex;align-items:center;gap:1rem;padding:.65rem 0"><div style="width:3px;height:3px;border-radius:50%;background:var(--T4);flex-shrink:0"></div><div class="ty-corpo tc-corpo">Palestras · sem continuidade</div></div>
+      <div class="sep-b" style="display:flex;align-items:center;gap:1rem;padding:.65rem 0"><div style="width:3px;height:3px;border-radius:50%;background:var(--T4);flex-shrink:0"></div><div class="ty-corpo tc-corpo">Comunidade · pertence às plataformas, não ao Braúlio</div></div>
+      <div class="sep-b" style="display:flex;align-items:center;gap:1rem;padding:.65rem 0"><div style="width:3px;height:3px;border-radius:50%;background:var(--T4);flex-shrink:0"></div><div class="ty-corpo tc-corpo">Equipe · sobrecarregada com pedidos de professores, jornalistas e pesquisadores buscando materiais</div></div>
       <div style="display:flex;align-items:center;gap:1rem;padding:.65rem 0"><div style="width:3px;height:3px;border-radius:50%;background:var(--A);flex-shrink:0"></div><div class="ty-corpo tc-titulo">Nenhum deles acompanha amanhã</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S5-B BIBLIOTECA VIVA — claro — duas colunas ══ -->
+<div class="slide claro" id="s5b">
+  <div class="pg g2" style="align-items:start">
+    <div class="col e1" style="gap:1.75rem">
+      <div>
+        <div class="ty-label tc-meta" style="margin-bottom:.75rem">Antes das experiências</div>
+        <div class="ty-h1 tc-titulo">Toda a obra<br>em um só lugar.<br><em class="tc-acento">Uma biblioteca viva.</em></div>
+      </div>
+      <div class="ty-corpo tc-corpo" style="max-width:300px">Livros, poemas, entrevistas, vídeos, palestras, cordéis, áudios — tudo organizado e conectado. A biblioteca é a fundação. As experiências são o que ela torna possível.</div>
+      <div class="ty-voz-sm tc-meta" style="max-width:300px">"A biblioteca não concorre com os livros. Ela aumenta o valor deles."</div>
+    </div>
+    <div class="col e2" style="gap:0">
+      <div class="ty-label tc-meta" style="margin-bottom:.7rem;padding-bottom:.6rem;border-bottom:1px solid var(--T4)">Gratuito — descobrir</div>
+      <div class="sep-b" style="display:flex;align-items:center;gap:1rem;padding:.6rem 0"><div style="width:3px;height:3px;border-radius:50%;background:var(--T3);flex-shrink:0"></div><div class="ty-corpo tc-corpo">Buscar por poemas, livros, temas e emoções</div></div>
+      <div class="sep-b" style="display:flex;align-items:center;gap:1rem;padding:.6rem 0"><div style="width:3px;height:3px;border-radius:50%;background:var(--T3);flex-shrink:0"></div><div class="ty-corpo tc-corpo">Acessar trechos autorizados e fichas da obra</div></div>
+      <div class="sep-b" style="display:flex;align-items:center;gap:1rem;padding:.6rem 0"><div style="width:3px;height:3px;border-radius:50%;background:var(--T3);flex-shrink:0"></div><div class="ty-corpo tc-corpo">Encontrar entrevistas e vídeos relacionados</div></div>
+      <div style="display:flex;align-items:center;gap:1rem;padding:.6rem 0 1rem"><div style="width:3px;height:3px;border-radius:50%;background:var(--T3);flex-shrink:0"></div><div class="ty-corpo tc-corpo">Descobrir onde continuar: livro, vídeo ou jornada</div></div>
+      <div class="ty-label tc-meta" style="margin-bottom:.7rem;padding-bottom:.6rem;border-bottom:1px solid var(--T4);border-top:1px solid var(--T4);padding-top:.9rem">Premium — aprofundar</div>
+      <div class="sep-b" style="display:flex;align-items:center;gap:1rem;padding:.6rem 0"><div style="width:3px;height:3px;border-radius:50%;background:var(--A);flex-shrink:0"></div><div class="ty-corpo tc-corpo">Obra ampliada, contextos e relações entre obras</div></div>
+      <div style="display:flex;align-items:center;gap:1rem;padding:.6rem 0"><div style="width:3px;height:3px;border-radius:50%;background:var(--A);flex-shrink:0"></div><div class="ty-corpo tc-corpo">Áudios, favoritos, histórico e jornadas completas</div></div>
     </div>
   </div>
 </div>
@@ -633,7 +567,7 @@ img { loading: lazy; decoding: async; content-visibility: auto; }
     <div class="ty-voz tc-corpo e3" style="font-size:clamp(1rem,1.9vw,1.7rem)">
       Um lugar onde décadas de produção intelectual<br>deixam de ser acervo —<br>e passam a ser companhia diária.
     </div>
-    <div class="ty-corpo tc-meta e4" style="max-width:390px">Toda a obra organizada por significado, com IA contextualizada, e entregue para as pessoas no momento certo — todos os dias.</div>
+    <div class="ty-corpo tc-meta e4" style="max-width:390px">Primeiro, a obra ganha uma casa inteligente — organizada, conectada, pesquisável. Depois, essa fundação alimenta experiências diárias que chegam no momento certo. A tecnologia desaparece. A obra ocupa todo o espaço.</div>
   </div>
 </div>
 
@@ -641,10 +575,10 @@ img { loading: lazy; decoding: async; content-visibility: auto; }
 <div class="slide escuro" id="s7">
   <div class="pg-sm ctr" style="gap:3.5rem">
     <div class="e1">
-      <div class="ty-label te-sutil" style="margin-bottom:2.25rem">Princípio editorial da plataforma</div>
+      <div class="ty-label te-sutil" style="margin-bottom:2.25rem">O princípio que orienta tudo</div>
       <div class="ty-voz te-titulo" style="font-size:clamp(1.55rem,3.1vw,2.65rem);line-height:1.45">
-        "A IA não acrescenta<br><em class="te-acento">significado</em> ao poema.<br><br>
-        Ela acrescenta<br><em class="te-acento">percepção</em> ao leitor."
+        "A tecnologia<br><em class="te-acento">desaparece.</em><br><br>
+        A obra ocupa<br><em class="te-acento">todo o espaço.</em>"
       </div>
     </div>
     <div class="e2" style="width:20px;height:1px;background:rgba(234,217,184,.15)"></div>
@@ -658,7 +592,7 @@ img { loading: lazy; decoding: async; content-visibility: auto; }
       <div class="ty-label tc-meta" style="margin-bottom:.6rem">O papel da tecnologia</div>
       <div class="ty-h1 tc-titulo">O que a IA pode —<br>e o que ela nunca faz.</div>
     </div>
-    <div class="g2 e2">
+    <div class="g2 e2" style="gap:5vw">
       <div class="col" style="gap:0">
         <div class="ty-label tc-titulo" style="padding-bottom:.65rem;margin-bottom:.65rem;border-bottom:1px solid var(--T4)">A IA pode</div>
         <div class="sep-b" style="display:flex;align-items:center;gap:.85rem;padding:.55rem 0"><div style="width:3px;height:3px;border-radius:50%;background:var(--T3);flex-shrink:0"></div><div class="ty-corpo tc-corpo">Revelar um detalhe que passa despercebido</div></div>
@@ -778,8 +712,8 @@ img { loading: lazy; decoding: async; content-visibility: auto; }
     <div class="col e2" style="gap:0">
       <div class="row-comp-3 sep-b">
         <div class="ty-h2 tc-meta" style="padding-top:2px;opacity:.4">I</div>
-        <div class="col" style="gap:.3rem"><div class="ty-feature tc-titulo">Biblioteca Viva</div><div class="ty-corpo tc-corpo">Toda a obra organizada por emoção, tema e momento — não por livro. A obra deixa de ser linear.</div></div>
-        <div class="ty-voz-sm tc-meta">"Finalmente encontrei tudo o que o Braúlio escreveu sobre perda — num lugar só."</div>
+        <div class="col" style="gap:.3rem"><div class="ty-feature tc-titulo">Biblioteca Viva</div><div class="ty-corpo tc-corpo">Toda a obra acessível por emoção, tema e momento — com contextos, relações entre obras, áudios e favoritos. O que no gratuito é descoberta, no premium é profundidade.</div></div>
+        <div class="ty-voz-sm tc-meta">"Encontrei tudo o que o Braúlio escreveu sobre perda — num lugar só, com tudo conectado."</div>
       </div>
       <div class="row-comp-3 sep-b">
         <div class="ty-h2 tc-meta" style="padding-top:2px;opacity:.4">II</div>
@@ -788,7 +722,7 @@ img { loading: lazy; decoding: async; content-visibility: auto; }
       </div>
       <div class="row-comp-3 sep-b">
         <div class="ty-h2 tc-meta" style="padding-top:2px;opacity:.4">III</div>
-        <div class="col" style="gap:.3rem"><div class="ty-feature tc-titulo">Escutar</div><div class="ty-corpo tc-corpo">Toda a experiência em áudio com a voz autorizada do próprio Braúlio via IA exclusiva.</div></div>
+        <div class="col" style="gap:.3rem"><div class="ty-feature tc-titulo">Escutar</div><div class="ty-corpo tc-corpo">Toda a obra disponível em áudio — na voz do próprio Braúlio, gerada com autorização exclusiva.</div></div>
         <div class="ty-voz-sm tc-meta">"Ouço o Braúlio no caminho do trabalho. Parece que ele está do lado."</div>
       </div>
       <div class="row-comp-3">
@@ -850,6 +784,28 @@ img { loading: lazy; decoding: async; content-visibility: auto; }
           <div class="appnav-i"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4.5" r="2.2" stroke="currentColor" stroke-width="1.2"/><path d="M2 12.5C2 10 4.2 8 7 8C9.8 8 12 10 12 12.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Perfil</div>
         </div>
       </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S12-B COMUNIDADE — escuro — duas colunas ══ -->
+<div class="slide escuro" id="s12b">
+  <div class="pg g2" style="align-items:center">
+    <div class="col e1" style="gap:1.75rem">
+      <div>
+        <div class="ty-label te-sutil" style="margin-bottom:.75rem">Um ativo que poucos enxergam</div>
+        <div class="ty-h1 te-titulo">A comunidade<br>volta para casa.</div>
+      </div>
+      <div class="ty-corpo te-corpo" style="max-width:300px">Hoje milhões acompanham o Braúlio. Mas esse relacionamento vive em plataformas de terceiros — e pode desaparecer de um dia para o outro com uma mudança de algoritmo.</div>
+      <div class="ty-voz-sm te-meta" style="max-width:300px">"A plataforma devolve ao Braúlio a possibilidade de conhecer quem lê, o que emociona e quem caminha diariamente com sua obra."</div>
+    </div>
+    <div class="col e2" style="gap:0">
+      <div class="ty-label te-sutil" style="margin-bottom:.7rem;padding-bottom:.6rem;border-bottom:1px solid rgba(234,217,184,.1)">O que muda com a plataforma própria</div>
+      <div class="sep-be" style="display:flex;align-items:center;gap:1rem;padding:.65rem 0"><div style="width:3px;height:3px;border-radius:50%;background:rgba(234,217,184,.3);flex-shrink:0"></div><div class="ty-corpo te-corpo">O Braúlio passa a conhecer quem lê, não apenas quem segue</div></div>
+      <div class="sep-be" style="display:flex;align-items:center;gap:1rem;padding:.65rem 0"><div style="width:3px;height:3px;border-radius:50%;background:rgba(234,217,184,.3);flex-shrink:0"></div><div class="ty-corpo te-corpo">Sabe quais temas tocam mais profundamente sua comunidade</div></div>
+      <div class="sep-be" style="display:flex;align-items:center;gap:1rem;padding:.65rem 0"><div style="width:3px;height:3px;border-radius:50%;background:rgba(234,217,184,.3);flex-shrink:0"></div><div class="ty-corpo te-corpo">Entende quais obras criam os vínculos mais duradouros</div></div>
+      <div class="sep-be" style="display:flex;align-items:center;gap:1rem;padding:.65rem 0"><div style="width:3px;height:3px;border-radius:50%;background:rgba(234,217,184,.3);flex-shrink:0"></div><div class="ty-corpo te-corpo">Mantém o relacionamento direto, sem depender de algoritmos</div></div>
+      <div style="display:flex;align-items:center;gap:1rem;padding:.65rem 0"><div style="width:3px;height:3px;border-radius:50%;background:var(--AE);flex-shrink:0"></div><div class="ty-corpo te-titulo">A obra pertence ao Braúlio, não às plataformas.</div></div>
     </div>
   </div>
 </div>
@@ -1094,7 +1050,8 @@ img { loading: lazy; decoding: async; content-visibility: auto; }
 
 <script>
 const $ = id => document.getElementById(id);
-const TOTAL = 18;
+const slides = document.querySelectorAll('.slide');
+const TOTAL = slides.length;
 let cur = 1, hideT = null, cx = 0, cy = 0, rx = 0, ry = 0;
 const curEl = $('cur'), ringEl = $('cur-r'), progEl = $('prog'), ctrEl = $('ctr'), navEl = $('nav'), dotsEl = $('dots');
 
@@ -1107,11 +1064,13 @@ for (let i = 1; i <= TOTAL; i++) {
 }
 
 function atualizar() {
-  document.querySelectorAll('.slide').forEach((s, i) => {
+  slides.forEach((s, i) => {
     const isOn = i + 1 === cur;
     s.classList.toggle('on', isOn);
     if (isOn) {
       s.scrollTop = 0;
+      const inner = s.firstElementChild;
+      if (inner) inner.scrollTop = 0;
     }
   });
   document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('on', i + 1 === cur));
