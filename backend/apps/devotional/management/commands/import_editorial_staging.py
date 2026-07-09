@@ -88,16 +88,12 @@ class Command(BaseCommand):
             '08_gratidao': ('gratidao', 'Gratidão'),
             '09_inseguro': ('inseguro', 'Inseguro'),
             '10_cansado': ('cansado', 'Cansado'),
-            '11_culpado': ('culpado', 'Culpado'),
-            '12_raiva': ('raiva', 'Raiva / Em Conflito'),
-            '13_confuso': ('confuso', 'Confuso / Incerto'),
-            '14_vazio': ('vazio', 'Vazio / Disperso'),
-            '09_corajoso_mas_incerto': ('corajoso-mas-incerto', 'Corajoso, mas incerto'),
-            '10_chamado_mas_hesitante': ('chamado-mas-hesitante', 'Chamado, mas hesitante'),
-            '11_tentado': ('tentado', 'Tentado'),
-            '12_em_conflito_com_alguem': ('em-conflito-com-alguem', 'Em conflito com alguém'),
-            '13_grato_mas_disperso': ('grato-mas-disperso', 'Grato, mas disperso'),
-            '14_disciplinado_mas_frio': ('disciplinado-mas-frio', 'Disciplinado, mas frio'),
+            '11_corajoso_mas_incerto': ('corajoso-mas-incerto', 'Corajoso, mas incerto'),
+            '12_chamado_mas_hesitante': ('chamado-mas-hesitante', 'Chamado, mas hesitante'),
+            '13_tentado': ('tentado', 'Tentado'),
+            '14_em_conflito_com_alguem': ('em-conflito-com-alguem', 'Em conflito com alguém'),
+            '15_grato_mas_disperso': ('grato-mas-disperso', 'Grato, mas disperso'),
+            '16_disciplinado_mas_frio': ('disciplinado-mas-frio', 'Disciplinado, mas frio'),
         }
 
         total_imported = 0

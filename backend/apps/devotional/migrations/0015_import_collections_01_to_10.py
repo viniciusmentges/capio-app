@@ -12,11 +12,17 @@ def promote_all_ten_collections(apps, schema_editor):
         logger.info("[CAPIO PROMOÇÃO EDITORIAL] Iniciando importação e ativação das 10 coleções em produção...")
         call_command('import_editorial_staging')
         
+        Emotion = apps.get_model('devotional', 'Emotion')
+        Emotion.objects.filter(slug='inseguro').update(icon='insecure_icon')
+        Emotion.objects.filter(slug='cansado').update(icon='tired_icon')
+        
         DevotionalContent = apps.get_model('devotional', 'DevotionalContent')
         promoted_count = DevotionalContent.objects.filter(
             emotion__slug__in=[
                 'ansioso', 'triste', 'medo', 'desmotivado', 'sozinho',
-                'sem-esperanca', 'direcao', 'gratidao', 'inseguro', 'cansado'
+                'sem-esperanca', 'direcao', 'gratidao', 'inseguro', 'cansado',
+                'corajoso-mas-incerto', 'chamado-mas-hesitante', 'tentado',
+                'em-conflito-com-alguem', 'grato-mas-disperso', 'disciplinado-mas-frio'
             ]
         ).update(is_active=True, reviewed_by_human=True)
         
