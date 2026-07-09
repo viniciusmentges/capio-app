@@ -78,22 +78,26 @@ class Command(BaseCommand):
             self.stdout.write(self.style.WARNING(f"[LIMPEZA] Removidos {deleted_count} registros editoriais anteriores para reimportacao limpa."))
 
         emotion_map = {
-            '01_ansioso': ('ansioso', 'Ansioso'),
-            '02_triste': ('triste', 'Triste'),
-            '03_medo': ('medo', 'Medo'),
-            '04_desmotivado': ('desmotivado', 'Desmotivado'),
-            '05_sozinho': ('sozinho', 'Sozinho'),
-            '06_sem_esperanca': ('sem-esperanca', 'Sem Esperança'),
-            '07_direcao': ('direcao', 'Direção'),
-            '08_gratidao': ('gratidao', 'Gratidão'),
-            '09_inseguro': ('inseguro', 'Inseguro'),
-            '10_cansado': ('cansado', 'Cansado'),
-            '11_corajoso_mas_incerto': ('corajoso-mas-incerto', 'Corajoso, mas incerto'),
-            '12_chamado_mas_hesitante': ('chamado-mas-hesitante', 'Chamado, mas hesitante'),
-            '13_tentado': ('tentado', 'Tentado'),
-            '14_em_conflito_com_alguem': ('em-conflito-com-alguem', 'Em conflito com alguém'),
-            '15_grato_mas_disperso': ('grato-mas-disperso', 'Grato, mas disperso'),
-            '16_disciplinado_mas_frio': ('disciplinado-mas-frio', 'Disciplinado, mas frio'),
+            '01_ansioso': ('ansioso', 'Ansioso', 'anxiety_icon'),
+            '02_triste': ('triste', 'Triste', 'sad_icon'),
+            '03_medo': ('medo', 'Medo', 'fear_icon'),
+            '04_desmotivado': ('desmotivado', 'Desmotivado', 'unmotivated_icon'),
+            '05_sozinho': ('sozinho', 'Sozinho', 'lonely_icon'),
+            '06_sem_esperanca': ('sem-esperanca', 'Sem Esperança', 'hopeless_icon'),
+            '07_direcao': ('direcao', 'Direção', 'direction_icon'),
+            '08_gratidao': ('gratidao', 'Gratidão', 'gratitude_icon'),
+            '09_inseguro': ('inseguro', 'Inseguro', 'insecure_icon'),
+            '10_cansado': ('cansado', 'Cansado', 'tired_icon'),
+            '11_corajoso_mas_incerto': ('corajoso-mas-incerto', 'Corajoso, mas incerto', 'courageous_uncertain_icon'),
+            '12_chamado_mas_hesitante': ('chamado-mas-hesitante', 'Chamado, mas hesitante', 'called_hesitant_icon'),
+            '13_tentado': ('tentado', 'Tentado', 'tempted_icon'),
+            '14_em_conflito_com_alguem': ('em-conflito-com-alguem', 'Em conflito com alguém', 'conflict_icon'),
+            '15_grato_mas_disperso': ('grato-mas-disperso', 'Grato, mas disperso', 'grateful_dispersed_icon'),
+            '16_disciplinado_mas_frio': ('disciplinado-mas-frio', 'Disciplinado, mas frio', 'disciplined_cold_icon'),
+            '17_culpado': ('culpado', 'Culpado', 'guilty_icon'),
+            '18_raiva': ('raiva', 'Raiva', 'anger_icon'),
+            '19_confuso': ('confuso', 'Confuso', 'confused_icon'),
+            '20_vazio': ('vazio', 'Vazio', 'empty_icon'),
         }
 
         total_imported = 0
@@ -103,10 +107,12 @@ class Command(BaseCommand):
             filename = os.path.basename(f)
             emotion_slug = None
             emotion_name = None
-            for key, (slug, name) in emotion_map.items():
+            emotion_icon = ""
+            for key, (slug, name, icon) in emotion_map.items():
                 if key in filename:
                     emotion_slug = slug
                     emotion_name = name
+                    emotion_icon = icon
                     break
 
             if not emotion_slug:
@@ -118,11 +124,12 @@ class Command(BaseCommand):
             with transaction.atomic():
                 emotion, _ = Emotion.objects.get_or_create(
                     slug=emotion_slug,
-                    defaults={'name': emotion_name}
+                    defaults={'name': emotion_name, 'icon': emotion_icon}
                 )
-                if emotion.name != emotion_name:
+                if emotion.name != emotion_name or emotion.icon != emotion_icon:
                     emotion.name = emotion_name
-                    emotion.save(update_fields=['name'])
+                    emotion.icon = emotion_icon
+                    emotion.save(update_fields=['name', 'icon'])
 
                 content = open(f, encoding='utf-8').read()
                 devs = re.split(r'# DEVOCIONAL \d+ — ', content)[1:]
