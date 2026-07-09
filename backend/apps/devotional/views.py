@@ -332,8 +332,7 @@ class DiagnosticReportView(APIView):
                         'scripture_reference': dev.scripture_reference,
                         'is_active': dev.is_active,
                         'reviewed_by_human': dev.reviewed_by_human,
-                        'created_at': str(dev.created_at),
-                        'updated_at': str(dev.updated_at)
+                        'created_at': str(dev.created_at)
                     })
             report['ansioso_deep_check'] = {
                 'exists': bool(ansioso_emo),
