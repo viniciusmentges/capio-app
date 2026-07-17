@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -139,6 +139,70 @@ body.hov #cur-r{width:38px;height:38px;border-color:rgba(74,127,165,.4)}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
 .g6{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+
+/* ═════════════════════════════════════════════════════════════════════
+   RESPONSIVIDADE EDITORIAL COMPLETA (TABLET & MOBILE-FIRST)
+   ═════════════════════════════════════════════════════════════════════ */
+@media (max-width: 992px) {
+  .slide > div {
+    max-height: calc(100vh - 4.5rem);
+    overflow-y: auto;
+    padding-top: 1.5rem;
+    padding-bottom: 2.5rem;
+  }
+  .slide > div::-webkit-scrollbar { width: 4px; }
+  .slide > div::-webkit-scrollbar-thumb { background: rgba(74,127,165,.35); border-radius: 4px; }
+  .pg, .pg-sm { padding-left: 2rem; padding-right: 2rem; }
+  .g2, .g2w { grid-template-columns: 1fr; gap: 2rem; }
+  .g2 > .col.sep-rn, .g2w > .col.sep-rn { border-right: none !important; border-bottom: 1px solid var(--C4); padding: 0 0 1.5rem 0 !important; }
+  .g2 > .col:not(.sep-rn), .g2w > .col:not(.sep-rn) { padding: 1.5rem 0 0 0 !important; }
+  #s6 .e2 { grid-template-columns: 1fr !important; gap: 1.25rem !important; }
+  #s6 .e2 > div:nth-child(2) { margin: 0 auto; }
+}
+
+@media (max-width: 768px) {
+  .pg, .pg-sm { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .ty-display { font-size: clamp(2.2rem, 8vw, 3.2rem); }
+  .ty-h1 { font-size: clamp(1.5rem, 6vw, 2.2rem); }
+  .ty-h2 { font-size: clamp(1.2rem, 5vw, 1.6rem); }
+  .ty-pergunta { font-size: clamp(1.3rem, 5.5vw, 1.8rem); }
+  .ty-num { font-size: clamp(1.8rem, 7vw, 2.5rem); }
+  
+  .g4 { grid-template-columns: 1fr 1fr; }
+  .g4 > .col { padding: 1.2rem !important; }
+  .g4 > .col.sep-rn:nth-child(2n) { border-right: none !important; }
+  .g4 > .col:nth-child(1), .g4 > .col:nth-child(2) { border-bottom: 1px solid var(--C4); }
+  
+  .g3, .g6 { grid-template-columns: 1fr; }
+  .g3 > .col, .g6 > .col { border-right: none !important; padding-left: 0 !important; padding-right: 0 !important; padding-top: 1.1rem !important; padding-bottom: 1.1rem !important; }
+  .g3 > .col:not(:last-child), .g6 > .col:not(:last-child) { border-bottom: 1px solid var(--C4) !important; border-top: none !important; }
+  
+  #s9 .sep-bn, #s13 .sep-bn { grid-template-columns: 1fr !important; gap: 0.5rem !important; padding: 0.85rem 0 !important; }
+  #s16 .e4 { grid-template-columns: 1fr !important; }
+  #s16 .e4 > div { border-right: none !important; border-bottom: 1px solid var(--C4); padding: 0.8rem 0 !important; }
+  #s16 .e4 > div:last-child { border-bottom: none; }
+  
+  #ctr { right: 1.5rem; bottom: 1.5rem; }
+  #nav { bottom: 1.25rem; gap: 1rem; }
+  .nb { width: 38px; height: 38px; font-size: 13px; }
+}
+
+@media (max-width: 576px) {
+  .pg, .pg-sm { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .g4 { grid-template-columns: 1fr; }
+  .g4 > .col { border-right: none !important; padding: 1.1rem 0 !important; border-bottom: 1px solid var(--C4); }
+  .g4 > .col:last-child { border-bottom: none; }
+}
+
+@media (max-width: 375px) {
+  .pg, .pg-sm { padding-left: 1rem; padding-right: 1rem; }
+}
+
+@media (hover: none), (pointer: coarse) {
+  #cur, #cur-r { display: none !important; }
+  html, body { cursor: auto !important; }
+  .nb, .dot, button { cursor: pointer !important; }
+}
 </style>
 </head>
 <body>
@@ -902,7 +966,11 @@ const $=id=>document.getElementById(id);
 const cur=$('cur'),ring=$('cur-r'),prog=$('prog'),ctr=$('ctr'),nav=$('nav'),dotsEl=$('dots');
 for(let i=1;i<=N;i++){const d=document.createElement('div');d.className='dot'+(i===1?' on':'');d.onclick=()=>goTo(i);dotsEl.appendChild(d);}
 function update(){
-  document.querySelectorAll('.slide').forEach((s,i)=>s.classList.toggle('on',i+1===c));
+  document.querySelectorAll('.slide').forEach((s,i)=>{
+    const isOn=i+1===c;
+    s.classList.toggle('on',isOn);
+    if(isOn){s.scrollTop=0;const inner=s.firstElementChild;if(inner)inner.scrollTop=0;}
+  });
   document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i+1===c));
   prog.style.width=(c/N*100)+'%';ctr.textContent=c+' / '+N;
 }
