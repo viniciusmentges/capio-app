@@ -26,8 +26,12 @@ A CAPIO não foi concebida para ser mais uma voz na cacofonia digital. Ela nasce
 
 A escrita da CAPIO deve respirar. A pressa e o ruído expressam-se através de parágrafos densos, excesso de adjetivação e pontuação histriônica. A contemplação, por sua vez, requer sobriedade e espaço.
 
-### A Voz da CAPIO
+### A Voz da CAPIO (A Regra do Outro Lado da Mesa)
 A CAPIO não escreve para impressionar. Ela escreve para acompanhar.
+Nunca escrevemos do púlpito para a multidão. Escrevemos do outro lado da mesa para o homem comum.
+A nossa busca não é pela frase mais eloquente, poética ou sofisticada, mas sim pela frase mais verdadeira, ordinária e próxima. A teologia profunda da CAPIO não deve perder o "cheiro do pão sobre a mesa". 
+
+**O Filtro Final da CAPIO:** Ao finalizar um devocional, pergunte a si mesmo: "Um pai cansado após o trabalho, uma mãe exausta às 23h, ou um homem chorando no carro conseguem ser abraçados por estas palavras sem precisar admirar a sua beleza literária?" Se a resposta for sim, o texto cumpriu o seu papel.
 Ela não procura parecer um grande escritor. Ela procura ser compreendida.
 Quando existe dúvida entre uma frase bonita e uma frase clara, sempre escolher a frase clara.
 O leitor nunca deve admirar o autor. Ele deve compreender a Palavra.

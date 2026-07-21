@@ -220,6 +220,13 @@ class Command(BaseCommand):
 
             emotions_updated.append(emotion_name)
 
+        from django.core.management import call_command
+        try:
+            call_command('set_display_order')
+            self.stdout.write(self.style.SUCCESS("[ORDEM] Ordenacao das 31 emocoes aplicada com sucesso."))
+        except Exception as e:
+            self.stdout.write(self.style.WARNING(f"[ORDEM] Nao foi possivel aplicar a ordem: {e}"))
+
         self.stdout.write("\n" + "=" * 50)
         self.stdout.write(self.style.SUCCESS(f"[SUCESSO] VALIDACAO EDITORIAL INICIADA COM SUCESSO!"))
         self.stdout.write(self.style.SUCCESS(f"  -> Total de devocionais importados em staging: {total_imported}"))

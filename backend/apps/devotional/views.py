@@ -11,7 +11,7 @@ class EmotionsView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        emotions = Emotion.objects.all()
+        emotions = Emotion.objects.all().order_by('display_order', 'id')
         serializer = EmotionSerializer(emotions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -259,7 +259,7 @@ class SyncEditorialView(APIView):
                 emotion__slug__in=all_slugs
             ).update(is_active=True, reviewed_by_human=True)
 
-            emotions_list = [f"{e.slug} ({e.icon})" for e in Emotion.objects.all().order_by('id')]
+            emotions_list = [f"{e.slug} ({e.icon})" for e in Emotion.objects.all().order_by('display_order', 'id')]
             return Response({
                 "status": "SUCCESS",
                 "message": f"Acervo editorial sincronizado! {promoted_count} devocionais ativos em {len(emotions_list)} emoções.",
@@ -300,7 +300,7 @@ class DiagnosticReportView(APIView):
 
             # 2. Emocoes e contagens de devocionais
             emotions_detail = []
-            for emo in Emotion.objects.all().order_by('id'):
+            for emo in Emotion.objects.all().order_by('display_order', 'id'):
                 total_devs = DevotionalContent.objects.filter(emotion=emo).count()
                 active_devs = DevotionalContent.objects.filter(emotion=emo, is_active=True).count()
                 reviewed_devs = DevotionalContent.objects.filter(emotion=emo, reviewed_by_human=True).count()

@@ -10,6 +10,7 @@ class Emotion(models.Model):
     name = models.CharField(max_length=80)
     slug = models.SlugField(unique=True)
     icon = models.CharField(max_length=80, blank=True)
+    display_order = models.PositiveIntegerField(default=0, db_index=True)
 
     def __str__(self):
         return self.name
