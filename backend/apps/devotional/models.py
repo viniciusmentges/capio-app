@@ -33,6 +33,9 @@ class DevotionalContent(models.Model):
     guiding_question = models.TextField(blank=True)
     prayer = models.TextField()
     share_quote = models.TextField(blank=True, default='')
+    anchor_text = models.TextField(verbose_name="Fio da Palavra", blank=True, default='', help_text="Fio da Palavra")
+    carry_with_you_text = models.TextField(verbose_name="Leve com Você", blank=True, default='', help_text="Leve com Você")
+    word_continues_text = models.TextField(verbose_name="A Palavra Continua", blank=True, default='', help_text="A Palavra Continua")
     main_truth = models.TextField(blank=True, default='', help_text="O Fio da Palavra: a verdade central da reflexão.")
     daily_companion = models.TextField(blank=True, default='', help_text="A Palavra Continua: pensamento silencioso para o dia.")
     share_text = models.CharField(max_length=110, blank=True, default='', help_text="Frase pastoral curta para repost. Máx 110 caracteres.")
@@ -140,7 +143,7 @@ class DevotionalContent(models.Model):
             self.passage_id,
         )
         # Higienização editorial: remover asteriscos de formatação markdown para exibir texto puro e limpo
-        for field_name in ['scripture_text', 'reflection', 'main_truth', 'daily_companion', 'prayer', 'share_quote']:
+        for field_name in ['scripture_text', 'reflection', 'anchor_text', 'carry_with_you_text', 'word_continues_text', 'main_truth', 'daily_companion', 'prayer', 'share_quote']:
             val = getattr(self, field_name, '')
             if val and isinstance(val, str) and '*' in val:
                 setattr(self, field_name, val.replace('*', '').strip())

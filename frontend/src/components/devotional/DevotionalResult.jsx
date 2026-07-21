@@ -14,8 +14,9 @@ export default function DevotionalResult({ devotional }) {
   const verse = devotional.verse || devotional.scripture_reference;
   const verseText = devotional.scripture_text;
   const reflection = devotional.reflection || devotional.content || devotional.message;
-  const practicalApp = devotional.practical_application;
-  const guidingQuestion = devotional.guiding_question;
+  const anchorText = devotional.anchor_text || devotional.main_truth;
+  const carryWithYouText = devotional.carry_with_you_text || devotional.practical_application;
+  const wordContinuesText = devotional.word_continues_text || devotional.daily_companion;
   const prayer = devotional.prayer;
 
   const isLongVerse = verseText && verseText.length > 200;
@@ -73,7 +74,7 @@ export default function DevotionalResult({ devotional }) {
           <ProgressiveReveal delay={2500}>
             <div className="space-y-10">
               <p className="text-[9px] font-serif italic text-accent text-center tracking-[0.2em] uppercase">
-                Ecos da Palavra
+                Reflexão
               </p>
               <div className="max-w-xl mx-auto">
                 <p className="text-contemplative text-foreground/80 whitespace-pre-wrap text-center leading-relaxed">
@@ -84,29 +85,45 @@ export default function DevotionalResult({ devotional }) {
           </ProgressiveReveal>
         )}
 
-        {/* 4. Aplicação Prática: O Gesto Humano */}
-        {practicalApp && (
+        {/* 3. Fio da Palavra: A Âncora */}
+        {anchorText && (
           <ProgressiveReveal delay={4000}>
+            <div className="space-y-10">
+              <p className="text-[9px] font-serif italic text-accent text-center tracking-[0.2em] uppercase">
+                Fio da Palavra
+              </p>
+              <div className="max-w-xl mx-auto">
+                <p className="font-serif text-foreground/90 text-center leading-relaxed italic text-lg">
+                  {anchorText}
+                </p>
+              </div>
+            </div>
+          </ProgressiveReveal>
+        )}
+
+        {/* 4. Leve com Você: O Toque */}
+        {carryWithYouText && (
+          <ProgressiveReveal delay={5500}>
             <div className="max-w-md mx-auto py-12 px-8 rounded-sm space-y-6 border border-border bg-background">
               <p className="text-[9px] font-serif italic text-accent text-center tracking-widest uppercase">
-                O convite hoje
+                Leve com Você
               </p>
-              <p className="text-sm font-sans font-light text-foreground/80 text-center leading-relaxed italic">
-                {practicalApp}
+              <p className="text-sm font-sans font-light text-foreground/80 text-center leading-relaxed">
+                {carryWithYouText}
               </p>
             </div>
           </ProgressiveReveal>
         )}
 
-        {/* 5. Pergunta Contemplativa: O Eco Final */}
-        {guidingQuestion && (
-          <ProgressiveReveal delay={5500}>
+        {/* 5. A Palavra Continua: Acompanha */}
+        {wordContinuesText && (
+          <ProgressiveReveal delay={7000}>
             <div className="space-y-8 pt-4">
               <p className="text-[9px] font-serif italic text-accent text-center tracking-[0.2em] uppercase">
-                Para o seu silêncio
+                A Palavra Continua
               </p>
-              <h3 className="font-serif italic text-foreground/80 text-lg text-center max-w-sm mx-auto leading-relaxed">
-                {guidingQuestion}
+              <h3 className="font-serif italic text-foreground/80 text-center max-w-sm mx-auto leading-relaxed">
+                {wordContinuesText}
               </h3>
             </div>
           </ProgressiveReveal>

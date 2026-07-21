@@ -67,12 +67,19 @@ class DevotionalContentAdmin(admin.ModelAdmin):
             'description': 'O alicerce bíblico contendo a referência normalizada, passagem e texto sagrado.'
         }),
         ('Roteiro Contemplativo', {
-            'fields': ('reflection', 'share_quote'),
+            'fields': (
+                'reflection', 
+                'anchor_text', 
+                'carry_with_you_text', 
+                'word_continues_text', 
+                'prayer',
+                'share_quote'
+            ),
             'description': 'A reflexão meditativa profunda e a sentença contemplativa compartilhável da CAPIO.'
         }),
-        ('Aplicação Prática e Recolhimento', {
-            'fields': ('practical_application', 'guiding_question', 'prayer'),
-            'description': 'Eco na vida diária, a pergunta orientadora íntima e a oração de repouso final.'
+        ('Campos Legados (Descontinuados em breve)', {
+            'fields': ('main_truth', 'daily_companion', 'practical_application', 'guiding_question'),
+            'description': 'Campos da estrutura antiga que serão removidos futuramente.'
         }),
         ('Status de Curadoria e Publicação', {
             'fields': ('ai_generated', 'reviewed_by_human', 'is_active'),

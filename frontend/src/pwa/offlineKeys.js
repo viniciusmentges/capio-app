@@ -1,6 +1,6 @@
 export const OFFLINE_KEYS = {
-  DAILY_REFLECTIONS: 'capio:v1:daily_reflections',
-  DEVOTIONALS: 'capio:v1:devotionals',
-  BIBLE_EXPLANATIONS: 'capio:v1:bible_explanations',
-  USER_PREFERENCES: 'capio:v1:user_preferences',
+  DAILY_REFLECTIONS: 'capio:v2:daily_reflections',
+  DEVOTIONALS: 'capio:v2:devotionals',
+  BIBLE_EXPLANATIONS: 'capio:v2:bible_explanations',
+  USER_PREFERENCES: 'capio:v2:user_preferences',
 };

@@ -286,3 +286,24 @@ Até a escrita desaparece.
 
 Permanece apenas a Escritura ecoando silenciosamente durante o restante do dia.
 Esse é o ponto mais alto da experiência que a CAPIO deseja oferecer.
+
+---
+
+## 13. Regras Permanentes de Frontend e Experiência (UX)
+
+Apesar de a CAPIO possuir uma arquitetura editorial robusta sob o capô, a experiência de leitura deve obedecer rigorosamente às três regras abaixo, garantindo que o leitor nunca veja a fragmentação do texto.
+
+### REGRA Nº 03 — O LEITOR DEVERÁ SENTIR QUE ESTÁ LENDO UM ÚNICO TEXTO
+Apesar de agora possuirmos uma arquitetura editorial mais profunda (6+ seções), o leitor NÃO deverá sentir que está lendo módulos independentes, exercícios, capítulos ou uma pequena apostila devocional.
+Ele deverá sentir apenas uma coisa: **que está vivendo um único encontro entre Deus e o homem comum.**
+As seções deverão possuir respiro visual, hierarquia tipográfica, espaçamento agradável e transições suaves, mas deverão parecer pertencer ao mesmo texto. O leitor não deve pensar "agora comecei outro capítulo", mas sim "o próprio texto continua me conduzindo".
+
+### REGRA Nº 04 — MAIS PROFUNDIDADE NÃO SIGNIFICA MAIS COMPLEXIDADE
+Quanto mais sofisticada a arquitetura editorial se tornar, mais simples deverá ser a experiência do leitor.
+Se a CAPIO parecer "apenas um texto simples", esse será o maior elogio, mesmo sabendo que por trás existem centenas de horas de curadoria e decisões. A simplicidade continuará sendo um dos pilares do produto.
+
+### REGRA Nº 05 — A COMPLEXIDADE DEVE SER INVISÍVEL
+O leitor nunca deverá enxergar a complexidade da CAPIO.
+Ela pertence à Oficina Editorial, ao banco de dados, ao markdown, ao Django e ao frontend.
+Ao leitor pertence apenas: **um belo encontro entre Deus e o homem comum em todas as estações da sua alma.**
+É dever de toda implementação esconder a complexidade técnica atrás de uma experiência simples, silenciosa e humana.
