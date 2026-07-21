@@ -16,6 +16,9 @@ A verdadeira gratidão é o ato de sentar-se a essa mesa com tranquilidade, sabe
 ### Fio da Palavra (ANCORA)
 A gratidão madura não espera o fim da batalha para celebrar; ela senta e come com paz na mesa que Deus prepara no meio do conflito.
 
+### Leve com Você
+A verdadeira gratidão não é um prêmio que entregamos a Deus no final da guerra. É a coragem de sentar à mesa, partir o pão e agradecer enquanto os inimigos ainda estão assistindo.
+
 ### Palavra Continua (ACOMPANHA)
 Em vez de esperar que todos os seus problemas desapareçam para começar a agradecer, celebre hoje a provisão e o cuidado de Deus bem no meio das suas lutas.
 
@@ -38,6 +41,9 @@ A gratidão não é apenas um dever moral ou uma etiqueta religiosa; ela é um i
 
 ### Fio da Palavra (ANCORA)
 A ação de graças no cotidiano ordinário é o gesto eucarístico que abre os nossos olhos para enxergar a presença do Cristo ressuscitado.
+
+### Leve com Você
+Muitas vezes, passamos o dia inteiro procurando grandes revelações espirituais e não percebemos que o milagre estava no prato comum que dividimos no jantar.
 
 ### Palavra Continua (ACOMPANHA)
 Não deixe a tristeza fechar os seus olhos; abençoe a Deus hoje pelo pão simples da sua mesa e reconheça a presença do Mestre na sua rotina.
@@ -62,6 +68,9 @@ O detalhe mais importante desse relato é a cronologia do milagre: Paulo e Silas
 ### Fio da Palavra (ANCORA)
 A gratidão à meia-noite não é filha da circunstância favorável; ela é a chave de louvor que abala os alicerces e abre as portas da prisão.
 
+### Leve com Você
+Há um tipo de gratidão que funciona como um terremoto silencioso. Quando adoramos a Deus no escuro de uma situação impossível, as correntes começam a perder a força.
+
 ### Palavra Continua (ACOMPANHA)
 Se hoje você se sente preso em uma situação difícil ou dolorosa, transforme o seu lamento em canto de gratidão e veja Deus abalar o cárcere.
 
@@ -84,6 +93,9 @@ A verdadeira gratidão a Deus não é um cálculo de sobras. Não agradecemos ao
 
 ### Fio da Palavra (ANCORA)
 No santuário de Deus, a gratidão não é medida pelo barulho de nossas sobras, mas pela confiança com que entregamos o nosso tudo.
+
+### Leve com Você
+O tamanho da sua oferta de gratidão nunca foi medido pelo barulho do metal caindo no cofre, mas pela confiança invisível de quem entrega o que fará falta amanhã.
 
 ### Palavra Continua (ACOMPANHA)
 Não ofereça a Deus apenas o tempo ou os recursos que sobrarem do seu dia; dedique a Ele as primícias sinceras do seu coração e da sua vida.
@@ -108,6 +120,9 @@ A gratidão é uma disciplina de documentação espiritual. Nós precisamos ergu
 ### Fio da Palavra (ANCORA)
 Erguer um Ebenézer é gravar na pedra da memória a certeza de que Quem nos ajudou até aqui continuará fiel em todos os amanhãs.
 
+### Leve com Você
+Nós temos uma facilidade assustadora de esquecer o socorro de ontem diante do medo de amanhã. Erga uma memória de gratidão hoje para que você não esqueça de quem o trouxe até aqui.
+
 ### Palavra Continua (ACOMPANHA)
 Faça hoje um inventário silencioso dos grandes livramentos da sua história e erga um altar de gratidão por tudo o que Deus já superou por você.
 
@@ -131,6 +146,9 @@ A pergunta de Jesus ecoa através dos séculos: "Onde estão os nove?". Nós cor
 ### Fio da Palavra (ANCORA)
 A bênção sem o retorno de gratidão ao Abençoador é incompleta; a maturidade espiritual é dar meia-volta na estrada para bendizer a Jesus.
 
+### Leve com Você
+O alívio de uma oração respondida pode facilmente nos distrair de quem respondeu a oração. Que a sua caminhada hoje inclua a meia-volta para agradecer ao dono da cura.
+
 ### Palavra Continua (ACOMPANHA)
 Não permita que a correria das suas vitórias o faça esquecer de retornar aos pés de Deus em adoração e humilde agradecimento.
 
@@ -153,6 +171,9 @@ O sacrifício de louvor é a maior expressão de fé que um peregrino pode ofere
 
 ### Fio da Palavra (ANCORA)
 Como peregrinos que buscam a cidade celestial inabalável, nossa maior oferta em terra estranha é o sacrifício contínuo de louvor e gratidão.
+
+### Leve com Você
+A gratidão é o sotaque dos peregrinos. Cada "obrigado" que sussurramos no meio do cansaço da terra é um ensaio para o cântico que faremos no nosso verdadeiro lar.
 
 ### Palavra Continua (ACOMPANHA)
 Quando as coisas ao seu redor parecerem instáveis e passageiras, firme o seu coração na eternidade e ofereça a Deus um sacrifício de louvor.

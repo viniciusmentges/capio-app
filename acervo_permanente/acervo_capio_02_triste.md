@@ -44,6 +44,9 @@ Porque a ressurreição que está por vir não invalida a dor da morte no presen
 ### Fio da Palavra (ANCORA)
 A certeza da ressurreição e da glória futura não invalida a dignidade e a reverência das nossas lágrimas no presente.
 
+### Leve com Você
+A fé não anestesia a dor, ela apenas garante que a dor não será eterna. Chorar não é um sintoma de falta de fé, mas de humanidade profunda diante de um mundo quebrado.
+
 ### Palavra Continua (ACOMPANHA)
 Eu posso chorar as minhas perdas sem culpa, pois o próprio Jesus não teve pressa de esconder as suas lágrimas.
 
@@ -67,6 +70,9 @@ O detalhe fascinante dessa narrativa é como Jesus se comporta. Ele já havia re
 
 ### Fio da Palavra (ANCORA)
 Deus não se ofende com a nossa frustração quando os sonhos parecem morrer; Ele caminha ao nosso lado até que os nossos olhos se abram.
+
+### Leve com Você
+Deus suporta o peso da nossa desilusão sem nos repreender. Ele é o companheiro silencioso que anda ao nosso lado nas estradas mais longas da nossa tristeza.
 
 ### Palavra Continua (ACOMPANHA)
 Mesmo quando eu acho que a minha esperança ficou no passado, o Senhor continua caminhando comigo no presente.
@@ -92,6 +98,9 @@ Na Escritura, a fé não é a ausência de tristeza; é a capacidade de dialogar
 ### Fio da Palavra (ANCORA)
 A maturidade da fé não está em negar a melancolia, mas em aprender a direcionar a nossa alma abatida para a espera paciente em Deus.
 
+### Leve com Você
+Nem sempre acordamos com o coração alinhado com a verdade. Às vezes, o maior ato de fé do nosso dia é simplesmente ensinar a nossa própria alma abatida a esperar em Deus mais uma vez.
+
 ### Palavra Continua (ACOMPANHA)
 Eu posso acolher o silêncio da minha alma sem desespero, sabendo que a minha esperança está ancorada em Deus.
 
@@ -115,6 +124,9 @@ A esperança bíblica não é um otimismo natural de quem acha que o mundo é um
 
 ### Fio da Palavra (ANCORA)
 A verdadeira esperança não nasce da ausência de escombros, mas da memória deliberada da fidelidade imutável de Deus no meio da ruína.
+
+### Leve com Você
+A tristeza nos tenta a olhar apenas para as pedras que caíram. O consolo começa quando forçamos a nossa memória a se voltar para a fidelidade de Deus, que sobrevive a qualquer ruína.
 
 ### Palavra Continua (ACOMPANHA)
 Mesmo quando estou cercado por escombros, a misericórdia do Senhor se renova sobre a minha vida a cada manhã.
@@ -140,6 +152,9 @@ Um apóstolo gigante sentindo frio no corpo e saudade de ler suas Escrituras. A 
 ### Fio da Palavra (ANCORA)
 O abandono dos homens e a solidão das noites frias não podem anular a presença fiel do Senhor, que permanece conosco até o fim.
 
+### Leve com Você
+A dor de ser esquecido ou abandonado não anula o seu valor. Quando as presenças humanas falham e o inverno chega, a fidelidade de Deus é a única companhia que preenche a cela.
+
 ### Palavra Continua (ACOMPANHA)
 Eu posso enfrentar a solidão e o frio das estações difíceis, pois o Senhor permanece ao meu lado quando todos se vão.
 
@@ -164,6 +179,9 @@ A tristeza segundo Deus, no entanto, opera como o bisturi de um cirurgião. Ela 
 ### Fio da Palavra (ANCORA)
 A dor do verdadeiro arrependimento não é um castigo para destruir a nossa vida, mas a ferramenta da graça para restaurar a nossa comunhão com Deus.
 
+### Leve com Você
+Nem toda tristeza é um inimigo. Existe um luto pelos nossos próprios erros que limpa a nossa visão e nos devolve, com mãos vazias, para o colo da graça de Deus.
+
 ### Palavra Continua (ACOMPANHA)
 O meu arrependimento sincero não é o fim da minha história, mas o começo da minha restauração na graça.
 
@@ -187,6 +205,9 @@ Durante o inverno, as árvores perdem as folhas, os galhos ficam nus e a terra p
 
 ### Fio da Palavra (ANCORA)
 A tristeza é uma estação legítima e ordenada por Deus na vida humana, onde as nossas raízes espirituais crescem em silêncio antes da primavera.
+
+### Leve com Você
+Nenhuma árvore sobrevive produzindo frutos sem parar. O inverno da tristeza é necessário para que a nossa alma aprofunde as raízes antes que a primavera retorne.
 
 ### Palavra Continua (ACOMPANHA)
 Eu posso atravessar o inverno e o silêncio sem pressa, sabendo que Deus é o Senhor de todas as estações da minha vida.

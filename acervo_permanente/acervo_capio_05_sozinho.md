@@ -15,6 +15,9 @@ Quando o último amigo se retira e a porta do tribunal se fecha, resta a realida
 ### Fio da Palavra (ANCORA)
 Quando o apoio humano recua em silêncio, a fidelidade de Deus permanece em pé ao nosso lado.
 
+### Leve com Você
+Há lugares onde as defesas humanas não conseguem entrar com você. Mas o vazio deixado pela ausência dos homens é exatamente o espaço que a graça de Deus ocupa.
+
 ### Palavra Continua (ACOMPANHA)
 Não exija de pessoas frágeis uma presença perfeita; descanse na única companhia que não abandona o banco na hora da crise.
 
@@ -37,6 +40,9 @@ Você não é um detalhe esquecido na engrenagem do universo. Mesmo quando o sil
 
 ### Fio da Palavra (ANCORA)
 Mesmo quando os homens nos descartam na areia, os olhos do Eterno acompanham cada passo do nosso deserto.
+
+### Leve com Você
+Ser descartado pelas pessoas não significa que você desapareceu do mapa de Deus. A Sua visão alcança com perfeição as areias mais distantes do seu isolamento.
 
 ### Palavra Continua (ACOMPANHA)
 Caminhe hoje com a leveza de quem não precisa gritar para ser notado; o Deus que vê o deserto conhece o seu nome e a sua dor.
@@ -61,6 +67,9 @@ Jesus não sacudiu os discípulos com fúria. Ele compreendeu que o espírito es
 ### Fio da Palavra (ANCORA)
 Quando ninguém ao redor compreende o peso da sua angústia, o Cristo do Getsêmani sustenta a sua vigília.
 
+### Leve com Você
+Nem sempre quem nos ama terá forças para sustentar a vigília ao nosso lado. É consolador saber que a companhia de Cristo nunca cochila quando a nossa noite fica escura.
+
 ### Palavra Continua (ACOMPANHA)
 Não guarde rancor dos que dormem enquanto você luta; apresente o fardo da sua responsabilidade a Quem nunca adormece.
 
@@ -83,6 +92,9 @@ O consolo desta oração poética está no simples ato de apresentá-la a Deus s
 
 ### Fio da Palavra (ANCORA)
 Mesmo quando nos sentimos estrangeiros em meio à multidão, o Criador escuta o silêncio da nossa estranheza.
+
+### Leve com Você
+A sensação de não pertencer a nenhum grupo pode ser dolorosa, mas ela nos lembra que a nossa verdadeira cidadania não foi construída com telhas humanas.
 
 ### Palavra Continua (ACOMPANHA)
 Se hoje você se sentir desconectado e incompreendido em meio ao barulho, recolha-se na quietude de Quem compreende o seu silêncio sem exigir explicações.
@@ -107,6 +119,9 @@ Contudo, a história de Jeremias nos lembra que paredes de pedra e poços profun
 ### Fio da Palavra (ANCORA)
 Nenhuma cisterna de isolamento é funda o suficiente para esconder nossa vida dos braços da misericórdia divina.
 
+### Leve com Você
+As paredes do isolamento podem parecer frias e altas demais. Contudo, nenhuma distância vertical consegue afastar você das cordas que a misericórdia lança no escuro.
+
 ### Palavra Continua (ACOMPANHA)
 Quando o isolamento parecer um poço sem saída, pare de olhar para as paredes escuras e levante os olhos para a graça que desce do alto.
 
@@ -130,6 +145,9 @@ A grandeza de Rute repousa na decisão de comprometer-se com a promessa, mesmo q
 ### Fio da Palavra (ANCORA)
 A solidão de atravessar uma transição difícil é o caminho estreito que nos conduz às novas providências de Deus.
 
+### Leve com Você
+Despedir-se de companhias antigas é o preço frequente de uma transição de vida. A estrada pode parecer vazia agora, mas Deus já está caminhando no seu próximo cenário.
+
 ### Palavra Continua (ACOMPANHA)
 Não tenha medo de caminhar por estradas novas e desconhecidas; a lealdade de Deus caminha ao lado de quem avança com fé.
 
@@ -152,6 +170,9 @@ No entanto, é precisamente no escuro de Jaboque que o próprio Deus se aproxima
 
 ### Fio da Palavra (ANCORA)
 Quando os apoios terrenos são retirados e ficamos a sós no escuro, Deus transforma o silêncio na arena de nossa nova identidade.
+
+### Leve com Você
+Algumas lutas não podem ser terceirizadas ou divididas com ninguém. O silêncio solitário é o lugar onde perdemos as nossas muletas e ganhamos um novo nome.
 
 ### Palavra Continua (ACOMPANHA)
 Não tenha medo dos momentos em que a vida o deixa despojado de suas defesas usuais; permaneça firme, pois é na quietude que Deus molda quem você é.

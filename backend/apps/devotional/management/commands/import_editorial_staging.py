@@ -42,7 +42,6 @@ class Command(BaseCommand):
 
         path = options['path']
         if not path:
-            # Tentar caminhos padrao
             base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
             possible_paths = [
                 os.path.join(base_dir, 'acervo_permanente'),
@@ -71,58 +70,48 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR("[ERRO] Nenhum arquivo acervo_capio_*.md encontrado na pasta."))
             return
 
-        all_editorial_slugs = [
-            'ansioso', 'triste', 'medo', 'desmotivado', 'sozinho', 'sem-esperanca',
-            'direcao', 'gratidao', 'inseguro', 'cansado', 'culpado', 'raiva',
-            'confuso', 'vazio', 'corajoso-mas-incerto', 'chamado-mas-hesitante',
-            'tentado', 'em-conflito-com-alguem', 'grato-mas-disperso', 'disciplinado-mas-frio'
-        ]
-        # Limpar registros da biblioteca editorial anteriores para garantir idempotencia ao reimportar
+        # Construcao Dinamica das Emocoes
+        emotion_map = {}
+        all_editorial_slugs = []
+        
+        for f in files:
+            filename = os.path.basename(f)
+            m = re.match(r'acervo_capio_\d+_(.*)\.md', filename)
+            if not m:
+                continue
+                
+            raw_slug = m.group(1)
+            slug = raw_slug.replace('_', '-')
+            icon = f"{raw_slug}_icon"
+            
+            # Ler o nome correto da emocao direto do arquivo
+            content_preview = open(f, encoding='utf-8').read(500)
+            header_match = re.search(r'# ACERVO EDITORIAL CAPIO — COLEÇÃO \d+: (.*)', content_preview, re.IGNORECASE)
+            
+            if header_match:
+                name = header_match.group(1).strip().capitalize()
+            else:
+                # Fallback
+                name = raw_slug.replace('_', ' ').capitalize()
+                
+            emotion_map[filename] = (slug, name, icon)
+            all_editorial_slugs.append(slug)
+
+        # Limpeza
         deleted_count, _ = DevotionalContent.objects.filter(reviewed_by_human=True, emotion__slug__in=all_editorial_slugs).delete()
         if deleted_count:
             self.stdout.write(self.style.WARNING(f"[LIMPEZA] Removidos {deleted_count} registros editoriais anteriores para reimportacao limpa."))
-
-        emotion_map = {
-            '01_ansioso': ('ansioso', 'Ansioso', 'anxiety_icon'),
-            '02_triste': ('triste', 'Triste', 'sad_icon'),
-            '03_medo': ('medo', 'Medo', 'fear_icon'),
-            '04_desmotivado': ('desmotivado', 'Desmotivado', 'unmotivated_icon'),
-            '05_sozinho': ('sozinho', 'Sozinho', 'lonely_icon'),
-            '06_sem_esperanca': ('sem-esperanca', 'Sem Esperança', 'hopeless_icon'),
-            '07_direcao': ('direcao', 'Direção', 'direction_icon'),
-            '08_gratidao': ('gratidao', 'Gratidão', 'gratitude_icon'),
-            '09_inseguro': ('inseguro', 'Inseguro', 'insecure_icon'),
-            '10_cansado': ('cansado', 'Cansado', 'tired_icon'),
-            '11_corajoso_mas_incerto': ('corajoso-mas-incerto', 'Corajoso, mas incerto', 'courageous_uncertain_icon'),
-            '12_chamado_mas_hesitante': ('chamado-mas-hesitante', 'Chamado, mas hesitante', 'called_hesitant_icon'),
-            '13_tentado': ('tentado', 'Tentado', 'tempted_icon'),
-            '14_em_conflito_com_alguem': ('em-conflito-com-alguem', 'Em conflito com alguém', 'conflict_icon'),
-            '15_grato_mas_disperso': ('grato-mas-disperso', 'Grato, mas disperso', 'grateful_dispersed_icon'),
-            '16_disciplinado_mas_frio': ('disciplinado-mas-frio', 'Disciplinado, mas frio', 'disciplined_cold_icon'),
-            '17_culpado': ('culpado', 'Culpado', 'guilty_icon'),
-            '18_raiva': ('raiva', 'Raiva', 'anger_icon'),
-            '19_confuso': ('confuso', 'Confuso', 'confused_icon'),
-            '20_vazio': ('vazio', 'Vazio', 'empty_icon'),
-        }
 
         total_imported = 0
         emotions_updated = []
 
         for f in files:
             filename = os.path.basename(f)
-            emotion_slug = None
-            emotion_name = None
-            emotion_icon = ""
-            for key, (slug, name, icon) in emotion_map.items():
-                if key in filename:
-                    emotion_slug = slug
-                    emotion_name = name
-                    emotion_icon = icon
-                    break
-
-            if not emotion_slug:
-                self.stdout.write(self.style.WARNING(f"[AVISO] Arquivo ignorado (emocao nao mapeada): {filename}"))
+            if filename not in emotion_map:
+                self.stdout.write(self.style.WARNING(f"[AVISO] Arquivo ignorado (nao mapeado): {filename}"))
                 continue
+                
+            emotion_slug, emotion_name, emotion_icon = emotion_map[filename]
 
             self.stdout.write(self.style.NOTICE(f"\n[COLECAO] Processando Colecao: {emotion_name} ({filename})..."))
 
@@ -146,11 +135,14 @@ class Command(BaseCommand):
                     raw_title = lines[0].strip()
                     title = to_title_case(raw_title)
 
-                    # Limpar possiveis linhas divisorias de encerramento
                     clean_d = re.split(r'\n---', d)[0]
 
-                    # Encontrar linha de passagem
-                    passage_line = [l for l in clean_d.split('\n') if 'Passagem' in l][0]
+                    passage_line_matches = [l for l in clean_d.split('\n') if 'Passagem' in l]
+                    if not passage_line_matches:
+                        self.stdout.write(self.style.ERROR(f"  [ERRO] Linha de passagem nao encontrada em: {title}"))
+                        continue
+                        
+                    passage_line = passage_line_matches[0]
                     m = re.search(r'[*_]*[\"“](.+?)[\"”][*_]*\s*\(([^)]+)\)', passage_line)
                     if not m:
                         self.stdout.write(self.style.ERROR(f"  [ERRO] Falha ao extrair passagem em: {title}"))
@@ -159,7 +151,6 @@ class Command(BaseCommand):
                     scripture_text = m.group(1).strip()
                     scripture_reference = m.group(2).strip()
 
-                    # Extrair secoes
                     sections = re.split(r'###\s+', clean_d)
                     sec_data = {}
                     for s in sections[1:]:
@@ -167,26 +158,40 @@ class Command(BaseCommand):
                         body = '\n'.join(s.split('\n')[1:]).strip()
                         sec_data[header] = body
 
-                    reflection = sec_data.get("Reflection (CONDUZ)", "")
-                    main_truth = sec_data.get("Fio da Palavra (ANCORA)", "")
-                    daily_companion = sec_data.get("Palavra Continua (ACOMPANHA)", "")
-                    prayer = sec_data.get("Oração", "")
-                    share_quote = sec_data.get("Share Quote (PERMANECE)", "")
+                    def get_section(names):
+                        for k, v in sec_data.items():
+                            clean_k = k.strip().lower()
+                            for name in names:
+                                if name.lower() in clean_k:
+                                    return v
+                        return ""
 
-                    if not (reflection and main_truth and daily_companion and prayer and share_quote):
-                        self.stdout.write(self.style.ERROR(f"  [ERRO] Campos incompletos no devocional: {title}"))
-                        continue
+                    reflection = get_section(["reflection (conduz)", "reflection"])
+                    anchor_text = get_section(["fio da palavra", "ancora", "âncora"])
+                    carry_with_you = get_section(["leve com você", "leve com voce", "ponto de contato", "toca"])
+                    word_continues = get_section(["palavra continua", "palavra contínua", "acompanha"])
+                    prayer = get_section(["oração", "oracao"])
+                    share_quote = get_section(["share quote", "permanece"])
+
+                    missing_sections = []
+                    if not anchor_text: missing_sections.append("Fio da Palavra")
+                    if not carry_with_you: missing_sections.append("Leve com Você")
+                    if not word_continues: missing_sections.append("A Palavra Continua")
+                    if not reflection: missing_sections.append("Reflection")
+                    
+                    if missing_sections:
+                        self.stdout.write(self.style.WARNING(f"  [AVISO] Seções ausentes em '{title}': {', '.join(missing_sections)}"))
 
                     scripture_text = scripture_text.replace('*', '').strip()
                     reflection = reflection.replace('*', '').strip()
-                    main_truth = main_truth.replace('*', '').strip()
-                    daily_companion = daily_companion.replace('*', '').strip()
+                    anchor_text = anchor_text.replace('*', '').strip()
+                    carry_with_you = carry_with_you.replace('*', '').strip()
+                    word_continues = word_continues.replace('*', '').strip()
                     prayer = prayer.replace('*', '').strip()
                     share_quote = share_quote.replace('*', '').strip()
 
                     share_text = share_quote[:107] + "..." if len(share_quote) > 110 else share_quote
 
-                    # Criar ou atualizar no banco como ativo (is_active=True, reviewed_by_human=True)
                     dev_obj, created = DevotionalContent.objects.update_or_create(
                         emotion=emotion,
                         title=title,
@@ -194,13 +199,16 @@ class Command(BaseCommand):
                             'scripture_reference': scripture_reference,
                             'scripture_text': scripture_text,
                             'reflection': reflection,
-                            'main_truth': main_truth,
-                            'daily_companion': daily_companion,
+                            'anchor_text': anchor_text,
+                            'carry_with_you_text': carry_with_you,
+                            'word_continues_text': word_continues,
+                            'main_truth': anchor_text,
+                            'daily_companion': word_continues,
                             'prayer': prayer,
                             'share_quote': share_quote,
                             'share_text': share_text,
                             'emotional_theme': title,
-                            'is_active': True,  # Biblioteca ativa em produção!
+                            'is_active': True,
                             'reviewed_by_human': True,
                             'ai_generated': True,
                         }

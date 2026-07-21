@@ -19,7 +19,7 @@ A suficiência para responder ao chamado de Deus não reside em nossa capacidade
 ### Palavra Continua (ACOMPANHA)
 Pare de medir a grandeza da sua responsabilidade pela pequenez da sua experiência; desamarre as sandálias das suas desculpas e apoie o seu peso na fidelidade de quem o chamou.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Identifique qual é a desculpa recorrente que você tem apresentado a Deus para adiar uma obediência clara. Em vez de olhar no espelho para avaliar as suas limitações, fixe hoje a sua atenção na santidade e na promessa de Deus.
 
 ### Oração
@@ -45,7 +45,7 @@ Deus trata a hesitação dos corações sinceros com a paciência do seu orvalho
 ### Palavra Continua (ACOMPANHA)
 Agradeça hoje pela paciência com que Deus tem suportado as suas dúvidas e use a certeza das confirmações que Ele já lhe deu para avançar sem hesitar.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Se você já recebeu confirmações suficientes na Palavra e na paz do seu interior, encerre hoje o ciclo de pedir novos sinais por medo de errar. Levante-se da eira das suas hesitações e assuma com firmeza o posto de trabalho e oração ao qual o Senhor o designou.
 
 ### Oração
@@ -71,7 +71,7 @@ A autoridade do nosso testemunho espiritual não brota da nossa eloquência ou m
 ### Palavra Continua (ACOMPANHA)
 Não permita que o medo de não saber o que dizer silencie o seu testemunho; confie que o Espírito Santo colocará as palavras certas em sua boca no momento oportuno.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Quando você for desafiado a se posicionar com integridade em um ambiente hostil ou a levar uma palavra de consolo a alguém em desespero, não recue alegando inexperiência. Abra a sua boca em oração e dependência, permitindo que a sabedoria das Escrituras flua através de você.
 
 ### Oração
@@ -97,7 +97,7 @@ A hesitação que se transforma em fuga deliberada do chamado divino sempre nos 
 ### Palavra Continua (ACOMPANHA)
 Examine a direção do seu navio hoje; se você tem gastado recursos e energia para fugir de uma responsabilidade espiritual clara, arrependa-se e volte ao curso de Deus.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Identifique em sua rotina se existe algum encargo de perdão, reconciliação ou serviço que você tem evitado ativamente por considerar injusto ou desgastante demais. Em vez de comprar passagens para a distração, renda hoje a sua vontade discordante aos pés da soberania de Deus.
 
 ### Oração
@@ -123,7 +123,7 @@ A obediência que olha continuamente para trás com nostalgia do passado comprom
 ### Palavra Continua (ACOMPANHA)
 Mantenha as suas mãos firmes no compromisso que assumiu com Deus, evitando alimentar pensamentos saudosos sobre as facilidades ou compromissos mundanos que abandonou.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Faça um inventário das suas decisões espirituais recentes. Se você deu um passo de dedicação mas continua mantendo portas de escape ou hábitos antigos como segurança emocional, corte hoje essas amarras e concentre toda a sua atenção na linha reta que está diante dos seus olhos.
 
 ### Oração
@@ -149,7 +149,7 @@ A verdadeira salvação não acontece enquanto observamos Jesus à distância de
 ### Palavra Continua (ACOMPANHA)
 Abandone hoje a posição de mero observador distante da fé e abra as portas da sua vida prática e diária para a presença transformadora de Jesus.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Deixe de tratar as coisas de Deus como um assunto apenas teórico ou dominical que você contempla sem envolvimento pessoal. Desça hoje do galho da sua autossuficiência e convide o Senhor para intervir diretamente nas finanças, nos relacionamentos e nas decisões secretas do seu lar.
 
 ### Oração
@@ -175,7 +175,7 @@ A obediência cristã que supera o medo e a hesitação diante do passado do out
 ### Palavra Continua (ACOMPANHA)
 Não permita que o medo ou o julgamento sobre o passado de alguém o impeça de estender as mãos para oferecer a graça e o perdão que o Senhor lhe ordenou.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Se o Senhor tem impulsionado você a procurar alguém com quem houve um histórico de conflito ou mágoa profunda para oferecer perdão e oração, pare de hesitar recordando as ofensas passadas. Levante-se com coragem cristã e vá ao encontro da pessoa na autoridade do amor de Cristo.
 
 ### Oração

@@ -16,6 +16,9 @@ Quando o fogo da aflição não se apaga e as circunstâncias não mudam, a dese
 ### Fio da Palavra (ANCORA)
 A esperança bíblica não se apoia na ausência do fogo, mas na fidelidade incondicional a Quem caminha conosco dentro dele.
 
+### Leve com Você
+A prova do amor de Deus não é o cancelamento da dor, mas a presença inegociável dEle dividindo o mesmo fogo conosco.
+
 ### Palavra Continua (ACOMPANHA)
 Quando o cenário ao redor não oferecer nenhuma garantia de alívio, descanse na certeza de que a sua história está guardada em Deus, e não nas circunstâncias.
 
@@ -38,6 +41,9 @@ A esperança é, fundamentalmente, uma janela aberta. Quando a vida nos prende e
 
 ### Fio da Palavra (ANCORA)
 Quando o exílio tenta fechar os nossos horizontes, a esperança mantém a janela do quarto aberta em direção às promessas de Deus.
+
+### Leve com Você
+Quando as paredes do exílio e das circunstâncias tentarem esmagar você, a oração é a janela que se abre para o ar limpo do controle soberano de Deus.
 
 ### Palavra Continua (ACOMPANHA)
 Em vez de olhar para as paredes do seu problema atual, abra hoje as janelas da sua alma para a fidelidade imutável do Criador.
@@ -62,6 +68,9 @@ O que dissipa a neblina daquela manhã não é uma explicação teológica sobre
 ### Fio da Palavra (ANCORA)
 Mesmo quando a dor nos cega no meio do jardim, a voz do Cristo ressuscitado nos chama pelo nome e dissipa a neblina da morte.
 
+### Leve com Você
+As lágrimas distorcem a nossa visão a ponto de não reconhecermos o consolo que já está diante de nós. Mas a voz dAquele que chama pelo nosso nome é inconfundível.
+
 ### Palavra Continua (ACOMPANHA)
 Não permita que as lágrimas da madrugada fechem os seus olhos para a vida nova que já está em pé ao seu lado no jardim.
 
@@ -84,6 +93,9 @@ A atitude do profeta, no entanto, nos ensina a disciplina da porta fechada. Para
 
 ### Fio da Palavra (ANCORA)
 Diante da ruína dentro de casa, a esperança fecha a porta para o barulho do desespero e se recolhe na presença do Deus que restaura a vida.
+
+### Leve com Você
+O desespero faz muito barulho do lado de fora. Às vezes, o maior ato de fé que podemos fazer é fechar a porta e ficar em silêncio diante de quem restaura a vida.
 
 ### Palavra Continua (ACOMPANHA)
 Feche hoje a porta do seu coração para as vozes que decretam o fim e recolha-se no quarto silencioso da oração em fé.
@@ -108,6 +120,9 @@ A esperança bíblica não é uma emoção espontânea que depende de dias ensol
 ### Fio da Palavra (ANCORA)
 Quando a paisagem ao redor é de ruína, a verdadeira esperança renasce do ato deliberado de recordar a fidelidade eterna de Deus.
 
+### Leve com Você
+A memória pode ser o nosso pior inimigo ou a nossa maior âncora. Escolher lembrar da bondade passada de Deus é o oxigênio de quem precisa sobreviver às ruínas de hoje.
+
 ### Palavra Continua (ACOMPANHA)
 Se os seus olhos só enxergam escombros hoje, alimente a sua fé revirando a memória de tudo o que Deus já fez e continuará sendo por você.
 
@@ -131,6 +146,9 @@ O consolo do salmo está no rumo do seu clamor. Em vez de tentar reconstruir os 
 ### Fio da Palavra (ANCORA)
 Quando nossas defesas caem e nos sentimos como uma vinha pisada, nossa única esperança repousa na visita e no cuidado do Divino Agricultor.
 
+### Leve com Você
+Ser pisoteado pelas circunstâncias rouba a nossa dignidade. Mas as cercas quebradas da nossa vida são a oficina favorita do Agricultor que não desiste das Suas vinhas.
+
 ### Palavra Continua (ACOMPANHA)
 Se hoje você se sente vulnerável e com os muros derrubados, pare de tentar se defender sozinho e convide o Deus dos exércitos a visitar a sua vinha.
 
@@ -153,6 +171,9 @@ Quando você estiver atravessando uma tempestade que parece não ter fim, lembre
 
 ### Fio da Palavra (ANCORA)
 A segurança do nosso barco nas tempestades não depende da calmaria das águas, mas de termos nossa âncora presa no santuário celestial.
+
+### Leve com Você
+O barco continua balançando e a chuva continua caindo, mas a certeza de que a corda está amarrada no céu é o que nos impede de afundar no meio da tempestade.
 
 ### Palavra Continua (ACOMPANHA)
 Quando os ventos do desespero tentarem arrastar a sua vida, pare de olhar para as ondas e sinta a firmeza da âncora presa nas profundezas do céu.

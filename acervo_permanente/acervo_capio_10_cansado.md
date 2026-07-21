@@ -16,6 +16,9 @@ O descanso espiritual não começa quando as nossas agendas ficam vazias, mas qu
 ### Fio da Palavra (ANCORA)
 O alívio da nossa exaustão começa no instante sagrado em que largamos o cântaro das nossas vãs tentativas aos pés da Fonte da Vida.
 
+### Leve com Você
+Você não precisa carregar o cântaro das expectativas frustradas de volta para casa. Há um alívio imenso no simples ato de abandonar o peso na beira do poço e voltar de mãos vazias para a comunhão.
+
 ### Palavra Continua (ACOMPANHA)
 Abandone hoje na borda do poço o cântaro pesado das suas preocupações e permita que a presença de Jesus refrigere a sua alma cansada.
 
@@ -38,6 +41,9 @@ A espiritualidade bíblica não espiritualiza o cansaço a ponto de ignorar o co
 
 ### Fio da Palavra (ANCORA)
 Deus não responde ao nosso esgotamento profundo com cobranças de desempenho, mas com o cuidado físico, o pão quente e o repouso da sombra.
+
+### Leve com Você
+Às vezes, a coisa mais espiritual que você pode fazer é dormir algumas horas e comer uma boa refeição. Deus tem a delicadeza de cuidar da nossa biologia antes de tratar a nossa teologia.
 
 ### Palavra Continua (ACOMPANHA)
 Não exija de si mesmo uma força que você não tem hoje; honre os limites do seu corpo, coma do pão de Deus e permita-se descansar.
@@ -62,6 +68,9 @@ Jesus foi carpinteiro em Nazaré antes de ser pregador na Galileia. Ele sabe com
 ### Fio da Palavra (ANCORA)
 O descanso para a alma exausta não é o abandono da caminhada, mas trocar o jugo áspero do mundo pelo jugo sob medida esculpido por Cristo.
 
+### Leve com Você
+O peso que está esmagando você hoje provavelmente não foi colocado por Deus. O jugo de Cristo não cancela o trabalho, mas Ele garante que a madeira seja suave sobre o pescoço.
+
 ### Palavra Continua (ACOMPANHA)
 Tire hoje dos seus ombros o peso das cobranças e expectativas que não vieram de Deus, e caminhe emparelhado na leveza e mansidão do Mestre.
 
@@ -84,6 +93,9 @@ Jesus sabe que, muitas vezes, o seu coração deseja arder em oração, vigiar e
 
 ### Fio da Palavra (ANCORA)
 Quando o cansaço da tristeza fecha os nossos olhos na madrugada do jardim, a compaixão do Mestre compreende a fraqueza da nossa carne e intercede em nosso lugar.
+
+### Leve com Você
+A exaustão faz com que a nossa carne falhe até nas horas em que mais queremos orar. O consolo é saber que, mesmo quando dormimos de tristeza, há um Mestre que permanece acordado intercedendo por nós.
 
 ### Palavra Continua (ACOMPANHA)
 Se hoje a tristeza e o cansaço exauriram as suas forças para orar, descanse na certeza de que Jesus permanece acordado intercedendo por você.
@@ -108,6 +120,9 @@ Ninguém foi planejado por Deus para carregar o peso do cajado e da intercessão
 ### Fio da Palavra (ANCORA)
 Não fomos feitos para suportar o peso da batalha sozinhos; a vitória no vale depende da humildade de aceitar mãos amigas que sustentem os nossos braços cansados no monte.
 
+### Leve com Você
+A fadiga espiritual isola as pessoas. Ter a humildade de admitir o cansaço e permitir que alguém levante os seus braços é a diferença entre perder e vencer a batalha de hoje.
+
 ### Palavra Continua (ACOMPANHA)
 Não tente carregar todas as responsabilidades sozinho hoje; permita que irmãos de fé sustentem as suas mãos na hora da sua exaustão.
 
@@ -130,6 +145,9 @@ O serviço da graça é o antídoto de Deus para o cansaço da caminhada cristã
 
 ### Fio da Palavra (ANCORA)
 Quando a poeira e o cansaço da estrada desgastam os nossos pés, o próprio Mestre se ajoelha com a bacia e a toalha da graça para nos restaurar o alívio.
+
+### Leve com Você
+O cansaço suja os nossos pés de poeira e amargura. Mas há um Mestre ajoelhado na beira da estrada esperando para lavar a sola dos seus pés cansados, sem exigir que você se limpe primeiro.
 
 ### Palavra Continua (ACOMPANHA)
 Deixe de lado o orgulho e permita que a humildade de Cristo lave hoje a poeira e o cansaço acumulados nos seus pés durante a caminhada da vida.
@@ -154,11 +172,14 @@ Essa restauração divina acontece através de um mandamento sagrado que frequen
 ### Fio da Palavra (ANCORA)
 Deus não apaga o pavio exausto que apenas fumega; Ele derrama azeite fresco no silêncio do descanso sagrado para que a nossa luz volte a brilhar.
 
+### Leve com Você
+Quando parece que a sua energia está nos últimos suspiros e o pavio mal solta fumaça, não tenha medo do fim. Deus não quebra o que está frágil; Ele silencia, descansa e derrama azeite fresco.
+
 ### Palavra Continua (ACOMPANHA)
 Pare hoje de tentar brilhar com o pavio seco das suas próprias forças; entre no silêncio do descanso de Deus e permita que Ele reabasteça o seu azeite.
 
 ### Oração
-Deus da criação, o meu azeite chegou ao fim e sinto que a minha vida é apenas um pavio que fumega de exaustão, sem força para emitir luz e esperança. Obrigado por não me descartares nem me apagares na minha fraqueza. Senhor do sábado, ensina-me a parar as ferramentas da minha ansiedade. Derrama o teu azeite santo sobre o meu pavio cansado no silêncio do repouso, para que eu possa brilhar novamente com a tua paz. Amém.
+Deus da criação, o meu azeite chegou ao fim e sinto que a minha vida é apenas um pavio que fumega de exaustão, sem força para emitir luz e esperança. Obrigado por não te esquivares da minha fraqueza. Senhor do sábado, ensina-me a parar as ferramentas da minha ansiedade. Derrama o teu azeite santo sobre o meu pavio cansado no silêncio do repouso, para que eu possa brilhar novamente com a tua paz. Amém.
 
 ### Share Quote (PERMANECE)
 Deus não apaga a lamparina exausta; Ele derrama azeite novo no silêncio do descanso.

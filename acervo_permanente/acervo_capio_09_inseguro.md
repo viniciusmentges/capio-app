@@ -16,6 +16,9 @@ A sua segurança não deve repousar na ilusão de que você é um vaso de ouro s
 ### Fio da Palavra (ANCORA)
 A nossa segurança não nasce da perfeição de nossa estrutura de barro, mas da glória do Tesouro divino que habita dentro de nós.
 
+### Leve com Você
+O seu medo de quebrar ou falhar perde o sentido quando você entende que Deus nunca o escolheu por causa da sua resistência, mas apesar da sua fragilidade.
+
 ### Palavra Continua (ACOMPANHA)
 Não se desespere ao constatar suas fraquezas pessoais hoje; permita que a graça de Deus brilhe através das suas rachaduras.
 
@@ -38,6 +41,9 @@ O milagre da vocação de Gideão é que Deus não discute com a sua autoimagem 
 
 ### Fio da Palavra (ANCORA)
 A nossa coragem não nasce do tamanho de nossa genealogia ou recursos, mas da certeza inabalável de que o Senhor está conosco.
+
+### Leve com Você
+Deus não costuma convocar heróis destemidos, Ele convoca pessoas escondidas e inseguras. O seu esconderijo não impede o céu de encontrar você.
 
 ### Palavra Continua (ACOMPANHA)
 Saia hoje do esconderijo de suas comparações e medos, assumindo a identidade e a força que Deus proclamou sobre a sua vida.
@@ -62,6 +68,9 @@ Muitas vezes, a nossa ansiedade e insegurança nascem de tentarmos reter em noss
 ### Fio da Palavra (ANCORA)
 Quando nossos braços não podem mais proteger o que amamos, a fé constrói um cesto de oração e entrega o destino ao rio da providência.
 
+### Leve com Você
+Há momentos em que o maior ato de amor é soltar o controle. Colocar quem amamos no rio da providência divina é mais seguro do que tentar segurá-los nos nossos próprios braços cansados.
+
 ### Palavra Continua (ACOMPANHA)
 Pare de se angustiar tentando controlar o incontrolável; entregue hoje nas mãos de Deus aquilo que excede a sua capacidade de proteção.
 
@@ -84,6 +93,9 @@ Nós vivemos em um tempo em que a fidelidade à Palavra de Deus frequentemente n
 
 ### Fio da Palavra (ANCORA)
 Diante de uma maioria barulhenta e intimidadora, a nossa segurança inabalável repousa na integridade silenciosa de um altar restaurado diante de Deus.
+
+### Leve com Você
+Você não precisa gritar para provar a sua segurança quando a multidão ao redor estiver histérica. Um altar consertado em silêncio tem muito mais peso do que mil justificativas.
 
 ### Palavra Continua (ACOMPANHA)
 Não se sinta inseguro ou intimidado por ser minoria em sua fé ou integridade; permaneça firme na restauração do seu altar diário com Deus.
@@ -108,6 +120,9 @@ O fio de escarlate na janela é um símbolo canônico da justificação pela fé
 ### Fio da Palavra (ANCORA)
 A nossa segurança diante de Deus não é sustentada pelo nosso currículo moral, mas pelo fio escarlate da graça que pende em nossa janela.
 
+### Leve com Você
+O seu passado não desqualifica a sua segurança futura em Deus. Um cordão vermelho de obediência pendurado na janela vale mais do que uma vida inteira de boas aparências.
+
 ### Palavra Continua (ACOMPANHA)
 Não permita que as memórias ou vergonhas do passado roubem a sua paz hoje; descanse no perdão total e na segurança da graça de Cristo.
 
@@ -131,6 +146,9 @@ Você nunca vencerá os gigantes da sua vida vestindo a armadura de outra pessoa
 ### Fio da Palavra (ANCORA)
 A cura para a insegurança não é vestir a armadura brilhante dos outros, mas assumir com coragem a identidade e as armas que Deus nos confiou.
 
+### Leve com Você
+A insegurança costuma nos vestir com roupas pesadas que não nos pertencem. Você não precisa imitar as estratégias e o sucesso dos outros; a pedra lisa que cabe na sua mão é o suficiente.
+
 ### Palavra Continua (ACOMPANHA)
 Abra mão hoje de tentar copiar o estilo, a voz ou os métodos de outras pessoas; sirva a Deus com a autenticidade da sua própria história.
 
@@ -153,6 +171,9 @@ O detalhe literário com que o capítulo se encerra é uma das imagens mais bela
 
 ### Fio da Palavra (ANCORA)
 Quando nos sentamos à mesa do Rei por sua graça, a toalha de sua misericórdia cobre todas as nossas deficiências e inseguranças.
+
+### Leve com Você
+O assento que você ocupa na mesa da graça não pode ser perdido, porque ele não foi conquistado pelos seus méritos. A toalha do Rei cobre todas as deficiências das suas pernas.
 
 ### Palavra Continua (ACOMPANHA)
 Se os seus traumas ou cicatrizes tentam fazer você se sentir indigno, lembre-se de que o Rei já estendeu a toalha da graça sobre a sua vida.

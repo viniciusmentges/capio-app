@@ -19,7 +19,7 @@ A verdadeira fidelidade a Deus se manifesta quando recusamos os atalhos ilícito
 ### Palavra Continua (ACOMPANHA)
 Quando a urgência de resolver um problema tentar empurrá-lo para um atalho questionável, responda à pressão com uma promessa bíblica de dependência e espera.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Examine se você está enfrentando uma situação de desgaste onde a tentação de usar meios próprios para apressar o alívio tem se tornado intensa. Em vez de transformar pedras na força do braço, alimente sua esperança hoje na fidelidade do tempo de Deus.
 
 ### Oração
@@ -45,7 +45,7 @@ A santidade inegociável prefere abandonar o manto da honra temporária e fugir 
 ### Palavra Continua (ACOMPANHA)
 Não brinque com a proximidade do pecado nem confie na sua força de vontade em ambientes vulneráveis; tenha a coragem espiritual de sair e fechar a porta.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Identifique hoje os ambientes digitais, conversas ou situações sociais que funcionam como uma armadilha recorrente para a sua fraqueza. Em vez de tentar resistir no meio do risco, tome a decisão prática de cortar o acesso e afastar-se fisicamente do perigo.
 
 ### Oração
@@ -71,7 +71,7 @@ A ociosidade e o afastamento do lugar do nosso dever espiritual criam o terreno 
 ### Palavra Continua (ACOMPANHA)
 Mantenha a sua vida focada no cumprimento fiel das suas responsabilidades diárias e espirituais, fechando as portas que a ociosidade abre para a cobiça.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Observe como você tem utilizado o seu tempo livre e os seus períodos de fadiga. Se o ócio desatento tem aberto espaço para pensamentos e hábitos que entristecem o Espírito Santo, reaja hoje reassumindo uma disciplina ativa de oração, leitura bíblica e serviço ao próximo.
 
 ### Oração
@@ -97,7 +97,7 @@ Buscar o calor e a aprovação social ao redor das fogueiras dos que rejeitam a 
 ### Palavra Continua (ACOMPANHA)
 Não esconda a sua identidade cristã para agradar ou ser aceito por ambientes que zombam da Palavra de Deus; assuma com fidelidade a sua comunhão com Cristo.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Faça uma autoanálise honesta sobre como você se comporta quando o nome de Jesus ou os princípios da fé são atacados em sua presença. Se o medo da opinião alheia o tem levado ao silêncio cúmplice, arrependa-se hoje e peça ousadia para confessar o seu Senhor diante dos homens.
 
 ### Oração
@@ -123,7 +123,7 @@ A tentação perde a sua força sedutora quando confiamos plenamente na bondade 
 ### Palavra Continua (ACOMPANHA)
 Rejeite todo pensamento que sugira que a santidade bíblica é uma prisão; celebre hoje a abundância da graça divina e honre os limites estabelecidos pela Palavra.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Se alguma área de desobediência tem parecido atraente aos seus olhos nos últimos dias, pergunte a si mesmo qual é a mentira sobre o caráter de Deus que você começou a acreditar. Substitua hoje o engano do inimigo pela meditação na generosidade infinita de Cristo.
 
 ### Oração
@@ -149,7 +149,7 @@ A santidade em meio a uma cultura contrária a Deus começa com a decisão firme
 ### Palavra Continua (ACOMPANHA)
 Proponha em seu coração hoje manter a sua pureza espiritual, escolhendo a simplicidade da obediência à Palavra acima dos privilégios ilusórios que o mundo oferece.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Avalie se você tem aceitado concessões éticas no seu ambiente de trabalho ou em sua vida pessoal apenas para não parecer diferente ou para obter vantagens rápidas. Tome hoje a decisão firme de se alimentar unicamente da verdade, rejeitando as iguarias que contaminam a consciência.
 
 ### Oração
@@ -175,7 +175,7 @@ A fidelidade soberana de Deus supervisiona cada provação da nossa vida, garant
 ### Palavra Continua (ACOMPANHA)
 Quando a pressão da tentação parecer insuportável, não ceda ao desespero; procure com atenção em oração a via de escape prática que Deus já providenciou para você.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Diante da tentação que mais o tem desafiado ultimamente, pare por um instante, respire fundo e pergunte a Deus em silêncio: Senhor, onde está a via de escape nesta situação? Assim que Ele lhe mostrar a porta de saída — seja o silêncio, a fuga física ou a confissão —, atravesse-a sem hesitar.
 
 ### Oração

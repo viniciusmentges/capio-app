@@ -19,7 +19,7 @@ A culpa do nosso pecado não é curada pelo encobrimento ou pela tentativa de co
 ### Palavra Continua (ACOMPANHA)
 Não esconda os seus erros nem carregue o peso da culpa em segredo; apresente o seu coração quebrantado diante de Deus com toda a honestidade.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Identifique qual é o erro ou pecado recente que tem pesado em sua consciência a ponto de tirar a sua alegria espiritual e fazê-lo se sentir indigno de orar. Pare de se esconder atrás de justificativas ou medo; ajoelhe-se hoje no silêncio do seu quarto e confesse tudo a Deus, recebendo o perdão que lava e restaura.
 
 ### Oração
@@ -45,7 +45,7 @@ Quando caímos e negamos a nossa fé, o olhar compassivo de Cristo nos confronta
 ### Palavra Continua (ACOMPANHA)
 Não permita que a vergonha de uma queda recente ou falha espiritual faça você fugir definitivamente da presença do Senhor.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Se você falhou gravemente em seu testemunho cristão ou cedeu à tentação nas últimas semanas, não se desespere nem se isole na escuridão do auto-ódio. Deixe as suas lágrimas amargas correrem na presença de Cristo, lembre-se das promessas de perdão de sua Palavra e permita que a sua graça levante você do chão.
 
 ### Oração
@@ -71,7 +71,7 @@ A convicção profunda da nossa impureza diante de Deus é o primeiro passo para
 ### Palavra Continua (ACOMPANHA)
 Deixe de se comparar com os padrões morais humanos e permita que a santidade da Escritura revele e purifique as áreas impuras do seu coração.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Peça ao Espírito Santo hoje para mostrar quais são as conversas, palavras e atitudes impuras que têm manchado a sua vida cristã. Em vez de se defender, coloque a sua boca e o seu coração no altar da confissão, permitindo que a graça purificadora de Jesus toque e limpe a sua vida.
 
 ### Oração
@@ -97,7 +97,7 @@ A justificação e a paz interior são concedidas ao pecador que declara a sua t
 ### Palavra Continua (ACOMPANHA)
 Abandone toda tentativa de se justificar diante de Deus com desculpas ou comparações com o erro dos outros, e busque o perdão com humildade absoluta.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Faça uma verificação de honestidade interior hoje. Se o peso da culpa tem feito você tentar compensar seus erros trabalhando mais na igreja ou listando suas boas qualidades para si mesmo, pare agora. Dobre os joelhos, assuma a sua condição de necessitado e clame pela misericórdia de Jesus com um coração despojado de orgulho.
 
 ### Oração
@@ -123,7 +123,7 @@ A nossa defesa contra as acusações legítimas da nossa culpa não reside nos n
 ### Palavra Continua (ACOMPANHA)
 Quando a culpa e a acusação tentarem paralisar a sua comunhão com Deus, apoie a sua fé na obra substitutiva e perfeita de Jesus Cristo na cruz.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Se você tem vivido debaixo de um peso constante de condenação por pecados passados que já foram confessados a Deus, pare de dar ouvidos à voz do acusador em sua mente. Declare hoje em voz alta que as suas vestes sujas foram removidas pelo sangue do Cordeiro e que você está coberto pela justiça de Jesus.
 
 ### Oração
@@ -149,7 +149,7 @@ A graça de Deus interrompe as nossas tentativas de pagar a culpa por meio do es
 ### Palavra Continua (ACOMPANHA)
 Abandone o pensamento de que você precisa passar por um período de servidão e punição autoinfligida para merecer novamente o amor e a aceitação do seu Pai celestial.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Examine se você tem se mantido à distância de Deus ou se recusado a participar das bênçãos e do serviço cristão por achar que os seus pecados passados o rebaixaram à condição de um mero jornaleiro. Pare de recitar o seu discurso de indignidade hoje; aceite o abraço do Pai, deixe que Ele coloque o manto da graça sobre você e entre no banquete do perdão.
 
 ### Oração
@@ -175,7 +175,7 @@ O sacrifício imaculado de Cristo na cruz possui a eficácia eterna de purificar
 ### Palavra Continua (ACOMPANHA)
 Não permita que a memória dos pecados que Cristo já purificou com o seu sangue continue mantendo a sua consciência aprisionada na culpa e na paralisia.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Se a lembrança de erros graves que você já confessou continua voltando para assombrar a sua mente e roubar a sua ousadia em orar ou servir, tome uma posição de fé hoje. Declare sobre a sua própria consciência a eficácia e a suficiência do sangue de Jesus Cristo, receba a limpeza completa do seu interior e caminhe em liberdade.
 
 ### Oração

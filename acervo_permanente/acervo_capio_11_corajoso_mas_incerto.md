@@ -19,7 +19,7 @@ Deus não divide as águas enquanto permanecemos na segurança da margem seca; o
 ### Palavra Continua (ACOMPANHA)
 Sustente o seu passo de obediência na água fria da incerteza atual, confiando que a palavra de Deus é mais sólida do que a correnteza.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Identifique hoje qual é a ação concreta que corresponde a colocar os pés na água diante do seu desafio atual. Em vez de esperar que todas as variáveis externas se resolvam ou que o caminho apareça completamente aberto, dê o passo inicial de preparação e fidelidade exatamente onde você está.
 
 ### Oração
@@ -45,7 +45,7 @@ A coragem verdadeira não precisa de garantias sobre o destino final quando est�
 ### Palavra Continua (ACOMPANHA)
 Concentre a sua energia em cumprir o dever de fidelidade e amor hoje, entregando o mapa dos próximos meses nas mãos providenciais de Deus.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Diante de uma transição ou de um compromisso que exige lealdade em meio à incerteza, concentre a sua energia em cumprir o dever do dia atual com excelência e fidelidade. Pare de tentar resolver mentalmente os problemas dos próximos meses e cuide com amor daquilo ou de quem está ao seu lado hoje.
 
 ### Oração
@@ -71,7 +71,7 @@ A vitória de Deus em nossas vidas não depende da robustez da nossa armadura hu
 ### Palavra Continua (ACOMPANHA)
 Permita que a sua fragilidade atual seja o recipiente onde a glória de Deus brilha para dissipar as trevas ao redor.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Aceite a sua condição humana diante da responsabilidade que está diante de você. Em vez de tentar fabricar uma autossuficiência que não possui, use a sua vulnerabilidade atual como o instrumento exato pelo qual a luz de Deus e a sua dependência dele serão testemunhadas por quem está ao redor.
 
 ### Oração
@@ -97,7 +97,7 @@ A nossa sustentação sobre as águas instáveis da vida não vem do fim da temp
 ### Palavra Continua (ACOMPANHA)
 Quando o vento da incerteza assobiar nos seus ouvidos, desvie o olhar das ondas e fixe sua atenção no Senhor que o chamou para caminhar.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Se você já deu um passo importante por obediência a Deus e agora está sentindo o vento contrário da insegurança, pare de alimentar os seus pensamentos com a gravidade dos problemas. Redirecione deliberadamente a sua atenção hoje para a fidelidade de Cristo por meio do silêncio, da oração e da leitura de uma promessa bíblica específica.
 
 ### Oração
@@ -123,7 +123,7 @@ A audácia espiritual mais madura é aquela que se prostra em silêncio diante d
 ### Palavra Continua (ACOMPANHA)
 Renda os seus temores e expectativas a Deus em silêncio, confiando que a sua obediência íntegra está guardada pela soberania do Pai.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Antes de enfrentar uma conversa difícil, uma reunião decisiva ou um posicionamento que exige grande coragem moral, reserve um tempo intencional de silêncio e jejum diante de Deus. Não entre no pátio interno da ação sem antes ter rendido os seus temores e expectativas à soberania do Pai.
 
 ### Oração
@@ -149,7 +149,7 @@ Deus não nos deve explicações antecipadas na base da montanha; a provisão so
 ### Palavra Continua (ACOMPANHA)
 Siga subindo a encosta do seu dever de hoje com fidelidade, descansando na certeza de que no monte do Senhor haverá provisão.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Continue subindo a montanha do seu dever diário com fidelidade, mesmo que você ainda não consiga ver como Deus providenciará os recursos ou a saída para o seu problema. Cumpra a sua parte no dia de hoje com dedicação e deixe que o Senhor se encarregue do milagre no momento e no topo certos.
 
 ### Oração
@@ -175,7 +175,7 @@ A direção divina muitas vezes não se apresenta como um mapa rodoviário de lo
 ### Palavra Continua (ACOMPANHA)
 Dê o passo prático de embarque para o qual Deus o chamou hoje, confiando a navegação de longo prazo nas mãos do Espírito Santo.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Se Deus já lhe deu uma convicção clara em oração ou na Palavra sobre a direção que deve tomar, pare de procrastinar em busca de mais confirmações ou de condições perfeitas. Dê o passo prático de embarque hoje mesmo, iniciando o contato, enviando a mensagem ou assumindo o compromisso ao qual Ele o chamou.
 
 ### Oração

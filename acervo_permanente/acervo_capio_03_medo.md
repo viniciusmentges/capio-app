@@ -44,6 +44,9 @@ O problema daquele jovem não era a presença do exército inimigo; era a ceguei
 ### Fio da Palavra (ANCORA)
 O antídoto contra o medo não é a negação do perigo que nos cerca, mas a abertura dos olhos para a presença superior de Deus que nos guarda.
 
+### Leve com Você
+O que nos assusta não é o tamanho do problema, mas a miopia de não enxergarmos quem está nos guardando. A paz acontece quando Deus nos empresta os Seus olhos.
+
 ### Palavra Continua (ACOMPANHA)
 Os meus olhos podem ver o cerco dos problemas, mas a minha fé descansa na proteção invisível do Senhor.
 
@@ -67,6 +70,9 @@ E como Deus trata esse pavor? Ele não envia um anjo com um discurso motivaciona
 
 ### Fio da Palavra (ANCORA)
 O terror da nossa indignidade diante da santidade de Deus é curado unicamente pelo fogo purificador da Sua graça em Cristo.
+
+### Leve com Você
+A percepção da nossa falha diante da santidade de Deus poderia nos paralisar de terror, mas é o próprio Senhor quem providencia a brasa da Sua graça para tocar os nossos lábios.
 
 ### Palavra Continua (ACOMPANHA)
 Eu não preciso esconder as minhas culpas em pavor, pois o sacrifício de Cristo limpa os meus lábios e me acolhe na presença de Deus.
@@ -92,6 +98,9 @@ O medo, na sua anatomia espiritual mais profunda, é uma forma de adoração inv
 ### Fio da Palavra (ANCORA)
 O medo cresce quando damos aos problemas mais atenção do que damos a Cristo; mas a Sua mão salvadora é sempre mais rápida que a nossa queda.
 
+### Leve com Você
+O medo nos convence a olhar para o tamanho das ondas, mas o socorro de Cristo é sempre estendido antes que a água nos cubra. A mão dEle nos alcança exatamente onde a nossa coragem falha.
+
 ### Palavra Continua (ACOMPANHA)
 Mesmo quando o vento ao meu redor é forte e a minha fé vacila, a mão de Cristo me segura firmemente acima das águas.
 
@@ -115,6 +124,9 @@ Mas a resposta de Deus é um choque de lucidez vocacional. Deus proíbe a descul
 
 ### Fio da Palavra (ANCORA)
 A verdadeira coragem para cumprir o nosso chamado não nasce da confiança em nossa própria capacidade, mas da certeza inegociável da presença de Deus.
+
+### Leve com Você
+Nós perdemos muito tempo calculando a nossa própria insignificância. O chamado de Deus não é uma aposta na nossa força, mas uma garantia absoluta da Sua presença.
 
 ### Palavra Continua (ACOMPANHA)
 Eu não preciso temer a grandeza das minhas responsabilidades hoje, pois aquele que me chamou caminha comigo para me sustentar.
@@ -140,6 +152,9 @@ O Verbo eterno participou da nossa carne e do nosso sangue vulneráveis. O Filho
 ### Fio da Palavra (ANCORA)
 A ressurreição de Jesus Cristo desarmou o poder tirânico da morte, libertando a nossa alma da escravidão do pavor do fim.
 
+### Leve com Você
+O medo do fim tenta ditar as regras dos nossos dias, mas a ressurreição de Cristo transformou a morte em apenas mais uma porta que Ele já abriu e iluminou.
+
 ### Palavra Continua (ACOMPANHA)
 O fim desta vida não é um abismo assustador, mas a porta segura pela qual entrarei na presença do meu Salvador.
 
@@ -164,6 +179,9 @@ Em contraste com a covardia, Deus derrama sobre os Seus filhos uma tríade insep
 ### Fio da Palavra (ANCORA)
 O medo que nos faz recuar e esconder a verdade não vem de Deus; o Espírito Santo nos equipa com força, amor e lucidez para ficarmos de pé.
 
+### Leve com Você
+O pavor que nos encolhe e nos faz calar nunca vem do alto. O Espírito que habita em nós sempre nos empurra para a firmeza, para o amor e para a lucidez diante da crise.
+
 ### Palavra Continua (ACOMPANHA)
 Eu posso enfrentar as pressões de hoje sem recuar em covardia, pois o Espírito de Deus sustenta a minha mente com poder e lucidez.
 
@@ -187,6 +205,9 @@ A palavra "refúgio" no hebraico descreve um abrigo antiaéreo, uma fortaleza na
 
 ### Fio da Palavra (ANCORA)
 A nossa paz diária não depende da estabilidade instável do mundo, mas da segurança inabalável de Deus como nosso refúgio no meio do caos.
+
+### Leve com Você
+A segurança que procuramos não será encontrada em um mundo que não balança, mas na descoberta de que o nosso Deus é um rio silencioso e constante no meio dos terremotos.
 
 ### Palavra Continua (ACOMPANHA)
 As estruturas ao meu redor podem até balançar, mas a minha alma permanece segura no refúgio inabalável de Deus.

@@ -19,7 +19,7 @@ A disciplina e o rigor doutrinário não substituem a necessidade vital de mante
 ### Palavra Continua (ACOMPANHA)
 Examine as suas disciplinas espirituais para garantir que elas sejam pontes vivas de comunhão com o Senhor, e não meros deveres cumpridos por hábito ou orgulho moral.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Avalie hoje se a sua leitura bíblica, oração e serviço diário têm sido motivados pelo amor ou pela obrigação de manter um bom desempenho espiritual. Faça uma pausa em seu ativismo, feche os seus livros de tarefas e gaste tempo em silêncio simplesmente adorando e conversando com Cristo como você fazia no início da sua caminhada.
 
 ### Oração
@@ -45,7 +45,7 @@ A obediência e a disciplina que são movidas pela busca de méritos nos transfo
 ### Palavra Continua (ACOMPANHA)
 Não transforme a sua fidelidade cristã e a sua disciplina em uma lista de exigências ou superioridade moral sobre aqueles que falharam em sua caminhada.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Pergunte-se hoje se você tem nutrido ressentimento, cansaço oculto ou crítica amarga contra Deus ou contra irmãos por achar que o seu esforço espiritual não tem sido reconhecido como deveria. Abandone a mentalidade de escravo meritório, abrace a sua identidade de filho amado e entre com gratidão na alegria da graça do Pai.
 
 ### Oração
@@ -71,7 +71,7 @@ O serviço religioso executado por mero hábito e sem reverência afetuosa trans
 ### Palavra Continua (ACOMPANHA)
 Não permita que o costume e a rotina das suas práticas cristãs roubem a reverência, o temor e a excelência que você deve à santidade de Deus.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Observe se você tem comparecido aos cultos, orado antes das refeições ou lido as Escrituras com o sentimento de canseira ou obrigação burocrática. Pare por alguns instantes antes do seu próximo tempo de devoção, conscientize-se da grandiosidade do Deus diante de quem você está comparecendo e ofereça a Ele o seu melhor com o coração desperto.
 
 ### Oração
@@ -97,7 +97,7 @@ A disciplina espiritual deve ser elástica e humilde o suficiente para acolher o
 ### Palavra Continua (ACOMPANHA)
 Mantenha a sua vida de disciplina cristã aberta à renovação e à correção de Deus, evitando a rigidez de quem confia mais em seus próprios métodos do que no Espírito.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Examine se você tem se tornado excessivamente rígido e resistente a mudanças em sua rotina espiritual ou na vida da sua igreja comunitária. Peça a Deus hoje para amaciar o couro do seu coração, removendo toda a dureza e o cinismo para que você possa experimentar um novo frescor da sua graça.
 
 ### Oração
@@ -123,7 +123,7 @@ A vitalidade e o fruto espiritual da vida cristã não são fabricados pelo esfo
 ### Palavra Continua (ACOMPANHA)
 Não substitua o tempo secreto de comunhão, oração e dependência de Jesus pela busca ansiosa de produzir resultados ou manter uma boa aparência espiritual.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Avalie se o seu foco principal nas últimas semanas tem sido tentar ser um cristão melhor por suas próprias forças ou aprofundar a sua intimidade com Jesus. Pare de lutar sozinho hoje; gaste tempo de silêncio na presença do Senhor, reconheça a sua total incapacidade sem Ele e permita que a seiva da sua graça renove o seu interior.
 
 ### Oração
@@ -149,7 +149,7 @@ A disciplina espiritual e o jejum só possuem valor diante de Deus quando produz
 ### Palavra Continua (ACOMPANHA)
 Certifique-se de que as suas disciplinas de oração e jejum não o tornem intolerante com as pessoas, mas o impulsionem à prática do amor e da generosidade.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Observe se a sua rotina de disciplinas espirituais tem tornado você uma pessoa mais amável, paciente e prestativa em sua casa ou se tem apenas gerado orgulho interior. Pratique hoje o verdadeiro jejum que Deus escolheu: estenda a mão para ajudar alguém em necessidade ou perdoe uma dívida emocional que alguém tem com você.
 
 ### Oração
@@ -175,7 +175,7 @@ A estrutura de uma disciplina moral e teológica perfeita permanece fria e sem v
 ### Palavra Continua (ACOMPANHA)
 Não confie apenas na correção da sua rotina e na exatidão das suas doutrinhas; dependa diariamente do sopro vivificador do Espírito Santo em seu interior.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Ajoelhe-se hoje diante do Senhor e examine se a sua vida cristã tem sido marcada pela perfeição das formas externas ou pelo calor e dinamismo do Espírito Santo. Peça a Deus que sopre o seu vento vivificador sobre a sua rotina diária, transformando a sua disciplina em uma caminhada vibrante, aquecida e cheia de poder.
 
 ### Oração

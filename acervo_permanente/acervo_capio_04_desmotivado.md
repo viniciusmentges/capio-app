@@ -44,6 +44,9 @@ A verdadeira motivação cristã não pode depender do aplauso imediato ou do re
 ### Fio da Palavra (ANCORA)
 A nossa motivação para fazer o bem não depende do reconhecimento humano imediato, mas da fidelidade de Deus que garante a colheita no tempo certo.
 
+### Leve com Você
+Nem todo trabalho silencioso produz aplausos imediatos. Algumas sementes demoram para romper a terra, mas a colheita nunca esquece de quem a plantou.
+
 ### Palavra Continua (ACOMPANHA)
 Eu continuo plantando a minha semente de fidelidade hoje, sabendo que o Senhor do tempo não esquece o meu trabalho.
 
@@ -67,6 +70,9 @@ A desmotivação rotineira morre quando paramos de exigir que cada tarefa simple
 
 ### Fio da Palavra (ANCORA)
 A dignidade e o significado da nossa vida não estão no glamour visual das nossas tarefas, mas na fidelidade com que executamos o trabalho diário.
+
+### Leve com Você
+O sagrado não acontece apenas em grandes palcos iluminados. Há uma beleza imensa na fidelidade silenciosa de quem apenas faz o que precisa ser feito hoje.
 
 ### Palavra Continua (ACOMPANHA)
 O meu trabalho simples e rotineiro não é um desperdício de tempo; é o lugar onde sirvo a Deus com honestidade hoje.
@@ -92,6 +98,9 @@ O detalhe fascinante é a resposta de Neemias. Ele não parou a obra para bater 
 ### Fio da Palavra (ANCORA)
 A crítica cínica de quem não constrói nada nunca deve ter poder para paralisar as mãos de quem trabalha em obediência a Deus.
 
+### Leve com Você
+Vozes que não ajudam a carregar as pedras não deveriam ter autoridade para ditar o ritmo da sua construção. Deixe que o som do seu trabalho abafe o eco do cinismo alheio.
+
 ### Palavra Continua (ACOMPANHA)
 Eu não paro a minha obra para responder aos cinismos do caminho; o som do meu trabalho é a minha resposta.
 
@@ -115,6 +124,9 @@ Para a lógica de um pescador, a ordem era um absurdo técnico: tentar pescar de
 
 ### Fio da Palavra (ANCORA)
 Quando o nosso esforço humano termina em fracasso e exaustão, a obediência à palavra de Cristo é a única força capaz de nos fazer tentar de novo.
+
+### Leve com Você
+O fracasso de ontem não é o diagnóstico final sobre a sua vida. Às vezes, o maior milagre acontece exatamente no mesmo mar onde você havia desistido de pescar.
 
 ### Palavra Continua (ACOMPANHA)
 Mesmo quando as minhas noites de esforço parecem vazias, eu continuo lançando a minha rede fundamentado na palavra de Cristo.
@@ -140,6 +152,9 @@ Primeiro, ele manda nos desembaraçarmos de *"todo peso e do pecado"*. Note que 
 ### Fio da Palavra (ANCORA)
 A perseverança na caminhada cristã não é sustentada pela empolgação emocional do momento, mas pela remoção de pesos inúteis e pelo foco contínuo em Cristo.
 
+### Leve com Você
+Caminhar machucado ou sobrecarregado não é um teste de resistência, é uma forma de esgotamento. O alívio começa quando temos a coragem de soltar as bagagens que não nos pertencem.
+
 ### Palavra Continua (ACOMPANHA)
 Eu deixo no chão os pesos que me cansam e continuo correndo a minha maratona com os olhos fixos em Jesus.
 
@@ -164,6 +179,9 @@ Deus responde à tristeza daqueles velhos com uma pergunta que confronta a nossa
 ### Fio da Palavra (ANCORA)
 Deus não mede o valor do nosso trabalho pelo tamanho da vitrine ou pelo volume dos aplausos, mas pela fidelidade com que construímos no alicerce.
 
+### Leve com Você
+Ninguém aplaude alicerces porque eles ficam escondidos debaixo da terra. Mas são exatamente as fundações invisíveis do caráter que impedem a casa de ruir nos dias difíceis.
+
 ### Palavra Continua (ACOMPANHA)
 O meu trabalho anônimo e pequeno não é invisível para Deus; Ele se alegra com a fidelidade das minhas mãos.
 
@@ -187,6 +205,9 @@ Na economia do Reino de Deus, o avanço dos anos e o desgaste do corpo físico n
 
 ### Fio da Palavra (ANCORA)
 Na economia de Deus, o envelhecimento e o passar dos anos não esgotam a nossa utilidade, mas aprofundam a nossa sabedoria e a doçura dos nossos frutos.
+
+### Leve com Você
+O vigor da juventude tem a sua beleza, mas só o tempo produz a doçura da maturidade. A sua história ainda tem sabor e relevância para quem se senta sob a sua sombra.
 
 ### Palavra Continua (ACOMPANHA)
 O meu valor para o Reino de Deus não se esgota com o passar dos anos; a minha raiz contínua produzindo frutos doces de sabedoria.

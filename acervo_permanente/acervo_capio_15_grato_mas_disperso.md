@@ -19,7 +19,7 @@ A agitação das muitas tarefas, ainda que executadas em nome de Deus, pode disp
 ### Palavra Continua (ACOMPANHA)
 Não permita que o excesso de ocupações legítimas sufoque a sua escuta espiritual; estabeleça pausas diárias de silêncio para concentrar o seu coração em Deus.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Identifique hoje qual é a tarefa ou responsabilidade que tem consumido excessivamente a sua energia mental a ponto de deixá-lo irritado e impaciente com os outros. Desligue por alguns minutos as distrações da sua rotina, deixe as tigelas de lado e sente-se em oração contemplativa diante do Senhor.
 
 ### Oração
@@ -45,7 +45,7 @@ A dispersão gerada pelo excesso de preocupações seculares e ambições materi
 ### Palavra Continua (ACOMPANHA)
 Faça uma limpeza constante em sua rotina mental e digital, eliminando os estímulos desnecessários que disputam espaço com a meditação bíblica em seu coração.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Examine as últimas semanas e avalie quais são os cuidados ou ambições que mais têm roubado o seu foco e a sua paz interior. Tome hoje a decisão prática de simplificar a sua agenda e os seus investimentos emocionais, arrancando da sua rotina o que apenas consome a sua seiva espiritual sem gerar fruto para a eternidade.
 
 ### Oração
@@ -71,7 +71,7 @@ A amnésia espiritual gerada pelas pequenas preocupações logísticas nos imped
 ### Palavra Continua (ACOMPANHA)
 Não permita que pequenas falhas de planejamento diário roubem a sua paz ou desviem o seu foco da soberania e do cuidado de Deus em sua vida.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Quando um imprevisto financeiro ou doméstico tentar dominar a sua conversa e os seus pensamentos hoje, faça um exercício deliberado de memória espiritual. Recorde pelo menos três ocasiões em que Deus sustentou você milagrosamente no passado, e descanse a sua mente na certeza de que Ele continua no controle do seu barco.
 
 ### Oração
@@ -97,7 +97,7 @@ A vitalidade e a eficácia da nossa caminhada cristã dependem de pausas regular
 ### Palavra Continua (ACOMPANHA)
 Reserve tempo em sua semana para parar o ritmo exaustivo de produção e cuidar pacientemente da restauração da sua atenção espiritual e comunhão com Deus.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Observe se a sua rotina tem sido marcada pela sensação de que você está trabalhando muito, mas retendo pouca paz e sabedoria em seu interior. Separe hoje um período de introspecção e leitura bíblica sem pressa, permitindo que o Espírito Santo identifique e costure os pontos de dispersão em sua mente.
 
 ### Oração
@@ -123,7 +123,7 @@ A eficácia do nosso testemunho cristão exige que mantengamos a pureza concentr
 ### Palavra Continua (ACOMPANHA)
 Mantenha a integridade da sua fé intacta, evitando diluir suas convicções bíblicas em troca de comodidade ou aceitação em ambientes contrários ao evangelho.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Avalie se a sua presença em seus círculos de amizade e trabalho tem trazido a preservação moral e o sabor da graça de Cristo ou se você tem apenas ecoado e se adaptado aos comportamentos dispersos ao seu redor. Peça a Deus hoje a renovação da sua coragem para viver com nitidez e pureza de propósito.
 
 ### Oração
@@ -149,7 +149,7 @@ A perseverança espiritual nas noites longas da vida exige a reserva constante d
 ### Palavra Continua (ACOMPANHA)
 Não se contente com experiências espirituais passadas ou superficiais; reserve diariamente tempo de qualidade em segredo para reabastecer a sua comunhão com o Espírito Santo.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Examine o nível da sua reserva espiritual hoje. Se você tem consumido toda a sua energia nas aparências e compromissos externos enquanto a sua vida de oração secreta está seca e esquecida, pare de adiar o essencial. Tranque a porta do seu quarto hoje e busque a renovação do seu azeite na presença de Deus.
 
 ### Oração
@@ -175,7 +175,7 @@ O reavivamento da nossa vida cristã começa quando desentulhamos com paciência
 ### Palavra Continua (ACOMPANHA)
 Remova hoje o entulho das distrações e dos maus hábitos que se acumularam em sua rotina, restaurando as práticas fundamentais de comunhão com Deus em seu dia a dia.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Pense em uma prática espiritual de oração, leitura das Escrituras ou silêncio que costumava trazer profunda paz ao seu coração no passado, mas que foi sufocada pelas pedras da correria moderna. Pegue a enxada da disciplina hoje e comece a desentulhar essa fonte de água viva em sua rotina.
 
 ### Oração

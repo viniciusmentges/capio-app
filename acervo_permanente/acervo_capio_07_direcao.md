@@ -16,6 +16,9 @@ Nós costumamos buscar a direção de Deus como se estivéssemos procurando um m
 ### Fio da Palavra (ANCORA)
 Antes de nos apontar o caminho dos próximos anos, o Mestre nos convida para sentar à sua mesa e restaurar a comunhão.
 
+### Leve com Você
+Antes de cobrar resultados ou exigir novos passos, Cristo se importa com a nossa fome e com o nosso cansaço. A verdadeira direção nasce do perdão e da comunhão, não da pressa.
+
 ### Palavra Continua (ACOMPANHA)
 Se hoje você está confuso sobre qual rumo tomar, pare de exigir respostas imediatas e aceite primeiro o convite para descansar e se alimentar na presença de Deus.
 
@@ -38,6 +41,9 @@ A vara e o cajado são instrumentos de correção e proteção. O cajado puxa a 
 
 ### Fio da Palavra (ANCORA)
 Quando os paredões do vale bloqueiam a visão do horizonte, nossa direção é garantida pela proximidade e pelo cajado do Pastor.
+
+### Leve com Você
+Não enxergar a saída do vale não significa que estamos perdidos. A segurança do rebanho nunca esteve na claridade do caminho, mas na presença próxima do Pastor.
 
 ### Palavra Continua (ACOMPANHA)
 Em vez de se angustiar por não enxergar o final da estrada, concentre-se apenas em dar o passo de hoje ouvindo a voz do seu Pastor.
@@ -62,6 +68,9 @@ Muitas vezes, a nossa desorientação nasce da nossa impaciência. Queremos corr
 ### Fio da Palavra (ANCORA)
 A maturidade espiritual na direção consiste em aprender a marchar quando a nuvem se move e a esperar quando ela repousa.
 
+### Leve com Você
+O passo mais difícil da fé não é apenas marchar quando a nuvem se move, mas encontrar paz para ficar parado quando tudo o que gostaríamos de fazer era correr.
+
 ### Palavra Continua (ACOMPANHA)
 Não tente apressar os tempos de Deus na sua vida; a segurança da sua jornada está em caminhar estritamente no ritmo que Ele estabelecer.
 
@@ -84,6 +93,9 @@ Foi somente depois que os estrondos cessaram e o silêncio retornou à montanha 
 
 ### Fio da Palavra (ANCORA)
 Quando buscamos direção na crise, Deus frequentemente ignora o barulho dos terremotos para nos falar no silêncio de uma brisa suave.
+
+### Leve com Você
+Nós procuramos as respostas de Deus nos grandes espetáculos, mas a Sua voz costuma preferir a mansidão de uma brisa depois que o barulho do nosso pânico finalmente se cala.
 
 ### Palavra Continua (ACOMPANHA)
 Desligue hoje o excesso de ruído, opiniões e agitações ao seu redor para que sua alma consiga discernir a voz mansa de Deus.
@@ -108,6 +120,9 @@ Muitas vezes, ficamos paralisados diante de uma decisão importante — um novo 
 ### Fio da Palavra (ANCORA)
 Muitas vezes o caminho da providência só se abre depois que temos a coragem de molhar os pés na correnteza por obediência à fé.
 
+### Leve com Você
+Algumas portas da providência se abrem apenas quando paramos de calcular os riscos na margem e assumimos o compromisso de pisar na água.
+
 ### Palavra Continua (ACOMPANHA)
 Não fique esperando todas as condições ficarem perfeitas para obedecer a Deus; dê o passo de fé que Ele pediu e confie que o rio se abrirá.
 
@@ -131,6 +146,9 @@ As "veredas antigas" são os princípios eternos da Palavra: a integridade no se
 ### Fio da Palavra (ANCORA)
 Diante das encruzilhadas da vida, a direção mais segura não é a estrada mais moderna, mas as veredas eternas da Palavra de Deus.
 
+### Leve com Você
+Diante da confusão de tantas vozes modernas sugerindo caminhos fáceis, o repouso mais seguro da alma ainda é encontrado na sabedoria milenar das Escrituras.
+
 ### Palavra Continua (ACOMPANHA)
 Quando o mundo oferecer atalhos sedutores e novidades duvidosas, escolha caminhar pela estrada sólida e provada dos princípios bíblicos.
 
@@ -153,6 +171,9 @@ Quando cumprimos esse protocolo de humildade e confiança, o texto nos oferece u
 
 ### Fio da Palavra (ANCORA)
 A verdadeira direção começa no momento em que abrimos mão do orgulho de nosso próprio entendimento e confiamos o volante da vida a Deus.
+
+### Leve com Você
+A paz na tomada de decisões só acontece quando abrimos mão da arrogância de achar que sabemos o que é melhor para nós mesmos.
 
 ### Palavra Continua (ACOMPANHA)
 Antes de tomar qualquer decisão hoje, faça uma pausa e convide deliberadamente a sabedoria de Deus para guiar as suas escolhas.

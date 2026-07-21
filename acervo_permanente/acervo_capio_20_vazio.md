@@ -19,7 +19,7 @@ O vazio existencial é o resultado inevitável de abandonarmos a fonte inesgotá
 ### Palavra Continua (ACOMPANHA)
 Pare de gastar a sua energia diária tentando extrair sentido e preenchimento absoluto de conquistas humanas, relacionamentos ou bens que foram feitos apenas para serem temporários.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Olhe para a sua rotina hoje e identifique quais são as cisternas rotas onde você tem procurado alívio para a sua sede interior: excesso de trabalho, consumo, entretenimento ou redes sociais. Abandone a pá do seu próprio esforço e volte o seu coração em oração para Jesus Cristo, bebendo da sua presença pura e satisfatória.
 
 ### Oração
@@ -45,7 +45,7 @@ Tudo o que o mundo oferece para preencher a nossa alma produz apenas um alívio 
 ### Palavra Continua (ACOMPANHA)
 Não busque nos relacionamentos humanos ou na mudança contínua de cenários e rotinas a saciedade que apenas o Espírito de Cristo pode gerar no seu interior.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Se você tem se sentido exausto pela rotina de buscar alívios rápidos que perdem o efeito logo em seguida, pare na borda do poço hoje. Apresente a Jesus o seu cântaro vazio de frustrações afetivas ou existenciais e peça a Ele que abra dentro de você a fonte de água viva da sua salvação.
 
 ### Oração
@@ -71,7 +71,7 @@ Quando a nossa existência é vivida apenas para conquistar o que está debaixo 
 ### Palavra Continua (ACOMPANHA)
 Não permita que a busca desenfreada pelo sucesso profissional, conforto financeiro e experiências de prazer se transforme em um ídolo que rouba a sua comunhão eterna com Deus.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Faça uma pausa hoje e examine se você tem se sentido frustrado ou oco logo após alcançar metas pelas quais lutou durante anos. Reconheça diante de Deus que o seu coração é grande demais para ser preenchido pelo mundo material, e entregue o centro dos seus desejos a Jesus, o único que dá consistência à nossa história.
 
 ### Oração
@@ -97,7 +97,7 @@ A religião ritualística e externa é como uma talha de pedra fria e vazia: só
 ### Palavra Continua (ACOMPANHA)
 Não se contente em manter as estruturas externas da sua fé e das suas tradições religiosas enquanto o vinho do fervor espiritual e da comunhão com Cristo se esgota.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Observe se a sua rotina cristã e familiar tem se tornado seca, formalista e cheia de constrangimento interior por falta de alegria verdadeira. Apresente as suas talhas de pedra vazias a Jesus hoje em oração; obedeça à sua Palavra nos detalhes simples do dia a dia e espere pelo milagre da renovação em seu interior.
 
 ### Oração
@@ -123,7 +123,7 @@ A reforma moral que limpa e varre os hábitos errados sem convidar o Espírito S
 ### Palavra Continua (ACOMPANHA)
 Não concentre a sua vida espiritual apenas em tentar eliminar pecados e maus hábitos; certifique-se de que o seu interior esteja sendo diariamente preenchido pela Palavra e pela comunhão com o Espírito.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Examine o seu interior hoje. Se você conseguiu abandonar práticas destrutivas no passado mas sente que a sua alma continua oca, silenciosa e sem intimidade vibrante com Deus, não pare na limpeza externa. Abra as portas da sua casa e entregue as chaves de cada cômodo da sua vida ao senhorio absoluto de Jesus Cristo.
 
 ### Oração
@@ -149,7 +149,7 @@ A fome e o vazio da terra distante têm o propósito pedagógico de nos acordar 
 ### Palavra Continua (ACOMPANHA)
 Abandone a teimosia de tentar sobreviver longe da comunhão com a igreja e com a Palavra de Deus, aceitando subprodutos amargos para preencher a sua carência espiritual.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Se você tem se sentido mendigando afeto, atenção e sentido em ambientes impuros e com pessoas que não se importam com a sua alma, olhe para o que você está comendo. Caia em si hoje; reconheça a sua dignidade de filho de Deus, levante-se do chão de alfarrobas e tome o caminho de volta em direção ao pão transbordante da casa do seu Pai.
 
 ### Oração
@@ -175,7 +175,7 @@ O preenchimento definitivo da nossa alma não é uma taça calculada pela metade
 ### Palavra Continua (ACOMPANHA)
 Descanse na provisão superabundante de Deus, parando de viver com medo da escassez ou com a sensação de que a graça do Senhor pode acabar no meio da sua luta.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Assente-se à mesa do Bom Pastor hoje em oração e agradeça porque Ele não espera que todos os seus problemas e inimigos desapareçam para lhe dar paz. Permita que Ele unja a sua cabeça com o óleo do Espírito Santo, receba a sua graça sem medidas e deixe que o transbordamento do seu amor preencha cada canto oco da sua vida.
 
 ### Oração

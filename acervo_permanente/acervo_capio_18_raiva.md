@@ -19,7 +19,7 @@ A ira abrigada e não tratada após o pôr do sol transforma-se em ressentimento
 ### Palavra Continua (ACOMPANHA)
 Não termine o seu dia alimentando pensamentos de retaliação ou revivendo mentalmente as ofensas e injustiças que sofreu durante as suas horas de trabalho.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Se hoje você foi provocado, ofendido ou tratado com desrespeito, não leve essa fervura para o seu descanso noturno. Antes de fechar os olhos para dormir, entregue explicitamente em oração o nome da pessoa e a situação nas mãos do Senhor, trancando a porta do seu coração contra toda amargura.
 
 ### Oração
@@ -45,7 +45,7 @@ A nossa raiva frequentemente revela que estamos mais preocupados com o nosso pr�
 ### Palavra Continua (ACOMPANHA)
 Quando você sentir a ira subir porque os seus planos foram frustrados ou porque alguém não recebeu a punição que você esperava, pare e examine a raiz da sua indignação.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Pergunte-se honestamente se a raiva que tem tirado a sua paz nas últimas semanas é uma indignação justa contra o pecado ou apenas o protesto do seu ego contrariado. Peça a Deus para remover a dureza do seu coração, realinhando as suas emoções com a paciência e a misericórdia que Ele tem demonstrado a você todos os dias.
 
 ### Oração
@@ -71,7 +71,7 @@ A ira descontrolada, mesmo quando provocada por um erro real e grave, acaba desp
 ### Palavra Continua (ACOMPANHA)
 Não permita que o erro, a injustiça ou a provocação de terceiros levem você a perder o domínio próprio e a tomar atitudes destrutivas das quais se arrependerá depois.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Observe se, em nome de defender a verdade ou de corrigir um problema na sua família e na sua igreja, você tem agido com gritaria, agressividade e destruição de relacionamentos. Peça perdão hoje por ter quebrado tábuas de comunhão em momentos de fúria, e busque a sabedoria e a mansidão para corrigir o que está errado com sobriedade.
 
 ### Oração
@@ -97,7 +97,7 @@ A raiva acumulada e descarregada em atitudes agressivas desonra a santidade de D
 ### Palavra Continua (ACOMPANHA)
 Não permita que a exaustão com as falhas repetidas dos outros transforme a sua liderança e o seu convívio diário em amargura e agressividade.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Se você tem agido com impaciência, grosseria ou palavras cortantes dentro da sua casa ou do seu trabalho porque está cansado de carregar o peso da irresponsabilidade alheia, pare diante de Deus hoje. Peça perdão por ter batido na rocha em vez de confiar no Senhor, e clame por um coração que represente com fidelidade a mansidão de Cristo.
 
 ### Oração
@@ -123,7 +123,7 @@ A raiva que brota do orgulho ferido é como uma fera à porta do coração: ou a
 ### Palavra Continua (ACOMPANHA)
 Não alimente pensamentos de ressentimento contra irmãos ou colegas de trabalho cujas conquistas e bênçãos pareçam maiores do que as suas.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Se você sentiu o seu semblante cair e a raiva ferver recentemente porque o seu trabalho, a sua dedicação ou a sua oferta não receberam o reconhecimento ou o resultado que você esperava, pare imediatamente na porta do seu coração. Não deixe a inveja crescer; exerça domínio em nome de Jesus e celebre a bondade de Deus na vida do outro.
 
 ### Oração
@@ -149,7 +149,7 @@ A nossa raiva e o nosso desejo de retaliação contra quem nos ofende ou rejeita
 ### Palavra Continua (ACOMPANHA)
 Não utilize a verdade da Palavra de Deus como uma arma de agressão ou vingança contra pessoas que pensam diferente ou que o trataram mal.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Avalie se você tem nutrido desejos ocultos de ver que a mão do juízo de Deus caia sobre pessoas que o prejudicaram, o traíram ou rejeitaram o evangelho em sua família. Renuncie hoje a todo espírito dos filhos do trovão; peça a Jesus para encher o seu coração com a mesma compaixão que O levou a morrer para salvar os seus próprios ofensores.
 
 ### Oração
@@ -175,7 +175,7 @@ A única ira pura e sem pecado é aquela que não busca a defesa do próprio ego
 ### Palavra Continua (ACOMPANHA)
 Aprenda a diferenciar entre a irritação egoísta que defende os seus interesses e o zelo santo que se indigna contra a injustiça e a desonra a Deus.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Olhe para o templo da sua própria vida e do seu corpo, onde o Espírito Santo habita. Se existem práticas de comércio impuro, compromissos mundanos e hábitos pecaminosos ocupando o espaço onde só deveria haver adoração, peça a Jesus hoje para entrar com o seu zelo purificador, virar as mesas do seu ego e limpar o seu interior.
 
 ### Oração

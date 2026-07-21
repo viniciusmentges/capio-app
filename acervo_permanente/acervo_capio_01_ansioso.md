@@ -52,6 +52,9 @@ Jesus não repreende o serviço de Marta, assim como não repreendeu a navegaç�
 ### Fio da Palavra (ANCORA)
 A ansiedade tenta nos convencer de que Deus é indiferente ao nosso cansaço, mas a Sua presença constante é o descanso da nossa casa.
 
+### Leve com Você
+A exaustão mais pesada nunca vem do volume de pratos na cozinha, mas da suspeita solitária de que fomos abandonados por quem deveria se importar. Algumas sobrecargas só terminam quando paramos de questionar o silêncio de Deus e sentamos aos Seus pés.
+
 ### Palavra Continua (ACOMPANHA)
 Eu não preciso carregar o peso desta casa sozinho; o Senhor se importa com o meu cansaço.
 
@@ -75,6 +78,9 @@ Muitas vezes spiritualizamos a nossa ansiedade quando ela é, na verdade, um pro
 
 ### Fio da Palavra (ANCORA)
 Antes de cobrar grandes realizações, Deus cuida do nosso corpo exausto com pão, água e o descanso de Sua presença.
+
+### Leve com Você
+Muitas vezes confundimos esgotamento físico com fracasso espiritual. Antes de exigir clareza sobre o futuro, permita que o seu corpo apenas descanse sob a sombra da provisão de Deus.
 
 ### Palavra Continua (ACOMPANHA)
 Eu posso descansar o meu corpo cansado porque Deus não me exige mais do que eu posso suportar.
@@ -100,6 +106,9 @@ A lição não é um convite à preguiça, mas à libertação da escravidão do
 ### Fio da Palavra (ANCORA)
 O provimento da nossa vida não depende da exaustão do nosso controle, mas do cuidado perfeito do Pai celestial que nos veste com graça.
 
+### Leve com Você
+Há uma dignidade silenciosa na forma como a criação confia em Deus sem precisar suar. O seu valor não é medido pela quantidade de controle que você consegue exercer sobre o amanhã.
+
 ### Palavra Continua (ACOMPANHA)
 O meu sustento diário está garantido pela bondade de um Pai que cuida de cada detalhe da minha vida.
 
@@ -123,6 +132,9 @@ Você não é a sua doença e você não é o envelhecimento dos seus ossos. A d
 
 ### Fio da Palavra (ANCORA)
 Enquanto a nossa tenda física se desgasta com o tempo e a dor, a nossa alma é renovada diariamente para um destino eterno de glória.
+
+### Leve com Você
+O cansaço da idade e as dores do corpo não são sinais de que Deus nos esqueceu. São lembretes físicos de que fomos feitos para um lar que não enferruja e não dói.
 
 ### Palavra Continua (ACOMPANHA)
 A fragilidade do meu corpo não define o meu destino; a minha força está na vida diária que Cristo renova no meu interior.
@@ -148,6 +160,9 @@ Quando você deita a cabeça no travesseiro e sente os pensamentos girarem em um
 ### Fio da Palavra (ANCORA)
 A insônia da ansiedade nasce de acharmos que sustentamos o mundo; o sono em paz é a confissão de que Deus governa enquanto descansamos.
 
+### Leve com Você
+O sono é um ato diário de confiança onde entregamos a administração do universo de volta a Deus. O mundo continuará girando perfeitamente bem enquanto você fecha os olhos.
+
 ### Palavra Continua (ACOMPANHA)
 Eu posso fechar os olhos e dormir em paz porque o Senhor continua cuidando de tudo o que eu não posso controlar.
 
@@ -171,6 +186,9 @@ Lançar a ansiedade sobre Jesus não é um ato de pensamento positivo; o verbo o
 
 ### Fio da Palavra (ANCORA)
 A cura para a ansiedade que nos faz lutar na força do nosso braço é nos humilharmos sob o cuidado soberano da mão de Deus.
+
+### Leve com Você
+Lutar na força do próprio braço é apenas uma forma disfarçada de medo. Há batalhas que vencemos entregando o orgulho e baixando a espada diante dAquele que cuida de nós.
 
 ### Palavra Continua (ACOMPANHA)
 Eu arremesso hoje todo o peso das minhas preocupações sobre os ombros de Cristo, porque Ele tem cuidado contínua da minha vida.
@@ -196,6 +214,9 @@ A ansiedade diante do futuro longínquo e do envelhecimento nos assombra com per
 ### Fio da Palavra (ANCORA)
 Enquanto os ídolos do mundo pesam sobre as nossas costas, o Deus verdadeiro é Aquele que nos carrega em segurança do início ao fim da vida.
 
+### Leve com Você
+Nós gastamos a vida inteira tentando carregar as nossas seguranças nos ombros. Envelhecer em paz é a descoberta de que sempre fomos nós os carregados.
+
 ### Palavra Continua (ACOMPANHA)
 O meu futuro não está abandonado à própria sorte; eu sou carregado pelo Deus que não muda com o tempo.
 
@@ -219,6 +240,9 @@ A nossa ansiedade opera exatamente como o semblante de Neemias no palácio: nós
 
 ### Fio da Palavra (ANCORA)
 A ansiedade que tentamos esconder por trás de sorrisos ensaiados perde o seu peso quando oramos em silêncio ao Deus que reconstrói as nossas ruínas.
+
+### Leve com Você
+Você não precisa sustentar um rosto corajoso o tempo todo. As nossas tristezas mais verdadeiras e os nossos medos mais pesados são a matéria-prima exata para a oração silenciosa.
 
 ### Palavra Continua (ACOMPANHA)
 Pare de gastar tanta energia tentando esconder de todos a sua preocupação interior; leve o peso das suas ruínas diretamente em oração a Deus.
@@ -244,6 +268,9 @@ No meio daquela escuridão sem estrelas, quando os marinheiros já não comiam n
 ### Fio da Palavra (ANCORA)
 Quando as tempestades prolongadas da vida apagarem todas as estrelas do nosso controle, a nossa segurança permanece ancorada em saber a quem pertencemos e a quem servimos.
 
+### Leve com Você
+Quando todos os nossos mapas falham e perdemos o controle da direção, a nossa segurança não está em saber para onde o vento sopra, mas de quem somos.
+
 ### Palavra Continua (ACOMPANHA)
 Não permita que a duração de uma crise difícil faça você esquecer da fidelidade de Deus e do compromisso dele em guiar os seus passos no meio do escuro.
 
@@ -267,6 +294,9 @@ Esse episódio ilustra com perfeição o efeito tóxico da nossa preocupação a
 
 ### Fio da Palavra (ANCORA)
 A ansiedade que tenta acumular preocupação e provisão por medo do amanhã apenas apodrece a paz e o frescor que Deus nos entregou no dia de hoje.
+
+### Leve com Você
+A tentativa de acumular certezas para o futuro acaba envenenando a paz do hoje. A graça de Deus tem o tamanho exato da sua necessidade para as próximas vinte e quatro horas.
 
 ### Palavra Continua (ACOMPANHA)
 Concentre a sua energia e a sua fé em viver com fidelidade e gratidão a porção de vida e os recursos que Deus colocou em suas mãos hoje.
@@ -292,8 +322,11 @@ Esse texto desmascara a fragilidade da nossa segurança humana quando ela é con
 ### Fio da Palavra (ANCORA)
 A segurança artificial que construímos ignorando a Deus desmorona em terror no dia da crise; somente a humildade diante do Criador firma os nossos joelhos.
 
+### Leve com Você
+Nenhuma segurança que construímos sem Deus suporta o peso da vida real. O verdadeiro descanso não nasce de muros altos, mas de joelhos dobrados diante de quem sustenta a nossa respiração.
+
 ### Palavra Continua (ACOMPANHA)
-Não tente anestesiar a sua ansiedade diária com barulho, distração ou negação da realidade; enfrente os seus problemas na presença e na força de Deus.
+Não tente anestesiar a sua ansiedade diária com barulho, distração ou negação da realidade; enfrente os seus problemas na presence e na força de Deus.
 
 ### Oração
 Senhor soberano, tu vês como muitas vezes tento fugir da ansiedade do meu coração construindo muros de barulho, distração e autossuficiência, fingindo que tenho o controle absoluto da minha vida. Perdoa o meu orgulho e a minha negação diante das crises. Não quero viver com uma paz artificial que desmorona ao menor sinal de perigo. Firma os meus joelhos na tua Palavra. Que o temor reverente ao teu nome seja a verdadeira fortaleza que sustenta o meu semblante em tempo de angústia. Amém.
@@ -315,6 +348,9 @@ O detalhe mais dinâmico e libertador dessa narrativa acontece no momento do con
 
 ### Fio da Palavra (ANCORA)
 A ansiedade nos paralisa nas trincheiras do medo provocadas pelo inimigo; a fé em Deus nos faz correr em direção ao combate na autoridade do Seu nome.
+
+### Leve com Você
+O medo exige que fiquemos paralisados na trincheira calculando os riscos. A fé nos permite correr em direção ao combate sabendo que não dependemos da nossa própria força.
 
 ### Palavra Continua (ACOMPANHA)
 Pare de ficar paralisado em sua trincheira ouvindo as ameaças e provocações dos problemas; tome a Palavra de Deus e enfrente com coragem o seu dia.
@@ -340,6 +376,9 @@ A estratégia que se seguiu é a maior aula de guerra espiritual contra a ansied
 ### Fio da Palavra (ANCORA)
 Quando admitimos a nossa impotência e colocamos o louvor na frente da batalha, os nossos olhos se desviam do medo para contemplarem o livramento de Deus.
 
+### Leve com Você
+Admitir que não sabemos o que fazer não é o fim da linha, é o começo do livramento. Há guerras que vencemos apenas mudando o foco dos nossos olhos.
+
 ### Palavra Continua (ACOMPANHA)
 Não espere a crise passar para começar a agradecer a Deus; coloque a adoração e a oração na linha de frente dos seus desafios diários hoje.
 
@@ -363,6 +402,9 @@ Contudo, a Bíblia registra um detalhe de proteção pastoral avassalador: Jesus
 
 ### Fio da Palavra (ANCORA)
 Quando os relatórios do mundo decretam que tudo acabou, a autoridade de Cristo intervém no caminho ordenando que o nosso coração apenas creia e não tema.
+
+### Leve com Você
+As piores notícias deste mundo nunca têm a última palavra. Jesus caminha conosco mesmo depois que a esperança humana esgotou o seu prazo de validade.
 
 ### Palavra Continua (ACOMPANHA)
 Não permita que as notícias ruins ou a aparente demora de Deus na sua caminhada o levem a desistir de crer no poder soberano de Jesus.

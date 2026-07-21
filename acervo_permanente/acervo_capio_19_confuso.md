@@ -19,7 +19,7 @@ A perplexidade diante do silêncio e dos métodos inesperados de Deus é curada 
 ### Palavra Continua (ACOMPANHA)
 Quando a sua teologia e as suas expectativas sobre o agir de Deus parecerem entrar em contradição com o sofrimento que você está enfrentando, não esconda as suas dúvidas; leve-as honestamente a Jesus.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Identifique qual área da sua vida ou da sua família tem feito você se sentir desorientado, perguntando a Deus por que Ele ainda não interveio da maneira como você esperava. Pare de tentar forçar Deus a caber na sua lógica diária; apresente a sua perplexidade em oração e descanse na certeza de que os planos dele são maiores do que o nosso entendimento.
 
 ### Oração
@@ -45,7 +45,7 @@ Quando os acontecimentos da vida desafiarem a lógica da nossa fé, somos chamad
 ### Palavra Continua (ACOMPANHA)
 Aprenda a aguardar o tempo determinado por Deus sem exigir que Ele lhe forneça explicações imediatas para cada contradição aparente da sua história.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Suba hoje à sua torre de vigia em oração. Se há situações de aparente injustiça no seu trabalho, na sua congregação ou na sua saúde que o têm deixado perplexo, pare de lutar mentalmente para decifrá-las. Entregue o controle do relógio a Deus e declare em silêncio que você viverá pela fé em sua promessa fiel.
 
 ### Oração
@@ -71,7 +71,7 @@ As contradições aparentes entre a obediência cristã e o sucesso do mundo só
 ### Palavra Continua (ACOMPANHA)
 Não avalie a fidelidade de Deus nem o valor da sua obediência cristã comparando a sua conta bancária e o seu conforto com a prosperidade dos que ignoram ao Senhor.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Se você tem se sentido frustrado, desmotivado ou confuso ao ver pessoas desonestas prosperando enquanto você enfrenta lutas contínuas para se manter fiel, entre hoje no santuário de Deus pela adoração secreta. Deixe que a presença do Senhor lave a sua visão temporal e renove a sua alegria de ter a Cristo como a sua maior e eterna herança.
 
 ### Oração
@@ -97,7 +97,7 @@ Quando a perplexidade e a dor nos fecharem em ceticismo, Jesus atravessa as noss
 ### Palavra Continua (ACOMPANHA)
 Não tenha medo de apresentar a Jesus as suas dúvidas teológicas mais profundas e os seus ceticismos nascidos de traumas passados; Ele acolhe com graça o discípulo sincero.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Se você tem mantido as portas do seu coração trancadas para a alegria e para o serviço cristão porque está desorientado com dores e perdas recentes, pare de exigir provas lógicas. Contemple hoje pela fé as feridas do Cordeiro na cruz, reconheça o preço do amor que Ele pagou por você e deixe a perplexidade ceder lugar à adoração.
 
 ### Oração
@@ -123,7 +123,7 @@ A nossa razão limitada não precisa decifrar todos os mistérios da mecânica d
 ### Palavra Continua (ACOMPANHA)
 Não permita que a sua necessidade ocidental e moderna de explicar racionalmente todos os detalhes da fé o impeça de confiar e se render aos mistérios da graça divina.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Observe se a sua caminhada cristã se tornou fria, árdua e confusa porque você tem tentado entender e controlar a oração e a Palavra apenas com o intelecto. Pare de perguntar "como pode ser isso?" o tempo todo; feche os seus livros de debate por alguns instantes, curve o seu intelecto diante da soberania do Mestre e deixe o vento do Espírito arejar a sua alma.
 
 ### Oração
@@ -149,7 +149,7 @@ Quando os nossos planos desmoronam e a vida perde a forma original, as mãos do 
 ### Palavra Continua (ACOMPANHA)
 Não desespere nem ache que a sua vida acabou quando Deus permitir que as circunstâncias desfaçam as estruturas antigas nas quais você costumava confiar.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Se hoje você se sente como um vaso quebrado, sem direção e confuso quanto ao seu futuro porque tudo o que você planejou parece ter saído do controle, pare de lutar contra a roda giratória. Entregue os seus cacos e a sua desorientação nas mãos de Deus, permitindo que a sabedoria dele dê uma nova forma e um novo propósito à sua história.
 
 ### Oração
@@ -175,7 +175,7 @@ A perplexidade existencial diante do sofrimento não é curada por explicações
 ### Palavra Continua (ACOMPANHA)
 Abandone a exigência ansiosa de tentar explicar com a razão humana os porquês de cada perda ou sofrimento da sua vida, e curve-se diante da soberania do Senhor.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Ajoelhe-se hoje em silêncio e contemple a grandeza de Deus que governa o universo e sustenta a sua respiração. Se você tem passado noites em claro tentando entender por que Deus permitiu certas dores em sua história, solte essas perguntas no altar. Diga a Ele que você confia no seu caráter e descanse na paz de quem sabe que está guardado em mãos soberanas.
 
 ### Oração

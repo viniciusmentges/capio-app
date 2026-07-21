@@ -19,7 +19,7 @@ A adoração que oferecemos no altar divino só é aceita quando temos a humilda
 ### Palavra Continua (ACOMPANHA)
 Não use as suas atividades espirituais ou orações como substitutos para a obediência difícil de procurar alguém e buscar a reconciliação.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Faça uma pausa em suas rotinas religiosas hoje e pergunte ao Espírito Santo se há alguém que guarda uma ofensa legítima ou mágoa contra você. Se houver, dê o primeiro passo prático: envie uma mensagem ou faça uma visita para tentar restaurar a paz com humildade.
 
 ### Oração
@@ -45,7 +45,7 @@ A reconciliação humana profunda se torna possível quando permitimos que Deus 
 ### Palavra Continua (ACOMPANHA)
 Antes de enfrentar uma conversa difícil com alguém que o feriu ou com quem você está em conflito, passe tempo em oração permitindo que Deus amacie o seu próprio coração.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Identifique qual é o conflito familiar ou de longa data que você tem considerado absolutamente impossível de ser resolvido. Pare de tentar controlar o desfecho com estratégias defensivas; entregue essa relação aos pés do Senhor e peça que Ele opere o milagre da graça em ambos os lados da margem.
 
 ### Oração
@@ -71,7 +71,7 @@ A verdadeira nobreza cristã recusa a tentação de retaliar com as próprias m�
 ### Palavra Continua (ACOMPANHA)
 Quando você tiver a oportunidade ou a razão aparente para expor, humilhar ou retaliar alguém que o feriu, escolha o caminho da mansidão e poupe o agressor.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Analise se você está guardando munição verbal, provas ou ressentimentos com o objetivo de dar o troco em alguém no momento oportuno. Abra mão hoje do seu desejo de vingança pessoal, corte as amarras do revide em seu coração e confie a sua defesa nas mãos do Senhor.
 
 ### Oração
@@ -97,7 +97,7 @@ A preservação da paz e da fraternidade entre irmãos é um bem espiritual supe
 ### Palavra Continua (ACOMPANHA)
 Não permita que disputas por bens materiais, preferências pessoais ou razão destruam os seus relacionamentos com pessoas que você ama em Cristo.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Se você está envolvido em uma disputa desgastante com um familiar ou irmão na fé por causa de questões materiais, orgulho ou preferências secundárias, pergunte-se o que é mais importante: ganhar a contenda ou preservar a comunhão? Dê hoje um passo de mansidão e esteja disposto a ceder pelo bem da paz.
 
 ### Oração
@@ -123,7 +123,7 @@ O perdão do evangelho transforma relacionamentos rompidos pela ofensa em uma no
 ### Palavra Continua (ACOMPANHA)
 Olhe para as ofensas que cometeram contra você através das lentes do perdão que Cristo lhe concedeu na cruz, abandonando toda exigência severa de retaliação.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Considere se você tem mantido as portas do perdão fechadas para alguém que errou contra você no passado, mas que tem demonstrado um arrependimento real e transformações sinceras. Rompa hoje os códigos implacáveis do julgamento humano e estenda a mão para acolher na graça quem o Senhor já restaurou.
 
 ### Oração
@@ -149,7 +149,7 @@ A maturidade suprema do amor cristão se manifesta na capacidade de perdoar e in
 ### Palavra Continua (ACOMPANHA)
 Não responda aos ataques, calúnias ou perseguições que você enfrenta com o mesmo ódio de quem o agride; responda com a oração sincera pela salvação deles.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Identifique hoje a pessoa ou grupo que tem sido mais hostil, caluniador ou injusto na forma como trata você. Dobre os seus joelhos em seu quarto em silêncio, renuncie a todo desejo de que Deus os castigue, e ore em voz alta pedindo que o Senhor perdoe os pecados deles e transforme os seus corações.
 
 ### Oração
@@ -175,7 +175,7 @@ A verdadeira vitória espiritual em um conflito não se conquista pagando o mal 
 ### Palavra Continua (ACOMPANHA)
 Rompa o ciclo de retaliação e frieza com os seus opositores, escolhendo abençoá-los com atitudes concretas de serviço e gentileza em tempos de necessidade.
 
-### O Ponto de Contato (TOCA)
+### Leve com Você
 Pense na pessoa com quem você tem vivido o conflito mais tenso e difícil na atualidade. Pergunte a si mesmo qual é o bem prático, gesto de cortesia ou ajuda que você poderia oferecer a ela de forma genuína nos próximos dias, derretendo o gelo da contenda com a brasa do amor cristão.
 
 ### Oração
