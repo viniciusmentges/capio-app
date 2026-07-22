@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSEO } from '../../hooks/useSEO';
-import api from '../../lib/api';
-import { capturePageView, trackEvent } from '../../analytics/posthogClient';
+import { api } from '../../lib/api';
+import { capturePageView, captureEvent } from '../../analytics/posthogClient';
 
 export default function LandingPage() {
   useSEO({
@@ -25,14 +25,14 @@ export default function LandingPage() {
   useEffect(() => {
     setMounted(true);
     // Dispara o evento de view específico desta nova landing page
-    if (typeof trackEvent === 'function') {
-        trackEvent('landing_comece_view');
+    if (typeof captureEvent === 'function') {
+        captureEvent('landing_comece_view');
     }
   }, []);
 
   const handleFocus = () => {
-    if (typeof trackEvent === 'function') {
-        trackEvent('lead_form_started');
+    if (typeof captureEvent === 'function') {
+        captureEvent('lead_form_started');
     }
   };
 
@@ -64,14 +64,14 @@ export default function LandingPage() {
       
       setSuccess(true);
       setSuccessMessage(response.data.message || "A obra já está a caminho do seu e-mail.");
-      if (typeof trackEvent === 'function') {
-          trackEvent('lead_capture_success', { is_new: response.data.is_new });
+      if (typeof captureEvent === 'function') {
+          captureEvent('lead_capture_success', { is_new: response.data.is_new });
       }
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.email?.[0] || err.response?.data?.consent_communications?.[0] || "Ocorreu um erro ao processar seu pedido. Tente novamente.");
-      if (typeof trackEvent === 'function') {
-          trackEvent('lead_capture_error', { error: err.message });
+      if (typeof captureEvent === 'function') {
+          captureEvent('lead_capture_error', { error: err.message });
       }
     } finally {
       setLoading(false);
@@ -79,8 +79,8 @@ export default function LandingPage() {
   };
 
   const handleShare = async () => {
-    if (typeof trackEvent === 'function') {
-        trackEvent('click_share_encontro');
+    if (typeof captureEvent === 'function') {
+        captureEvent('click_share_encontro');
     }
     if (navigator.share) {
       try {
@@ -231,8 +231,8 @@ export default function LandingPage() {
                     <Link 
                         to="/register" 
                         onClick={() => {
-                            if (typeof trackEvent === 'function') {
-                                trackEvent('click_conhecer_app');
+                            if (typeof captureEvent === 'function') {
+                                captureEvent('click_conhecer_app');
                             }
                         }}
                         className="inline-block w-full bg-accent text-accent-foreground py-3.5 px-4 rounded-sm text-xs font-medium uppercase tracking-widest hover:bg-accent/90 transition-colors"
@@ -260,8 +260,8 @@ export default function LandingPage() {
             <Link 
               to="/register" 
               onClick={() => {
-                  if (typeof trackEvent === 'function') {
-                      trackEvent('click_conhecer_app');
+                  if (typeof captureEvent === 'function') {
+                      captureEvent('click_conhecer_app');
                   }
               }}
               className="inline-block text-[10px] font-sans font-medium uppercase tracking-[0.25em] text-accent transition-colors underline underline-offset-8 decoration-accent/20 hover:decoration-accent/50 py-3 px-6"
