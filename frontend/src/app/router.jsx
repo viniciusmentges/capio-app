@@ -13,6 +13,8 @@ const TodayReflectionPage = React.lazy(() => import('../pages/reflection/TodayRe
 const LoginPage = React.lazy(() => import('../pages/auth/LoginPage'));
 const RegisterPage = React.lazy(() => import('../pages/auth/RegisterPage'));
 const LandingPage = React.lazy(() => import('../pages/public/LandingPage'));
+const ObrasPage = React.lazy(() => import('../pages/public/ObrasPage'));
+const ObraTudoParecePesadoPage = React.lazy(() => import('../pages/public/ObraTudoParecePesadoPage'));
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated, loadingAuth } = useAuth();
@@ -112,6 +114,16 @@ export const router = createBrowserRouter([
   {
     path: "/comece",
     element: <Suspended><LandingPage /></Suspended>,
+    errorElement: <ContemplativeErrorBoundary />
+  },
+  {
+    path: "/obras",
+    element: <Suspended><ObrasPage /></Suspended>,
+    errorElement: <ContemplativeErrorBoundary />
+  },
+  {
+    path: "/obras/para-quando-tudo-parece-pesado",
+    element: <Suspended><ObraTudoParecePesadoPage /></Suspended>,
     errorElement: <ContemplativeErrorBoundary />
   },
   {
