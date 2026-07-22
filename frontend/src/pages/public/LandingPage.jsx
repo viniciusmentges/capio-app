@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSEO } from '../../hooks/useSEO';
-import api from '../../services/api';
+import api from '../../lib/api';
 import { capturePageView, trackEvent } from '../../analytics/posthogClient';
 
 export default function LandingPage() {
