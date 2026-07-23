@@ -595,9 +595,10 @@ section{padding:clamp(4rem,10vw,9rem) 0}
   .hero-rodape { flex-direction:column; align-items:flex-start; gap:3rem; }
   .hero-scroll { align-self:flex-start; }
   
-  .pergunta-text-grid { max-width: 100% !important; grid-template-columns: 1fr !important; gap: 3rem !important; }
-  .pergunta-mockup-wrapper { position: relative !important; top: auto !important; right: auto !important; width: 100% !important; max-width: 320px !important; transform: none !important; margin: 4rem auto 0 auto !important; }
-  .pergunta-mockup-container { transform: rotate(0deg) !important; }
+  .pergunta-master-grid { grid-template-columns: 1fr !important; gap: 4rem !important; }
+  .pergunta-text-grid { grid-template-columns: 1fr !important; gap: 3rem !important; }
+  .pergunta-mockup-wrapper { max-width: 320px !important; margin: 0 auto !important; }
+  .pergunta-mockup-container { transform: none !important; }
   
   .obra-grid { grid-template-columns:1fr 1fr; }
   .obra-item:nth-child(2) { border-right:none; padding-right:0; }
@@ -671,27 +672,34 @@ section{padding:clamp(4rem,10vw,9rem) 0}
 </section>
 
 <!-- ══ A PERGUNTA ══ -->
-<section id="pergunta" style="position:relative; overflow:hidden;">
-  <div class="pg" style="padding-top:6rem;padding-bottom:6rem; position:relative; z-index:2;">
-    <div class="pergunta-text-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:4vw;align-items:start;max-width:65%;">
-      <div>
-        <div class="mono" style="color:rgba(242,237,228,.3);margin-bottom:1.5rem">A pergunta que nos trouxe aqui</div>
-        <h2 style="color:var(--papel);font-size:clamp(1.8rem,3vw,3rem);margin-bottom:1.5rem;line-height:1.1;">Onde vivem<br>as grandes obras<br>entre um encontro<br>e outro?</h2>
-        <p class="corpo" style="color:rgba(242,237,228,.55)">Uma música não termina quando acaba o streaming. Uma letra não morre quando o álbum sai de moda. Uma ideia não envelhece quando a notícia passa. Mas o que acontece com elas enquanto esperam a próxima pessoa que precisa delas?</p>
+<section id="pergunta">
+  <div class="pg" style="padding-top:6rem;padding-bottom:6rem;">
+    <div class="pergunta-master-grid" style="display:grid;grid-template-columns:1fr 360px;gap:6vw;align-items:center;">
+      
+      <!-- Lado do Texto -->
+      <div class="pergunta-text-grid" style="display:grid;grid-template-columns:1fr 1px 1fr;gap:4vw;align-items:start;">
+        <div>
+          <div class="mono" style="color:rgba(242,237,228,.3);margin-bottom:1.5rem">A pergunta que nos trouxe aqui</div>
+          <h2 style="color:var(--papel);font-size:clamp(1.8rem,3vw,3rem);margin-bottom:1.5rem;line-height:1.1;">Onde vivem<br>as grandes obras<br>entre um encontro<br>e outro?</h2>
+          <p class="corpo" style="color:rgba(242,237,228,.55)">Uma música não termina quando acaba o streaming. Uma letra não morre quando o álbum sai de moda. Uma ideia não envelhece quando a notícia passa. Mas o que acontece com elas enquanto esperam a próxima pessoa que precisa delas?</p>
+        </div>
+        <div class="v-linha" style="width:1px;height:100%;background:rgba(242,237,228,.08);align-self:stretch"></div>
+        <div>
+          <div class="mono" style="color:rgba(242,237,228,.3);margin-bottom:1.5rem">A resposta que propomos</div>
+          <p class="corpo-grande" style="color:rgba(242,237,228,.75);margin-bottom:2.5rem;font-size:1.25rem;line-height:1.5;">Elas precisam de uma <em style="color:var(--papel);">casa</em>. Não um arquivo. Não um streaming. Uma casa que as conheça, as organize, as apresente para quem está pronto para recebê-las.</p>
+          <div class="barra" style="margin-bottom:2rem;background:rgba(242,237,228,.15);"></div>
+          <p class="mono" style="color:rgba(242,237,228,.35);line-height:1.6;">A Casa do Pensador é essa casa — construída especificamente para a obra de Gabriel o Pensador. Ela não existe para mais nenhuma outra obra.</p>
+        </div>
       </div>
-      <div>
-        <div class="mono" style="color:rgba(242,237,228,.3);margin-bottom:1.5rem">A resposta que propomos</div>
-        <p class="corpo-grande" style="color:rgba(242,237,228,.75);margin-bottom:2.5rem;font-size:1.25rem;line-height:1.5;">Elas precisam de uma <em style="color:var(--papel);">casa</em>. Não um arquivo. Não um streaming. Uma casa que as conheça, as organize, as apresente para quem está pronto para recebê-las.</p>
-        <div class="barra" style="margin-bottom:2rem;background:rgba(242,237,228,.15);"></div>
-        <p class="mono" style="color:rgba(242,237,228,.35);line-height:1.6;">A Casa do Pensador é essa casa — construída especificamente para a obra de Gabriel o Pensador. Ela não existe para mais nenhuma outra obra.</p>
-      </div>
-    </div>
-  </div>
 
-  <div class="pergunta-mockup-wrapper" style="position:absolute;top:50%;right:4%;width:35%;max-width:420px;transform:translateY(-50%);z-index:1;">
-    <div class="pergunta-mockup-container" style="position:relative;width:100%;transform:rotate(-3deg);transition:transform 0.6s cubic-bezier(0.2,0.8,0.2,1);cursor:pointer;" onmouseover="this.style.transform='rotate(0deg) scale(1.03)'" onmouseout="this.style.transform='rotate(-3deg)'">
-      <div style="position:absolute;inset:0;border-radius:32px;box-shadow:0 30px 60px rgba(0,0,0,0.8), 0 0 40px rgba(242,237,228,0.05);z-index:-1;"></div>
-      <img src="/presentations/gabriel-o-pensador/assets/mockup.png" alt="Mockup Casa do Pensador" style="width:100%;border-radius:32px;display:block;" />
+      <!-- Lado do Mockup -->
+      <div class="pergunta-mockup-wrapper" style="width:100%;max-width:360px;">
+        <div class="pergunta-mockup-container" style="position:relative;width:100%;transform:rotate(-2deg);transition:transform 0.6s cubic-bezier(0.2,0.8,0.2,1);cursor:pointer;" onmouseover="this.style.transform='rotate(0deg) scale(1.03)'" onmouseout="this.style.transform='rotate(-2deg)'">
+          <div style="position:absolute;inset:0;border-radius:32px;box-shadow:0 30px 60px rgba(0,0,0,0.8), 0 0 40px rgba(242,237,228,0.05);z-index:-1;"></div>
+          <img src="/presentations/gabriel-o-pensador/assets/mockup.png" alt="Mockup Casa do Pensador" style="width:100%;border-radius:32px;display:block;" />
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
