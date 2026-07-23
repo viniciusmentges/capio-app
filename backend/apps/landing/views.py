@@ -66,19 +66,23 @@ class LeadCaptureView(generics.CreateAPIView):
         
         payload = {
             "email": lead.email,
-            "attributes": {
-                "NOME": lead.name,
-                "ORIGEM": lead.source,
-                "CONSENTIMENTO": lead.consent_given
-            },
             "listIds": [int(list_id)],
             "updateEnabled": True
         }
+        
+        # Se houver nome, tentamos enviar nos atributos padrão mais comuns (FIRSTNAME ou NOME)
+        if lead.name:
+            payload["attributes"] = {
+                "FIRSTNAME": lead.name.split()[0], # Brevo padrão usa FIRSTNAME
+                "NOME": lead.name
+            }
 
         try:
             response = requests.post(url, json=payload, headers=headers)
             if response.status_code in [201, 204]:
                 lead.brevo_sync_status = True
                 lead.save(update_fields=['brevo_sync_status'])
-        except Exception:
-            pass
+            else:
+                print(f"Brevo API Error ({response.status_code}): {response.text}")
+        except Exception as e:
+            print(f"Brevo Request Exception: {str(e)}")
