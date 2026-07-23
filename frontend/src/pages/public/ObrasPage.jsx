@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSEO } from '../../hooks/useSEO';
 import { capturePageView, captureEvent } from '../../analytics/posthogClient';
+import capaEbook from '../../assets/capa-ebook.jpg';
 
 export default function ObrasPage() {
   useSEO({
@@ -47,12 +48,9 @@ export default function ObrasPage() {
           {/* Card: Para quando tudo parece pesado */}
           <article className="group flex flex-col md:flex-row items-center md:items-stretch bg-surface border border-border/40 rounded-sm shadow-sm overflow-hidden hover:border-accent/30 transition-colors">
               
-              {/* Mockup Minimalista no Card */}
-              <div className="w-full md:w-48 h-64 bg-background border-b md:border-b-0 md:border-r border-border/40 flex items-center justify-center relative overflow-hidden flex-shrink-0">
-                  <div className="absolute top-4 left-4 right-4 text-left">
-                      <p className="text-[8px] uppercase tracking-widest text-foreground/40 mb-2">Capio</p>
-                      <p className="font-serif text-sm leading-snug text-foreground/80">Para quando<br/>tudo parece<br/>pesado</p>
-                  </div>
+              {/* Capa do Ebook no Card */}
+              <div className="w-full md:w-48 h-64 bg-background border-b md:border-b-0 md:border-r border-border/40 flex items-center justify-center relative overflow-hidden flex-shrink-0 p-4">
+                  <img src={capaEbook} alt="Capa do Ebook: Para quando tudo parece pesado" className="max-w-full max-h-full object-contain shadow-sm rounded-sm" />
               </div>
 
               <div className="p-6 md:p-8 flex flex-col justify-center text-center md:text-left space-y-4">
