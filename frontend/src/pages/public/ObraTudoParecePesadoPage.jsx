@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSEO } from '../../hooks/useSEO';
 import { api } from '../../lib/api';
 import { capturePageView, captureEvent } from '../../analytics/posthogClient';
+import capaEbook from '../../assets/capa-ebook.jpg';
 
 export default function ObraTudoParecePesadoPage() {
   useSEO({
@@ -126,16 +127,12 @@ export default function ObraTudoParecePesadoPage() {
           </p>
 
           <div className="py-6 flex justify-center">
-            {/* Mockup Minimalista da Obra */}
-            <div className="w-48 h-64 bg-surface border border-border/40 shadow-sm flex items-center justify-center rounded-sm relative overflow-hidden">
-                <div className="absolute top-4 left-4 right-4 text-left">
-                    <p className="text-[8px] uppercase tracking-widest text-foreground/40 mb-2">Capio</p>
-                    <p className="font-serif text-sm leading-snug text-foreground/80">Para quando<br/>tudo parece<br/>pesado</p>
-                </div>
-                <div className="absolute bottom-4 left-4">
-                    <p className="text-[8px] italic text-foreground/40">O seu primeiro encontro com a CAPIO.</p>
-                </div>
-            </div>
+            {/* Capa do Ebook */}
+            <img 
+              src={capaEbook} 
+              alt="Capa do Ebook: Para quando tudo parece pesado" 
+              className="w-64 md:w-80 shadow-md rounded-sm border border-border/40" 
+            />
           </div>
 
         </section>
