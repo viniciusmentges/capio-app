@@ -33,7 +33,7 @@ body{
 /* ── TIPOGRAFIA ── */
 .display{
   font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(4rem,14vw,13rem);
+  font-size:clamp(3.5rem,10vw,12rem);
   line-height:.88;
   letter-spacing:-.01em;
   color:var(--tinta);
@@ -120,7 +120,7 @@ section{padding:clamp(4rem,10vw,9rem) 0}
 
 .hero-palavra{
   font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(18rem,38vw,56rem);
+  font-size:clamp(6rem,28vw,56rem);
   line-height:.8;
   color:rgba(13,12,10,.04);
   letter-spacing:-.02em;
@@ -155,7 +155,7 @@ section{padding:clamp(4rem,10vw,9rem) 0}
 
 .hero-h1{
   font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(4.5rem,14vw,14rem);
+  font-size:clamp(3.5rem,10vw,12rem);
   line-height:.88;
   letter-spacing:-.01em;
   color:var(--tinta);
@@ -591,21 +591,55 @@ section{padding:clamp(4rem,10vw,9rem) 0}
 /* ══════════════════════════════════
    RESPONSIVO
 ══════════════════════════════════ */
+@media(max-width:992px){
+  .hero-rodape { flex-direction:column; align-items:flex-start; gap:3rem; }
+  .hero-scroll { align-self:flex-start; }
+  
+  #pergunta .pg { grid-template-columns:1fr; gap:3rem; }
+  .v-linha { display:none !important; }
+  
+  .obra-grid { grid-template-columns:1fr 1fr; }
+  .obra-item:nth-child(2) { border-right:none; padding-right:0; }
+  .obra-item:last-child { grid-column:1/-1; border-top:1px solid var(--linha); padding:2.5rem 0 0 0; }
+  
+  .casa-intro { grid-template-columns:1fr; gap:3rem; }
+  
+  .capio-grid { grid-template-columns:1fr; gap:3rem; }
+  .v-linha-dark { display:none !important; }
+}
+
 @media(max-width:768px){
-  #pergunta .pg{grid-template-columns:1fr;gap:2rem}
-  .v-linha{display:none}
-  .obra-grid{grid-template-columns:1fr}
-  .obra-item{border-right:none;border-bottom:1px solid var(--linha);padding:2rem 0}
-  .obra-item:last-child{padding-left:0}
-  .casa-intro{grid-template-columns:1fr}
-  .casa-pilares{grid-template-columns:1fr}
-  .lt-item{grid-template-columns:80px 1fr;gap:1rem}
-  .exp-grid{grid-template-columns:1fr}
-  .exp-item:nth-child(2n){border-right:1px solid rgba(242,237,228,.08)}
-  .capio-grid{grid-template-columns:1fr;gap:2rem}
-  .v-linha-dark{display:none}
-  .teste-idades{flex-direction:column;align-items:center}
-  .teste-idade{border-right:none;border-bottom:1px solid var(--linha);max-width:100%;width:100%}
+  section { padding:clamp(3rem,8vw,5rem) 0; }
+  .hero-rodape { margin-top:2rem; }
+  
+  .obra-header { grid-template-columns:1fr; gap:1rem; }
+  .obra-grid { grid-template-columns:1fr; }
+  .obra-item { border-right:none !important; border-bottom:1px solid var(--linha); padding:2rem 0 !important; }
+  .obra-item:last-child { border-top:none; border-bottom:none; padding-bottom:0 !important; }
+  
+  .casa-pilares { grid-template-columns:1fr; gap:1rem; }
+  
+  .lt-item { grid-template-columns:80px 1fr; gap:1rem; }
+  .lt-ano { font-size:2.5rem; }
+  
+  .exp-grid { grid-template-columns:1fr; }
+  .exp-item { border-right:none !important; border-bottom:1px solid rgba(242,237,228,.08) !important; }
+  .exp-item:last-child { border-bottom:none !important; }
+  .exp-destaque { padding:2rem 1.5rem; }
+  
+  .teste-idades { flex-direction:column; align-items:center; }
+  .teste-idade { border-right:none; border-bottom:1px solid var(--linha); max-width:100%; width:100%; padding:2.5rem 0; }
+  .teste-idade:last-child { border-bottom:none; }
+}
+
+@media(max-width:576px){
+  .pg, .pg-sm { padding:0 1.5rem; }
+  .hero-h1 { font-size:clamp(3.5rem, 15vw, 4.5rem); }
+  .hero-palavra { display:none; /* Muito grande para telas minúsculas, polui visualmente */ }
+  .pergunta-num { font-size:5rem; }
+  h2 { font-size:clamp(2rem, 8vw, 2.5rem); }
+  .obra-anos { font-size:5rem; }
+  .fechamento-bg { font-size:8rem; bottom:-2rem; right:-1rem; }
 }
 
 @media(prefers-reduced-motion:reduce){
@@ -644,7 +678,7 @@ section{padding:clamp(4rem,10vw,9rem) 0}
         <h2 style="color:var(--papel);font-size:clamp(1.8rem,4vw,3.5rem);margin-bottom:1.5rem">Onde vivem<br>as grandes obras<br>entre um encontro<br>e outro?</h2>
         <p class="corpo" style="color:rgba(242,237,228,.55)">Uma música não termina quando acaba o streaming. Uma letra não morre quando o álbum sai de moda. Uma ideia não envelhece quando a notícia passa. Mas o que acontece com elas enquanto esperam a próxima pessoa que precisa delas?</p>
       </div>
-      <div style="width:1px;height:100%;background:rgba(242,237,228,.08);align-self:stretch"></div>
+      <div class="v-linha" style="width:1px;height:100%;background:rgba(242,237,228,.08);align-self:stretch"></div>
       <div>
         <div class="mono" style="color:rgba(242,237,228,.3);margin-bottom:1.5rem">A resposta que propomos</div>
         <p class="corpo-grande" style="color:rgba(242,237,228,.75);margin-bottom:2rem">Elas precisam de uma <em>casa</em>. Não um arquivo. Não um streaming. Uma casa que as conheça, as organize, as apresente para quem está pronto para recebê-las.</p>
@@ -871,7 +905,7 @@ section{padding:clamp(4rem,10vw,9rem) 0}
         <div class="barra"></div>
         <p class="mono" style="margin-top:1.5rem">O problema de organizar trinta anos de músicas, livros, entrevistas, palestras e poemas é exatamente o problema que esse motor foi construído para resolver.</p>
       </div>
-      <div style="width:1px;background:var(--linha);align-self:stretch"></div>
+      <div class="v-linha-dark" style="width:1px;background:var(--linha);align-self:stretch"></div>
       <div>
         <div class="mono" style="margin-bottom:1.5rem;color:var(--sutil)">O que a CAPIO nunca fará</div>
         <div style="display:flex;flex-direction:column;gap:0">
