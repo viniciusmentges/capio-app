@@ -69,13 +69,6 @@ class LeadCaptureView(generics.CreateAPIView):
             "listIds": [int(list_id)],
             "updateEnabled": True
         }
-        
-        # Se houver nome, tentamos enviar nos atributos padrão mais comuns (FIRSTNAME ou NOME)
-        if lead.name:
-            payload["attributes"] = {
-                "FIRSTNAME": lead.name.split()[0], # Brevo padrão usa FIRSTNAME
-                "NOME": lead.name
-            }
 
         try:
             response = requests.post(url, json=payload, headers=headers)
