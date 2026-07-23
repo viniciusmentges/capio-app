@@ -60,7 +60,7 @@ export default function ObraTudoParecePesadoPage() {
         utm_term: urlParams.get('utm_term') || '',
       };
 
-      const response = await api.post('/landing/leads/', payload);
+      const response = await api.post('/api/public/leads/', payload);
       
       setSuccess(true);
       setSuccessMessage(response.data.message || "A obra já está a caminho do seu e-mail.");
