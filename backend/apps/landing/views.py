@@ -137,6 +137,30 @@ class BrevoAuditView(generics.GenericAPIView):
                 audit_result['test'] = {'error': str(e)}
             return Response(audit_result, status=200)
         
+        elif step == 'events':
+            email = request.query_params.get('email', 'vinicius.teste.capio2@gmail.com')
+            audit_result['test'] = {}
+            
+            # Check SMTP events
+            url_smtp = f"https://api.brevo.com/v3/smtp/statistics/events?email={email}"
+            try:
+                res_smtp = requests.get(url_smtp, headers=headers)
+                audit_result['test']['smtp_status'] = res_smtp.status_code
+                audit_result['test']['smtp_events'] = res_smtp.json() if res_smtp.status_code == 200 else res_smtp.text
+            except Exception as e:
+                audit_result['test']['smtp_error'] = str(e)
+                
+            # Check Campaign Stats (Automations sometimes log here)
+            url_campaigns = f"https://api.brevo.com/v3/contacts/{email}/campaignStats"
+            try:
+                res_camp = requests.get(url_campaigns, headers=headers)
+                audit_result['test']['campaign_status'] = res_camp.status_code
+                audit_result['test']['campaign_events'] = res_camp.json() if res_camp.status_code == 200 else res_camp.text
+            except Exception as e:
+                audit_result['test']['campaign_error'] = str(e)
+                
+            return Response(audit_result, status=200)
+
         elif step == 'check_contact':
             email = request.query_params.get('email', 'audit_capio_test_militar@example.com')
             url = f"https://api.brevo.com/v3/contacts/{email}"
