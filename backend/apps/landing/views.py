@@ -85,6 +85,7 @@ class BrevoAuditView(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         api_key = os.environ.get('BREVO_API_KEY')
         list_id = os.environ.get('BREVO_LIST_ID_PRIMEIRO_ENCONTRO')
+        step = request.query_params.get('step', 'contact')
         
         audit_result = {
             'env': {
@@ -94,41 +95,56 @@ class BrevoAuditView(generics.GenericAPIView):
             'test': None
         }
         
-        if not api_key or not list_id:
+        if not api_key:
             return Response(audit_result, status=200)
-            
-        try:
-            list_id_int = int(list_id)
-            audit_result['env']['list_id_is_int'] = True
-        except ValueError:
-            audit_result['env']['list_id_is_int'] = False
-            return Response(audit_result, status=200)
-            
-        # Test request
-        url = "https://api.brevo.com/v3/contacts"
+
         headers = {
             "accept": "application/json",
             "content-type": "application/json",
             "api-key": api_key
         }
-        payload = {
-            "email": "audit_capio_test@example.com",
-            "listIds": [list_id_int],
-            "updateEnabled": True
-        }
+
+        if step == 'account':
+            url = "https://api.brevo.com/v3/account"
+            try:
+                res = requests.get(url, headers=headers)
+                audit_result['test'] = {'status_code': res.status_code, 'response': res.json() if res.status_code == 200 else res.text}
+            except Exception as e:
+                audit_result['test'] = {'error': str(e)}
+            return Response(audit_result, status=200)
+
+        elif step == 'list':
+            url = f"https://api.brevo.com/v3/contacts/lists/{list_id}"
+            try:
+                res = requests.get(url, headers=headers)
+                audit_result['test'] = {'status_code': res.status_code, 'response': res.json() if res.status_code == 200 else res.text}
+            except Exception as e:
+                audit_result['test'] = {'error': str(e)}
+            return Response(audit_result, status=200)
+
+        elif step == 'contact':
+            email = request.query_params.get('email', 'audit_capio_test_militar@example.com')
+            url = "https://api.brevo.com/v3/contacts"
+            payload = {
+                "email": email,
+                "listIds": [int(list_id)],
+                "updateEnabled": True
+            }
+            try:
+                res = requests.post(url, json=payload, headers=headers)
+                audit_result['test'] = {'status_code': res.status_code, 'response': res.json() if res.status_code in [201, 204] else res.text}
+            except Exception as e:
+                audit_result['test'] = {'error': str(e)}
+            return Response(audit_result, status=200)
         
-        try:
-            res = requests.post(url, json=payload, headers=headers)
-            audit_result['test'] = {
-                'status_code': res.status_code,
-                'response': res.text
-            }
-            # Clean up if created
-            if res.status_code in [201, 204]:
-                requests.delete(f"{url}/audit_capio_test@example.com", headers=headers)
-        except Exception as e:
-            audit_result['test'] = {
-                'error': str(e)
-            }
-            
+        elif step == 'check_contact':
+            email = request.query_params.get('email', 'audit_capio_test_militar@example.com')
+            url = f"https://api.brevo.com/v3/contacts/{email}"
+            try:
+                res = requests.get(url, headers=headers)
+                audit_result['test'] = {'status_code': res.status_code, 'response': res.json() if res.status_code == 200 else res.text}
+            except Exception as e:
+                audit_result['test'] = {'error': str(e)}
+            return Response(audit_result, status=200)
+
         return Response(audit_result, status=200)
